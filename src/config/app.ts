@@ -70,16 +70,20 @@ app.use(cookieParser());
 
 
 // Routes
+app.get('/', (req, res) => {
+  res.redirect(process.env.FRONT_URL || 'http://localhost:8080');
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'API opérationnelle' });
 });
 
 
 // Importation des routes
+import ownerRoutes from "../routes/ownerRoutes.js";
 
-
-
-
+// Utilisation des routes
+app.use('/api', ownerRoutes);
 
 
 // Middleware pour routes non trouvées

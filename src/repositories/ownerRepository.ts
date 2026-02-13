@@ -1,0 +1,65 @@
+import type { ProprietaireInscriptionInput } from "../validators/ownerValidator.js";
+import type { Proprietaire } from "../../src/generated/prisma/client.js";
+import { prisma } from "../config/database.js";
+import bcrypt from "bcrypt";
+
+export class ProprietaireRepository {
+  /**
+   * Créer un nouveau propriétaire
+   */
+  async create(data: ProprietaireInscriptionInput): Promise<Proprietaire> {
+    const hashedPassword = await bcrypt.hash(data.mot_de_passe, 10);
+    
+    return prisma.proprietaire.create({
+      data: {
+        nom_complet: data.nom_complet,
+        telephone: data.telephone,
+        adresse: data.adresse,
+        mot_de_passe: hashedPassword,
+        role: "PROPRIETAIRE",
+        statut: "ACTIF",
+        profil_complet: false,
+        taux_completude_profil: 25, // Inscription minimale = 25% complet
+      },
+    }) as unknown as Promise<Proprietaire>;
+  }
+
+  /**
+   * Trouver un propriétaire par téléphone
+   */
+  async findByPhone(telephone: string): Promise<Proprietaire | null> {
+    return prisma.proprietaire.findUnique({
+      where: { telephone },
+    }) as unknown as Promise<Proprietaire | null>;
+  }
+
+  /**
+   * Trouver un propriétaire par email
+   */
+  async findByEmail(email: string): Promise<Proprietaire | null> {
+    return prisma.proprietaire.findUnique({
+      where: { email },
+    }) as unknown as Promise<Proprietaire | null>;
+  }
+
+  /**
+   * Trouver un propriétaire par ID
+   */
+  async findById(id: string): Promise<Proprietaire | null> {
+    return prisma.proprietaire.findUnique({
+      where: { id },
+    }) as unknown as Promise<Proprietaire | null>;
+  }
+
+  /**
+   * Vérifier si le téléphone existe déjà
+   */
+  async phoneExists(telephone: string): Promise<boolean> {
+    const owner = await prisma.proprietaire.findUnique({
+      where: { telephone },
+    });
+    return owner !== null;
+  }
+}
+
+export const proprietaireRepository = new ProprietaireRepository();

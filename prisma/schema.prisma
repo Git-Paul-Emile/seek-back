@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -14,4 +8,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Proprietaire {
+  id                   String          @id @default(uuid())
+  nom_complet          String
+  telephone            String          @unique
+  email                String?         @unique
+  adresse              String?
+  mot_de_passe         String
+  whatsapp             String?
+  ville                String?
+  type_proprietaire    TypeProprietaire @default(PARTICULIER)
+  raison_sociale       String?
+  profil_complet       Boolean         @default(false)
+  taux_completude_profil Int           @default(0)
+  statut               StatutProprietaire @default(ACTIF)
+  role                 String          @default("PROPRIETAIRE")
+  date_creation        DateTime        @default(now())
+  date_modification    DateTime        @updatedAt
 
+  @@map("proprietaires")
+}
+
+enum TypeProprietaire {
+  PARTICULIER
+  ENTREPRISE
+}
+
+enum StatutProprietaire {
+  ACTIF
+  INACTIF
+  SUSPENDU
+}
