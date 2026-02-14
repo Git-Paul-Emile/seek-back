@@ -14,6 +14,7 @@ export class ProprietaireRepository {
       data: {
         nom_complet: data.nom_complet,
         telephone: data.telephone,
+        email: data.email || null,
         adresse: data.adresse,
         mot_de_passe: hashedPassword,
         role: "PROPRIETAIRE",
@@ -59,6 +60,16 @@ export class ProprietaireRepository {
       where: { telephone },
     });
     return owner !== null;
+  }
+
+  /**
+   * Mettre à jour le mot de passe
+   */
+  async updatePassword(id: string, hashedPassword: string): Promise<Proprietaire> {
+    return prisma.proprietaire.update({
+      where: { id },
+      data: { mot_de_passe: hashedPassword },
+    }) as unknown as Promise<Proprietaire>;
   }
 }
 

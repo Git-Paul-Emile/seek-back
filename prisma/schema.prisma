@@ -26,7 +26,43 @@ model Proprietaire {
   date_creation        DateTime        @default(now())
   date_modification    DateTime        @updatedAt
 
+  // Relations pour l'authentification
+  refreshTokens        RefreshToken[]
+  passwordResets       PasswordReset[]
+
   @@map("proprietaires")
+}
+
+model RefreshToken {
+  id          String      @id @default(uuid())
+  token       String      @unique
+  proprietaireId String
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime    @default(now())
+  userAgent   String?
+  ipAddress   String?
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([proprietaireId])
+  @@map("refresh_tokens")
+}
+
+model PasswordReset {
+  id            String          @id @default(uuid())
+  code          String
+  type          ResetType       @default(EMAIL)
+  proprietaireId String?
+  expiresAt     DateTime
+  usedAt        DateTime?
+  createdAt     DateTime        @default(now())
+
+  proprietaire  Proprietaire?    @relation(fields: [proprietaireId], references: [id], onDelete: SetNull)
+
+  @@index([code])
+  @@map("password_resets")
 }
 
 enum TypeProprietaire {
@@ -38,4 +74,9 @@ enum StatutProprietaire {
   ACTIF
   INACTIF
   SUSPENDU
+}
+
+enum ResetType {
+  EMAIL
+  SMS
 }

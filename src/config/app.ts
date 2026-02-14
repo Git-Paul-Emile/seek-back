@@ -1,18 +1,14 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import helmet from "helmet";
 import path from "path";
 import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
-
-
-
+import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 
 const app = express();
-
-
-
 
 const allowedOrigins = [
   process.env.FRONT_URL || 'http://localhost:8080',
@@ -20,17 +16,28 @@ const allowedOrigins = [
   'http://localhost:8080',
   'http://localhost:3000', // React default
   'http://localhost:3001', // React alternative
-  //'https://horty-coiffure-front.vercel.app/' // URL de production Vercel
 ];
 
+// ============= SÉCURITÉ =============
 
+// Helmet - Headers de sécurité
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 
+// Rate limiting global
+app.use(limiteurGlobal);
 
+// ============= CORS =============
 
-
-
-
-// Configuration CORS
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allowed?: boolean) => void) => {
     // Allow requests with no origin (e.g., curl, mobile apps)
@@ -39,37 +46,20 @@ const corsOptions = {
     return callback(new Error('CORS policy: origin not allowed'), false);
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
-
-
-
-
-
-
-
 
 app.use(cors(corsOptions));
 
+// ============= PARSERS =============
 
-
-
-// Parser JSON et cookies
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
+// ============= ROUTES =============
 
-
-
-
-
-
-
-
-
-
-
-// Routes
 app.get('/', (req, res) => {
   res.redirect(process.env.FRONT_URL || 'http://localhost:8080');
 });
@@ -78,30 +68,24 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'API opérationnelle' });
 });
 
-
 // Importation des routes
 import ownerRoutes from "../routes/ownerRoutes.js";
 
 // Utilisation des routes
 app.use('/api', ownerRoutes);
 
+// ============= GESTION DES ERREURS =============
 
 // Middleware pour routes non trouvées
 app.use((req, res) => {
- res.status(StatusCodes.NOT_FOUND).json({ message: "Route non trouvée" });
+  res.status(StatusCodes.NOT_FOUND).json({ message: "Route non trouvée" });
 });
-
-
-
 
 // Middleware de gestion des erreurs
 app.use((err: Error | AppError, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error(err);
 
-
-
-
-  // Gestion des erreurs Prisma (qui ont 'code' et 'meta')
+  // Gestion des erreurs Prisma
   if ('code' in err && typeof err.code === 'string') {
     switch (err.code) {
       case 'P2002':
@@ -115,16 +99,10 @@ app.use((err: Error | AppError, req: express.Request, res: express.Response, nex
     }
   }
 
-
-
-
   // Gestion des AppError et autres erreurs
   const statusCode = (err instanceof AppError) ? err.statusCode : StatusCodes.INTERNAL_SERVER_ERROR;
   const message = err.message || 'Erreur interne du serveur';
   res.status(statusCode).json({ message });
 });
-
-
-
 
 export default app;

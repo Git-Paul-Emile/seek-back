@@ -1,7 +1,14 @@
 import type { Request, Response, NextFunction } from "express";
-import { proprietaireService } from "../services/ownerService.js";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
-import type { ProprietaireInscriptionInput } from "../validators/ownerValidator.js";
+import { proprietaireService } from "../services/ownerService.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { 
+  proprietaireInscriptionSchema, 
+  proprietaireConnexionSchema,
+  forgotPasswordEmailSchema,
+  forgotPasswordSmsSchema,
+  resetPasswordSchema 
+} from "../validators/ownerValidator.js";
 
 /**
  * Enregistrer un nouveau propriétaire
@@ -11,9 +18,14 @@ const registerProprietaire = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const data = req.body as ProprietaireInscriptionInput;
+  const data = req.body;
   
   const result = await proprietaireService.register(data);
+  
+  // Définir les cookies d'authentification après l'inscription
+  if (result.data?.accessToken && result.data?.refreshToken) {
+    proprietaireService.setTokenCookies(res, result.data.accessToken, result.data.refreshToken);
+  }
   
   res.status(201).json(result);
 };
@@ -28,10 +40,195 @@ const loginProprietaire = async (
 ) => {
   const { telephone, mot_de_passe } = req.body;
   
-  const result = await proprietaireService.login(telephone, mot_de_passe);
+  // Récupérer les infos de la requête pour le tracking
+  const userAgent = req.headers["user-agent"] || undefined;
+  const ipAddress = req.ip || req.socket.remoteAddress || undefined;
+  
+  const result = await proprietaireService.login(telephone, mot_de_passe, userAgent, ipAddress);
+  
+  // Définir les cookies
+  if (result.data?.accessToken && result.data?.refreshToken) {
+    proprietaireService.setTokenCookies(res, result.data.accessToken, result.data.refreshToken);
+  }
+  
+  res.status(200).json({
+    success: true,
+    data: { owner: result.data?.owner },
+    message: result.message
+  });
+};
+
+/**
+ * Déconnecter un propriétaire
+ */
+const logoutProprietaire = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const proprietaireId = req.proprietaire?.id;
+  
+  if (!proprietaireId) {
+    return res.status(401).json({
+      success: false,
+      message: "Non autorisé"
+    });
+  }
+  
+  const result = await proprietaireService.logout(proprietaireId, res);
   
   res.status(200).json(result);
 };
 
+/**
+ * Rafraîchir les tokens
+ */
+const refreshTokens = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const refreshToken = req.cookies?.refresh_token;
+  
+  if (!refreshToken) {
+    return res.status(401).json({
+      success: false,
+      message: "Token de rafraîchissement manquant"
+    });
+  }
+  
+  const userAgent = req.headers["user-agent"] || undefined;
+  const ipAddress = req.ip || req.socket.remoteAddress || undefined;
+  
+  const result = await proprietaireService.refreshTokens(refreshToken, userAgent, ipAddress);
+  
+  // Définir les nouveaux cookies
+  if (result.data?.accessToken && result.data?.refreshToken) {
+    proprietaireService.setTokenCookies(res, result.data.accessToken, result.data.refreshToken);
+  }
+  
+  res.status(200).json({
+    success: true,
+    message: result.message
+  });
+};
+
+/**
+ * Obtenir le profil du propriétaire connecté
+ */
+const getProfile = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const proprietaireId = req.proprietaire?.id;
+  
+  if (!proprietaireId) {
+    return res.status(401).json({
+      success: false,
+      message: "Non autorisé"
+    });
+  }
+  
+  const result = await proprietaireService.getProfile(proprietaireId);
+  
+  res.status(200).json(result);
+};
+
+/**
+ * Demander la réinitialisation du mot de passe par email
+ */
+const forgotPasswordByEmail = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { email } = req.body;
+  
+  const result: any = await proprietaireService.forgotPasswordByEmail(email);
+
+  // En dev, retourner le code si disponible
+  if (result?.devCode) {
+    res.status(200).json({
+      success: true,
+      devCode: result.devCode,
+      message: result.message,
+    });
+    return;
+  }
+
+  res.status(200).json(result);
+};
+
+/**
+ * Demander la réinitialisation du mot de passe par SMS
+ */
+const forgotPasswordBySms = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { telephone } = req.body;
+  
+  const result: any = await proprietaireService.forgotPasswordBySms(telephone);
+
+  // En dev, retourner le code si disponible
+  if (result?.devCode) {
+    res.status(200).json({
+      success: true,
+      devCode: result.devCode,
+      message: result.message,
+    });
+    return;
+  }
+
+  res.status(200).json(result);
+};
+
+/**
+ * Réinitialiser le mot de passe avec code email
+ */
+const resetPasswordByEmail = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { code, mot_de_passe } = req.body;
+  
+  const result = await proprietaireService.resetPasswordByEmail(code, mot_de_passe);
+  
+  res.status(200).json(result);
+};
+
+/**
+ * Réinitialiser le mot de passe avec code SMS
+ */
+const resetPasswordBySms = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { code, mot_de_passe } = req.body;
+  
+  const result = await proprietaireService.resetPasswordBySms(code, mot_de_passe);
+  
+  res.status(200).json(result);
+};
+
+// Export des handlers avec controllerWrapper
 export const registerProprietaireHandler = controllerWrapper(registerProprietaire);
 export const loginProprietaireHandler = controllerWrapper(loginProprietaire);
+export const logoutProprietaireHandler = controllerWrapper(logoutProprietaire);
+export const refreshTokensHandler = controllerWrapper(refreshTokens);
+export const getProfileHandler = controllerWrapper(getProfile);
+export const forgotPasswordByEmailHandler = controllerWrapper(forgotPasswordByEmail);
+export const forgotPasswordBySmsHandler = controllerWrapper(forgotPasswordBySms);
+export const resetPasswordByEmailHandler = controllerWrapper(resetPasswordByEmail);
+export const resetPasswordBySmsHandler = controllerWrapper(resetPasswordBySms);
+
+// Export des middlewares de validation
+export const validateInscription = validate(proprietaireInscriptionSchema);
+export const validateConnexion = validate(proprietaireConnexionSchema);
+export const validateForgotPasswordEmail = validate(forgotPasswordEmailSchema);
+export const validateForgotPasswordSms = validate(forgotPasswordSmsSchema);
+export const validateResetPassword = validate(resetPasswordSchema);

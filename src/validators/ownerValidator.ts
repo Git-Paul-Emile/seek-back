@@ -10,6 +10,11 @@ export const proprietaireInscriptionSchema = z.object({
   telephone: z
     .string()
     .regex(/^7[0-9]{8}$/, "Veuillez entrer un numéro de téléphone sénégalais valide (9 chiffres commençant par 7)"),
+  email: z
+    .string()
+    .email("Veuillez entrer un email valide")
+    .optional()
+    .or(z.literal("")),
   adresse: z
     .string()
     .min(5, "L'adresse doit contenir au moins 5 caractères")
@@ -39,3 +44,43 @@ export const proprietaireConnexionSchema = z.object({
 });
 
 export type ProprietaireConnexionInput = z.infer<typeof proprietaireConnexionSchema>;
+
+// Schéma de demande de mot de passe oublié (email)
+export const forgotPasswordEmailSchema = z.object({
+  email: z.string().email("Email invalide"),
+});
+
+export type ForgotPasswordEmailInput = z.infer<typeof forgotPasswordEmailSchema>;
+
+// Schéma de demande de mot de passe oublié (SMS)
+export const forgotPasswordSmsSchema = z.object({
+  telephone: z.string().regex(/^7[0-9]{8}$/, "Numéro de téléphone sénégalais requis"),
+});
+
+export type ForgotPasswordSmsInput = z.infer<typeof forgotPasswordSmsSchema>;
+
+// Schéma de reset de mot de passe avec code OTP
+export const resetPasswordSchema = z.object({
+  code: z.string().length(6, "Le code doit contenir 6 chiffres"),
+  mot_de_passe: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
+    .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
+    .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
+});
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+
+// Schéma de changement de mot de passe (authentifié)
+export const changePasswordSchema = z.object({
+  mot_de_passe_actuel: z.string().min(1, "Mot de passe actuel requis"),
+  nouveau_mot_de_passe: z
+    .string()
+    .min(8, "Le nouveau mot de passe doit contenir au moins 8 caractères")
+    .regex(/[A-Z]/, "Le nouveau mot de passe doit contenir au moins une majuscule")
+    .regex(/[a-z]/, "Le nouveau mot de passe doit contenir au moins une minuscule")
+    .regex(/[0-9]/, "Le nouveau mot de passe doit contenir au moins un chiffre"),
+});
+
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
