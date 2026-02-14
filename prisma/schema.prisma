@@ -80,3 +80,29 @@ enum ResetType {
   EMAIL
   SMS
 }
+
+model Pays {
+  id          String   @id @default(uuid())
+  nom         String   @unique
+  code        String?  @unique // Code ISO du pays (ex: SN pour Sénégal)
+  date_creation DateTime @default(now())
+  date_modification DateTime @updatedAt
+  
+  villes      Ville[]
+  
+  @@map("pays")
+}
+
+model Ville {
+  id          String   @id @default(uuid())
+  nom         String
+  paysId      String
+  date_creation DateTime @default(now())
+  date_modification DateTime @updatedAt
+  
+  pays        Pays     @relation(fields: [paysId], references: [id], onDelete: Cascade)
+  
+  @@unique([nom, paysId]) // Une ville est unique dans un pays
+  @@index([paysId])
+  @@map("villes")
+}
