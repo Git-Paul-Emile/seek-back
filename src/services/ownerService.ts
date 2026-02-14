@@ -177,6 +177,69 @@ export class ProprietaireService {
   }
 
   /**
+   * Mettre à jour le profil du propriétaire connecté
+   */
+  async updateProfile(proprietaireId: string, data: {
+    nom_complet?: string;
+    email?: string;
+    adresse?: string;
+    whatsapp?: string;
+    ville?: string;
+  }) {
+    // Vérifier si le propriétaire existe
+    const proprietaire = await proprietaireRepository.findById(proprietaireId);
+    if (!proprietaire) {
+      throw new AppError("Propriétaire non trouvé", StatusCodes.NOT_FOUND);
+    }
+
+    // Si nouvel email, vérifier disponibilité
+    if (data.email && data.email !== proprietaire.email) {
+      const emailExists = await proprietaireRepository.findByEmail(data.email);
+      if (emailExists) {
+        throw new AppError("Cet email est déjà utilisé", StatusCodes.BAD_REQUEST);
+      }
+    }
+
+    // Mettre à jour
+    const updated = await proprietaireRepository.update(proprietaireId, data);
+    
+    const { mot_de_passe: _, ...proprietaireSansMotDePasse } = updated;
+    
+    return {
+      success: true,
+      data: proprietaireSansMotDePasse,
+      message: "Profil mis à jour avec succès"
+    };
+  }
+
+  /**
+   * Changer le mot de passe directement (avec l'ancien mot de passe)
+   */
+  async changePassword(proprietaireId: string, ancienMotDePasse: string, nouveauMotDePasse: string) {
+    // Vérifier si le propriétaire existe
+    const proprietaire = await proprietaireRepository.findById(proprietaireId);
+    if (!proprietaire) {
+      throw new AppError("Propriétaire non trouvé", StatusCodes.NOT_FOUND);
+    }
+
+    // Vérifier l'ancien mot de passe
+    const isPasswordValid = await bcrypt.compare(ancienMotDePasse, proprietaire.mot_de_passe);
+    if (!isPasswordValid) {
+      throw new AppError("Mot de passe actuel incorrect", StatusCodes.UNAUTHORIZED);
+    }
+
+    // Hacher et mettre à jour le mot de passe
+    const hashedPassword = await bcrypt.hash(nouveauMotDePasse, 10);
+    await proprietaireRepository.updatePassword(proprietaireId, hashedPassword);
+
+    return {
+      success: true,
+      message: "Mot de passe modifié avec succès"
+    };
+  }
+
+
+  /**
    * Demander la réinitialisation du mot de passe par email
    */
   async forgotPasswordByEmail(email: string) {

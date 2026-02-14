@@ -71,6 +71,31 @@ export class ProprietaireRepository {
       data: { mot_de_passe: hashedPassword },
     }) as unknown as Promise<Proprietaire>;
   }
+
+    /**
+     * Mettre à jour les informations du propriétaire
+     */
+    async update(id: string, data: {
+      nom_complet?: string;
+      telephone?: string;
+      adresse?: string;
+      email?: string;
+      mot_de_passe?: string;
+    }): Promise<Proprietaire> {
+      const updateData: any = {};
+      if (data.nom_complet) updateData.nom_complet = data.nom_complet;
+      if (data.telephone) updateData.telephone = data.telephone;
+      if (data.adresse) updateData.adresse = data.adresse;
+      if (data.email) updateData.email = data.email;
+      if (data.mot_de_passe) {
+        const hashedPassword = await bcrypt.hash(data.mot_de_passe, 10);
+        updateData.mot_de_passe = hashedPassword;
+      }
+      return prisma.proprietaire.update({
+        where: { id },
+        data: updateData,
+      }) as unknown as Promise<Proprietaire>;
+    }
 }
 
 export const proprietaireRepository = new ProprietaireRepository();

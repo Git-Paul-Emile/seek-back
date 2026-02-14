@@ -5,6 +5,8 @@ import {
   logoutProprietaireHandler,
   refreshTokensHandler,
   getProfileHandler,
+  updateProfileHandler,
+  changePasswordHandler,
   forgotPasswordByEmailHandler,
   forgotPasswordBySmsHandler,
   resetPasswordByEmailHandler,
@@ -73,6 +75,21 @@ router.post(
   validateForgotPasswordEmail,
   forgotPasswordByEmailHandler
 );
+
+// Mise à jour du profil
+router.put(
+  "/proprietaires/auth/profil",
+  authentifier,
+  updateProfileHandler
+);
+
+// Changement de mot de passe (avec l'ancien mot de passe)
+router.put(
+  "/proprietaires/auth/mot-de-passe",
+  authentifier,
+  changePasswordHandler
+);
+
 
 // Demander reset par SMS
 router.post(

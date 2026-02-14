@@ -81,6 +81,67 @@ const logoutProprietaire = async (
 };
 
 /**
+ * Mettre à jour le profil du propriétaire connecté
+ */
+const updateProfile = async (req: Request, res: Response, _next: NextFunction) => {
+  const proprietaireId = req.proprietaire?.id;
+  
+  if (!proprietaireId) {
+    return res.status(401).json({
+      success: false,
+      message: "Non autorisé"
+    });
+  }
+  
+  const { nom_complet, email, adresse, whatsapp, ville } = req.body;
+  
+  const result = await proprietaireService.updateProfile(proprietaireId, {
+    nom_complet,
+    email,
+    adresse,
+    whatsapp,
+    ville,
+  });
+  
+  res.status(200).json(result);
+};
+
+export const updateProfileHandler = controllerWrapper(updateProfile);
+
+/**
+ * Changer le mot de passe directement
+ */
+const changePassword = async (req: Request, res: Response, _next: NextFunction) => {
+  const proprietaireId = req.proprietaire?.id;
+  
+  if (!proprietaireId) {
+    return res.status(401).json({
+      success: false,
+      message: "Non autorisé"
+    });
+  }
+  
+  const { ancien_mot_de_passe, nouveau_mot_de_passe } = req.body;
+  
+  if (!ancien_mot_de_passe || !nouveau_mot_de_passe) {
+    return res.status(400).json({
+      success: false,
+      message: "L'ancien et le nouveau mot de passe sont requis"
+    });
+  }
+  
+  const result = await proprietaireService.changePassword(
+    proprietaireId, 
+    ancien_mot_de_passe, 
+    nouveau_mot_de_passe
+  );
+  
+  res.status(200).json(result);
+};
+
+export const changePasswordHandler = controllerWrapper(changePassword);
+
+/**
  * Rafraîchir les tokens
  */
 const refreshTokens = async (
