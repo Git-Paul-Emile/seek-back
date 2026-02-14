@@ -11,6 +11,7 @@ import {
   forgotPasswordBySmsHandler,
   resetPasswordByEmailHandler,
   resetPasswordBySmsHandler,
+  deleteAccountHandler,
   validateInscription,
   validateConnexion,
   validateForgotPasswordEmail,
@@ -113,6 +114,13 @@ router.post(
   limiteurAuth,
   validateResetPassword,
   resetPasswordBySmsHandler
+);
+
+// Supprimer son compte
+router.delete(
+  "/proprietaires/auth/compte",
+  authentifier,
+  deleteAccountHandler
 );
 
 export default router;

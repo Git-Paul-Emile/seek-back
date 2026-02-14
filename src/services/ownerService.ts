@@ -440,6 +440,31 @@ export class ProprietaireService {
     res.cookie("access_token", accessToken, cookieOptions);
     res.cookie("refresh_token", refreshToken, refreshCookieOptions);
   }
+
+  /**
+   * Supprimer le compte du propriétaire connecté
+   */
+  async deleteAccount(proprietaireId: string, res: any) {
+    // Vérifier que le propriétaire existe
+    const proprietaire = await proprietaireRepository.findById(proprietaireId);
+    if (!proprietaire) {
+      throw new AppError("Propriétaire non trouvé", StatusCodes.NOT_FOUND);
+    }
+
+    // Supprimer le compte de la base de données
+    await proprietaireRepository.delete(proprietaireId);
+
+    // Révoquer tous les tokens existants
+    await tokenService.revokeAllUserTokens(proprietaireId);
+
+    // Effacer les cookies d'authentification
+    clearAuthCookies(res);
+
+    return {
+      success: true,
+      message: "Compte supprimé avec succès"
+    };
+  }
 }
 
 export const proprietaireService = new ProprietaireService();

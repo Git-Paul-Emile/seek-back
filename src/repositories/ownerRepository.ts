@@ -96,6 +96,15 @@ export class ProprietaireRepository {
         data: updateData,
       }) as unknown as Promise<Proprietaire>;
     }
+
+    /**
+     * Supprimer définitivement un propriétaire
+     */
+    async delete(id: string): Promise<void> {
+      await prisma.proprietaire.delete({
+        where: { id },
+      });
+    }
 }
 
 export const proprietaireRepository = new ProprietaireRepository();

@@ -287,6 +287,30 @@ export const forgotPasswordBySmsHandler = controllerWrapper(forgotPasswordBySms)
 export const resetPasswordByEmailHandler = controllerWrapper(resetPasswordByEmail);
 export const resetPasswordBySmsHandler = controllerWrapper(resetPasswordBySms);
 
+/**
+ * Supprimer le compte du propriétaire connecté
+ */
+const deleteAccount = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const proprietaireId = req.proprietaire?.id;
+  
+  if (!proprietaireId) {
+    return res.status(401).json({
+      success: false,
+      message: "Non autorisé"
+    });
+  }
+  
+  const result = await proprietaireService.deleteAccount(proprietaireId, res);
+  
+  res.status(200).json(result);
+};
+
+export const deleteAccountHandler = controllerWrapper(deleteAccount);
+
 // Export des middlewares de validation
 export const validateInscription = validate(proprietaireInscriptionSchema);
 export const validateConnexion = validate(proprietaireConnexionSchema);
