@@ -1,0 +1,19 @@
+import type { Request, Response, NextFunction } from "express";
+export declare const updateProfileHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const changePasswordHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const registerProprietaireHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const loginProprietaireHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const logoutProprietaireHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const refreshTokensHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getProfileHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const forgotPasswordByEmailHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const forgotPasswordBySmsHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const resetPasswordByEmailHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const resetPasswordBySmsHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const deleteAccountHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const validateInscription: (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateConnexion: (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateForgotPasswordEmail: (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateForgotPasswordSms: (req: Request, res: Response, next: NextFunction) => void;
+export declare const validateResetPassword: (req: Request, res: Response, next: NextFunction) => void;
+//# sourceMappingURL=ownerController.d.ts.map

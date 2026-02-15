@@ -71,10 +71,12 @@ app.get('/api/health', (req, res) => {
 // Importation des routes
 import ownerRoutes from "../routes/ownerRoutes.js";
 import villeRoutes from "../routes/villeRoutes.js";
+import bienRoutes from "../routes/bienRoutes.js";
 
 // Utilisation des routes
 app.use('/api', ownerRoutes);
 app.use('/api/localisation', villeRoutes);
+app.use('/api/biens', bienRoutes);
 
 // ============= GESTION DES ERREURS =============
 

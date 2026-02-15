@@ -49,6 +49,7 @@ export const authentifier = async (
     }
 
     // Attacher les infos du propriétaire à la requête
+    // Définition pour compatibilité avec les deux noms
     req.proprietaire = {
       id: proprietaire.id,
       sub: proprietaire.id,
@@ -56,6 +57,9 @@ export const authentifier = async (
       email: proprietaire.email || undefined,
       role: proprietaire.role,
     };
+    
+    // Ajouter aussi user pour compatibilité avec les contrôleurs
+    req.user = req.proprietaire;
 
     next();
   } catch (error) {
@@ -98,6 +102,8 @@ export const authentifierOptionnel = async (
           email: proprietaire.email || undefined,
           role: proprietaire.role,
         };
+        // Ajouter aussi user pour compatibilité avec les contrôleurs
+        req.user = req.proprietaire;
       }
     }
     
