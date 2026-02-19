@@ -75,6 +75,30 @@ model StatutBien {
   @@index([slug])
 }
 
+model Meuble {
+  id        String   @id @default(uuid())
+  nom       String
+  categorie String
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nom, categorie])
+  @@index([categorie])
+}
+
+model Equipement {
+  id        String   @id @default(uuid())
+  nom       String
+  categorie String
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([nom, categorie])
+  @@index([categorie])
+}
+
 // ============================================================
 // AUTHENTIFICATION PROPRIÉTAIRES
 // ============================================================

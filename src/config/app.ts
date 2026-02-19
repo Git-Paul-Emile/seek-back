@@ -12,6 +12,8 @@ import ownerRouter from "../routes/owner.routes.js";
 import typeLogementRouter from "../routes/typeLogement.routes.js";
 import typeTransactionRouter from "../routes/typeTransaction.routes.js";
 import statutBienRouter from "../routes/statutBien.routes.js";
+import meubleRouter from "../routes/meuble.routes.js";
+import equipementRouter from "../routes/equipement.routes.js";
 import statsRouter from "../routes/stats.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -101,6 +103,10 @@ app.use('/api/types-transaction', typeTransactionRouter);
 
 // Statuts de bien
 app.use('/api/statuts-bien', statutBienRouter);
+
+// Meubles & Équipements
+app.use('/api/meubles',     meubleRouter);
+app.use('/api/equipements', equipementRouter);
 
 // Statistiques publiques
 app.use('/api/stats', statsRouter);
