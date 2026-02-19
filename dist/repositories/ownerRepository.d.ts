@@ -30,8 +30,6 @@ export declare class ProprietaireRepository {
      */
     update(id: string, data: {
         nom_complet?: string;
-        telephone?: string;
-        adresse?: string;
         email?: string;
         mot_de_passe?: string;
     }): Promise<Proprietaire>;

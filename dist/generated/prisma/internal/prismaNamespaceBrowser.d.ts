@@ -44,10 +44,7 @@ export declare const ModelName: {
     readonly Proprietaire: "Proprietaire";
     readonly RefreshToken: "RefreshToken";
     readonly PasswordReset: "PasswordReset";
-    readonly Pays: "Pays";
-    readonly Ville: "Ville";
-    readonly Bien: "Bien";
-    readonly EtablissementProche: "EtablissementProche";
+    readonly Settings: "Settings";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -62,14 +59,7 @@ export declare const ProprietaireScalarFieldEnum: {
     readonly nom_complet: "nom_complet";
     readonly telephone: "telephone";
     readonly email: "email";
-    readonly adresse: "adresse";
     readonly mot_de_passe: "mot_de_passe";
-    readonly whatsapp: "whatsapp";
-    readonly ville: "ville";
-    readonly type_proprietaire: "type_proprietaire";
-    readonly raison_sociale: "raison_sociale";
-    readonly profil_complet: "profil_complet";
-    readonly taux_completude_profil: "taux_completude_profil";
     readonly statut: "statut";
     readonly role: "role";
     readonly date_creation: "date_creation";
@@ -97,62 +87,16 @@ export declare const PasswordResetScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum];
-export declare const PaysScalarFieldEnum: {
+export declare const SettingsScalarFieldEnum: {
     readonly id: "id";
-    readonly nom: "nom";
-    readonly code: "code";
-    readonly date_creation: "date_creation";
-    readonly date_modification: "date_modification";
-};
-export type PaysScalarFieldEnum = (typeof PaysScalarFieldEnum)[keyof typeof PaysScalarFieldEnum];
-export declare const VilleScalarFieldEnum: {
-    readonly id: "id";
-    readonly nom: "nom";
-    readonly paysId: "paysId";
-    readonly date_creation: "date_creation";
-    readonly date_modification: "date_modification";
-};
-export type VilleScalarFieldEnum = (typeof VilleScalarFieldEnum)[keyof typeof VilleScalarFieldEnum];
-export declare const BienScalarFieldEnum: {
-    readonly id: "id";
-    readonly titre: "titre";
-    readonly type: "type";
-    readonly prix: "prix";
-    readonly statut: "statut";
-    readonly modeLocation: "modeLocation";
-    readonly description: "description";
-    readonly surface: "surface";
-    readonly chambres: "chambres";
-    readonly sallesDeBain: "sallesDeBain";
-    readonly adresse: "adresse";
-    readonly quartier: "quartier";
-    readonly villeId: "villeId";
-    readonly latitude: "latitude";
-    readonly longitude: "longitude";
-    readonly imageCouverture: "imageCouverture";
-    readonly images: "images";
-    readonly documents: "documents";
-    readonly urlVisiteVirtuelle: "urlVisiteVirtuelle";
-    readonly dateCreation: "dateCreation";
-    readonly dateModification: "dateModification";
     readonly proprietaireId: "proprietaireId";
+    readonly theme: "theme";
+    readonly notifications: "notifications";
+    readonly language: "language";
+    readonly date_creation: "date_creation";
+    readonly date_modification: "date_modification";
 };
-export type BienScalarFieldEnum = (typeof BienScalarFieldEnum)[keyof typeof BienScalarFieldEnum];
-export declare const EtablissementProcheScalarFieldEnum: {
-    readonly id: "id";
-    readonly bienId: "bienId";
-    readonly categorie: "categorie";
-    readonly type: "type";
-    readonly nom: "nom";
-    readonly adresse: "adresse";
-    readonly distanceKm: "distanceKm";
-    readonly dureeMinutes: "dureeMinutes";
-    readonly latitude: "latitude";
-    readonly longitude: "longitude";
-    readonly dateCreation: "dateCreation";
-    readonly dateModification: "dateModification";
-};
-export type EtablissementProcheScalarFieldEnum = (typeof EtablissementProcheScalarFieldEnum)[keyof typeof EtablissementProcheScalarFieldEnum];
+export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

@@ -517,6 +517,13 @@ export type EnumCategorieEtablissementFieldUpdateOperationsInput = {
 export type EnumTypeEtablissementFieldUpdateOperationsInput = {
     set?: $Enums.TypeEtablissement;
 };
+export type FloatFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
 export type EtablissementProcheCreateWithoutBienInput = {
     id?: string;
     categorie: $Enums.CategorieEtablissement;

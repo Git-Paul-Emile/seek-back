@@ -42,10 +42,7 @@ export const ModelName = {
     Proprietaire: 'Proprietaire',
     RefreshToken: 'RefreshToken',
     PasswordReset: 'PasswordReset',
-    Pays: 'Pays',
-    Ville: 'Ville',
-    Bien: 'Bien',
-    EtablissementProche: 'EtablissementProche'
+    Settings: 'Settings'
 };
 /*
  * Enums
@@ -61,14 +58,7 @@ export const ProprietaireScalarFieldEnum = {
     nom_complet: 'nom_complet',
     telephone: 'telephone',
     email: 'email',
-    adresse: 'adresse',
     mot_de_passe: 'mot_de_passe',
-    whatsapp: 'whatsapp',
-    ville: 'ville',
-    type_proprietaire: 'type_proprietaire',
-    raison_sociale: 'raison_sociale',
-    profil_complet: 'profil_complet',
-    taux_completude_profil: 'taux_completude_profil',
     statut: 'statut',
     role: 'role',
     date_creation: 'date_creation',
@@ -93,57 +83,14 @@ export const PasswordResetScalarFieldEnum = {
     usedAt: 'usedAt',
     createdAt: 'createdAt'
 };
-export const PaysScalarFieldEnum = {
+export const SettingsScalarFieldEnum = {
     id: 'id',
-    nom: 'nom',
-    code: 'code',
+    proprietaireId: 'proprietaireId',
+    theme: 'theme',
+    notifications: 'notifications',
+    language: 'language',
     date_creation: 'date_creation',
     date_modification: 'date_modification'
-};
-export const VilleScalarFieldEnum = {
-    id: 'id',
-    nom: 'nom',
-    paysId: 'paysId',
-    date_creation: 'date_creation',
-    date_modification: 'date_modification'
-};
-export const BienScalarFieldEnum = {
-    id: 'id',
-    titre: 'titre',
-    type: 'type',
-    prix: 'prix',
-    statut: 'statut',
-    modeLocation: 'modeLocation',
-    description: 'description',
-    surface: 'surface',
-    chambres: 'chambres',
-    sallesDeBain: 'sallesDeBain',
-    adresse: 'adresse',
-    quartier: 'quartier',
-    villeId: 'villeId',
-    latitude: 'latitude',
-    longitude: 'longitude',
-    imageCouverture: 'imageCouverture',
-    images: 'images',
-    documents: 'documents',
-    urlVisiteVirtuelle: 'urlVisiteVirtuelle',
-    dateCreation: 'dateCreation',
-    dateModification: 'dateModification',
-    proprietaireId: 'proprietaireId'
-};
-export const EtablissementProcheScalarFieldEnum = {
-    id: 'id',
-    bienId: 'bienId',
-    categorie: 'categorie',
-    type: 'type',
-    nom: 'nom',
-    adresse: 'adresse',
-    distanceKm: 'distanceKm',
-    dureeMinutes: 'dureeMinutes',
-    latitude: 'latitude',
-    longitude: 'longitude',
-    dateCreation: 'dateCreation',
-    dateModification: 'dateModification'
 };
 export const SortOrder = {
     asc: 'asc',

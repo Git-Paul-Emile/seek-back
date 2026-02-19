@@ -10,15 +10,8 @@ export declare class ProprietaireService {
                 nom_complet: string;
                 telephone: string;
                 email: string | null;
-                adresse: string | null;
                 id: string;
-                whatsapp: string | null;
-                ville: string | null;
-                type_proprietaire: import("../generated/prisma/enums.js").TypeProprietaire;
-                raison_sociale: string | null;
-                profil_complet: boolean;
-                taux_completude_profil: number;
-                statut: import("../generated/prisma/enums.js").StatutProprietaire;
+                statut: string;
                 role: string;
                 date_creation: Date;
                 date_modification: Date;
@@ -38,15 +31,8 @@ export declare class ProprietaireService {
                 nom_complet: string;
                 telephone: string;
                 email: string | null;
-                adresse: string | null;
                 id: string;
-                whatsapp: string | null;
-                ville: string | null;
-                type_proprietaire: import("../generated/prisma/enums.js").TypeProprietaire;
-                raison_sociale: string | null;
-                profil_complet: boolean;
-                taux_completude_profil: number;
-                statut: import("../generated/prisma/enums.js").StatutProprietaire;
+                statut: string;
                 role: string;
                 date_creation: Date;
                 date_modification: Date;
@@ -83,15 +69,8 @@ export declare class ProprietaireService {
             nom_complet: string;
             telephone: string;
             email: string | null;
-            adresse: string | null;
             id: string;
-            whatsapp: string | null;
-            ville: string | null;
-            type_proprietaire: import("../generated/prisma/enums.js").TypeProprietaire;
-            raison_sociale: string | null;
-            profil_complet: boolean;
-            taux_completude_profil: number;
-            statut: import("../generated/prisma/enums.js").StatutProprietaire;
+            statut: string;
             role: string;
             date_creation: Date;
             date_modification: Date;
@@ -112,15 +91,8 @@ export declare class ProprietaireService {
             nom_complet: string;
             telephone: string;
             email: string | null;
-            adresse: string | null;
             id: string;
-            whatsapp: string | null;
-            ville: string | null;
-            type_proprietaire: import("../generated/prisma/enums.js").TypeProprietaire;
-            raison_sociale: string | null;
-            profil_complet: boolean;
-            taux_completude_profil: number;
-            statut: import("../generated/prisma/enums.js").StatutProprietaire;
+            statut: string;
             role: string;
             date_creation: Date;
             date_modification: Date;
@@ -146,11 +118,6 @@ export declare class ProprietaireService {
      */
     forgotPasswordBySms(telephone: string): Promise<{
         success: boolean;
-        message: string;
-        devCode?: undefined;
-    } | {
-        success: boolean;
-        devCode: string | undefined;
         message: string;
     }>;
     /**

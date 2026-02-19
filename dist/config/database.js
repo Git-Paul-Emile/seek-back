@@ -1,9 +1,9 @@
 import { PrismaClient } from "../../src/generated/prisma/client.js";
-let prisma;
+// Initialisation singleton de PrismaClient
+const prismaClient = new PrismaClient();
 export const connectToDatabase = async () => {
     try {
-        prisma = new PrismaClient();
-        await prisma.$connect();
+        await prismaClient.$connect();
         console.log("✅ Connecté à la base de données principale");
     }
     catch (err) {
@@ -11,5 +11,5 @@ export const connectToDatabase = async () => {
         throw err;
     }
 };
-export { prisma };
+export const prisma = prismaClient;
 //# sourceMappingURL=database.js.map

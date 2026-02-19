@@ -18,23 +18,8 @@ export type RefreshToken = Prisma.RefreshTokenModel;
  */
 export type PasswordReset = Prisma.PasswordResetModel;
 /**
- * Model Pays
+ * Model Settings
  *
  */
-export type Pays = Prisma.PaysModel;
-/**
- * Model Ville
- *
- */
-export type Ville = Prisma.VilleModel;
-/**
- * Model Bien
- *
- */
-export type Bien = Prisma.BienModel;
-/**
- * Model EtablissementProche
- *
- */
-export type EtablissementProche = Prisma.EtablissementProcheModel;
+export type Settings = Prisma.SettingsModel;
 //# sourceMappingURL=browser.d.ts.map

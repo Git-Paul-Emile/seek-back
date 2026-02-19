@@ -1,5 +1,4 @@
 import type * as runtime from "@prisma/client/runtime/library";
-import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model Proprietaire
@@ -8,31 +7,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type ProprietaireModel = runtime.Types.Result.DefaultSelection<Prisma.$ProprietairePayload>;
 export type AggregateProprietaire = {
     _count: ProprietaireCountAggregateOutputType | null;
-    _avg: ProprietaireAvgAggregateOutputType | null;
-    _sum: ProprietaireSumAggregateOutputType | null;
     _min: ProprietaireMinAggregateOutputType | null;
     _max: ProprietaireMaxAggregateOutputType | null;
-};
-export type ProprietaireAvgAggregateOutputType = {
-    taux_completude_profil: number | null;
-};
-export type ProprietaireSumAggregateOutputType = {
-    taux_completude_profil: number | null;
 };
 export type ProprietaireMinAggregateOutputType = {
     id: string | null;
     nom_complet: string | null;
     telephone: string | null;
     email: string | null;
-    adresse: string | null;
     mot_de_passe: string | null;
-    whatsapp: string | null;
-    ville: string | null;
-    type_proprietaire: $Enums.TypeProprietaire | null;
-    raison_sociale: string | null;
-    profil_complet: boolean | null;
-    taux_completude_profil: number | null;
-    statut: $Enums.StatutProprietaire | null;
+    statut: string | null;
     role: string | null;
     date_creation: Date | null;
     date_modification: Date | null;
@@ -42,15 +26,8 @@ export type ProprietaireMaxAggregateOutputType = {
     nom_complet: string | null;
     telephone: string | null;
     email: string | null;
-    adresse: string | null;
     mot_de_passe: string | null;
-    whatsapp: string | null;
-    ville: string | null;
-    type_proprietaire: $Enums.TypeProprietaire | null;
-    raison_sociale: string | null;
-    profil_complet: boolean | null;
-    taux_completude_profil: number | null;
-    statut: $Enums.StatutProprietaire | null;
+    statut: string | null;
     role: string | null;
     date_creation: Date | null;
     date_modification: Date | null;
@@ -60,39 +37,19 @@ export type ProprietaireCountAggregateOutputType = {
     nom_complet: number;
     telephone: number;
     email: number;
-    adresse: number;
     mot_de_passe: number;
-    whatsapp: number;
-    ville: number;
-    type_proprietaire: number;
-    raison_sociale: number;
-    profil_complet: number;
-    taux_completude_profil: number;
     statut: number;
     role: number;
     date_creation: number;
     date_modification: number;
     _all: number;
 };
-export type ProprietaireAvgAggregateInputType = {
-    taux_completude_profil?: true;
-};
-export type ProprietaireSumAggregateInputType = {
-    taux_completude_profil?: true;
-};
 export type ProprietaireMinAggregateInputType = {
     id?: true;
     nom_complet?: true;
     telephone?: true;
     email?: true;
-    adresse?: true;
     mot_de_passe?: true;
-    whatsapp?: true;
-    ville?: true;
-    type_proprietaire?: true;
-    raison_sociale?: true;
-    profil_complet?: true;
-    taux_completude_profil?: true;
     statut?: true;
     role?: true;
     date_creation?: true;
@@ -103,14 +60,7 @@ export type ProprietaireMaxAggregateInputType = {
     nom_complet?: true;
     telephone?: true;
     email?: true;
-    adresse?: true;
     mot_de_passe?: true;
-    whatsapp?: true;
-    ville?: true;
-    type_proprietaire?: true;
-    raison_sociale?: true;
-    profil_complet?: true;
-    taux_completude_profil?: true;
     statut?: true;
     role?: true;
     date_creation?: true;
@@ -121,14 +71,7 @@ export type ProprietaireCountAggregateInputType = {
     nom_complet?: true;
     telephone?: true;
     email?: true;
-    adresse?: true;
     mot_de_passe?: true;
-    whatsapp?: true;
-    ville?: true;
-    type_proprietaire?: true;
-    raison_sociale?: true;
-    profil_complet?: true;
-    taux_completude_profil?: true;
     statut?: true;
     role?: true;
     date_creation?: true;
@@ -173,18 +116,6 @@ export type ProprietaireAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
-     * Select which fields to average
-    **/
-    _avg?: ProprietaireAvgAggregateInputType;
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Select which fields to sum
-    **/
-    _sum?: ProprietaireSumAggregateInputType;
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
      * Select which fields to find the minimum value
     **/
     _min?: ProprietaireMinAggregateInputType;
@@ -206,8 +137,6 @@ export type ProprietaireGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
     take?: number;
     skip?: number;
     _count?: ProprietaireCountAggregateInputType | true;
-    _avg?: ProprietaireAvgAggregateInputType;
-    _sum?: ProprietaireSumAggregateInputType;
     _min?: ProprietaireMinAggregateInputType;
     _max?: ProprietaireMaxAggregateInputType;
 };
@@ -216,21 +145,12 @@ export type ProprietaireGroupByOutputType = {
     nom_complet: string;
     telephone: string;
     email: string | null;
-    adresse: string | null;
     mot_de_passe: string;
-    whatsapp: string | null;
-    ville: string | null;
-    type_proprietaire: $Enums.TypeProprietaire;
-    raison_sociale: string | null;
-    profil_complet: boolean;
-    taux_completude_profil: number;
-    statut: $Enums.StatutProprietaire;
+    statut: string;
     role: string;
     date_creation: Date;
     date_modification: Date;
     _count: ProprietaireCountAggregateOutputType | null;
-    _avg: ProprietaireAvgAggregateOutputType | null;
-    _sum: ProprietaireSumAggregateOutputType | null;
     _min: ProprietaireMinAggregateOutputType | null;
     _max: ProprietaireMaxAggregateOutputType | null;
 };
@@ -245,42 +165,28 @@ export type ProprietaireWhereInput = {
     nom_complet?: Prisma.StringFilter<"Proprietaire"> | string;
     telephone?: Prisma.StringFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    adresse?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
     mot_de_passe?: Prisma.StringFilter<"Proprietaire"> | string;
-    whatsapp?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    ville?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFilter<"Proprietaire"> | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    profil_complet?: Prisma.BoolFilter<"Proprietaire"> | boolean;
-    taux_completude_profil?: Prisma.IntFilter<"Proprietaire"> | number;
-    statut?: Prisma.EnumStatutProprietaireFilter<"Proprietaire"> | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFilter<"Proprietaire"> | string;
     role?: Prisma.StringFilter<"Proprietaire"> | string;
     date_creation?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     date_modification?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     passwordResets?: Prisma.PasswordResetListRelationFilter;
-    biens?: Prisma.BienListRelationFilter;
+    settings?: Prisma.XOR<Prisma.SettingsNullableScalarRelationFilter, Prisma.SettingsWhereInput> | null;
 };
 export type ProprietaireOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     nom_complet?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
-    adresse?: Prisma.SortOrderInput | Prisma.SortOrder;
     mot_de_passe?: Prisma.SortOrder;
-    whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder;
-    ville?: Prisma.SortOrderInput | Prisma.SortOrder;
-    type_proprietaire?: Prisma.SortOrder;
-    raison_sociale?: Prisma.SortOrderInput | Prisma.SortOrder;
-    profil_complet?: Prisma.SortOrder;
-    taux_completude_profil?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     date_creation?: Prisma.SortOrder;
     date_modification?: Prisma.SortOrder;
     refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput;
     passwordResets?: Prisma.PasswordResetOrderByRelationAggregateInput;
-    biens?: Prisma.BienOrderByRelationAggregateInput;
+    settings?: Prisma.SettingsOrderByWithRelationInput;
 };
 export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -290,44 +196,28 @@ export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.ProprietaireWhereInput[];
     NOT?: Prisma.ProprietaireWhereInput | Prisma.ProprietaireWhereInput[];
     nom_complet?: Prisma.StringFilter<"Proprietaire"> | string;
-    adresse?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
     mot_de_passe?: Prisma.StringFilter<"Proprietaire"> | string;
-    whatsapp?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    ville?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFilter<"Proprietaire"> | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    profil_complet?: Prisma.BoolFilter<"Proprietaire"> | boolean;
-    taux_completude_profil?: Prisma.IntFilter<"Proprietaire"> | number;
-    statut?: Prisma.EnumStatutProprietaireFilter<"Proprietaire"> | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFilter<"Proprietaire"> | string;
     role?: Prisma.StringFilter<"Proprietaire"> | string;
     date_creation?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     date_modification?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     passwordResets?: Prisma.PasswordResetListRelationFilter;
-    biens?: Prisma.BienListRelationFilter;
+    settings?: Prisma.XOR<Prisma.SettingsNullableScalarRelationFilter, Prisma.SettingsWhereInput> | null;
 }, "id" | "telephone" | "email">;
 export type ProprietaireOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     nom_complet?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
-    adresse?: Prisma.SortOrderInput | Prisma.SortOrder;
     mot_de_passe?: Prisma.SortOrder;
-    whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder;
-    ville?: Prisma.SortOrderInput | Prisma.SortOrder;
-    type_proprietaire?: Prisma.SortOrder;
-    raison_sociale?: Prisma.SortOrderInput | Prisma.SortOrder;
-    profil_complet?: Prisma.SortOrder;
-    taux_completude_profil?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     date_creation?: Prisma.SortOrder;
     date_modification?: Prisma.SortOrder;
     _count?: Prisma.ProprietaireCountOrderByAggregateInput;
-    _avg?: Prisma.ProprietaireAvgOrderByAggregateInput;
     _max?: Prisma.ProprietaireMaxOrderByAggregateInput;
     _min?: Prisma.ProprietaireMinOrderByAggregateInput;
-    _sum?: Prisma.ProprietaireSumOrderByAggregateInput;
 };
 export type ProprietaireScalarWhereWithAggregatesInput = {
     AND?: Prisma.ProprietaireScalarWhereWithAggregatesInput | Prisma.ProprietaireScalarWhereWithAggregatesInput[];
@@ -337,15 +227,8 @@ export type ProprietaireScalarWhereWithAggregatesInput = {
     nom_complet?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     telephone?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
-    adresse?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
     mot_de_passe?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
-    whatsapp?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
-    ville?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireWithAggregatesFilter<"Proprietaire"> | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
-    profil_complet?: Prisma.BoolWithAggregatesFilter<"Proprietaire"> | boolean;
-    taux_completude_profil?: Prisma.IntWithAggregatesFilter<"Proprietaire"> | number;
-    statut?: Prisma.EnumStatutProprietaireWithAggregatesFilter<"Proprietaire"> | $Enums.StatutProprietaire;
+    statut?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     role?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     date_creation?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
     date_modification?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
@@ -355,99 +238,64 @@ export type ProprietaireCreateInput = {
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
     passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
     passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
     passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateManyInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
@@ -457,15 +305,8 @@ export type ProprietaireUpdateManyMutationInput = {
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -475,15 +316,8 @@ export type ProprietaireUncheckedUpdateManyInput = {
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -493,35 +327,18 @@ export type ProprietaireCountOrderByAggregateInput = {
     nom_complet?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    adresse?: Prisma.SortOrder;
     mot_de_passe?: Prisma.SortOrder;
-    whatsapp?: Prisma.SortOrder;
-    ville?: Prisma.SortOrder;
-    type_proprietaire?: Prisma.SortOrder;
-    raison_sociale?: Prisma.SortOrder;
-    profil_complet?: Prisma.SortOrder;
-    taux_completude_profil?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     date_creation?: Prisma.SortOrder;
     date_modification?: Prisma.SortOrder;
-};
-export type ProprietaireAvgOrderByAggregateInput = {
-    taux_completude_profil?: Prisma.SortOrder;
 };
 export type ProprietaireMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     nom_complet?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    adresse?: Prisma.SortOrder;
     mot_de_passe?: Prisma.SortOrder;
-    whatsapp?: Prisma.SortOrder;
-    ville?: Prisma.SortOrder;
-    type_proprietaire?: Prisma.SortOrder;
-    raison_sociale?: Prisma.SortOrder;
-    profil_complet?: Prisma.SortOrder;
-    taux_completude_profil?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     date_creation?: Prisma.SortOrder;
@@ -532,21 +349,11 @@ export type ProprietaireMinOrderByAggregateInput = {
     nom_complet?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    adresse?: Prisma.SortOrder;
     mot_de_passe?: Prisma.SortOrder;
-    whatsapp?: Prisma.SortOrder;
-    ville?: Prisma.SortOrder;
-    type_proprietaire?: Prisma.SortOrder;
-    raison_sociale?: Prisma.SortOrder;
-    profil_complet?: Prisma.SortOrder;
-    taux_completude_profil?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     date_creation?: Prisma.SortOrder;
     date_modification?: Prisma.SortOrder;
-};
-export type ProprietaireSumOrderByAggregateInput = {
-    taux_completude_profil?: Prisma.SortOrder;
 };
 export type ProprietaireScalarRelationFilter = {
     is?: Prisma.ProprietaireWhereInput;
@@ -561,22 +368,6 @@ export type StringFieldUpdateOperationsInput = {
 };
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
-};
-export type EnumTypeProprietaireFieldUpdateOperationsInput = {
-    set?: $Enums.TypeProprietaire;
-};
-export type BoolFieldUpdateOperationsInput = {
-    set?: boolean;
-};
-export type IntFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
-export type EnumStatutProprietaireFieldUpdateOperationsInput = {
-    set?: $Enums.StatutProprietaire;
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
@@ -607,57 +398,43 @@ export type ProprietaireUpdateOneWithoutPasswordResetsNestedInput = {
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutPasswordResetsInput, Prisma.ProprietaireUpdateWithoutPasswordResetsInput>, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetsInput>;
 };
-export type ProprietaireCreateNestedOneWithoutBiensInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBiensInput, Prisma.ProprietaireUncheckedCreateWithoutBiensInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutBiensInput;
+export type ProprietaireCreateNestedOneWithoutSettingsInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutSettingsInput;
     connect?: Prisma.ProprietaireWhereUniqueInput;
 };
-export type ProprietaireUpdateOneRequiredWithoutBiensNestedInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBiensInput, Prisma.ProprietaireUncheckedCreateWithoutBiensInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutBiensInput;
-    upsert?: Prisma.ProprietaireUpsertWithoutBiensInput;
+export type ProprietaireUpdateOneRequiredWithoutSettingsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutSettingsInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutSettingsInput;
     connect?: Prisma.ProprietaireWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutBiensInput, Prisma.ProprietaireUpdateWithoutBiensInput>, Prisma.ProprietaireUncheckedUpdateWithoutBiensInput>;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutSettingsInput, Prisma.ProprietaireUpdateWithoutSettingsInput>, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
 };
 export type ProprietaireCreateWithoutRefreshTokensInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -677,80 +454,52 @@ export type ProprietaireUpdateWithoutRefreshTokensInput = {
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutPasswordResetsInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutPasswordResetsInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutPasswordResetsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -770,128 +519,86 @@ export type ProprietaireUpdateWithoutPasswordResetsInput = {
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutPasswordResetsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
-export type ProprietaireCreateWithoutBiensInput = {
+export type ProprietaireCreateWithoutSettingsInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
     passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
 };
-export type ProprietaireUncheckedCreateWithoutBiensInput = {
+export type ProprietaireUncheckedCreateWithoutSettingsInput = {
     id?: string;
     nom_complet: string;
     telephone: string;
     email?: string | null;
-    adresse?: string | null;
     mot_de_passe: string;
-    whatsapp?: string | null;
-    ville?: string | null;
-    type_proprietaire?: $Enums.TypeProprietaire;
-    raison_sociale?: string | null;
-    profil_complet?: boolean;
-    taux_completude_profil?: number;
-    statut?: $Enums.StatutProprietaire;
+    statut?: string;
     role?: string;
     date_creation?: Date | string;
     date_modification?: Date | string;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
 };
-export type ProprietaireCreateOrConnectWithoutBiensInput = {
+export type ProprietaireCreateOrConnectWithoutSettingsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutBiensInput, Prisma.ProprietaireUncheckedCreateWithoutBiensInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
 };
-export type ProprietaireUpsertWithoutBiensInput = {
-    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutBiensInput, Prisma.ProprietaireUncheckedUpdateWithoutBiensInput>;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutBiensInput, Prisma.ProprietaireUncheckedCreateWithoutBiensInput>;
+export type ProprietaireUpsertWithoutSettingsInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutSettingsInput, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
     where?: Prisma.ProprietaireWhereInput;
 };
-export type ProprietaireUpdateToOneWithWhereWithoutBiensInput = {
+export type ProprietaireUpdateToOneWithWhereWithoutSettingsInput = {
     where?: Prisma.ProprietaireWhereInput;
-    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutBiensInput, Prisma.ProprietaireUncheckedUpdateWithoutBiensInput>;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutSettingsInput, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
 };
-export type ProprietaireUpdateWithoutBiensInput = {
+export type ProprietaireUpdateWithoutSettingsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
     passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
 };
-export type ProprietaireUncheckedUpdateWithoutBiensInput = {
+export type ProprietaireUncheckedUpdateWithoutSettingsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    adresse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    type_proprietaire?: Prisma.EnumTypeProprietaireFieldUpdateOperationsInput | $Enums.TypeProprietaire;
-    raison_sociale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    profil_complet?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    taux_completude_profil?: Prisma.IntFieldUpdateOperationsInput | number;
-    statut?: Prisma.EnumStatutProprietaireFieldUpdateOperationsInput | $Enums.StatutProprietaire;
+    statut?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.StringFieldUpdateOperationsInput | string;
     date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -904,12 +611,10 @@ export type ProprietaireUncheckedUpdateWithoutBiensInput = {
 export type ProprietaireCountOutputType = {
     refreshTokens: number;
     passwordResets: number;
-    biens: number;
 };
 export type ProprietaireCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | ProprietaireCountOutputTypeCountRefreshTokensArgs;
     passwordResets?: boolean | ProprietaireCountOutputTypeCountPasswordResetsArgs;
-    biens?: boolean | ProprietaireCountOutputTypeCountBiensArgs;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -932,32 +637,19 @@ export type ProprietaireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends ru
 export type ProprietaireCountOutputTypeCountPasswordResetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.PasswordResetWhereInput;
 };
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BienWhereInput;
-};
 export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom_complet?: boolean;
     telephone?: boolean;
     email?: boolean;
-    adresse?: boolean;
     mot_de_passe?: boolean;
-    whatsapp?: boolean;
-    ville?: boolean;
-    type_proprietaire?: boolean;
-    raison_sociale?: boolean;
-    profil_complet?: boolean;
-    taux_completude_profil?: boolean;
     statut?: boolean;
     role?: boolean;
     date_creation?: boolean;
     date_modification?: boolean;
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
     passwordResets?: boolean | Prisma.Proprietaire$passwordResetsArgs<ExtArgs>;
-    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
+    settings?: boolean | Prisma.Proprietaire$settingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -965,14 +657,7 @@ export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     nom_complet?: boolean;
     telephone?: boolean;
     email?: boolean;
-    adresse?: boolean;
     mot_de_passe?: boolean;
-    whatsapp?: boolean;
-    ville?: boolean;
-    type_proprietaire?: boolean;
-    raison_sociale?: boolean;
-    profil_complet?: boolean;
-    taux_completude_profil?: boolean;
     statut?: boolean;
     role?: boolean;
     date_creation?: boolean;
@@ -983,14 +668,7 @@ export type ProprietaireSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     nom_complet?: boolean;
     telephone?: boolean;
     email?: boolean;
-    adresse?: boolean;
     mot_de_passe?: boolean;
-    whatsapp?: boolean;
-    ville?: boolean;
-    type_proprietaire?: boolean;
-    raison_sociale?: boolean;
-    profil_complet?: boolean;
-    taux_completude_profil?: boolean;
     statut?: boolean;
     role?: boolean;
     date_creation?: boolean;
@@ -1001,24 +679,17 @@ export type ProprietaireSelectScalar = {
     nom_complet?: boolean;
     telephone?: boolean;
     email?: boolean;
-    adresse?: boolean;
     mot_de_passe?: boolean;
-    whatsapp?: boolean;
-    ville?: boolean;
-    type_proprietaire?: boolean;
-    raison_sociale?: boolean;
-    profil_complet?: boolean;
-    taux_completude_profil?: boolean;
     statut?: boolean;
     role?: boolean;
     date_creation?: boolean;
     date_modification?: boolean;
 };
-export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom_complet" | "telephone" | "email" | "adresse" | "mot_de_passe" | "whatsapp" | "ville" | "type_proprietaire" | "raison_sociale" | "profil_complet" | "taux_completude_profil" | "statut" | "role" | "date_creation" | "date_modification", ExtArgs["result"]["proprietaire"]>;
+export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom_complet" | "telephone" | "email" | "mot_de_passe" | "statut" | "role" | "date_creation" | "date_modification", ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
     passwordResets?: boolean | Prisma.Proprietaire$passwordResetsArgs<ExtArgs>;
-    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
+    settings?: boolean | Prisma.Proprietaire$settingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProprietaireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -1028,22 +699,15 @@ export type $ProprietairePayload<ExtArgs extends runtime.Types.Extensions.Intern
     objects: {
         refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[];
         passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[];
-        biens: Prisma.$BienPayload<ExtArgs>[];
+        settings: Prisma.$SettingsPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         nom_complet: string;
         telephone: string;
         email: string | null;
-        adresse: string | null;
         mot_de_passe: string;
-        whatsapp: string | null;
-        ville: string | null;
-        type_proprietaire: $Enums.TypeProprietaire;
-        raison_sociale: string | null;
-        profil_complet: boolean;
-        taux_completude_profil: number;
-        statut: $Enums.StatutProprietaire;
+        statut: string;
         role: string;
         date_creation: Date;
         date_modification: Date;
@@ -1378,7 +1042,7 @@ export interface Prisma__ProprietaireClient<T, Null = never, ExtArgs extends run
     readonly [Symbol.toStringTag]: "PrismaPromise";
     refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     passwordResets<T extends Prisma.Proprietaire$passwordResetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    biens<T extends Prisma.Proprietaire$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    settings<T extends Prisma.Proprietaire$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$settingsArgs<ExtArgs>>): Prisma.Prisma__SettingsClient<runtime.Types.Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1408,15 +1072,8 @@ export interface ProprietaireFieldRefs {
     readonly nom_complet: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly telephone: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly email: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly adresse: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly mot_de_passe: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly whatsapp: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly ville: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly type_proprietaire: Prisma.FieldRef<"Proprietaire", 'TypeProprietaire'>;
-    readonly raison_sociale: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly profil_complet: Prisma.FieldRef<"Proprietaire", 'Boolean'>;
-    readonly taux_completude_profil: Prisma.FieldRef<"Proprietaire", 'Int'>;
-    readonly statut: Prisma.FieldRef<"Proprietaire", 'StatutProprietaire'>;
+    readonly statut: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly role: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly date_creation: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
     readonly date_modification: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
@@ -1837,27 +1494,22 @@ export type Proprietaire$passwordResetsArgs<ExtArgs extends runtime.Types.Extens
     distinct?: Prisma.PasswordResetScalarFieldEnum | Prisma.PasswordResetScalarFieldEnum[];
 };
 /**
- * Proprietaire.biens
+ * Proprietaire.settings
  */
-export type Proprietaire$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Bien
+     * Select specific fields to fetch from the Settings
      */
-    select?: Prisma.BienSelect<ExtArgs> | null;
+    select?: Prisma.SettingsSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the Bien
+     * Omit specific fields from the Settings
      */
-    omit?: Prisma.BienOmit<ExtArgs> | null;
+    omit?: Prisma.SettingsOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.BienInclude<ExtArgs> | null;
-    where?: Prisma.BienWhereInput;
-    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
-    cursor?: Prisma.BienWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
+    include?: Prisma.SettingsInclude<ExtArgs> | null;
+    where?: Prisma.SettingsWhereInput;
 };
 /**
  * Proprietaire without action

@@ -1,5 +1,4 @@
 import type * as runtime from "@prisma/client/runtime/library";
-import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model PasswordReset
@@ -14,7 +13,7 @@ export type AggregatePasswordReset = {
 export type PasswordResetMinAggregateOutputType = {
     id: string | null;
     code: string | null;
-    type: $Enums.ResetType | null;
+    type: string | null;
     proprietaireId: string | null;
     expiresAt: Date | null;
     usedAt: Date | null;
@@ -23,7 +22,7 @@ export type PasswordResetMinAggregateOutputType = {
 export type PasswordResetMaxAggregateOutputType = {
     id: string | null;
     code: string | null;
-    type: $Enums.ResetType | null;
+    type: string | null;
     proprietaireId: string | null;
     expiresAt: Date | null;
     usedAt: Date | null;
@@ -132,7 +131,7 @@ export type PasswordResetGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type PasswordResetGroupByOutputType = {
     id: string;
     code: string;
-    type: $Enums.ResetType;
+    type: string;
     proprietaireId: string | null;
     expiresAt: Date;
     usedAt: Date | null;
@@ -150,7 +149,7 @@ export type PasswordResetWhereInput = {
     NOT?: Prisma.PasswordResetWhereInput | Prisma.PasswordResetWhereInput[];
     id?: Prisma.StringFilter<"PasswordReset"> | string;
     code?: Prisma.StringFilter<"PasswordReset"> | string;
-    type?: Prisma.EnumResetTypeFilter<"PasswordReset"> | $Enums.ResetType;
+    type?: Prisma.StringFilter<"PasswordReset"> | string;
     proprietaireId?: Prisma.StringNullableFilter<"PasswordReset"> | string | null;
     expiresAt?: Prisma.DateTimeFilter<"PasswordReset"> | Date | string;
     usedAt?: Prisma.DateTimeNullableFilter<"PasswordReset"> | Date | string | null;
@@ -173,7 +172,7 @@ export type PasswordResetWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.PasswordResetWhereInput[];
     NOT?: Prisma.PasswordResetWhereInput | Prisma.PasswordResetWhereInput[];
     code?: Prisma.StringFilter<"PasswordReset"> | string;
-    type?: Prisma.EnumResetTypeFilter<"PasswordReset"> | $Enums.ResetType;
+    type?: Prisma.StringFilter<"PasswordReset"> | string;
     proprietaireId?: Prisma.StringNullableFilter<"PasswordReset"> | string | null;
     expiresAt?: Prisma.DateTimeFilter<"PasswordReset"> | Date | string;
     usedAt?: Prisma.DateTimeNullableFilter<"PasswordReset"> | Date | string | null;
@@ -198,7 +197,7 @@ export type PasswordResetScalarWhereWithAggregatesInput = {
     NOT?: Prisma.PasswordResetScalarWhereWithAggregatesInput | Prisma.PasswordResetScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"PasswordReset"> | string;
     code?: Prisma.StringWithAggregatesFilter<"PasswordReset"> | string;
-    type?: Prisma.EnumResetTypeWithAggregatesFilter<"PasswordReset"> | $Enums.ResetType;
+    type?: Prisma.StringWithAggregatesFilter<"PasswordReset"> | string;
     proprietaireId?: Prisma.StringNullableWithAggregatesFilter<"PasswordReset"> | string | null;
     expiresAt?: Prisma.DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string;
     usedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PasswordReset"> | Date | string | null;
@@ -207,7 +206,7 @@ export type PasswordResetScalarWhereWithAggregatesInput = {
 export type PasswordResetCreateInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -216,7 +215,7 @@ export type PasswordResetCreateInput = {
 export type PasswordResetUncheckedCreateInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     proprietaireId?: string | null;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
@@ -225,7 +224,7 @@ export type PasswordResetUncheckedCreateInput = {
 export type PasswordResetUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -234,7 +233,7 @@ export type PasswordResetUpdateInput = {
 export type PasswordResetUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -243,7 +242,7 @@ export type PasswordResetUncheckedUpdateInput = {
 export type PasswordResetCreateManyInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     proprietaireId?: string | null;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
@@ -252,7 +251,7 @@ export type PasswordResetCreateManyInput = {
 export type PasswordResetUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -260,7 +259,7 @@ export type PasswordResetUpdateManyMutationInput = {
 export type PasswordResetUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -339,13 +338,10 @@ export type PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput = {
     updateMany?: Prisma.PasswordResetUpdateManyWithWhereWithoutProprietaireInput | Prisma.PasswordResetUpdateManyWithWhereWithoutProprietaireInput[];
     deleteMany?: Prisma.PasswordResetScalarWhereInput | Prisma.PasswordResetScalarWhereInput[];
 };
-export type EnumResetTypeFieldUpdateOperationsInput = {
-    set?: $Enums.ResetType;
-};
 export type PasswordResetCreateWithoutProprietaireInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -353,7 +349,7 @@ export type PasswordResetCreateWithoutProprietaireInput = {
 export type PasswordResetUncheckedCreateWithoutProprietaireInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -385,7 +381,7 @@ export type PasswordResetScalarWhereInput = {
     NOT?: Prisma.PasswordResetScalarWhereInput | Prisma.PasswordResetScalarWhereInput[];
     id?: Prisma.StringFilter<"PasswordReset"> | string;
     code?: Prisma.StringFilter<"PasswordReset"> | string;
-    type?: Prisma.EnumResetTypeFilter<"PasswordReset"> | $Enums.ResetType;
+    type?: Prisma.StringFilter<"PasswordReset"> | string;
     proprietaireId?: Prisma.StringNullableFilter<"PasswordReset"> | string | null;
     expiresAt?: Prisma.DateTimeFilter<"PasswordReset"> | Date | string;
     usedAt?: Prisma.DateTimeNullableFilter<"PasswordReset"> | Date | string | null;
@@ -394,7 +390,7 @@ export type PasswordResetScalarWhereInput = {
 export type PasswordResetCreateManyProprietaireInput = {
     id?: string;
     code: string;
-    type?: $Enums.ResetType;
+    type?: string;
     expiresAt: Date | string;
     usedAt?: Date | string | null;
     createdAt?: Date | string;
@@ -402,7 +398,7 @@ export type PasswordResetCreateManyProprietaireInput = {
 export type PasswordResetUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -410,7 +406,7 @@ export type PasswordResetUpdateWithoutProprietaireInput = {
 export type PasswordResetUncheckedUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -418,7 +414,7 @@ export type PasswordResetUncheckedUpdateWithoutProprietaireInput = {
 export type PasswordResetUncheckedUpdateManyWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     code?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumResetTypeFieldUpdateOperationsInput | $Enums.ResetType;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -480,7 +476,7 @@ export type $PasswordResetPayload<ExtArgs extends runtime.Types.Extensions.Inter
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         code: string;
-        type: $Enums.ResetType;
+        type: string;
         proprietaireId: string | null;
         expiresAt: Date;
         usedAt: Date | null;
@@ -842,7 +838,7 @@ export interface Prisma__PasswordResetClient<T, Null = never, ExtArgs extends ru
 export interface PasswordResetFieldRefs {
     readonly id: Prisma.FieldRef<"PasswordReset", 'String'>;
     readonly code: Prisma.FieldRef<"PasswordReset", 'String'>;
-    readonly type: Prisma.FieldRef<"PasswordReset", 'ResetType'>;
+    readonly type: Prisma.FieldRef<"PasswordReset", 'String'>;
     readonly proprietaireId: Prisma.FieldRef<"PasswordReset", 'String'>;
     readonly expiresAt: Prisma.FieldRef<"PasswordReset", 'DateTime'>;
     readonly usedAt: Prisma.FieldRef<"PasswordReset", 'DateTime'>;

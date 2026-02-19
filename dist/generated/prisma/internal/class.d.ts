@@ -145,47 +145,14 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
-     * `prisma.pays`: Exposes CRUD operations for the **Pays** model.
+     * `prisma.settings`: Exposes CRUD operations for the **Settings** model.
       * Example usage:
       * ```ts
-      * // Fetch zero or more Pays
-      * const pays = await prisma.pays.findMany()
+      * // Fetch zero or more Settings
+      * const settings = await prisma.settings.findMany()
       * ```
       */
-    get pays(): Prisma.PaysDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.ville`: Exposes CRUD operations for the **Ville** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Villes
-      * const villes = await prisma.ville.findMany()
-      * ```
-      */
-    get ville(): Prisma.VilleDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.bien`: Exposes CRUD operations for the **Bien** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Biens
-      * const biens = await prisma.bien.findMany()
-      * ```
-      */
-    get bien(): Prisma.BienDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.etablissementProche`: Exposes CRUD operations for the **EtablissementProche** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more EtablissementProches
-      * const etablissementProches = await prisma.etablissementProche.findMany()
-      * ```
-      */
-    get etablissementProche(): Prisma.EtablissementProcheDelegate<ExtArgs, {
+    get settings(): Prisma.SettingsDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

@@ -44,5 +44,21 @@ export declare const deleteBienHandler: (req: Request, res: Response, next: Next
  * POST /api/biens/:id/refresh-etablissements
  */
 export declare const refreshEtablissementsHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+/**
+ * Upload et optimisation des images d'un bien
+ * POST /api/biens/upload-images
+ * POST /api/biens/:bienId/upload-images (pour lier à un bien existant)
+ */
+export declare const uploadImagesHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+/**
+ * Récupère les statistiques des biens du propriétaire connecté
+ * GET /api/biens/stats
+ */
+export declare const getBienStatsHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+/**
+ * Récupère les biens du propriétaire avec filtres
+ * GET /api/biens?statut=DISPO&archived=false
+ */
+export declare const getBiensWithFiltersHandler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export { TypeBien, StatutBien, ModeLocation, CategorieEtablissement, TypeEtablissement };
 //# sourceMappingURL=bienController.d.ts.map

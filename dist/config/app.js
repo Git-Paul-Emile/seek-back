@@ -7,6 +7,8 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const allowedOrigins = [
     process.env.FRONT_URL || 'http://localhost:8080',
@@ -49,6 +51,14 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+// ============= FICHIERS STATIQUES =============
+// Servir les fichiers uploadés (images, covers)
+// Override Helmet's Cross-Origin-Resource-Policy pour permettre le chargement cross-origin des images
+app.use('/uploads', (_req, res, next) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+}, express.static(path.join(__dirname, '../../uploads')));
 // ============= ROUTES =============
 app.get('/', (req, res) => {
     res.redirect(process.env.FRONT_URL || 'http://localhost:8080');
@@ -58,12 +68,8 @@ app.get('/api/health', (req, res) => {
 });
 // Importation des routes
 import ownerRoutes from "../routes/ownerRoutes.js";
-import villeRoutes from "../routes/villeRoutes.js";
-import bienRoutes from "../routes/bienRoutes.js";
 // Utilisation des routes
 app.use('/api', ownerRoutes);
-app.use('/api/localisation', villeRoutes);
-app.use('/api/biens', bienRoutes);
 // ============= GESTION DES ERREURS =============
 // Middleware pour routes non trouvées
 app.use((req, res) => {

@@ -10,7 +10,7 @@ export declare const refreshCookieOptions: CookieOptions;
 /**
  * Configuration du domaine des cookies
  */
-export declare const getCookieDomain: () => string;
+export declare const getCookieDomain: () => string | undefined;
 /**
  * Effacer les cookies d'authentification
  */

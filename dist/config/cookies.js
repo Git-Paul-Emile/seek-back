@@ -4,7 +4,7 @@ import {} from "express";
  */
 export const cookieOptions = {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     path: "/",
     secure: process.env.NODE_ENV === "production",
     maxAge: 24 * 60 * 60 * 1000, // 24 heures par défaut
@@ -21,7 +21,12 @@ export const refreshCookieOptions = {
  * Configuration du domaine des cookies
  */
 export const getCookieDomain = () => {
-    return process.env.COOKIE_DOMAIN || "localhost";
+    // En production, définir le domaine
+    // En développement, ne pas définir de domaine (laisser le navigateur utiliser l'hôte actuel)
+    if (process.env.NODE_ENV === "production") {
+        return process.env.COOKIE_DOMAIN;
+    }
+    return undefined;
 };
 /**
  * Effacer les cookies d'authentification
@@ -29,16 +34,17 @@ export const getCookieDomain = () => {
 export const clearAuthCookies = (res) => {
     const cookieDomain = getCookieDomain();
     const secure = process.env.NODE_ENV === "production";
+    const sameSite = process.env.NODE_ENV === "production" ? "strict" : "lax";
     res.clearCookie("access_token", {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite,
         path: "/",
         secure,
         domain: cookieDomain,
     });
     res.clearCookie("refresh_token", {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite,
         path: "/api/proprietaires/auth",
         secure,
         domain: cookieDomain,

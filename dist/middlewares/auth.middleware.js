@@ -10,19 +10,20 @@ export const authentifier = async (req, res, next) => {
         // Récupérer le token depuis le cookie
         const accessToken = req.cookies?.access_token;
         if (!accessToken) {
-            throw new AppError("Token d'accès manquant", StatusCodes.UNAUTHORIZED);
+            return next(new AppError("Token d'accès manquant", StatusCodes.UNAUTHORIZED));
         }
         // Vérifier le token
         const payload = verifyAccessToken(accessToken);
         // Récupérer les infos du propriétaire depuis la DB
         const proprietaire = await proprietaireRepository.findById(payload.sub);
         if (!proprietaire) {
-            throw new AppError("Propriétaire non trouvé", StatusCodes.UNAUTHORIZED);
+            return next(new AppError("Propriétaire non trouvé", StatusCodes.UNAUTHORIZED));
         }
         if (proprietaire.statut !== "ACTIF") {
-            throw new AppError("Compte suspendu ou inactif", StatusCodes.FORBIDDEN);
+            return next(new AppError("Compte suspendu ou inactif", StatusCodes.FORBIDDEN));
         }
         // Attacher les infos du propriétaire à la requête
+        // Définition pour compatibilité avec les deux noms
         req.proprietaire = {
             id: proprietaire.id,
             sub: proprietaire.id,
@@ -30,20 +31,24 @@ export const authentifier = async (req, res, next) => {
             email: proprietaire.email || undefined,
             role: proprietaire.role,
         };
+        // Ajouter aussi user pour compatibilité avec les contrôleurs
+        req.user = req.proprietaire;
         next();
     }
     catch (error) {
+        // Gérer les erreurs et les passer au next() au lieu de throw
         if (error instanceof AppError) {
-            throw error;
+            return next(error);
         }
         // Token expiré ou invalide
         if (error.name === "TokenExpiredError") {
-            throw new AppError("Token expiré", StatusCodes.UNAUTHORIZED);
+            return next(new AppError("Token expiré", StatusCodes.UNAUTHORIZED));
         }
         if (error.name === "JsonWebTokenError") {
-            throw new AppError("Token invalide", StatusCodes.UNAUTHORIZED);
+            return next(new AppError("Token invalide", StatusCodes.UNAUTHORIZED));
         }
-        throw new AppError("Erreur d'authentification", StatusCodes.UNAUTHORIZED);
+        console.error('[Auth] Erreur inattendue:', error);
+        return next(new AppError("Erreur d'authentification", StatusCodes.UNAUTHORIZED));
     }
 };
 /**
@@ -63,6 +68,8 @@ export const authentifierOptionnel = async (req, res, next) => {
                     email: proprietaire.email || undefined,
                     role: proprietaire.role,
                 };
+                // Ajouter aussi user pour compatibilité avec les contrôleurs
+                req.user = req.proprietaire;
             }
         }
         next();

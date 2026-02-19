@@ -5,8 +5,6 @@ import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import { tokenService } from "./tokenService.js";
 import { cookieOptions, refreshCookieOptions, clearAuthCookies } from "../config/cookies.js";
-import { sendPasswordResetEmail, sendWelcomeEmail } from "./emailService.js";
-import { sendPasswordResetSMS, checkTwilioConfig } from "./smsService.js";
 import { generateOTP, isOTPExpired } from "../utils/crypto.js";
 import { prisma } from "../config/database.js";
 export class ProprietaireService {
@@ -39,10 +37,6 @@ export class ProprietaireService {
             ...validData,
             mot_de_passe: validData.mot_de_passe,
         });
-        // Envoyer l'email de bienvenue
-        if (validData.email) {
-            await sendWelcomeEmail(validData.email, validData.nom_complet).catch(console.error);
-        }
         // Générer les tokens automatiquement (connexion directe)
         const { accessToken, refreshToken } = await tokenService.createTokenPair(proprietaire.id, proprietaire.telephone, proprietaire.role);
         // Retourner sans le mot de passe
@@ -202,8 +196,6 @@ export class ProprietaireService {
                 expiresAt,
             },
         });
-        // Envoyer l'email
-        await sendPasswordResetEmail(email, code, proprietaire.nom_complet);
         return {
             success: true,
             message: "Si un compte existe avec cet email, un code de vérification a été envoyé"
@@ -234,11 +226,8 @@ export class ProprietaireService {
                 expiresAt,
             },
         });
-        // Envoyer le SMS
-        const result = await sendPasswordResetSMS(telephone, code, proprietaire.nom_complet);
         return {
             success: true,
-            devCode: result.devCode, // En dev, retourner le code
             message: "Si un compte existe avec ce numéro, un code de vérification a été envoyé par SMS"
         };
     }

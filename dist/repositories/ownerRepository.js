@@ -11,12 +11,9 @@ export class ProprietaireRepository {
                 nom_complet: data.nom_complet,
                 telephone: data.telephone,
                 email: data.email || null,
-                adresse: data.adresse,
                 mot_de_passe: hashedPassword,
                 role: "PROPRIETAIRE",
                 statut: "ACTIF",
-                profil_complet: false,
-                taux_completude_profil: 25, // Inscription minimale = 25% complet
             },
         });
     }
@@ -69,10 +66,6 @@ export class ProprietaireRepository {
         const updateData = {};
         if (data.nom_complet)
             updateData.nom_complet = data.nom_complet;
-        if (data.telephone)
-            updateData.telephone = data.telephone;
-        if (data.adresse)
-            updateData.adresse = data.adresse;
         if (data.email)
             updateData.email = data.email;
         if (data.mot_de_passe) {
