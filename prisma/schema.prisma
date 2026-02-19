@@ -52,6 +52,38 @@ model TypeLogement {
 }
 
 // ============================================================
+// AUTHENTIFICATION PROPRIÉTAIRES
+// ============================================================
+
+model Proprietaire {
+  id        String   @id @default(uuid())
+  prenom    String
+  nom       String
+  sexe      String?
+  telephone String   @unique
+  email     String?  @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens ProprietaireRefreshToken[]
+}
+
+model ProprietaireRefreshToken {
+  id             String    @id @default(uuid())
+  proprietaireId String
+  tokenHash      String    @unique
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([proprietaireId])
+  @@index([tokenHash])
+}
+
+// ============================================================
 // AUTHENTIFICATION ADMIN
 // ============================================================
 

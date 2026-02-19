@@ -8,6 +8,7 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 import authRouter from "../routes/auth.routes.js";
+import ownerRouter from "../routes/owner.routes.js";
 import typeLogementRouter from "../routes/typeLogement.routes.js";
 import statsRouter from "../routes/stats.routes.js";
 
@@ -86,6 +87,9 @@ app.get('/api/health', (req, res) => {
 
 // Auth admin
 app.use('/api/auth', authRouter);
+
+// Auth propriétaires
+app.use('/api/owner/auth', ownerRouter);
 
 // Types de logement
 app.use('/api/types-logement', typeLogementRouter);
