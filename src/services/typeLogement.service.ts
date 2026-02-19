@@ -19,6 +19,8 @@ export const getAll = (): Promise<TypeLogement[]> => Repo.findAll();
 
 export const getAllAdmin = (): Promise<TypeLogement[]> => Repo.findAllAdmin();
 
+export const getById = (id: string): Promise<TypeLogement | null> => Repo.findById(id);
+
 // ─── Création ─────────────────────────────────────────────────────────────────
 
 export const create = async (data: {
@@ -63,6 +65,14 @@ export const update = async (
       );
     }
     updateData.slug = newSlug;
+  }
+
+  // Échanger les ordres si l'ordre change et qu'un autre type occupe déjà la cible
+  if (data.ordre !== undefined && data.ordre !== existing.ordre) {
+    const occupant = await Repo.findByOrdre(data.ordre);
+    if (occupant && occupant.id !== id) {
+      await Repo.update(occupant.id, { ordre: existing.ordre });
+    }
   }
 
   return Repo.update(id, updateData);

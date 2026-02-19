@@ -16,6 +16,9 @@ export const findById = (id: string): Promise<TypeLogement | null> =>
 export const findBySlug = (slug: string): Promise<TypeLogement | null> =>
   prisma.typeLogement.findUnique({ where: { slug } });
 
+export const findByOrdre = (ordre: number): Promise<TypeLogement | null> =>
+  prisma.typeLogement.findFirst({ where: { ordre } });
+
 export const create = (data: {
   nom: string;
   slug: string;
