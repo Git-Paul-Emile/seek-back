@@ -1,350 +1,49 @@
 /// <reference types="node" />
 import dotenv from 'dotenv';
 import { PrismaClient } from '../src/generated/prisma/client.js';
+import type { Seeder } from './seeders/seeder.interface.js';
+import { PaysSeeder } from './seeders/pays.seeder.js';
+import { VilleSeeder } from './seeders/ville.seeder.js';
+import { AdminSeeder } from './seeders/admin.seeder.js';
+import { TypeLogementSeeder } from './seeders/type-logement.seeder.js';
 
-// Charger les variables d'environnement
 dotenv.config();
 
-const prisma = new PrismaClient();
-
-// Liste exhaustive des villes du Sénégal
-const villesSenegal = [
-  "Dakar",
-  "Guédiawaye",
-  "Pikine",
-  "Rufisque",
-  "Sébikhotane",
-  "Bargny",
-  "Diamniadio",
-  "Thiès",
-  "Tivaouane",
-  "Mbour",
-  "Fissel",
-  "Sindia",
-  "Somone",
-  "Saly Portudal",
-  "Ngaparou",
-  "Popenguine",
-  "Ndayane",
-  "Joal-Fadiouth",
-  "Nguékhokh",
-  "Méckhé",
-  "Khombole",
-  "Pout",
-  "Mont Rolland",
-  "Sandiara",
-  "Noto Gouye Diama",
-  "Diass",
-  "Sindone",
-  "Kayar",
-  "Mboro",
-  "Lompoul",
-  "Kébémer",
-  "Darou Mousty",
-  "Méouane",
-  "Taïba Ndiouji",
-  "Thilmakha",
-  "Dahra",
-  "Linguère",
-  "Yang-Yang",
-  "Sagata",
-  "Dodji",
-  "Vélingara",
-  "Ranérou",
-  "Tatki",
-  "Louga",
-  "Ndiagne",
-  "Potou",
-  "Gandon",
-  "Mpal",
-  "Richard-Toll",
-  "Dagana",
-  "Ndioum",
-  "Podor",
-  "Wouro Sidy",
-  "Pété",
-  "Gamadji Saré",
-  "Bodé Lao",
-  "Ndiawène",
-  "Doumga Lao",
-  "Dodel",
-  "Walaldé",
-  "Bokidiawé",
-  "Saint-Louis",
-  "Gandon",
-  "Mermoz-Sanglac",
-  "Rao",
-  "Guet Ndar",
-  "Ndar Toute",
-  "Sor",
-  "Pikine Saint-Louis",
-  "Diama",
-  "Ross Béthio",
-  "Mbane",
-  "Ronkh",
-  "Djoudj",
-  "Matam",
-  "Kanel",
-  "Ranérou-Ferlo",
-  "Ogo",
-  "Thilogne",
-  "Nabadji Civol",
-  "Bokidiawé",
-  "Waounde",
-  "Dembancané",
-  "Hamady Hounaré",
-  "Ogo",
-  "Sinthiou Bamambé-Banadji",
-  "Diourbel",
-  "Mbacké",
-  "Touba",
-  "Bambey",
-  "Ndame",
-  "Taïf",
-  "Dalla",
-  "Dianatoul Diallo",
-  "Darou Marnane",
-  "Darou Nahim",
-  "Gouye Mbinda",
-  "Khalé",
-  "Mbaké",
-  "Ndindy",
-  "Ngoye",
-  "Djilasse",
-  "Kael",
-  "Diohine",
-  "Fissel",
-  "Ndiob",
-  "Djilas",
-  "Tattaguine",
-  "Fissel",
-  "Sindia",
-  "Nguéniène",
-  "Sandiara",
-  "Ndiaganiao",
-  "Ndangane",
-  "Djilasse",
-  "Fatick",
-  "Foundiougne",
-  "Gossas",
-  "Diofior",
-  "Sokone",
-  "Passy",
-  "Nioro du Rip",
-  "Keur Ayip",
-  "Keur Samba Gueye",
-  "Toubacouta",
-  "Djilor",
-  "Simal",
-  "Niodor",
-  "Dionewar",
-  "Fimela",
-  "Loul Sessène",
-  "Djirnda",
-  "Bassoul",
-  "Niodior",
-  "Dionewar",
-  "Kaolack",
-  "Guinguinéo",
-  "Nioro du Rip",
-  "Kaffrine",
-  "Malem Niani",
-  "Koungheul",
-  "Kothiary",
-  "Médinatoul Salam 2",
-  "Sagna",
-  "Saraya",
-  "Ida Mouride",
-  "Birane",
-  "Darou Salam Typ",
-  "Maka Yop",
-  "Médinatoul Salam",
-  "Kouthiaba Wolof",
-  "Malem Niani",
-  "Nganda",
-  "Katakel",
-  "Kahi",
-  "Sagna",
-  "Darou Coumba Sall",
-  "Koumbal",
-  "Dahra",
-  "Dara Djolof",
-  "Linguère",
-  "Yang-Yang",
-  "Sagata",
-  "Dodji",
-  "Vélingara",
-  "Ranérou",
-  "Tatki",
-  "Tambacounda",
-  "Goudiry",
-  "Bakel",
-  "Kidira",
-  "Moudou 1",
-  "Diboli",
-  "Selibaby",
-  "Bélé",
-  "Diawara",
-  "Bala",
-  "Aéré Lao",
-  "Bodé Lao",
-  "Diana Malari",
-  "Galoya",
-  "Kothiary",
-  "Sinthiou Fissa",
-  "Diankoudou",
-  "Kédougou",
-  "Saraya",
-  "Salemata",
-  "Bandafassi",
-  "Ibel",
-  "Dakateli",
-  "Médina Baffé",
-  "Ndinghary",
-  "Ethouwar",
-  "Fongolembi",
-  "Kérougouan",
-  "Kharakhéna",
-  "Mamakoudou",
-  "Nayéga",
-  "Saraya",
-  "Dimboli",
-  "Kédougou",
-  "Bandafassi",
-  "Dindefelo",
-  "Ibel",
-  "Tomboronkoto",
-  "Dindéfélo",
-  "Salémata",
-  "Éthiolo",
-  "Dakatéli",
-  "Médina Baffé",
-  "Ziguinchor",
-  "Bignona",
-  "Oussouye",
-  "Boucoutir Diola",
-  "Cap Skirring",
-  "Kabrousse",
-  "Kafountine",
-  "Diembéring",
-  "Oukout",
-  "Mlomp",
-  "Enampore",
-  "Séléki",
-  "Kagnout",
-  "Nyassia",
-  "Médina Djikoryé",
-  "Adéane",
-  "Boutoupa-Camaracounda",
-  "Loudia Ouoloff",
-  "Djibidione",
-  "Kalounayes",
-  "Sindian",
-  "Tendouck",
-  "Tenghory",
-  "Suelle",
-  "Thionck-Essyl",
-  "Tendouck",
-  "Djibidione",
-  "Kolibantang",
-  "Médina",
-  "Djibidione",
-  "Bouro",
-  "Baila",
-  "Djimande",
-  "Kagnout",
-  "Niaguis",
-  "Nyassia",
-  "Samatite",
-  "Senghor",
-  "Simbandi Brassou",
-  "Bagame",
-  "Badiouré",
-  "Boutoupa",
-  "Camaracounda",
-  "Djibidione",
-  "Kabiline",
-  "Kagnout",
-  "Kandialang",
-  "Koungoulan",
-  "Médina Djikoryé",
-  "Oukout",
-  "Suelle",
-  "Tendouck",
-  "Tenghory",
-  "Thionck-Essyl",
-  "Adéane",
-  "Afia",
-  "Boutoupa-Camaracounda",
-  "Djibidione",
-  "Enampore",
-  "Essyl",
-  "Kagnout",
-  "Kalounayes",
-  "Kandialang",
-  "Koungoulan",
-  "Loudia Ouoloff",
-  "Mlomp",
-  "Niaguis",
-  "Nyassia",
-  "Oukout",
-  "Oussouye",
-  "Séléki",
-  "Suelle",
-  "Tendouck",
-  "Tenghory",
-  "Thionck-Essyl"
+/**
+ * Ordre d'exécution — respecter les dépendances entre entités :
+ *  1. Pays           (référencé par Ville)
+ *  2. Ville          (dépend de Pays)
+ *  3. Admin          (indépendant)
+ *  4. TypeLogement   (indépendant)
+ *
+ * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
+ * Aucun fichier existant à modifier (Open/Closed Principle).
+ */
+const SEEDERS: readonly Seeder[] = [
+  new PaysSeeder(),
+  new VilleSeeder(),
+  new AdminSeeder(),
+  new TypeLogementSeeder(),
 ];
 
-async function main() {
-  console.log('🌱 Début du seeding...');
+async function main(): Promise<void> {
+  const prisma = new PrismaClient();
 
-  // Créer le pays Sénégal
-  const senegal = await prisma.pays.upsert({
-    where: { code: 'SN' },
-    update: { nom: 'Sénégal' },
-    create: {
-      nom: 'Sénégal',
-      code: 'SN',
-    },
-  });
+  try {
+    console.log('🌱 Début du seeding...\n');
 
-  console.log(`✅ Pays créé: ${senegal.nom} (${senegal.id})`);
+    for (const seeder of SEEDERS) {
+      console.log(`▶ ${seeder.name}`);
+      await seeder.run(prisma);
+    }
 
-  // Supprimer les villes existantes du Sénégal pour éviter les doublons
-  await prisma.ville.deleteMany({
-    where: { paysId: senegal.id },
-  });
-
-  console.log('🗑️ Villes existantes supprimées');
-
-  // Créer les villes du Sénégal
-  const villesData = [...new Set(villesSenegal)].map((nom) => ({
-    nom,
-    paysId: senegal.id,
-  }));
-
-  const result = await prisma.ville.createMany({
-    data: villesData,
-    skipDuplicates: true,
-  });
-
-  console.log(`✅ ${result.count} villes créées pour le Sénégal`);
-
-  // Afficher quelques statistiques
-  const totalVilles = await prisma.ville.count({
-    where: { paysId: senegal.id },
-  });
-
-  console.log(`📊 Total des villes du Sénégal: ${totalVilles}`);
-  console.log('🎉 Seeding terminé avec succès!');
+    console.log('\n🎉 Seeding terminé avec succès !');
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-main()
-  .catch((e) => {
-    console.error('❌ Erreur lors du seeding:', e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((err) => {
+  console.error('❌ Erreur lors du seeding :', err);
+  process.exit(1);
+});

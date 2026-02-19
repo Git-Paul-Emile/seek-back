@@ -7,6 +7,9 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
+import authRouter from "../routes/auth.routes.js";
+import typeLogementRouter from "../routes/typeLogement.routes.js";
+import statsRouter from "../routes/stats.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,6 +83,15 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'API opérationnelle' });
 });
+
+// Auth admin
+app.use('/api/auth', authRouter);
+
+// Types de logement
+app.use('/api/types-logement', typeLogementRouter);
+
+// Statistiques publiques
+app.use('/api/stats', statsRouter);
 
 // ============= GESTION DES ERREURS =============
 

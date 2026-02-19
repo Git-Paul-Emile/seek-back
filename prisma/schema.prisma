@@ -7,3 +7,74 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// ============================================================
+// MODÈLES GÉOGRAPHIQUES
+// ============================================================
+
+model Pays {
+  id        String   @id @default(uuid())
+  nom       String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  villes Ville[]
+}
+
+model Ville {
+  id        String   @id @default(uuid())
+  nom       String
+  paysId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pays Pays @relation(fields: [paysId], references: [id])
+
+  @@unique([nom, paysId])
+}
+
+// ============================================================
+// BIENS IMMOBILIERS
+// ============================================================
+
+model TypeLogement {
+  id        String   @id @default(uuid())
+  nom       String   @unique
+  slug      String   @unique
+  image     String?
+  actif     Boolean  @default(true)
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+// ============================================================
+// AUTHENTIFICATION ADMIN
+// ============================================================
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  adminId   String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([tokenHash])
+}
