@@ -9,8 +9,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Proprietaires
-   * const proprietaires = await prisma.proprietaire.findMany()
+   * // Fetch zero or more Pays
+   * const pays = await prisma.pays.findMany()
    * ```
    *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -26,8 +26,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Proprietaires
- * const proprietaires = await prisma.proprietaire.findMany()
+ * // Fetch zero or more Pays
+ * const pays = await prisma.pays.findMany()
  * ```
  *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -112,14 +112,135 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         extArgs: ExtArgs;
     }>>;
     /**
- * `prisma.proprietaire`: Exposes CRUD operations for the **Proprietaire** model.
+ * `prisma.pays`: Exposes CRUD operations for the **Pays** model.
   * Example usage:
   * ```ts
-  * // Fetch zero or more Proprietaires
-  * const proprietaires = await prisma.proprietaire.findMany()
+  * // Fetch zero or more Pays
+  * const pays = await prisma.pays.findMany()
   * ```
   */
+    get pays(): Prisma.PaysDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.ville`: Exposes CRUD operations for the **Ville** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Villes
+      * const villes = await prisma.ville.findMany()
+      * ```
+      */
+    get ville(): Prisma.VilleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.typeLogement`: Exposes CRUD operations for the **TypeLogement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more TypeLogements
+      * const typeLogements = await prisma.typeLogement.findMany()
+      * ```
+      */
+    get typeLogement(): Prisma.TypeLogementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.typeTransaction`: Exposes CRUD operations for the **TypeTransaction** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more TypeTransactions
+      * const typeTransactions = await prisma.typeTransaction.findMany()
+      * ```
+      */
+    get typeTransaction(): Prisma.TypeTransactionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.statutBien`: Exposes CRUD operations for the **StatutBien** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more StatutBiens
+      * const statutBiens = await prisma.statutBien.findMany()
+      * ```
+      */
+    get statutBien(): Prisma.StatutBienDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.categorieMeuble`: Exposes CRUD operations for the **CategorieMeuble** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more CategorieMeubles
+      * const categorieMeubles = await prisma.categorieMeuble.findMany()
+      * ```
+      */
+    get categorieMeuble(): Prisma.CategorieMeubleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.categorieEquipement`: Exposes CRUD operations for the **CategorieEquipement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more CategorieEquipements
+      * const categorieEquipements = await prisma.categorieEquipement.findMany()
+      * ```
+      */
+    get categorieEquipement(): Prisma.CategorieEquipementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.meuble`: Exposes CRUD operations for the **Meuble** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Meubles
+      * const meubles = await prisma.meuble.findMany()
+      * ```
+      */
+    get meuble(): Prisma.MeubleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.equipement`: Exposes CRUD operations for the **Equipement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Equipements
+      * const equipements = await prisma.equipement.findMany()
+      * ```
+      */
+    get equipement(): Prisma.EquipementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.proprietaire`: Exposes CRUD operations for the **Proprietaire** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Proprietaires
+      * const proprietaires = await prisma.proprietaire.findMany()
+      * ```
+      */
     get proprietaire(): Prisma.ProprietaireDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.proprietaireRefreshToken`: Exposes CRUD operations for the **ProprietaireRefreshToken** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ProprietaireRefreshTokens
+      * const proprietaireRefreshTokens = await prisma.proprietaireRefreshToken.findMany()
+      * ```
+      */
+    get proprietaireRefreshToken(): Prisma.ProprietaireRefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.admin`: Exposes CRUD operations for the **Admin** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Admins
+      * const admins = await prisma.admin.findMany()
+      * ```
+      */
+    get admin(): Prisma.AdminDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**
@@ -131,28 +252,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.passwordReset`: Exposes CRUD operations for the **PasswordReset** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more PasswordResets
-      * const passwordResets = await prisma.passwordReset.findMany()
-      * ```
-      */
-    get passwordReset(): Prisma.PasswordResetDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.settings`: Exposes CRUD operations for the **Settings** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Settings
-      * const settings = await prisma.settings.findMany()
-      * ```
-      */
-    get settings(): Prisma.SettingsDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

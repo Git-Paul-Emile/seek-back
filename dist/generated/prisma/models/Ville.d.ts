@@ -14,44 +14,44 @@ export type VilleMinAggregateOutputType = {
     id: string | null;
     nom: string | null;
     paysId: string | null;
-    date_creation: Date | null;
-    date_modification: Date | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type VilleMaxAggregateOutputType = {
     id: string | null;
     nom: string | null;
     paysId: string | null;
-    date_creation: Date | null;
-    date_modification: Date | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type VilleCountAggregateOutputType = {
     id: number;
     nom: number;
     paysId: number;
-    date_creation: number;
-    date_modification: number;
+    createdAt: number;
+    updatedAt: number;
     _all: number;
 };
 export type VilleMinAggregateInputType = {
     id?: true;
     nom?: true;
     paysId?: true;
-    date_creation?: true;
-    date_modification?: true;
+    createdAt?: true;
+    updatedAt?: true;
 };
 export type VilleMaxAggregateInputType = {
     id?: true;
     nom?: true;
     paysId?: true;
-    date_creation?: true;
-    date_modification?: true;
+    createdAt?: true;
+    updatedAt?: true;
 };
 export type VilleCountAggregateInputType = {
     id?: true;
     nom?: true;
     paysId?: true;
-    date_creation?: true;
-    date_modification?: true;
+    createdAt?: true;
+    updatedAt?: true;
     _all?: true;
 };
 export type VilleAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -120,8 +120,8 @@ export type VilleGroupByOutputType = {
     id: string;
     nom: string;
     paysId: string;
-    date_creation: Date;
-    date_modification: Date;
+    createdAt: Date;
+    updatedAt: Date;
     _count: VilleCountAggregateOutputType | null;
     _min: VilleMinAggregateOutputType | null;
     _max: VilleMaxAggregateOutputType | null;
@@ -136,19 +136,17 @@ export type VilleWhereInput = {
     id?: Prisma.StringFilter<"Ville"> | string;
     nom?: Prisma.StringFilter<"Ville"> | string;
     paysId?: Prisma.StringFilter<"Ville"> | string;
-    date_creation?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-    date_modification?: Prisma.DateTimeFilter<"Ville"> | Date | string;
+    createdAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
     pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
-    biens?: Prisma.BienListRelationFilter;
 };
 export type VilleOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
     paysId?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
     pays?: Prisma.PaysOrderByWithRelationInput;
-    biens?: Prisma.BienOrderByRelationAggregateInput;
 };
 export type VilleWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -158,17 +156,16 @@ export type VilleWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.VilleWhereInput | Prisma.VilleWhereInput[];
     nom?: Prisma.StringFilter<"Ville"> | string;
     paysId?: Prisma.StringFilter<"Ville"> | string;
-    date_creation?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-    date_modification?: Prisma.DateTimeFilter<"Ville"> | Date | string;
+    createdAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
     pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
-    biens?: Prisma.BienListRelationFilter;
 }, "id" | "nom_paysId">;
 export type VilleOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
     paysId?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
     _count?: Prisma.VilleCountOrderByAggregateInput;
     _max?: Prisma.VilleMaxOrderByAggregateInput;
     _min?: Prisma.VilleMinOrderByAggregateInput;
@@ -180,60 +177,56 @@ export type VilleScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"Ville"> | string;
     nom?: Prisma.StringWithAggregatesFilter<"Ville"> | string;
     paysId?: Prisma.StringWithAggregatesFilter<"Ville"> | string;
-    date_creation?: Prisma.DateTimeWithAggregatesFilter<"Ville"> | Date | string;
-    date_modification?: Prisma.DateTimeWithAggregatesFilter<"Ville"> | Date | string;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Ville"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Ville"> | Date | string;
 };
 export type VilleCreateInput = {
     id?: string;
     nom: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
     pays: Prisma.PaysCreateNestedOneWithoutVillesInput;
-    biens?: Prisma.BienCreateNestedManyWithoutVilleInput;
 };
 export type VilleUncheckedCreateInput = {
     id?: string;
     nom: string;
     paysId: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutVilleInput;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type VilleUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     pays?: Prisma.PaysUpdateOneRequiredWithoutVillesNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutVilleNestedInput;
 };
 export type VilleUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
     paysId?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutVilleNestedInput;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleCreateManyInput = {
     id?: string;
     nom: string;
     paysId: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type VilleUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
     paysId?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleListRelationFilter = {
     every?: Prisma.VilleWhereInput;
@@ -251,26 +244,22 @@ export type VilleCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
     paysId?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type VilleMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
     paysId?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type VilleMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
     paysId?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
-};
-export type VilleNullableScalarRelationFilter = {
-    is?: Prisma.VilleWhereInput | null;
-    isNot?: Prisma.VilleWhereInput | null;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type VilleCreateNestedManyWithoutPaysInput = {
     create?: Prisma.XOR<Prisma.VilleCreateWithoutPaysInput, Prisma.VilleUncheckedCreateWithoutPaysInput> | Prisma.VilleCreateWithoutPaysInput[] | Prisma.VilleUncheckedCreateWithoutPaysInput[];
@@ -310,33 +299,17 @@ export type VilleUncheckedUpdateManyWithoutPaysNestedInput = {
     updateMany?: Prisma.VilleUpdateManyWithWhereWithoutPaysInput | Prisma.VilleUpdateManyWithWhereWithoutPaysInput[];
     deleteMany?: Prisma.VilleScalarWhereInput | Prisma.VilleScalarWhereInput[];
 };
-export type VilleCreateNestedOneWithoutBiensInput = {
-    create?: Prisma.XOR<Prisma.VilleCreateWithoutBiensInput, Prisma.VilleUncheckedCreateWithoutBiensInput>;
-    connectOrCreate?: Prisma.VilleCreateOrConnectWithoutBiensInput;
-    connect?: Prisma.VilleWhereUniqueInput;
-};
-export type VilleUpdateOneWithoutBiensNestedInput = {
-    create?: Prisma.XOR<Prisma.VilleCreateWithoutBiensInput, Prisma.VilleUncheckedCreateWithoutBiensInput>;
-    connectOrCreate?: Prisma.VilleCreateOrConnectWithoutBiensInput;
-    upsert?: Prisma.VilleUpsertWithoutBiensInput;
-    disconnect?: Prisma.VilleWhereInput | boolean;
-    delete?: Prisma.VilleWhereInput | boolean;
-    connect?: Prisma.VilleWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.VilleUpdateToOneWithWhereWithoutBiensInput, Prisma.VilleUpdateWithoutBiensInput>, Prisma.VilleUncheckedUpdateWithoutBiensInput>;
-};
 export type VilleCreateWithoutPaysInput = {
     id?: string;
     nom: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    biens?: Prisma.BienCreateNestedManyWithoutVilleInput;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type VilleUncheckedCreateWithoutPaysInput = {
     id?: string;
     nom: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutVilleInput;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type VilleCreateOrConnectWithoutPaysInput = {
     where: Prisma.VilleWhereUniqueInput;
@@ -366,138 +339,67 @@ export type VilleScalarWhereInput = {
     id?: Prisma.StringFilter<"Ville"> | string;
     nom?: Prisma.StringFilter<"Ville"> | string;
     paysId?: Prisma.StringFilter<"Ville"> | string;
-    date_creation?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-    date_modification?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-};
-export type VilleCreateWithoutBiensInput = {
-    id?: string;
-    nom: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    pays: Prisma.PaysCreateNestedOneWithoutVillesInput;
-};
-export type VilleUncheckedCreateWithoutBiensInput = {
-    id?: string;
-    nom: string;
-    paysId: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-};
-export type VilleCreateOrConnectWithoutBiensInput = {
-    where: Prisma.VilleWhereUniqueInput;
-    create: Prisma.XOR<Prisma.VilleCreateWithoutBiensInput, Prisma.VilleUncheckedCreateWithoutBiensInput>;
-};
-export type VilleUpsertWithoutBiensInput = {
-    update: Prisma.XOR<Prisma.VilleUpdateWithoutBiensInput, Prisma.VilleUncheckedUpdateWithoutBiensInput>;
-    create: Prisma.XOR<Prisma.VilleCreateWithoutBiensInput, Prisma.VilleUncheckedCreateWithoutBiensInput>;
-    where?: Prisma.VilleWhereInput;
-};
-export type VilleUpdateToOneWithWhereWithoutBiensInput = {
-    where?: Prisma.VilleWhereInput;
-    data: Prisma.XOR<Prisma.VilleUpdateWithoutBiensInput, Prisma.VilleUncheckedUpdateWithoutBiensInput>;
-};
-export type VilleUpdateWithoutBiensInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    pays?: Prisma.PaysUpdateOneRequiredWithoutVillesNestedInput;
-};
-export type VilleUncheckedUpdateWithoutBiensInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    paysId?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    createdAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
 };
 export type VilleCreateManyPaysInput = {
     id?: string;
     nom: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type VilleUpdateWithoutPaysInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    biens?: Prisma.BienUpdateManyWithoutVilleNestedInput;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleUncheckedUpdateWithoutPaysInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutVilleNestedInput;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleUncheckedUpdateManyWithoutPaysInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-};
-/**
- * Count Type VilleCountOutputType
- */
-export type VilleCountOutputType = {
-    biens: number;
-};
-export type VilleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    biens?: boolean | VilleCountOutputTypeCountBiensArgs;
-};
-/**
- * VilleCountOutputType without action
- */
-export type VilleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VilleCountOutputType
-     */
-    select?: Prisma.VilleCountOutputTypeSelect<ExtArgs> | null;
-};
-/**
- * VilleCountOutputType without action
- */
-export type VilleCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BienWhereInput;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type VilleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom?: boolean;
     paysId?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
-    biens?: boolean | Prisma.Ville$biensArgs<ExtArgs>;
-    _count?: boolean | Prisma.VilleCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ville"]>;
 export type VilleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom?: boolean;
     paysId?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ville"]>;
 export type VilleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom?: boolean;
     paysId?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ville"]>;
 export type VilleSelectScalar = {
     id?: boolean;
     nom?: boolean;
     paysId?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
 };
-export type VilleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "paysId" | "date_creation" | "date_modification", ExtArgs["result"]["ville"]>;
+export type VilleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "paysId" | "createdAt" | "updatedAt", ExtArgs["result"]["ville"]>;
 export type VilleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
-    biens?: boolean | Prisma.Ville$biensArgs<ExtArgs>;
-    _count?: boolean | Prisma.VilleCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type VilleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
@@ -509,14 +411,13 @@ export type $VillePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     name: "Ville";
     objects: {
         pays: Prisma.$PaysPayload<ExtArgs>;
-        biens: Prisma.$BienPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         nom: string;
         paysId: string;
-        date_creation: Date;
-        date_modification: Date;
+        createdAt: Date;
+        updatedAt: Date;
     }, ExtArgs["result"]["ville"]>;
     composites: {};
 };
@@ -847,7 +748,6 @@ export interface VilleDelegate<ExtArgs extends runtime.Types.Extensions.Internal
 export interface Prisma__VilleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     pays<T extends Prisma.PaysDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaysDefaultArgs<ExtArgs>>): Prisma.Prisma__PaysClient<runtime.Types.Result.GetResult<Prisma.$PaysPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    biens<T extends Prisma.Ville$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ville$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -876,8 +776,8 @@ export interface VilleFieldRefs {
     readonly id: Prisma.FieldRef<"Ville", 'String'>;
     readonly nom: Prisma.FieldRef<"Ville", 'String'>;
     readonly paysId: Prisma.FieldRef<"Ville", 'String'>;
-    readonly date_creation: Prisma.FieldRef<"Ville", 'DateTime'>;
-    readonly date_modification: Prisma.FieldRef<"Ville", 'DateTime'>;
+    readonly createdAt: Prisma.FieldRef<"Ville", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Ville", 'DateTime'>;
 }
 /**
  * Ville findUnique
@@ -1255,29 +1155,6 @@ export type VilleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
      * Limit how many Villes to delete.
      */
     limit?: number;
-};
-/**
- * Ville.biens
- */
-export type Ville$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Bien
-     */
-    select?: Prisma.BienSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Bien
-     */
-    omit?: Prisma.BienOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.BienInclude<ExtArgs> | null;
-    where?: Prisma.BienWhereInput;
-    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
-    cursor?: Prisma.BienWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
 };
 /**
  * Ville without action

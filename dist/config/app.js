@@ -7,6 +7,16 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
+import authRouter from "../routes/auth.routes.js";
+import ownerRouter from "../routes/owner.routes.js";
+import typeLogementRouter from "../routes/typeLogement.routes.js";
+import typeTransactionRouter from "../routes/typeTransaction.routes.js";
+import statutBienRouter from "../routes/statutBien.routes.js";
+import meubleRouter from "../routes/meuble.routes.js";
+import equipementRouter from "../routes/equipement.routes.js";
+import categorieMeubleRouter from "../routes/categorieMeuble.routes.js";
+import categorieEquipementRouter from "../routes/categorieEquipement.routes.js";
+import statsRouter from "../routes/stats.routes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -66,10 +76,24 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'API opérationnelle' });
 });
-// Importation des routes
-import ownerRoutes from "../routes/ownerRoutes.js";
-// Utilisation des routes
-app.use('/api', ownerRoutes);
+// Auth admin
+app.use('/api/auth', authRouter);
+// Auth propriétaires
+app.use('/api/owner/auth', ownerRouter);
+// Types de logement
+app.use('/api/types-logement', typeLogementRouter);
+// Types de transaction
+app.use('/api/types-transaction', typeTransactionRouter);
+// Statuts de bien
+app.use('/api/statuts-bien', statutBienRouter);
+// Meubles & Équipements
+app.use('/api/meubles', meubleRouter);
+app.use('/api/equipements', equipementRouter);
+// Catégories Meublé / Équipement
+app.use('/api/categories-meubles', categorieMeubleRouter);
+app.use('/api/categories-equipements', categorieEquipementRouter);
+// Statistiques publiques
+app.use('/api/stats', statsRouter);
 // ============= GESTION DES ERREURS =============
 // Middleware pour routes non trouvées
 app.use((req, res) => {

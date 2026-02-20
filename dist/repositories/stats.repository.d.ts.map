@@ -1,0 +1,1 @@
+{"version":3,"file":"stats.repository.d.ts","sourceRoot":"","sources":["../../src/repositories/stats.repository.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,SAAS;IACxB,eAAe,EAAE,MAAM,CAAC;IACxB,aAAa,EAAI,MAAM,CAAC;IACxB,eAAe,EAAE,MAAM,CAAC;CACzB;AAED,eAAO,MAAM,YAAY,QAAa,OAAO,CAAC,SAAS,CAUtD,CAAC"}

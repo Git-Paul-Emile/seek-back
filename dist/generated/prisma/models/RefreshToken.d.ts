@@ -12,64 +12,52 @@ export type AggregateRefreshToken = {
 };
 export type RefreshTokenMinAggregateOutputType = {
     id: string | null;
-    token: string | null;
-    proprietaireId: string | null;
+    adminId: string | null;
+    tokenHash: string | null;
     expiresAt: Date | null;
     revokedAt: Date | null;
     createdAt: Date | null;
-    userAgent: string | null;
-    ipAddress: string | null;
 };
 export type RefreshTokenMaxAggregateOutputType = {
     id: string | null;
-    token: string | null;
-    proprietaireId: string | null;
+    adminId: string | null;
+    tokenHash: string | null;
     expiresAt: Date | null;
     revokedAt: Date | null;
     createdAt: Date | null;
-    userAgent: string | null;
-    ipAddress: string | null;
 };
 export type RefreshTokenCountAggregateOutputType = {
     id: number;
-    token: number;
-    proprietaireId: number;
+    adminId: number;
+    tokenHash: number;
     expiresAt: number;
     revokedAt: number;
     createdAt: number;
-    userAgent: number;
-    ipAddress: number;
     _all: number;
 };
 export type RefreshTokenMinAggregateInputType = {
     id?: true;
-    token?: true;
-    proprietaireId?: true;
+    adminId?: true;
+    tokenHash?: true;
     expiresAt?: true;
     revokedAt?: true;
     createdAt?: true;
-    userAgent?: true;
-    ipAddress?: true;
 };
 export type RefreshTokenMaxAggregateInputType = {
     id?: true;
-    token?: true;
-    proprietaireId?: true;
+    adminId?: true;
+    tokenHash?: true;
     expiresAt?: true;
     revokedAt?: true;
     createdAt?: true;
-    userAgent?: true;
-    ipAddress?: true;
 };
 export type RefreshTokenCountAggregateInputType = {
     id?: true;
-    token?: true;
-    proprietaireId?: true;
+    adminId?: true;
+    tokenHash?: true;
     expiresAt?: true;
     revokedAt?: true;
     createdAt?: true;
-    userAgent?: true;
-    ipAddress?: true;
     _all?: true;
 };
 export type RefreshTokenAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -136,13 +124,11 @@ export type RefreshTokenGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 };
 export type RefreshTokenGroupByOutputType = {
     id: string;
-    token: string;
-    proprietaireId: string;
+    adminId: string;
+    tokenHash: string;
     expiresAt: Date;
     revokedAt: Date | null;
     createdAt: Date;
-    userAgent: string | null;
-    ipAddress: string | null;
     _count: RefreshTokenCountAggregateOutputType | null;
     _min: RefreshTokenMinAggregateOutputType | null;
     _max: RefreshTokenMaxAggregateOutputType | null;
@@ -155,49 +141,41 @@ export type RefreshTokenWhereInput = {
     OR?: Prisma.RefreshTokenWhereInput[];
     NOT?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[];
     id?: Prisma.StringFilter<"RefreshToken"> | string;
-    token?: Prisma.StringFilter<"RefreshToken"> | string;
-    proprietaireId?: Prisma.StringFilter<"RefreshToken"> | string;
+    adminId?: Prisma.StringFilter<"RefreshToken"> | string;
+    tokenHash?: Prisma.StringFilter<"RefreshToken"> | string;
     expiresAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
     revokedAt?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
-    userAgent?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
-    ipAddress?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
+    admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>;
 };
 export type RefreshTokenOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
-    token?: Prisma.SortOrder;
-    proprietaireId?: Prisma.SortOrder;
+    adminId?: Prisma.SortOrder;
+    tokenHash?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    userAgent?: Prisma.SortOrderInput | Prisma.SortOrder;
-    ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder;
-    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
+    admin?: Prisma.AdminOrderByWithRelationInput;
 };
 export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
-    token?: string;
+    tokenHash?: string;
     AND?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[];
     OR?: Prisma.RefreshTokenWhereInput[];
     NOT?: Prisma.RefreshTokenWhereInput | Prisma.RefreshTokenWhereInput[];
-    proprietaireId?: Prisma.StringFilter<"RefreshToken"> | string;
+    adminId?: Prisma.StringFilter<"RefreshToken"> | string;
     expiresAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
     revokedAt?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
-    userAgent?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
-    ipAddress?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
-}, "id" | "token">;
+    admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>;
+}, "id" | "tokenHash">;
 export type RefreshTokenOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
-    token?: Prisma.SortOrder;
-    proprietaireId?: Prisma.SortOrder;
+    adminId?: Prisma.SortOrder;
+    tokenHash?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    userAgent?: Prisma.SortOrderInput | Prisma.SortOrder;
-    ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.RefreshTokenCountOrderByAggregateInput;
     _max?: Prisma.RefreshTokenMaxOrderByAggregateInput;
     _min?: Prisma.RefreshTokenMinOrderByAggregateInput;
@@ -207,82 +185,66 @@ export type RefreshTokenScalarWhereWithAggregatesInput = {
     OR?: Prisma.RefreshTokenScalarWhereWithAggregatesInput[];
     NOT?: Prisma.RefreshTokenScalarWhereWithAggregatesInput | Prisma.RefreshTokenScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string;
-    token?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string;
-    proprietaireId?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string;
+    adminId?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string;
+    tokenHash?: Prisma.StringWithAggregatesFilter<"RefreshToken"> | string;
     expiresAt?: Prisma.DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string;
     revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RefreshToken"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string;
-    userAgent?: Prisma.StringNullableWithAggregatesFilter<"RefreshToken"> | string | null;
-    ipAddress?: Prisma.StringNullableWithAggregatesFilter<"RefreshToken"> | string | null;
 };
 export type RefreshTokenCreateInput = {
     id?: string;
-    token: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutRefreshTokensInput;
+    admin: Prisma.AdminCreateNestedOneWithoutRefreshTokensInput;
 };
 export type RefreshTokenUncheckedCreateInput = {
     id?: string;
-    token: string;
-    proprietaireId: string;
+    adminId: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
 };
 export type RefreshTokenUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutRefreshTokensNestedInput;
+    admin?: Prisma.AdminUpdateOneRequiredWithoutRefreshTokensNestedInput;
 };
 export type RefreshTokenUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
-    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    adminId?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type RefreshTokenCreateManyInput = {
     id?: string;
-    token: string;
-    proprietaireId: string;
+    adminId: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
 };
 export type RefreshTokenUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type RefreshTokenUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
-    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    adminId?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type RefreshTokenListRelationFilter = {
     every?: Prisma.RefreshTokenWhereInput;
@@ -294,230 +256,197 @@ export type RefreshTokenOrderByRelationAggregateInput = {
 };
 export type RefreshTokenCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    token?: Prisma.SortOrder;
-    proprietaireId?: Prisma.SortOrder;
+    adminId?: Prisma.SortOrder;
+    tokenHash?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     revokedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    userAgent?: Prisma.SortOrder;
-    ipAddress?: Prisma.SortOrder;
 };
 export type RefreshTokenMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    token?: Prisma.SortOrder;
-    proprietaireId?: Prisma.SortOrder;
+    adminId?: Prisma.SortOrder;
+    tokenHash?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     revokedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    userAgent?: Prisma.SortOrder;
-    ipAddress?: Prisma.SortOrder;
 };
 export type RefreshTokenMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    token?: Prisma.SortOrder;
-    proprietaireId?: Prisma.SortOrder;
+    adminId?: Prisma.SortOrder;
+    tokenHash?: Prisma.SortOrder;
     expiresAt?: Prisma.SortOrder;
     revokedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
-    userAgent?: Prisma.SortOrder;
-    ipAddress?: Prisma.SortOrder;
 };
-export type RefreshTokenCreateNestedManyWithoutProprietaireInput = {
-    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput> | Prisma.RefreshTokenCreateWithoutProprietaireInput[] | Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput[];
-    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput | Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput[];
-    createMany?: Prisma.RefreshTokenCreateManyProprietaireInputEnvelope;
+export type RefreshTokenCreateNestedManyWithoutAdminInput = {
+    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput> | Prisma.RefreshTokenCreateWithoutAdminInput[] | Prisma.RefreshTokenUncheckedCreateWithoutAdminInput[];
+    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutAdminInput | Prisma.RefreshTokenCreateOrConnectWithoutAdminInput[];
+    createMany?: Prisma.RefreshTokenCreateManyAdminInputEnvelope;
     connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
 };
-export type RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput = {
-    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput> | Prisma.RefreshTokenCreateWithoutProprietaireInput[] | Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput[];
-    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput | Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput[];
-    createMany?: Prisma.RefreshTokenCreateManyProprietaireInputEnvelope;
+export type RefreshTokenUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput> | Prisma.RefreshTokenCreateWithoutAdminInput[] | Prisma.RefreshTokenUncheckedCreateWithoutAdminInput[];
+    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutAdminInput | Prisma.RefreshTokenCreateOrConnectWithoutAdminInput[];
+    createMany?: Prisma.RefreshTokenCreateManyAdminInputEnvelope;
     connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
 };
-export type RefreshTokenUpdateManyWithoutProprietaireNestedInput = {
-    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput> | Prisma.RefreshTokenCreateWithoutProprietaireInput[] | Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput[];
-    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput | Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput[];
-    upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutProprietaireInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutProprietaireInput[];
-    createMany?: Prisma.RefreshTokenCreateManyProprietaireInputEnvelope;
+export type RefreshTokenUpdateManyWithoutAdminNestedInput = {
+    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput> | Prisma.RefreshTokenCreateWithoutAdminInput[] | Prisma.RefreshTokenUncheckedCreateWithoutAdminInput[];
+    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutAdminInput | Prisma.RefreshTokenCreateOrConnectWithoutAdminInput[];
+    upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutAdminInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutAdminInput[];
+    createMany?: Prisma.RefreshTokenCreateManyAdminInputEnvelope;
     set?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     disconnect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     delete?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
-    update?: Prisma.RefreshTokenUpdateWithWhereUniqueWithoutProprietaireInput | Prisma.RefreshTokenUpdateWithWhereUniqueWithoutProprietaireInput[];
-    updateMany?: Prisma.RefreshTokenUpdateManyWithWhereWithoutProprietaireInput | Prisma.RefreshTokenUpdateManyWithWhereWithoutProprietaireInput[];
+    update?: Prisma.RefreshTokenUpdateWithWhereUniqueWithoutAdminInput | Prisma.RefreshTokenUpdateWithWhereUniqueWithoutAdminInput[];
+    updateMany?: Prisma.RefreshTokenUpdateManyWithWhereWithoutAdminInput | Prisma.RefreshTokenUpdateManyWithWhereWithoutAdminInput[];
     deleteMany?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[];
 };
-export type RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput = {
-    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput> | Prisma.RefreshTokenCreateWithoutProprietaireInput[] | Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput[];
-    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput | Prisma.RefreshTokenCreateOrConnectWithoutProprietaireInput[];
-    upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutProprietaireInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutProprietaireInput[];
-    createMany?: Prisma.RefreshTokenCreateManyProprietaireInputEnvelope;
+export type RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput> | Prisma.RefreshTokenCreateWithoutAdminInput[] | Prisma.RefreshTokenUncheckedCreateWithoutAdminInput[];
+    connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutAdminInput | Prisma.RefreshTokenCreateOrConnectWithoutAdminInput[];
+    upsert?: Prisma.RefreshTokenUpsertWithWhereUniqueWithoutAdminInput | Prisma.RefreshTokenUpsertWithWhereUniqueWithoutAdminInput[];
+    createMany?: Prisma.RefreshTokenCreateManyAdminInputEnvelope;
     set?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     disconnect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     delete?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
     connect?: Prisma.RefreshTokenWhereUniqueInput | Prisma.RefreshTokenWhereUniqueInput[];
-    update?: Prisma.RefreshTokenUpdateWithWhereUniqueWithoutProprietaireInput | Prisma.RefreshTokenUpdateWithWhereUniqueWithoutProprietaireInput[];
-    updateMany?: Prisma.RefreshTokenUpdateManyWithWhereWithoutProprietaireInput | Prisma.RefreshTokenUpdateManyWithWhereWithoutProprietaireInput[];
+    update?: Prisma.RefreshTokenUpdateWithWhereUniqueWithoutAdminInput | Prisma.RefreshTokenUpdateWithWhereUniqueWithoutAdminInput[];
+    updateMany?: Prisma.RefreshTokenUpdateManyWithWhereWithoutAdminInput | Prisma.RefreshTokenUpdateManyWithWhereWithoutAdminInput[];
     deleteMany?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[];
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
-};
-export type RefreshTokenCreateWithoutProprietaireInput = {
+export type RefreshTokenCreateWithoutAdminInput = {
     id?: string;
-    token: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
 };
-export type RefreshTokenUncheckedCreateWithoutProprietaireInput = {
+export type RefreshTokenUncheckedCreateWithoutAdminInput = {
     id?: string;
-    token: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
 };
-export type RefreshTokenCreateOrConnectWithoutProprietaireInput = {
+export type RefreshTokenCreateOrConnectWithoutAdminInput = {
     where: Prisma.RefreshTokenWhereUniqueInput;
-    create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput>;
+    create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput>;
 };
-export type RefreshTokenCreateManyProprietaireInputEnvelope = {
-    data: Prisma.RefreshTokenCreateManyProprietaireInput | Prisma.RefreshTokenCreateManyProprietaireInput[];
+export type RefreshTokenCreateManyAdminInputEnvelope = {
+    data: Prisma.RefreshTokenCreateManyAdminInput | Prisma.RefreshTokenCreateManyAdminInput[];
     skipDuplicates?: boolean;
 };
-export type RefreshTokenUpsertWithWhereUniqueWithoutProprietaireInput = {
+export type RefreshTokenUpsertWithWhereUniqueWithoutAdminInput = {
     where: Prisma.RefreshTokenWhereUniqueInput;
-    update: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedUpdateWithoutProprietaireInput>;
-    create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedCreateWithoutProprietaireInput>;
+    update: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutAdminInput, Prisma.RefreshTokenUncheckedUpdateWithoutAdminInput>;
+    create: Prisma.XOR<Prisma.RefreshTokenCreateWithoutAdminInput, Prisma.RefreshTokenUncheckedCreateWithoutAdminInput>;
 };
-export type RefreshTokenUpdateWithWhereUniqueWithoutProprietaireInput = {
+export type RefreshTokenUpdateWithWhereUniqueWithoutAdminInput = {
     where: Prisma.RefreshTokenWhereUniqueInput;
-    data: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutProprietaireInput, Prisma.RefreshTokenUncheckedUpdateWithoutProprietaireInput>;
+    data: Prisma.XOR<Prisma.RefreshTokenUpdateWithoutAdminInput, Prisma.RefreshTokenUncheckedUpdateWithoutAdminInput>;
 };
-export type RefreshTokenUpdateManyWithWhereWithoutProprietaireInput = {
+export type RefreshTokenUpdateManyWithWhereWithoutAdminInput = {
     where: Prisma.RefreshTokenScalarWhereInput;
-    data: Prisma.XOR<Prisma.RefreshTokenUpdateManyMutationInput, Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireInput>;
+    data: Prisma.XOR<Prisma.RefreshTokenUpdateManyMutationInput, Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminInput>;
 };
 export type RefreshTokenScalarWhereInput = {
     AND?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[];
     OR?: Prisma.RefreshTokenScalarWhereInput[];
     NOT?: Prisma.RefreshTokenScalarWhereInput | Prisma.RefreshTokenScalarWhereInput[];
     id?: Prisma.StringFilter<"RefreshToken"> | string;
-    token?: Prisma.StringFilter<"RefreshToken"> | string;
-    proprietaireId?: Prisma.StringFilter<"RefreshToken"> | string;
+    adminId?: Prisma.StringFilter<"RefreshToken"> | string;
+    tokenHash?: Prisma.StringFilter<"RefreshToken"> | string;
     expiresAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
     revokedAt?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string;
-    userAgent?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
-    ipAddress?: Prisma.StringNullableFilter<"RefreshToken"> | string | null;
 };
-export type RefreshTokenCreateManyProprietaireInput = {
+export type RefreshTokenCreateManyAdminInput = {
     id?: string;
-    token: string;
+    tokenHash: string;
     expiresAt: Date | string;
     revokedAt?: Date | string | null;
     createdAt?: Date | string;
-    userAgent?: string | null;
-    ipAddress?: string | null;
 };
-export type RefreshTokenUpdateWithoutProprietaireInput = {
+export type RefreshTokenUpdateWithoutAdminInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
-export type RefreshTokenUncheckedUpdateWithoutProprietaireInput = {
+export type RefreshTokenUncheckedUpdateWithoutAdminInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
-export type RefreshTokenUncheckedUpdateManyWithoutProprietaireInput = {
+export type RefreshTokenUncheckedUpdateManyWithoutAdminInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    token?: Prisma.StringFieldUpdateOperationsInput | string;
+    tokenHash?: Prisma.StringFieldUpdateOperationsInput | string;
     expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type RefreshTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    token?: boolean;
-    proprietaireId?: boolean;
+    adminId?: boolean;
+    tokenHash?: boolean;
     expiresAt?: boolean;
     revokedAt?: boolean;
     createdAt?: boolean;
-    userAgent?: boolean;
-    ipAddress?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["refreshToken"]>;
 export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    token?: boolean;
-    proprietaireId?: boolean;
+    adminId?: boolean;
+    tokenHash?: boolean;
     expiresAt?: boolean;
     revokedAt?: boolean;
     createdAt?: boolean;
-    userAgent?: boolean;
-    ipAddress?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["refreshToken"]>;
 export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    token?: boolean;
-    proprietaireId?: boolean;
+    adminId?: boolean;
+    tokenHash?: boolean;
     expiresAt?: boolean;
     revokedAt?: boolean;
     createdAt?: boolean;
-    userAgent?: boolean;
-    ipAddress?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["refreshToken"]>;
 export type RefreshTokenSelectScalar = {
     id?: boolean;
-    token?: boolean;
-    proprietaireId?: boolean;
+    adminId?: boolean;
+    tokenHash?: boolean;
     expiresAt?: boolean;
     revokedAt?: boolean;
     createdAt?: boolean;
-    userAgent?: boolean;
-    ipAddress?: boolean;
 };
-export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "proprietaireId" | "expiresAt" | "revokedAt" | "createdAt" | "userAgent" | "ipAddress", ExtArgs["result"]["refreshToken"]>;
+export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "tokenHash" | "expiresAt" | "revokedAt" | "createdAt", ExtArgs["result"]["refreshToken"]>;
 export type RefreshTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 };
 export type RefreshTokenIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 };
 export type RefreshTokenIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>;
 };
 export type $RefreshTokenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "RefreshToken";
     objects: {
-        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
+        admin: Prisma.$AdminPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        token: string;
-        proprietaireId: string;
+        adminId: string;
+        tokenHash: string;
         expiresAt: Date;
         revokedAt: Date | null;
         createdAt: Date;
-        userAgent: string | null;
-        ipAddress: string | null;
     }, ExtArgs["result"]["refreshToken"]>;
     composites: {};
 };
@@ -847,7 +776,7 @@ export interface RefreshTokenDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    admin<T extends Prisma.AdminDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminDefaultArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -874,13 +803,11 @@ export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends run
  */
 export interface RefreshTokenFieldRefs {
     readonly id: Prisma.FieldRef<"RefreshToken", 'String'>;
-    readonly token: Prisma.FieldRef<"RefreshToken", 'String'>;
-    readonly proprietaireId: Prisma.FieldRef<"RefreshToken", 'String'>;
+    readonly adminId: Prisma.FieldRef<"RefreshToken", 'String'>;
+    readonly tokenHash: Prisma.FieldRef<"RefreshToken", 'String'>;
     readonly expiresAt: Prisma.FieldRef<"RefreshToken", 'DateTime'>;
     readonly revokedAt: Prisma.FieldRef<"RefreshToken", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"RefreshToken", 'DateTime'>;
-    readonly userAgent: Prisma.FieldRef<"RefreshToken", 'String'>;
-    readonly ipAddress: Prisma.FieldRef<"RefreshToken", 'String'>;
 }
 /**
  * RefreshToken findUnique

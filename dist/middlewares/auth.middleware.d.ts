@@ -1,22 +1,19 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AccessTokenPayload } from "../config/jwt.js";
 declare global {
     namespace Express {
         interface Request {
-            proprietaire?: AccessTokenPayload & {
+            admin?: {
                 id: string;
-                email?: string;
-                telephone: string;
+                email: string;
             };
         }
     }
 }
 /**
- * Middleware d'authentification - Extrait le JWT depuis le cookie
+ * Middleware d'authentification admin.
+ * Lit le JWT access token depuis :
+ *  1. Le cookie `accessToken` (HttpOnly — prioritaire)
+ *  2. Le header Authorization: Bearer <token> (fallback pour les clients API)
  */
-export declare const authentifier: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-/**
- * Middleware optionnel - Ne fail pas si pas de token, mais l'ajoute si présent
- */
-export declare const authentifierOptionnel: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const authenticate: (req: Request, res: Response, next: NextFunction) => void;
 //# sourceMappingURL=auth.middleware.d.ts.map

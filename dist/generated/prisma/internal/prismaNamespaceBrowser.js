@@ -39,10 +39,19 @@ export const JsonNull = runtime.objectEnumValues.instances.JsonNull;
  */
 export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
+    Pays: 'Pays',
+    Ville: 'Ville',
+    TypeLogement: 'TypeLogement',
+    TypeTransaction: 'TypeTransaction',
+    StatutBien: 'StatutBien',
+    CategorieMeuble: 'CategorieMeuble',
+    CategorieEquipement: 'CategorieEquipement',
+    Meuble: 'Meuble',
+    Equipement: 'Equipement',
     Proprietaire: 'Proprietaire',
-    RefreshToken: 'RefreshToken',
-    PasswordReset: 'PasswordReset',
-    Settings: 'Settings'
+    ProprietaireRefreshToken: 'ProprietaireRefreshToken',
+    Admin: 'Admin',
+    RefreshToken: 'RefreshToken'
 };
 /*
  * Enums
@@ -53,44 +62,115 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
+export const PaysScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    code: 'code',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const VilleScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    paysId: 'paysId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const TypeLogementScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    slug: 'slug',
+    image: 'image',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const TypeTransactionScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    slug: 'slug',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const StatutBienScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    slug: 'slug',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const CategorieMeubleScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    slug: 'slug',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const CategorieEquipementScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    slug: 'slug',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const MeubleScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    categorieId: 'categorieId',
+    actif: 'actif',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const EquipementScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    categorieId: 'categorieId',
+    actif: 'actif',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 export const ProprietaireScalarFieldEnum = {
     id: 'id',
-    nom_complet: 'nom_complet',
+    prenom: 'prenom',
+    nom: 'nom',
+    sexe: 'sexe',
     telephone: 'telephone',
     email: 'email',
-    mot_de_passe: 'mot_de_passe',
-    statut: 'statut',
-    role: 'role',
-    date_creation: 'date_creation',
-    date_modification: 'date_modification'
+    password: 'password',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ProprietaireRefreshTokenScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    revokedAt: 'revokedAt',
+    createdAt: 'createdAt'
+};
+export const AdminScalarFieldEnum = {
+    id: 'id',
+    email: 'email',
+    password: 'password',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const RefreshTokenScalarFieldEnum = {
     id: 'id',
-    token: 'token',
-    proprietaireId: 'proprietaireId',
+    adminId: 'adminId',
+    tokenHash: 'tokenHash',
     expiresAt: 'expiresAt',
     revokedAt: 'revokedAt',
-    createdAt: 'createdAt',
-    userAgent: 'userAgent',
-    ipAddress: 'ipAddress'
-};
-export const PasswordResetScalarFieldEnum = {
-    id: 'id',
-    code: 'code',
-    type: 'type',
-    proprietaireId: 'proprietaireId',
-    expiresAt: 'expiresAt',
-    usedAt: 'usedAt',
     createdAt: 'createdAt'
-};
-export const SettingsScalarFieldEnum = {
-    id: 'id',
-    proprietaireId: 'proprietaireId',
-    theme: 'theme',
-    notifications: 'notifications',
-    language: 'language',
-    date_creation: 'date_creation',
-    date_modification: 'date_modification'
 };
 export const SortOrder = {
     asc: 'asc',

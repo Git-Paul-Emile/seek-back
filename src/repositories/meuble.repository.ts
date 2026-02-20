@@ -1,29 +1,33 @@
 import { prisma } from "../config/database.js";
-import type { Meuble } from "../generated/prisma/index.js";
 
-export const findAll = (): Promise<Meuble[]> =>
+const include = { categorie: { select: { id: true, nom: true, slug: true } } } as const;
+
+export const findAll = () =>
   prisma.meuble.findMany({
     where: { actif: true },
-    orderBy: [{ categorie: "asc" }, { nom: "asc" }],
+    include,
+    orderBy: [{ categorie: { nom: "asc" } }, { nom: "asc" }],
   });
 
-export const findAllAdmin = (): Promise<Meuble[]> =>
-  prisma.meuble.findMany({ orderBy: [{ categorie: "asc" }, { nom: "asc" }] });
+export const findAllAdmin = () =>
+  prisma.meuble.findMany({
+    include,
+    orderBy: [{ categorie: { nom: "asc" } }, { nom: "asc" }],
+  });
 
-export const findById = (id: string): Promise<Meuble | null> =>
-  prisma.meuble.findUnique({ where: { id } });
+export const findById = (id: string) =>
+  prisma.meuble.findUnique({ where: { id }, include });
 
-export const findByNomAndCategorie = (nom: string, categorie: string): Promise<Meuble | null> =>
-  prisma.meuble.findUnique({ where: { nom_categorie: { nom, categorie } } });
+export const findByNomAndCategorie = (nom: string, categorieId: string) =>
+  prisma.meuble.findUnique({ where: { nom_categorieId: { nom, categorieId } }, include });
 
-export const createMany = (items: { nom: string; categorie: string }[]): Promise<Meuble[]> =>
-  prisma.$transaction(items.map((item) => prisma.meuble.create({ data: item })));
+export const createMany = (items: { nom: string; categorieId: string }[]) =>
+  prisma.$transaction(items.map((item) => prisma.meuble.create({ data: item, include })));
 
 export const update = (
   id: string,
-  data: Partial<{ nom: string; categorie: string; actif: boolean }>
-): Promise<Meuble> =>
-  prisma.meuble.update({ where: { id }, data });
+  data: Partial<{ nom: string; categorieId: string; actif: boolean }>
+) => prisma.meuble.update({ where: { id }, data, include });
 
-export const remove = (id: string): Promise<Meuble> =>
+export const remove = (id: string) =>
   prisma.meuble.delete({ where: { id } });

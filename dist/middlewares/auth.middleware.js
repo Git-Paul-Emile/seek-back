@@ -1,82 +1,33 @@
-import { verifyAccessToken } from "../config/jwt.js";
-import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
-import { proprietaireRepository } from "../repositories/ownerRepository.js";
+import * as AuthService from "../services/auth.service.js";
+import { jsonResponse } from "../utils/responseApi.js";
 /**
- * Middleware d'authentification - Extrait le JWT depuis le cookie
+ * Middleware d'authentification admin.
+ * Lit le JWT access token depuis :
+ *  1. Le cookie `accessToken` (HttpOnly — prioritaire)
+ *  2. Le header Authorization: Bearer <token> (fallback pour les clients API)
  */
-export const authentifier = async (req, res, next) => {
-    try {
-        // Récupérer le token depuis le cookie
-        const accessToken = req.cookies?.access_token;
-        if (!accessToken) {
-            return next(new AppError("Token d'accès manquant", StatusCodes.UNAUTHORIZED));
+export const authenticate = (req, res, next) => {
+    // 1. Extraire le token
+    let token = req.cookies?.accessToken;
+    if (!token) {
+        const authHeader = req.headers.authorization;
+        if (authHeader?.startsWith("Bearer ")) {
+            token = authHeader.slice(7);
         }
-        // Vérifier le token
-        const payload = verifyAccessToken(accessToken);
-        // Récupérer les infos du propriétaire depuis la DB
-        const proprietaire = await proprietaireRepository.findById(payload.sub);
-        if (!proprietaire) {
-            return next(new AppError("Propriétaire non trouvé", StatusCodes.UNAUTHORIZED));
-        }
-        if (proprietaire.statut !== "ACTIF") {
-            return next(new AppError("Compte suspendu ou inactif", StatusCodes.FORBIDDEN));
-        }
-        // Attacher les infos du propriétaire à la requête
-        // Définition pour compatibilité avec les deux noms
-        req.proprietaire = {
-            id: proprietaire.id,
-            sub: proprietaire.id,
-            telephone: proprietaire.telephone,
-            email: proprietaire.email || undefined,
-            role: proprietaire.role,
-        };
-        // Ajouter aussi user pour compatibilité avec les contrôleurs
-        req.user = req.proprietaire;
-        next();
     }
-    catch (error) {
-        // Gérer les erreurs et les passer au next() au lieu de throw
-        if (error instanceof AppError) {
-            return next(error);
-        }
-        // Token expiré ou invalide
-        if (error.name === "TokenExpiredError") {
-            return next(new AppError("Token expiré", StatusCodes.UNAUTHORIZED));
-        }
-        if (error.name === "JsonWebTokenError") {
-            return next(new AppError("Token invalide", StatusCodes.UNAUTHORIZED));
-        }
-        console.error('[Auth] Erreur inattendue:', error);
-        return next(new AppError("Erreur d'authentification", StatusCodes.UNAUTHORIZED));
+    if (!token) {
+        res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "unauthorized", message: "Authentification requise" }));
+        return;
     }
-};
-/**
- * Middleware optionnel - Ne fail pas si pas de token, mais l'ajoute si présent
- */
-export const authentifierOptionnel = async (req, res, next) => {
+    // 2. Vérifier la signature et l'expiration
     try {
-        const accessToken = req.cookies?.access_token;
-        if (accessToken) {
-            const payload = verifyAccessToken(accessToken);
-            const proprietaire = await proprietaireRepository.findById(payload.sub);
-            if (proprietaire && proprietaire.statut === "ACTIF") {
-                req.proprietaire = {
-                    id: proprietaire.id,
-                    sub: proprietaire.id,
-                    telephone: proprietaire.telephone,
-                    email: proprietaire.email || undefined,
-                    role: proprietaire.role,
-                };
-                // Ajouter aussi user pour compatibilité avec les contrôleurs
-                req.user = req.proprietaire;
-            }
-        }
+        const payload = AuthService.verifyAccessToken(token);
+        req.admin = { id: payload.sub, email: payload.email };
         next();
     }
     catch {
-        // Ignorer les erreurs - c'est optionnel
-        next();
+        res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "unauthorized", message: "Token invalide ou expiré" }));
     }
 };
 //# sourceMappingURL=auth.middleware.js.map

@@ -75,28 +75,64 @@ model StatutBien {
   @@index([slug])
 }
 
-model Meuble {
+// ============================================================
+// CATÉGORIES MEUBLÉ / ÉQUIPEMENT
+// ============================================================
+
+model CategorieMeuble {
   id        String   @id @default(uuid())
-  nom       String
-  categorie String
+  nom       String   @unique
+  slug      String   @unique
   actif     Boolean  @default(true)
+  ordre     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([nom, categorie])
-  @@index([categorie])
+  meubles Meuble[]
+
+  @@index([slug])
+}
+
+model CategorieEquipement {
+  id        String   @id @default(uuid())
+  nom       String   @unique
+  slug      String   @unique
+  actif     Boolean  @default(true)
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  equipements Equipement[]
+
+  @@index([slug])
+}
+
+model Meuble {
+  id          String   @id @default(uuid())
+  nom         String
+  categorieId String
+  actif       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categorie CategorieMeuble @relation(fields: [categorieId], references: [id])
+
+  @@unique([nom, categorieId])
+  @@index([categorieId])
 }
 
 model Equipement {
-  id        String   @id @default(uuid())
-  nom       String
-  categorie String
-  actif     Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  nom         String
+  categorieId String
+  actif       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@unique([nom, categorie])
-  @@index([categorie])
+  categorie CategorieEquipement @relation(fields: [categorieId], references: [id])
+
+  @@unique([nom, categorieId])
+  @@index([categorieId])
 }
 
 // ============================================================

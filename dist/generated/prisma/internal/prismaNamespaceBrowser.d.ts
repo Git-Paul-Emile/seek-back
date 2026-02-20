@@ -41,10 +41,19 @@ export declare const AnyNull: {
     toString(): string;
 };
 export declare const ModelName: {
+    readonly Pays: "Pays";
+    readonly Ville: "Ville";
+    readonly TypeLogement: "TypeLogement";
+    readonly TypeTransaction: "TypeTransaction";
+    readonly StatutBien: "StatutBien";
+    readonly CategorieMeuble: "CategorieMeuble";
+    readonly CategorieEquipement: "CategorieEquipement";
+    readonly Meuble: "Meuble";
+    readonly Equipement: "Equipement";
     readonly Proprietaire: "Proprietaire";
+    readonly ProprietaireRefreshToken: "ProprietaireRefreshToken";
+    readonly Admin: "Admin";
     readonly RefreshToken: "RefreshToken";
-    readonly PasswordReset: "PasswordReset";
-    readonly Settings: "Settings";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -54,49 +63,129 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+export declare const PaysScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly code: "code";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type PaysScalarFieldEnum = (typeof PaysScalarFieldEnum)[keyof typeof PaysScalarFieldEnum];
+export declare const VilleScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly paysId: "paysId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type VilleScalarFieldEnum = (typeof VilleScalarFieldEnum)[keyof typeof VilleScalarFieldEnum];
+export declare const TypeLogementScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly slug: "slug";
+    readonly image: "image";
+    readonly actif: "actif";
+    readonly ordre: "ordre";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TypeLogementScalarFieldEnum = (typeof TypeLogementScalarFieldEnum)[keyof typeof TypeLogementScalarFieldEnum];
+export declare const TypeTransactionScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly slug: "slug";
+    readonly actif: "actif";
+    readonly ordre: "ordre";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TypeTransactionScalarFieldEnum = (typeof TypeTransactionScalarFieldEnum)[keyof typeof TypeTransactionScalarFieldEnum];
+export declare const StatutBienScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly slug: "slug";
+    readonly actif: "actif";
+    readonly ordre: "ordre";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type StatutBienScalarFieldEnum = (typeof StatutBienScalarFieldEnum)[keyof typeof StatutBienScalarFieldEnum];
+export declare const CategorieMeubleScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly slug: "slug";
+    readonly actif: "actif";
+    readonly ordre: "ordre";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type CategorieMeubleScalarFieldEnum = (typeof CategorieMeubleScalarFieldEnum)[keyof typeof CategorieMeubleScalarFieldEnum];
+export declare const CategorieEquipementScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly slug: "slug";
+    readonly actif: "actif";
+    readonly ordre: "ordre";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type CategorieEquipementScalarFieldEnum = (typeof CategorieEquipementScalarFieldEnum)[keyof typeof CategorieEquipementScalarFieldEnum];
+export declare const MeubleScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly categorieId: "categorieId";
+    readonly actif: "actif";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type MeubleScalarFieldEnum = (typeof MeubleScalarFieldEnum)[keyof typeof MeubleScalarFieldEnum];
+export declare const EquipementScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly categorieId: "categorieId";
+    readonly actif: "actif";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EquipementScalarFieldEnum = (typeof EquipementScalarFieldEnum)[keyof typeof EquipementScalarFieldEnum];
 export declare const ProprietaireScalarFieldEnum: {
     readonly id: "id";
-    readonly nom_complet: "nom_complet";
+    readonly prenom: "prenom";
+    readonly nom: "nom";
+    readonly sexe: "sexe";
     readonly telephone: "telephone";
     readonly email: "email";
-    readonly mot_de_passe: "mot_de_passe";
-    readonly statut: "statut";
-    readonly role: "role";
-    readonly date_creation: "date_creation";
-    readonly date_modification: "date_modification";
+    readonly password: "password";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type ProprietaireScalarFieldEnum = (typeof ProprietaireScalarFieldEnum)[keyof typeof ProprietaireScalarFieldEnum];
-export declare const RefreshTokenScalarFieldEnum: {
+export declare const ProprietaireRefreshTokenScalarFieldEnum: {
     readonly id: "id";
-    readonly token: "token";
     readonly proprietaireId: "proprietaireId";
+    readonly tokenHash: "tokenHash";
     readonly expiresAt: "expiresAt";
     readonly revokedAt: "revokedAt";
     readonly createdAt: "createdAt";
-    readonly userAgent: "userAgent";
-    readonly ipAddress: "ipAddress";
 };
-export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum];
-export declare const PasswordResetScalarFieldEnum: {
+export type ProprietaireRefreshTokenScalarFieldEnum = (typeof ProprietaireRefreshTokenScalarFieldEnum)[keyof typeof ProprietaireRefreshTokenScalarFieldEnum];
+export declare const AdminScalarFieldEnum: {
     readonly id: "id";
-    readonly code: "code";
-    readonly type: "type";
-    readonly proprietaireId: "proprietaireId";
+    readonly email: "email";
+    readonly password: "password";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum];
+export declare const RefreshTokenScalarFieldEnum: {
+    readonly id: "id";
+    readonly adminId: "adminId";
+    readonly tokenHash: "tokenHash";
     readonly expiresAt: "expiresAt";
-    readonly usedAt: "usedAt";
+    readonly revokedAt: "revokedAt";
     readonly createdAt: "createdAt";
 };
-export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum];
-export declare const SettingsScalarFieldEnum: {
-    readonly id: "id";
-    readonly proprietaireId: "proprietaireId";
-    readonly theme: "theme";
-    readonly notifications: "notifications";
-    readonly language: "language";
-    readonly date_creation: "date_creation";
-    readonly date_modification: "date_modification";
-};
-export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum];
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

@@ -12,70 +12,70 @@ export type AggregateProprietaire = {
 };
 export type ProprietaireMinAggregateOutputType = {
     id: string | null;
-    nom_complet: string | null;
+    prenom: string | null;
+    nom: string | null;
+    sexe: string | null;
     telephone: string | null;
     email: string | null;
-    mot_de_passe: string | null;
-    statut: string | null;
-    role: string | null;
-    date_creation: Date | null;
-    date_modification: Date | null;
+    password: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type ProprietaireMaxAggregateOutputType = {
     id: string | null;
-    nom_complet: string | null;
+    prenom: string | null;
+    nom: string | null;
+    sexe: string | null;
     telephone: string | null;
     email: string | null;
-    mot_de_passe: string | null;
-    statut: string | null;
-    role: string | null;
-    date_creation: Date | null;
-    date_modification: Date | null;
+    password: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
 };
 export type ProprietaireCountAggregateOutputType = {
     id: number;
-    nom_complet: number;
+    prenom: number;
+    nom: number;
+    sexe: number;
     telephone: number;
     email: number;
-    mot_de_passe: number;
-    statut: number;
-    role: number;
-    date_creation: number;
-    date_modification: number;
+    password: number;
+    createdAt: number;
+    updatedAt: number;
     _all: number;
 };
 export type ProprietaireMinAggregateInputType = {
     id?: true;
-    nom_complet?: true;
+    prenom?: true;
+    nom?: true;
+    sexe?: true;
     telephone?: true;
     email?: true;
-    mot_de_passe?: true;
-    statut?: true;
-    role?: true;
-    date_creation?: true;
-    date_modification?: true;
+    password?: true;
+    createdAt?: true;
+    updatedAt?: true;
 };
 export type ProprietaireMaxAggregateInputType = {
     id?: true;
-    nom_complet?: true;
+    prenom?: true;
+    nom?: true;
+    sexe?: true;
     telephone?: true;
     email?: true;
-    mot_de_passe?: true;
-    statut?: true;
-    role?: true;
-    date_creation?: true;
-    date_modification?: true;
+    password?: true;
+    createdAt?: true;
+    updatedAt?: true;
 };
 export type ProprietaireCountAggregateInputType = {
     id?: true;
-    nom_complet?: true;
+    prenom?: true;
+    nom?: true;
+    sexe?: true;
     telephone?: true;
     email?: true;
-    mot_de_passe?: true;
-    statut?: true;
-    role?: true;
-    date_creation?: true;
-    date_modification?: true;
+    password?: true;
+    createdAt?: true;
+    updatedAt?: true;
     _all?: true;
 };
 export type ProprietaireAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -142,14 +142,14 @@ export type ProprietaireGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 };
 export type ProprietaireGroupByOutputType = {
     id: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe: string | null;
     telephone: string;
     email: string | null;
-    mot_de_passe: string;
-    statut: string;
-    role: string;
-    date_creation: Date;
-    date_modification: Date;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
     _count: ProprietaireCountAggregateOutputType | null;
     _min: ProprietaireMinAggregateOutputType | null;
     _max: ProprietaireMaxAggregateOutputType | null;
@@ -162,31 +162,27 @@ export type ProprietaireWhereInput = {
     OR?: Prisma.ProprietaireWhereInput[];
     NOT?: Prisma.ProprietaireWhereInput | Prisma.ProprietaireWhereInput[];
     id?: Prisma.StringFilter<"Proprietaire"> | string;
-    nom_complet?: Prisma.StringFilter<"Proprietaire"> | string;
+    prenom?: Prisma.StringFilter<"Proprietaire"> | string;
+    nom?: Prisma.StringFilter<"Proprietaire"> | string;
+    sexe?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
     telephone?: Prisma.StringFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
-    mot_de_passe?: Prisma.StringFilter<"Proprietaire"> | string;
-    statut?: Prisma.StringFilter<"Proprietaire"> | string;
-    role?: Prisma.StringFilter<"Proprietaire"> | string;
-    date_creation?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    date_modification?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    refreshTokens?: Prisma.RefreshTokenListRelationFilter;
-    passwordResets?: Prisma.PasswordResetListRelationFilter;
-    settings?: Prisma.XOR<Prisma.SettingsNullableScalarRelationFilter, Prisma.SettingsWhereInput> | null;
+    password?: Prisma.StringFilter<"Proprietaire"> | string;
+    createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
 };
 export type ProprietaireOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
-    nom_complet?: Prisma.SortOrder;
+    prenom?: Prisma.SortOrder;
+    nom?: Prisma.SortOrder;
+    sexe?: Prisma.SortOrderInput | Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
-    mot_de_passe?: Prisma.SortOrder;
-    statut?: Prisma.SortOrder;
-    role?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
-    refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput;
-    passwordResets?: Prisma.PasswordResetOrderByRelationAggregateInput;
-    settings?: Prisma.SettingsOrderByWithRelationInput;
+    password?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenOrderByRelationAggregateInput;
 };
 export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -195,26 +191,24 @@ export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.ProprietaireWhereInput | Prisma.ProprietaireWhereInput[];
     OR?: Prisma.ProprietaireWhereInput[];
     NOT?: Prisma.ProprietaireWhereInput | Prisma.ProprietaireWhereInput[];
-    nom_complet?: Prisma.StringFilter<"Proprietaire"> | string;
-    mot_de_passe?: Prisma.StringFilter<"Proprietaire"> | string;
-    statut?: Prisma.StringFilter<"Proprietaire"> | string;
-    role?: Prisma.StringFilter<"Proprietaire"> | string;
-    date_creation?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    date_modification?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    refreshTokens?: Prisma.RefreshTokenListRelationFilter;
-    passwordResets?: Prisma.PasswordResetListRelationFilter;
-    settings?: Prisma.XOR<Prisma.SettingsNullableScalarRelationFilter, Prisma.SettingsWhereInput> | null;
+    prenom?: Prisma.StringFilter<"Proprietaire"> | string;
+    nom?: Prisma.StringFilter<"Proprietaire"> | string;
+    sexe?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    password?: Prisma.StringFilter<"Proprietaire"> | string;
+    createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
 }, "id" | "telephone" | "email">;
 export type ProprietaireOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
-    nom_complet?: Prisma.SortOrder;
+    prenom?: Prisma.SortOrder;
+    nom?: Prisma.SortOrder;
+    sexe?: Prisma.SortOrderInput | Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
-    mot_de_passe?: Prisma.SortOrder;
-    statut?: Prisma.SortOrder;
-    role?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
     _count?: Prisma.ProprietaireCountOrderByAggregateInput;
     _max?: Prisma.ProprietaireMaxOrderByAggregateInput;
     _min?: Prisma.ProprietaireMinOrderByAggregateInput;
@@ -224,153 +218,132 @@ export type ProprietaireScalarWhereWithAggregatesInput = {
     OR?: Prisma.ProprietaireScalarWhereWithAggregatesInput[];
     NOT?: Prisma.ProprietaireScalarWhereWithAggregatesInput | Prisma.ProprietaireScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
-    nom_complet?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
+    prenom?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
+    nom?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
+    sexe?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
     telephone?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
-    mot_de_passe?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
-    statut?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
-    role?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
-    date_creation?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
-    date_modification?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
+    password?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
 };
 export type ProprietaireCreateInput = {
     id?: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
     telephone: string;
     email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateInput = {
     id?: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
     telephone: string;
     email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateManyInput = {
     id?: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
     telephone: string;
     email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type ProprietaireUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type ProprietaireUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type ProprietaireCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    nom_complet?: Prisma.SortOrder;
+    prenom?: Prisma.SortOrder;
+    nom?: Prisma.SortOrder;
+    sexe?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    mot_de_passe?: Prisma.SortOrder;
-    statut?: Prisma.SortOrder;
-    role?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type ProprietaireMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    nom_complet?: Prisma.SortOrder;
+    prenom?: Prisma.SortOrder;
+    nom?: Prisma.SortOrder;
+    sexe?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    mot_de_passe?: Prisma.SortOrder;
-    statut?: Prisma.SortOrder;
-    role?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type ProprietaireMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    nom_complet?: Prisma.SortOrder;
+    prenom?: Prisma.SortOrder;
+    nom?: Prisma.SortOrder;
+    sexe?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
-    mot_de_passe?: Prisma.SortOrder;
-    statut?: Prisma.SortOrder;
-    role?: Prisma.SortOrder;
-    date_creation?: Prisma.SortOrder;
-    date_modification?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
 };
 export type ProprietaireScalarRelationFilter = {
     is?: Prisma.ProprietaireWhereInput;
     isNot?: Prisma.ProprietaireWhereInput;
-};
-export type ProprietaireNullableScalarRelationFilter = {
-    is?: Prisma.ProprietaireWhereInput | null;
-    isNot?: Prisma.ProprietaireWhereInput | null;
-};
-export type StringFieldUpdateOperationsInput = {
-    set?: string;
-};
-export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null;
-};
-export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string;
 };
 export type ProprietaireCreateNestedOneWithoutRefreshTokensInput = {
     create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutRefreshTokensInput, Prisma.ProprietaireUncheckedCreateWithoutRefreshTokensInput>;
@@ -384,57 +357,27 @@ export type ProprietaireUpdateOneRequiredWithoutRefreshTokensNestedInput = {
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.ProprietaireUpdateWithoutRefreshTokensInput>, Prisma.ProprietaireUncheckedUpdateWithoutRefreshTokensInput>;
 };
-export type ProprietaireCreateNestedOneWithoutPasswordResetsInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetsInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPasswordResetsInput;
-    connect?: Prisma.ProprietaireWhereUniqueInput;
-};
-export type ProprietaireUpdateOneWithoutPasswordResetsNestedInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetsInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPasswordResetsInput;
-    upsert?: Prisma.ProprietaireUpsertWithoutPasswordResetsInput;
-    disconnect?: Prisma.ProprietaireWhereInput | boolean;
-    delete?: Prisma.ProprietaireWhereInput | boolean;
-    connect?: Prisma.ProprietaireWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutPasswordResetsInput, Prisma.ProprietaireUpdateWithoutPasswordResetsInput>, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetsInput>;
-};
-export type ProprietaireCreateNestedOneWithoutSettingsInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutSettingsInput;
-    connect?: Prisma.ProprietaireWhereUniqueInput;
-};
-export type ProprietaireUpdateOneRequiredWithoutSettingsNestedInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutSettingsInput;
-    upsert?: Prisma.ProprietaireUpsertWithoutSettingsInput;
-    connect?: Prisma.ProprietaireWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutSettingsInput, Prisma.ProprietaireUpdateWithoutSettingsInput>, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
-};
 export type ProprietaireCreateWithoutRefreshTokensInput = {
     id?: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
     telephone: string;
     email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
-    nom_complet: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
     telephone: string;
     email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 };
 export type ProprietaireCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -451,170 +394,34 @@ export type ProprietaireUpdateToOneWithWhereWithoutRefreshTokensInput = {
 };
 export type ProprietaireUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
-};
-export type ProprietaireCreateWithoutPasswordResetsInput = {
-    id?: string;
-    nom_complet: string;
-    telephone: string;
-    email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsCreateNestedOneWithoutProprietaireInput;
-};
-export type ProprietaireUncheckedCreateWithoutPasswordResetsInput = {
-    id?: string;
-    nom_complet: string;
-    telephone: string;
-    email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    settings?: Prisma.SettingsUncheckedCreateNestedOneWithoutProprietaireInput;
-};
-export type ProprietaireCreateOrConnectWithoutPasswordResetsInput = {
-    where: Prisma.ProprietaireWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetsInput>;
-};
-export type ProprietaireUpsertWithoutPasswordResetsInput = {
-    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetsInput>;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetsInput>;
-    where?: Prisma.ProprietaireWhereInput;
-};
-export type ProprietaireUpdateToOneWithWhereWithoutPasswordResetsInput = {
-    where?: Prisma.ProprietaireWhereInput;
-    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPasswordResetsInput, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetsInput>;
-};
-export type ProprietaireUpdateWithoutPasswordResetsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
-    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
-    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUpdateOneWithoutProprietaireNestedInput;
-};
-export type ProprietaireUncheckedUpdateWithoutPasswordResetsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
-    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
-    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    settings?: Prisma.SettingsUncheckedUpdateOneWithoutProprietaireNestedInput;
-};
-export type ProprietaireCreateWithoutSettingsInput = {
-    id?: string;
-    nom_complet: string;
-    telephone: string;
-    email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutProprietaireInput;
-};
-export type ProprietaireUncheckedCreateWithoutSettingsInput = {
-    id?: string;
-    nom_complet: string;
-    telephone: string;
-    email?: string | null;
-    mot_de_passe: string;
-    statut?: string;
-    role?: string;
-    date_creation?: Date | string;
-    date_modification?: Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutProprietaireInput;
-};
-export type ProprietaireCreateOrConnectWithoutSettingsInput = {
-    where: Prisma.ProprietaireWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
-};
-export type ProprietaireUpsertWithoutSettingsInput = {
-    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutSettingsInput, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutSettingsInput, Prisma.ProprietaireUncheckedCreateWithoutSettingsInput>;
-    where?: Prisma.ProprietaireWhereInput;
-};
-export type ProprietaireUpdateToOneWithWhereWithoutSettingsInput = {
-    where?: Prisma.ProprietaireWhereInput;
-    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutSettingsInput, Prisma.ProprietaireUncheckedUpdateWithoutSettingsInput>;
-};
-export type ProprietaireUpdateWithoutSettingsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
-    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
-    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResets?: Prisma.PasswordResetUpdateManyWithoutProprietaireNestedInput;
-};
-export type ProprietaireUncheckedUpdateWithoutSettingsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    nom_complet?: Prisma.StringFieldUpdateOperationsInput | string;
-    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
-    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    mot_de_passe?: Prisma.StringFieldUpdateOperationsInput | string;
-    statut?: Prisma.StringFieldUpdateOperationsInput | string;
-    role?: Prisma.StringFieldUpdateOperationsInput | string;
-    date_creation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    date_modification?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutProprietaireNestedInput;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 /**
  * Count Type ProprietaireCountOutputType
  */
 export type ProprietaireCountOutputType = {
     refreshTokens: number;
-    passwordResets: number;
 };
 export type ProprietaireCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | ProprietaireCountOutputTypeCountRefreshTokensArgs;
-    passwordResets?: boolean | ProprietaireCountOutputTypeCountPasswordResetsArgs;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -629,67 +436,57 @@ export type ProprietaireCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
  * ProprietaireCountOutputType without action
  */
 export type ProprietaireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.RefreshTokenWhereInput;
-};
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountPasswordResetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.PasswordResetWhereInput;
+    where?: Prisma.ProprietaireRefreshTokenWhereInput;
 };
 export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    nom_complet?: boolean;
+    prenom?: boolean;
+    nom?: boolean;
+    sexe?: boolean;
     telephone?: boolean;
     email?: boolean;
-    mot_de_passe?: boolean;
-    statut?: boolean;
-    role?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    password?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
-    passwordResets?: boolean | Prisma.Proprietaire$passwordResetsArgs<ExtArgs>;
-    settings?: boolean | Prisma.Proprietaire$settingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    nom_complet?: boolean;
+    prenom?: boolean;
+    nom?: boolean;
+    sexe?: boolean;
     telephone?: boolean;
     email?: boolean;
-    mot_de_passe?: boolean;
-    statut?: boolean;
-    role?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    password?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    nom_complet?: boolean;
+    prenom?: boolean;
+    nom?: boolean;
+    sexe?: boolean;
     telephone?: boolean;
     email?: boolean;
-    mot_de_passe?: boolean;
-    statut?: boolean;
-    role?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    password?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectScalar = {
     id?: boolean;
-    nom_complet?: boolean;
+    prenom?: boolean;
+    nom?: boolean;
+    sexe?: boolean;
     telephone?: boolean;
     email?: boolean;
-    mot_de_passe?: boolean;
-    statut?: boolean;
-    role?: boolean;
-    date_creation?: boolean;
-    date_modification?: boolean;
+    password?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
 };
-export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom_complet" | "telephone" | "email" | "mot_de_passe" | "statut" | "role" | "date_creation" | "date_modification", ExtArgs["result"]["proprietaire"]>;
+export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "prenom" | "nom" | "sexe" | "telephone" | "email" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
-    passwordResets?: boolean | Prisma.Proprietaire$passwordResetsArgs<ExtArgs>;
-    settings?: boolean | Prisma.Proprietaire$settingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProprietaireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -697,20 +494,18 @@ export type ProprietaireIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $ProprietairePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Proprietaire";
     objects: {
-        refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[];
-        passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[];
-        settings: Prisma.$SettingsPayload<ExtArgs> | null;
+        refreshTokens: Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        nom_complet: string;
+        prenom: string;
+        nom: string;
+        sexe: string | null;
         telephone: string;
         email: string | null;
-        mot_de_passe: string;
-        statut: string;
-        role: string;
-        date_creation: Date;
-        date_modification: Date;
+        password: string;
+        createdAt: Date;
+        updatedAt: Date;
     }, ExtArgs["result"]["proprietaire"]>;
     composites: {};
 };
@@ -1040,9 +835,7 @@ export interface ProprietaireDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__ProprietaireClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    passwordResets<T extends Prisma.Proprietaire$passwordResetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    settings<T extends Prisma.Proprietaire$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$settingsArgs<ExtArgs>>): Prisma.Prisma__SettingsClient<runtime.Types.Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1069,14 +862,14 @@ export interface Prisma__ProprietaireClient<T, Null = never, ExtArgs extends run
  */
 export interface ProprietaireFieldRefs {
     readonly id: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly nom_complet: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly prenom: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly nom: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly sexe: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly telephone: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly email: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly mot_de_passe: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly statut: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly role: Prisma.FieldRef<"Proprietaire", 'String'>;
-    readonly date_creation: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
-    readonly date_modification: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly password: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
 }
 /**
  * Proprietaire findUnique
@@ -1452,64 +1245,23 @@ export type ProprietaireDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
  */
 export type Proprietaire$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the RefreshToken
+     * Select specific fields to fetch from the ProprietaireRefreshToken
      */
-    select?: Prisma.RefreshTokenSelect<ExtArgs> | null;
+    select?: Prisma.ProprietaireRefreshTokenSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the RefreshToken
+     * Omit specific fields from the ProprietaireRefreshToken
      */
-    omit?: Prisma.RefreshTokenOmit<ExtArgs> | null;
+    omit?: Prisma.ProprietaireRefreshTokenOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.RefreshTokenInclude<ExtArgs> | null;
-    where?: Prisma.RefreshTokenWhereInput;
-    orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[];
-    cursor?: Prisma.RefreshTokenWhereUniqueInput;
+    include?: Prisma.ProprietaireRefreshTokenInclude<ExtArgs> | null;
+    where?: Prisma.ProprietaireRefreshTokenWhereInput;
+    orderBy?: Prisma.ProprietaireRefreshTokenOrderByWithRelationInput | Prisma.ProprietaireRefreshTokenOrderByWithRelationInput[];
+    cursor?: Prisma.ProprietaireRefreshTokenWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[];
-};
-/**
- * Proprietaire.passwordResets
- */
-export type Proprietaire$passwordResetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PasswordReset
-     */
-    select?: Prisma.PasswordResetSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the PasswordReset
-     */
-    omit?: Prisma.PasswordResetOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.PasswordResetInclude<ExtArgs> | null;
-    where?: Prisma.PasswordResetWhereInput;
-    orderBy?: Prisma.PasswordResetOrderByWithRelationInput | Prisma.PasswordResetOrderByWithRelationInput[];
-    cursor?: Prisma.PasswordResetWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.PasswordResetScalarFieldEnum | Prisma.PasswordResetScalarFieldEnum[];
-};
-/**
- * Proprietaire.settings
- */
-export type Proprietaire$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Settings
-     */
-    select?: Prisma.SettingsSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Settings
-     */
-    omit?: Prisma.SettingsOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.SettingsInclude<ExtArgs> | null;
-    where?: Prisma.SettingsWhereInput;
+    distinct?: Prisma.ProprietaireRefreshTokenScalarFieldEnum | Prisma.ProprietaireRefreshTokenScalarFieldEnum[];
 };
 /**
  * Proprietaire without action

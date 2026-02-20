@@ -1,21 +1,17 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as Repo from "../repositories/meuble.repository.js";
-import type { Meuble } from "../generated/prisma/index.js";
 
-export const getAll = (): Promise<Meuble[]> => Repo.findAll();
+export const getAll      = () => Repo.findAll();
+export const getAllAdmin  = () => Repo.findAllAdmin();
 
-export const getAllAdmin = (): Promise<Meuble[]> => Repo.findAllAdmin();
-
-export const createMany = async (
-  items: { nom: string; categorie: string }[]
-): Promise<Meuble[]> => {
+export const createMany = async (items: { nom: string; categorieId: string }[]) => {
   const checks = await Promise.all(
-    items.map((item) => Repo.findByNomAndCategorie(item.nom, item.categorie))
+    items.map((item) => Repo.findByNomAndCategorie(item.nom, item.categorieId))
   );
   const duplicates = items
     .filter((_, i) => checks[i] !== null)
-    .map((item) => `"${item.nom}" (${item.categorie})`);
+    .map((item) => `"${item.nom}"`);
   if (duplicates.length > 0) {
     throw new AppError(
       `Déjà existant${duplicates.length > 1 ? "s" : ""} : ${duplicates.join(", ")}`,
@@ -27,17 +23,17 @@ export const createMany = async (
 
 export const update = async (
   id: string,
-  data: Partial<{ nom: string; categorie: string; actif: boolean }>
-): Promise<Meuble> => {
+  data: Partial<{ nom: string; categorieId: string; actif: boolean }>
+) => {
   const existing = await Repo.findById(id);
   if (!existing) throw new AppError("Meuble introuvable.", StatusCodes.NOT_FOUND);
 
-  const nom       = data.nom       ?? existing.nom;
-  const categorie = data.categorie ?? existing.categorie;
-  if (nom !== existing.nom || categorie !== existing.categorie) {
-    const conflict = await Repo.findByNomAndCategorie(nom, categorie);
+  const nom         = data.nom         ?? existing.nom;
+  const categorieId = data.categorieId ?? existing.categorieId;
+  if (nom !== existing.nom || categorieId !== existing.categorieId) {
+    const conflict = await Repo.findByNomAndCategorie(nom, categorieId);
     if (conflict && conflict.id !== id) {
-      throw new AppError(`"${nom}" dans "${categorie}" existe déjà.`, StatusCodes.CONFLICT);
+      throw new AppError(`"${nom}" dans cette catégorie existe déjà.`, StatusCodes.CONFLICT);
     }
   }
 

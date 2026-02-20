@@ -14,6 +14,8 @@ import typeTransactionRouter from "../routes/typeTransaction.routes.js";
 import statutBienRouter from "../routes/statutBien.routes.js";
 import meubleRouter from "../routes/meuble.routes.js";
 import equipementRouter from "../routes/equipement.routes.js";
+import categorieMeubleRouter from "../routes/categorieMeuble.routes.js";
+import categorieEquipementRouter from "../routes/categorieEquipement.routes.js";
 import statsRouter from "../routes/stats.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -107,6 +109,10 @@ app.use('/api/statuts-bien', statutBienRouter);
 // Meubles & Équipements
 app.use('/api/meubles',     meubleRouter);
 app.use('/api/equipements', equipementRouter);
+
+// Catégories Meublé / Équipement
+app.use('/api/categories-meubles',     categorieMeubleRouter);
+app.use('/api/categories-equipements', categorieEquipementRouter);
 
 // Statistiques publiques
 app.use('/api/stats', statsRouter);

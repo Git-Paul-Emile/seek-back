@@ -25,8 +25,8 @@ export * from "./enums.js";
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Proprietaires
- * const proprietaires = await prisma.proprietaire.findMany()
+ * // Fetch zero or more Pays
+ * const pays = await prisma.pays.findMany()
  * ```
  *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).

@@ -1,29 +1,33 @@
 import { prisma } from "../config/database.js";
-import type { Equipement } from "../generated/prisma/index.js";
 
-export const findAll = (): Promise<Equipement[]> =>
+const include = { categorie: { select: { id: true, nom: true, slug: true } } } as const;
+
+export const findAll = () =>
   prisma.equipement.findMany({
     where: { actif: true },
-    orderBy: [{ categorie: "asc" }, { nom: "asc" }],
+    include,
+    orderBy: [{ categorie: { nom: "asc" } }, { nom: "asc" }],
   });
 
-export const findAllAdmin = (): Promise<Equipement[]> =>
-  prisma.equipement.findMany({ orderBy: [{ categorie: "asc" }, { nom: "asc" }] });
+export const findAllAdmin = () =>
+  prisma.equipement.findMany({
+    include,
+    orderBy: [{ categorie: { nom: "asc" } }, { nom: "asc" }],
+  });
 
-export const findById = (id: string): Promise<Equipement | null> =>
-  prisma.equipement.findUnique({ where: { id } });
+export const findById = (id: string) =>
+  prisma.equipement.findUnique({ where: { id }, include });
 
-export const findByNomAndCategorie = (nom: string, categorie: string): Promise<Equipement | null> =>
-  prisma.equipement.findUnique({ where: { nom_categorie: { nom, categorie } } });
+export const findByNomAndCategorie = (nom: string, categorieId: string) =>
+  prisma.equipement.findUnique({ where: { nom_categorieId: { nom, categorieId } }, include });
 
-export const createMany = (items: { nom: string; categorie: string }[]): Promise<Equipement[]> =>
-  prisma.$transaction(items.map((item) => prisma.equipement.create({ data: item })));
+export const createMany = (items: { nom: string; categorieId: string }[]) =>
+  prisma.$transaction(items.map((item) => prisma.equipement.create({ data: item, include })));
 
 export const update = (
   id: string,
-  data: Partial<{ nom: string; categorie: string; actif: boolean }>
-): Promise<Equipement> =>
-  prisma.equipement.update({ where: { id }, data });
+  data: Partial<{ nom: string; categorieId: string; actif: boolean }>
+) => prisma.equipement.update({ where: { id }, data, include });
 
-export const remove = (id: string): Promise<Equipement> =>
+export const remove = (id: string) =>
   prisma.equipement.delete({ where: { id } });
