@@ -60,4 +60,10 @@ router.get(
   controllerWrapper(BienController.getBienById)
 );
 
+/** GET /api/biens/public/dernieres — dernières annonces publiées (pour page d'accueil) */
+router.get(
+  "/public/dernieres",
+  controllerWrapper(BienController.getDernieresAnnonces)
+);
+
 export default router;

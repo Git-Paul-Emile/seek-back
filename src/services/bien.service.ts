@@ -336,3 +336,9 @@ export const adminDeleteBien = async (bienId: string) => {
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
   return BienRepository.deleteBienById(bienId);
 };
+
+// ─── Public — dernières annonces (pour page d'accueil) ───────────────────────────
+
+export const getDernieresAnnonces = async (limit: number = 8) => {
+  return BienRepository.getDernieresAnnonces(limit);
+};

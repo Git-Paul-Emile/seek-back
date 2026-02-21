@@ -103,3 +103,13 @@ export const getBienById = async (req: Request, res: Response): Promise<void> =>
     jsonResponse({ status: "success", message: "Bien récupéré", data: bien })
   );
 };
+
+// ─── Public — dernières annonces (pour page d'accueil) ─────────────────────────
+
+export const getDernieresAnnonces = async (req: Request, res: Response): Promise<void> => {
+  const limit = parseInt(req.query.limit as string) || 8;
+  const annonces = await BienService.getDernieresAnnonces(limit);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Dernières annonces récupérées", data: annonces })
+  );
+};

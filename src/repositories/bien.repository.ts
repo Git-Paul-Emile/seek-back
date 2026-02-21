@@ -228,3 +228,27 @@ export const getAnnonces = async (params: {
 
   return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
 };
+
+// ─── Public — dernières annonces (pour page d'accueil) ────────────────────────
+
+export const getDernieresAnnonces = async (limit: number = 8) => {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  const biens = await prisma.bien.findMany({
+    where: { statutAnnonce: "PUBLIE" },
+    take: limit,
+    orderBy: { createdAt: "desc" },
+    include: {
+      typeLogement: { select: { id: true, nom: true, slug: true } },
+      typeTransaction: { select: { id: true, nom: true, slug: true } },
+      statutBien: { select: { id: true, nom: true, slug: true } },
+    },
+  });
+
+  // Ajouter un flag "isNew" pour les annonces publiées il y a moins de 7 jours
+  return biens.map((bien) => ({
+    ...bien,
+    isNew: bien.createdAt >= sevenDaysAgo,
+  }));
+};
