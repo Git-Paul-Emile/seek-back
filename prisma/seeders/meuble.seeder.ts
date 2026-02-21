@@ -48,11 +48,21 @@ export class MeubleSeeder implements Seeder {
   readonly name = 'MeubleSeeder';
 
   async run(prisma: PrismaClient): Promise<void> {
+    // First, get all categories to map name to ID
+    const categories = await prisma.categorieMeuble.findMany();
+    const categorieMap = new Map(categories.map(c => [c.nom, c.id]));
+
     for (const meuble of MEUBLES) {
+      const categorieId = categorieMap.get(meuble.categorie);
+      if (!categorieId) {
+        console.log(`  ⚠ Catégorie introuvable : ${meuble.categorie}`);
+        continue;
+      }
+
       await prisma.meuble.upsert({
-        where:  { nom_categorie: { nom: meuble.nom, categorie: meuble.categorie } },
+        where:  { nom_categorieId: { nom: meuble.nom, categorieId } },
         update: { actif: true },
-        create: { ...meuble, actif: true },
+        create: { nom: meuble.nom, categorieId, actif: true },
       });
       console.log(`  ✔ Meuble [${meuble.categorie}] : ${meuble.nom}`);
     }

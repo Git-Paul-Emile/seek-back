@@ -72,11 +72,21 @@ export class EquipementSeeder implements Seeder {
   readonly name = 'EquipementSeeder';
 
   async run(prisma: PrismaClient): Promise<void> {
+    // First, get all categories to map name to ID
+    const categories = await prisma.categorieEquipement.findMany();
+    const categorieMap = new Map(categories.map(c => [c.nom, c.id]));
+
     for (const equipement of EQUIPEMENTS) {
+      const categorieId = categorieMap.get(equipement.categorie);
+      if (!categorieId) {
+        console.log(`  ⚠ Catégorie introuvable : ${equipement.categorie}`);
+        continue;
+      }
+
       await prisma.equipement.upsert({
-        where:  { nom_categorie: { nom: equipement.nom, categorie: equipement.categorie } },
+        where:  { nom_categorieId: { nom: equipement.nom, categorieId } },
         update: { actif: true },
-        create: { ...equipement, actif: true },
+        create: { nom: equipement.nom, categorieId, actif: true },
       });
       console.log(`  ✔ Équipement [${equipement.categorie}] : ${equipement.nom}`);
     }

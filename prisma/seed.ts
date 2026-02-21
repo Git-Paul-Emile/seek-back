@@ -10,6 +10,7 @@ import { TypeTransactionSeeder } from './seeders/type-transaction.seeder.js';
 import { StatutBienSeeder } from './seeders/statut-bien.seeder.js';
 import { MeubleSeeder } from './seeders/meuble.seeder.js';
 import { EquipementSeeder } from './seeders/equipement.seeder.js';
+import { CategorieSeeder } from './seeders/categorie.seeder.js';
 
 dotenv.config();
 
@@ -21,8 +22,9 @@ dotenv.config();
  *  4. TypeLogement     (indépendant)
  *  5. TypeTransaction  (indépendant)
  *  6. StatutBien       (indépendant)
- *  7. Meuble           (indépendant)
- *  8. Equipement       (indépendant)
+ *  7. Categorie         (catégories pour Meuble et Equipement)
+ *  8. Meuble           (dépend de Categorie)
+ *  9. Equipement       (dépend de Categorie)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  * Aucun fichier existant à modifier (Open/Closed Principle).
@@ -34,6 +36,7 @@ const SEEDERS: readonly Seeder[] = [
   new TypeLogementSeeder(),
   new TypeTransactionSeeder(),
   new StatutBienSeeder(),
+  new CategorieSeeder(),
   new MeubleSeeder(),
   new EquipementSeeder(),
 ];

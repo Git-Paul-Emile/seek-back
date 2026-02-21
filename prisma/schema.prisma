@@ -48,6 +48,8 @@ model TypeLogement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  biens Bien[]
+
   @@index([slug])
 }
 
@@ -60,6 +62,8 @@ model TypeTransaction {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  biens Bien[]
+
   @@index([slug])
 }
 
@@ -71,6 +75,8 @@ model StatutBien {
   ordre     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  biens Bien[]
 
   @@index([slug])
 }
@@ -116,6 +122,7 @@ model Meuble {
   updatedAt   DateTime @updatedAt
 
   categorie CategorieMeuble @relation(fields: [categorieId], references: [id])
+  biens     BienMeuble[]
 
   @@unique([nom, categorieId])
   @@index([categorieId])
@@ -130,9 +137,139 @@ model Equipement {
   updatedAt   DateTime @updatedAt
 
   categorie CategorieEquipement @relation(fields: [categorieId], references: [id])
+  biens     BienEquipement[]
 
   @@unique([nom, categorieId])
   @@index([categorieId])
+}
+
+// ============================================================
+// BIENS
+// ============================================================
+
+enum StatutAnnonce {
+  BROUILLON
+  EN_ATTENTE
+  PUBLIE
+  REJETE
+}
+
+model Bien {
+  id                String    @id @default(uuid())
+  titre             String?
+  description       String?
+  typeLogementId    String?
+  typeTransactionId String?
+  statutBienId      String?
+  proprietaireId    String
+
+  // Localisation
+  pays              String?
+  region            String?
+  ville             String?
+  quartier          String?
+  adresse           String?
+  pointRepere       String?
+  latitude          Float?
+  longitude         Float?
+
+  // Caractéristiques
+  surface           Float?
+  surfaceParcelle   Float?
+  nbChambres        Int?
+  nbSdb             Int?
+  nbSalons          Int?
+  nbCuisines        Int?
+  etage             Int?
+  nbEtages          Int?
+  nbAppartements    Int?
+  nbPieces          Int?
+  nbWc              Int?
+  typeTerrain       String?
+  cloture           Boolean   @default(false)
+  typeBureau        String?
+  rideauMetallique  Boolean   @default(false)
+
+  // Options
+  meuble            Boolean   @default(false)
+  fumeurs           Boolean   @default(false)
+  animaux           Boolean   @default(false)
+  parking           Boolean   @default(false)
+  ascenseur         Boolean   @default(false)
+
+  // Prix
+  prix              Float?
+  frequencePaiement String?
+  chargesIncluses   Boolean   @default(false)
+  caution           Float?
+  disponibleLe      DateTime?
+
+  // Médias
+  photos            String[]
+
+  // État & Publication
+  actif             Boolean       @default(true)
+  statutAnnonce     StatutAnnonce @default(BROUILLON)
+  noteAdmin         String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  typeLogement    TypeLogement?    @relation(fields: [typeLogementId], references: [id])
+  typeTransaction TypeTransaction? @relation(fields: [typeTransactionId], references: [id])
+  statutBien      StatutBien?      @relation(fields: [statutBienId], references: [id])
+  proprietaire    Proprietaire     @relation(fields: [proprietaireId], references: [id])
+
+  equipements    BienEquipement[]
+  meubles        BienMeuble[]
+  etablissements Etablissement[]
+
+  @@index([proprietaireId])
+  @@index([typeLogementId])
+  @@index([typeTransactionId])
+  @@index([statutBienId])
+  @@index([statutAnnonce])
+}
+
+model BienEquipement {
+  bienId       String
+  equipementId String
+
+  bien       Bien       @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  equipement Equipement @relation(fields: [equipementId], references: [id])
+
+  @@unique([bienId, equipementId])
+}
+
+model BienMeuble {
+  bienId   String
+  meubleId String
+  quantite Int    @default(1)
+
+  bien   Bien   @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  meuble Meuble @relation(fields: [meubleId], references: [id])
+
+  @@unique([bienId, meubleId])
+}
+
+// ============================================================
+// ÉTABLISSEMENTS PROCHES
+// ============================================================
+
+model Etablissement {
+  id        String   @id @default(uuid())
+  bienId    String
+  type      String
+  nom       String?
+  latitude  Float
+  longitude Float
+  distance  Float?
+  createdAt DateTime @default(now())
+
+  bien Bien @relation(fields: [bienId], references: [id], onDelete: Cascade)
+
+  @@index([bienId])
+  @@index([type])
 }
 
 // ============================================================
@@ -151,6 +288,7 @@ model Proprietaire {
   updatedAt DateTime @updatedAt
 
   refreshTokens ProprietaireRefreshToken[]
+  biens         Bien[]
 }
 
 model ProprietaireRefreshToken {

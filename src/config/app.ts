@@ -17,6 +17,9 @@ import equipementRouter from "../routes/equipement.routes.js";
 import categorieMeubleRouter from "../routes/categorieMeuble.routes.js";
 import categorieEquipementRouter from "../routes/categorieEquipement.routes.js";
 import statsRouter from "../routes/stats.routes.js";
+import bienRouter from "../routes/bien.routes.js";
+import annonceRouter from "../routes/annonce.routes.js";
+import geoRouter from "../routes/geo.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -116,6 +119,15 @@ app.use('/api/categories-equipements', categorieEquipementRouter);
 
 // Statistiques publiques
 app.use('/api/stats', statsRouter);
+
+// Biens immobiliers
+app.use('/api/biens', bienRouter);
+
+// Annonces (admin)
+app.use('/api/annonces', annonceRouter);
+
+// Géographie (pays / villes)
+app.use('/api/geo', geoRouter);
 
 // ============= GESTION DES ERREURS =============
 
