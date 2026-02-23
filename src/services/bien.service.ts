@@ -342,3 +342,28 @@ export const adminDeleteBien = async (bienId: string) => {
 export const getDernieresAnnonces = async (limit: number = 8) => {
   return BienRepository.getDernieresAnnonces(limit);
 };
+
+// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+
+export const getAnnoncePublieById = async (id: string) => {
+  const bien = await BienRepository.getAnnoncePublieById(id);
+  if (!bien) {
+    throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
+  }
+  return bien;
+};
+
+// ─── Signalement d'annonce ─────────────────────────────────────────────────────
+export const signalerAnnonce = async (
+  bienId: string,
+  motif: string,
+  description?: string
+) => {
+  const bien = await BienRepository.getBienById(bienId);
+  if (!bien) {
+    throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
+  }
+  // Log the report - in production you would create a Signalement model
+  console.log(`Signalement d'annonce ${bienId}: ${motif} - ${description || "sans description"}`);
+  return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
+};

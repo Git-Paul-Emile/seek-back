@@ -66,4 +66,18 @@ router.get(
   controllerWrapper(BienController.getDernieresAnnonces)
 );
 
+/** GET /api/biens/public/:id — une annonce publiée (accessible publiquement) */
+router.get(
+  "/public/:id",
+  validateId,
+  controllerWrapper(BienController.getAnnoncePublie)
+);
+
+/** POST /api/biens/public/:id/signaler — signaler une annonce */
+router.post(
+  "/public/:id/signaler",
+  validateId,
+  controllerWrapper(BienController.signalerAnnonce)
+);
+
 export default router;

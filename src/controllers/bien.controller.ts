@@ -113,3 +113,25 @@ export const getDernieresAnnonces = async (req: Request, res: Response): Promise
     jsonResponse({ status: "success", message: "Dernières annonces récupérées", data: annonces })
   );
 };
+
+// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+
+export const getAnnoncePublie = async (req: Request, res: Response): Promise<void> => {
+  const bien = await BienService.getAnnoncePublieById(req.params.id as string);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Annonce récupérée", data: bien })
+  );
+};
+
+// ─── Signalement d'annonce ──────────────────────────────────────────────────────
+
+export const signalerAnnonce = async (req: Request, res: Response): Promise<void> => {
+  const { motif, description } = req.body;
+  if (!motif) {
+    throw new AppError("Le motif du signalement est requis", StatusCodes.BAD_REQUEST);
+  }
+  const result = await BienService.signalerAnnonce(req.params.id as string, motif, description);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: result.message, data: result })
+  );
+};

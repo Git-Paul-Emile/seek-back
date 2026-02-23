@@ -252,3 +252,26 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
     isNew: bien.createdAt >= sevenDaysAgo,
   }));
 };
+
+// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+
+export const getAnnoncePublieById = async (id: string) => {
+  return prisma.bien.findFirst({
+    where: { id, statutAnnonce: "PUBLIE" },
+    include: {
+      typeLogement: true,
+      typeTransaction: true,
+      statutBien: true,
+      equipements: {
+        include: { equipement: { include: { categorie: true } } },
+      },
+      meubles: {
+        include: { meuble: { include: { categorie: true } } },
+      },
+      etablissements: true,
+      proprietaire: {
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+      },
+    },
+  });
+};
