@@ -80,4 +80,11 @@ router.post(
   controllerWrapper(BienController.signalerAnnonce)
 );
 
+/** GET /api/biens/public/:id/similaires — annonces similaires */
+router.get(
+  "/public/:id/similaires",
+  validateId,
+  controllerWrapper(BienController.getAnnoncesSimilaires)
+);
+
 export default router;

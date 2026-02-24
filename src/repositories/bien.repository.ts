@@ -275,3 +275,90 @@ export const getAnnoncePublieById = async (id: string) => {
     },
   });
 };
+
+// ─── Public — annonces similaires ───────────────────────────────────────────
+
+export const getAnnoncesSimilaires = async (
+  bienId: string,
+  typeLogementId: string | null,
+  typeTransactionId: string | null,
+  ville: string | null,
+  limit: number = 4
+) => {
+  // Build conditions for similar ads
+  const conditions: {
+    statutAnnonce: "PUBLIE";
+    id: { not: string };
+    typeLogementId?: string | null;
+    typeTransactionId?: string | null;
+    ville?: string | null;
+  }[] = [];
+
+  // Start with base condition
+  let whereClause: Record<string, unknown> = {
+    statutAnnonce: "PUBLIE",
+    id: { not: bienId },
+  };
+
+  // Priority 1: Same typeLogement + same typeTransaction + same ville
+  const priority1 = await prisma.bien.findMany({
+    where: {
+      ...whereClause,
+      typeLogementId,
+      typeTransactionId,
+      ville,
+    },
+    take: limit,
+    orderBy: { createdAt: "desc" },
+    include: {
+      typeLogement: { select: { id: true, nom: true, slug: true } },
+      typeTransaction: { select: { id: true, nom: true, slug: true } },
+      statutBien: { select: { id: true, nom: true, slug: true } },
+    },
+  });
+
+  if (priority1.length >= limit) {
+    return priority1;
+  }
+
+  // Priority 2: Same typeLogement + same typeTransaction (any city)
+  const remaining1 = limit - priority1.length;
+  const priority2 = await prisma.bien.findMany({
+    where: {
+      ...whereClause,
+      typeLogementId,
+      typeTransactionId,
+      id: { notIn: priority1.map((b) => b.id) },
+    },
+    take: remaining1,
+    orderBy: { createdAt: "desc" },
+    include: {
+      typeLogement: { select: { id: true, nom: true, slug: true } },
+      typeTransaction: { select: { id: true, nom: true, slug: true } },
+      statutBien: { select: { id: true, nom: true, slug: true } },
+    },
+  });
+
+  if (priority1.length + priority2.length >= limit) {
+    return [...priority1, ...priority2];
+  }
+
+  // Priority 3: Same typeLogement only
+  const remaining2 = limit - (priority1.length + priority2.length);
+  const priority3 = await prisma.bien.findMany({
+    where: {
+      ...whereClause,
+      typeLogementId,
+      id: { notIn: [...priority1.map((b) => b.id), ...priority2.map((b) => b.id)] },
+    },
+    take: remaining2,
+    orderBy: { createdAt: "desc" },
+    include: {
+      typeLogement: { select: { id: true, nom: true, slug: true } },
+      typeTransaction: { select: { id: true, nom: true, slug: true } },
+      statutBien: { select: { id: true, nom: true, slug: true } },
+    },
+  });
+
+  return [...priority1, ...priority2, ...priority3];
+};

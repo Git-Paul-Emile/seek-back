@@ -367,3 +367,21 @@ export const signalerAnnonce = async (
   console.log(`Signalement d'annonce ${bienId}: ${motif} - ${description || "sans description"}`);
   return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
 };
+
+// ─── Public — annonces similaires ───────────────────────────────────────────
+
+export const getAnnoncesSimilaires = async (
+  bienId: string,
+  typeLogementId: string | null,
+  typeTransactionId: string | null,
+  ville: string | null,
+  limit: number = 4
+) => {
+  return BienRepository.getAnnoncesSimilaires(
+    bienId,
+    typeLogementId,
+    typeTransactionId,
+    ville,
+    limit
+  );
+};

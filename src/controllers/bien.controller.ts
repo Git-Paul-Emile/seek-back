@@ -135,3 +135,26 @@ export const signalerAnnonce = async (req: Request, res: Response): Promise<void
     jsonResponse({ status: "success", message: result.message, data: result })
   );
 };
+
+// ─── Public — annonces similaires ────────────────────────────────────────────
+
+export const getAnnoncesSimilaires = async (req: Request, res: Response): Promise<void> => {
+  const bienId = req.params.id as string;
+  const bien = await BienService.getAnnoncePublieById(bienId);
+
+  if (!bien) {
+    throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
+  }
+
+  const limit = parseInt(req.query.limit as string) || 4;
+  const similaires = await BienService.getAnnoncesSimilaires(
+    bienId,
+    bien.typeLogementId,
+    bien.typeTransactionId,
+    bien.ville,
+    limit
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Annonces similaires récupérées", data: similaires })
+  );
+};
