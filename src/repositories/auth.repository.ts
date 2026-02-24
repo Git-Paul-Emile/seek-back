@@ -9,6 +9,12 @@ export const findAdminByEmail = (email: string): Promise<Admin | null> =>
 export const findAdminById = (id: string): Promise<Admin | null> =>
   prisma.admin.findUnique({ where: { id } });
 
+export const updateAdmin = (
+  id: string,
+  data: { email?: string; password?: string }
+): Promise<Admin> =>
+  prisma.admin.update({ where: { id }, data });
+
 // ─── RefreshToken ─────────────────────────────────────────────────────────────
 
 export const createRefreshToken = (data: {

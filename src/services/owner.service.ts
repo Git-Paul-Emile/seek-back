@@ -313,5 +313,95 @@ export const me = async (id: string) => {
     nom: p.nom,
     telephone: p.telephone,
     email: p.email ?? undefined,
+    sexe: p.sexe ?? undefined,
   };
+};
+
+// ─── Mise à jour du profil ───────────────────────────────────────────────────
+
+export const updateProfile = async (
+  id: string,
+  data: {
+    prenom?: string;
+    nom?: string;
+    sexe?: string;
+    telephone?: string;
+    email?: string | null;
+    password?: string;
+  }
+) => {
+  const existing = await OwnerRepo.findById(id);
+  if (!existing) {
+    throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+  }
+
+  // Vérification de l'unicité du téléphone si modifié
+  if (data.telephone && data.telephone !== existing.telephone) {
+    const normalizedPhone = data.telephone.replace(/\s/g, "");
+    const existingPhone = await OwnerRepo.findByTelephone(normalizedPhone);
+    if (existingPhone && existingPhone.id !== id) {
+      throw new AppError(
+        "Ce numéro de téléphone est déjà associé à un autre compte.",
+        StatusCodes.CONFLICT
+      );
+    }
+    data.telephone = normalizedPhone;
+  }
+
+  // Vérification de l'unicité de l'email si modifié
+  if (data.email !== undefined) {
+    const normalizedEmail = data.email?.trim() === "" ? null : data.email?.trim() ?? null;
+    if (normalizedEmail && normalizedEmail !== existing.email) {
+      const existingEmail = await OwnerRepo.findByEmail(normalizedEmail);
+      if (existingEmail && existingEmail.id !== id) {
+        throw new AppError(
+          "Cette adresse email est déjà associée à un autre compte.",
+          StatusCodes.CONFLICT
+        );
+      }
+    }
+    data.email = normalizedEmail;
+  }
+
+  // Hachage du mot de passe si fourni
+  if (data.password) {
+    const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+    data.password = await bcrypt.hash(data.password, saltRounds);
+  }
+
+  // Normalisation du sexe
+  if (data.sexe !== undefined) {
+    data.sexe = data.sexe?.trim() === "" ? undefined : data.sexe;
+  }
+
+  const updated = await OwnerRepo.update(id, {
+    prenom: data.prenom?.trim(),
+    nom: data.nom?.trim(),
+    sexe: data.sexe,
+    telephone: data.telephone,
+    email: data.email,
+    password: data.password,
+  });
+
+  return {
+    id: updated.id,
+    prenom: updated.prenom,
+    nom: updated.nom,
+    telephone: updated.telephone,
+    email: updated.email ?? undefined,
+    sexe: updated.sexe ?? undefined,
+  };
+};
+
+// ─── Suppression du compte ─────────────────────────────────────────────────────
+
+export const deleteProfile = async (id: string): Promise<void> => {
+  const existing = await OwnerRepo.findById(id);
+  if (!existing) {
+    throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+  }
+
+  // La suppression en cascade supprimera automatiquement les biens associés
+  // grâce à onDelete: Cascade dans le schéma Prisma
+  await OwnerRepo.remove(id);
 };

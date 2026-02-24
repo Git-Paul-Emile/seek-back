@@ -219,7 +219,7 @@ model Bien {
   typeLogement    TypeLogement?    @relation(fields: [typeLogementId], references: [id])
   typeTransaction TypeTransaction? @relation(fields: [typeTransactionId], references: [id])
   statutBien      StatutBien?      @relation(fields: [statutBienId], references: [id])
-  proprietaire    Proprietaire     @relation(fields: [proprietaireId], references: [id])
+  proprietaire    Proprietaire     @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
 
   equipements    BienEquipement[]
   meubles        BienMeuble[]

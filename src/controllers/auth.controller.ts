@@ -107,3 +107,17 @@ export const me = async (req: Request, res: Response): Promise<void> => {
     })
   );
 };
+
+// ─── PUT /api/auth/profile ─────────────────────────────────────────────────
+
+export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+  const admin = (req as any).admin as { id: string; email: string };
+  const updated = await AuthService.updateProfile(admin.id, req.body);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Profil mis à jour avec succès",
+      data: updated,
+    })
+  );
+};

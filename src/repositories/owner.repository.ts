@@ -20,6 +20,21 @@ export const create = (data: {
   password: string;
 }) => prisma.proprietaire.create({ data });
 
+export const update = (
+  id: string,
+  data: {
+    prenom?: string;
+    nom?: string;
+    sexe?: string | null;
+    telephone?: string;
+    email?: string | null;
+    password?: string;
+  }
+) => prisma.proprietaire.update({ where: { id }, data });
+
+export const remove = (id: string) =>
+  prisma.proprietaire.delete({ where: { id } });
+
 // ─── ProprietaireRefreshToken ─────────────────────────────────────────────────
 
 export const createRefreshToken = (data: {

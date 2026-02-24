@@ -50,4 +50,14 @@ router.get(
   controllerWrapper(AuthController.me)
 );
 
+/**
+ * PUT /api/auth/profile
+ * Protégé : mise à jour du profil admin
+ */
+router.put(
+  "/profile",
+  authenticate,
+  controllerWrapper(AuthController.updateProfile)
+);
+
 export default router;

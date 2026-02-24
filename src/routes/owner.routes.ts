@@ -38,4 +38,18 @@ router.get(
   controllerWrapper(OwnerController.me)
 );
 
+/** PUT /api/owner/profile — protégé */
+router.put(
+  "/profile",
+  authenticateOwner,
+  controllerWrapper(OwnerController.updateProfile)
+);
+
+/** DELETE /api/owner/profile — protégé */
+router.delete(
+  "/profile",
+  authenticateOwner,
+  controllerWrapper(OwnerController.deleteProfile)
+);
+
 export default router;
