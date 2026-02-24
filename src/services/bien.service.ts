@@ -291,6 +291,21 @@ export const retourBrouillon = async (bienId: string, proprietaireId: string) =>
   return BienRepository.updateStatutAnnonce(bienId, "BROUILLON");
 };
 
+// ─── Annuler une annonce ───────────────────────────────────────────────────────
+
+export const annulerAnnonce = async (bienId: string, proprietaireId: string) => {
+  const bien = await BienRepository.getBienById(bienId);
+  if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+  if (bien.proprietaireId !== proprietaireId) throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+  
+  // On peut annuler une annonce si elle est en attente, publiée ou en brouillon
+  if ((bien.statutAnnonce as string) === "ANNULE") {
+    throw new AppError("Cette annonce est déjà annulée", StatusCodes.BAD_REQUEST);
+  }
+  
+  return BienRepository.updateStatutAnnonce(bienId, "ANNULE" as StatutAnnonce);
+};
+
 // ─── Admin — annonces ─────────────────────────────────────────────────────────
 
 export const countAnnoncesPending = async () => {

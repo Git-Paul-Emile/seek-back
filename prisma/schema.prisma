@@ -152,6 +152,7 @@ enum StatutAnnonce {
   EN_ATTENTE
   PUBLIE
   REJETE
+  ANNULE
 }
 
 model Bien {

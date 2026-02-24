@@ -38,6 +38,14 @@ router.patch(
   controllerWrapper(BienController.retourBrouillon)
 );
 
+/** PATCH /api/biens/:id/annuler — annuler définitivement une annonce */
+router.patch(
+  "/:id/annuler",
+  authenticateOwner,
+  validateId,
+  controllerWrapper(BienController.annulerAnnonce)
+);
+
 /** GET /api/biens — liste des biens du propriétaire */
 router.get(
   "/",

@@ -156,6 +156,9 @@ export const getBiensByProprietaire = async (proprietaireId: string) => {
       typeLogement: { select: { id: true, nom: true, slug: true } },
       typeTransaction: { select: { id: true, nom: true, slug: true } },
       statutBien: { select: { id: true, nom: true, slug: true } },
+      proprietaire: {
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+      },
     },
   });
 };
@@ -188,25 +191,35 @@ export const countAnnoncesPending = async () => {
 };
 
 export const getAnnoncesCounts = async () => {
-  const [brouillon, en_attente, publie, rejete] = await prisma.$transaction([
+  const [brouillon, en_attente, publie, rejete, annule] = await prisma.$transaction([
     prisma.bien.count({ where: { statutAnnonce: "BROUILLON" } }),
     prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } }),
     prisma.bien.count({ where: { statutAnnonce: "PUBLIE" } }),
     prisma.bien.count({ where: { statutAnnonce: "REJETE" } }),
+    prisma.bien.count({ where: { statutAnnonce: "ANNULE" as any } }),
   ]);
-  return { BROUILLON: brouillon, EN_ATTENTE: en_attente, PUBLIE: publie, REJETE: rejete };
+  return { BROUILLON: brouillon, EN_ATTENTE: en_attente, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
 };
 
 export const getAnnonces = async (params: {
   statut?: StatutAnnonce;
   page?: number;
   limit?: number;
+  includeAnnonule?: boolean;
 }) => {
   const page = params.page ?? 1;
   const limit = params.limit ?? 20;
   const skip = (page - 1) * limit;
 
-  const where = params.statut ? { statutAnnonce: params.statut } : {};
+  // Si un filtre de statut spécifique est demandé, l'utiliser tel quel
+  // Sinon, exclure les annulées par défaut (pour la vue "Tous")
+  let where: any = {};
+  if (params.statut) {
+    where.statutAnnonce = params.statut;
+  } else if (!params.includeAnnonule) {
+    // Pas de filtre et pas explicitement demandé - exclure les annulées
+    where.statutAnnonce = { not: "ANNULE" as any };
+  }
 
   const [items, total] = await prisma.$transaction([
     prisma.bien.findMany({
@@ -236,7 +249,10 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   const biens = await prisma.bien.findMany({
-    where: { statutAnnonce: "PUBLIE" },
+    where: { 
+      statutAnnonce: "PUBLIE",
+      // Exclure automatiquement les annonces annulées
+    },
     take: limit,
     orderBy: { createdAt: "desc" },
     include: {
@@ -257,7 +273,11 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
 
 export const getAnnoncePublieById = async (id: string) => {
   return prisma.bien.findFirst({
-    where: { id, statutAnnonce: "PUBLIE" },
+    where: { 
+      id, 
+      // Exclure les annonces annulées - elles ne doivent pas être visibles
+      statutAnnonce: { not: "ANNULE" as any }
+    },
     include: {
       typeLogement: true,
       typeTransaction: true,
@@ -392,7 +412,7 @@ export const getAnnoncesSimilairesWithScore = async (
   // Liste des IDs à exclure (le bien actuel)
   const excludedIds = [bienId];
 
-  // Requête principale: même ville et même transaction
+  // Requête principale: même ville et même transaction (exclut automatiquement les annulées)
   let candidates = await prisma.bien.findMany({
     where: {
       statutAnnonce: "PUBLIE",
