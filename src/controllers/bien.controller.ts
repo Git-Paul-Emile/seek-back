@@ -146,14 +146,12 @@ export const getAnnoncesSimilaires = async (req: Request, res: Response): Promis
     throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
   }
 
-  const limit = parseInt(req.query.limit as string) || 4;
-  const similaires = await BienService.getAnnoncesSimilaires(
-    bienId,
-    bien.typeLogementId,
-    bien.typeTransactionId,
-    bien.ville,
-    limit
-  );
+  // Paramètre limit optionnel: défaut 4, max 6 ( Desktop UX)
+  let limit = parseInt(req.query.limit as string) || 4;
+  limit = Math.min(Math.max(limit, 3), 6); // Entre 3 et 6
+
+  const similaires = await BienService.getAnnoncesSimilaires(bienId, limit);
+  
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Annonces similaires récupérées", data: similaires })
   );

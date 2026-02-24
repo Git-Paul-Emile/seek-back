@@ -276,89 +276,215 @@ export const getAnnoncePublieById = async (id: string) => {
   });
 };
 
-// ─── Public — annonces similaires ───────────────────────────────────────────
+// ─── Public — annonces similaires avec système de score ───────────────────────
 
+// Type pour un bien avec les relations de base
+export interface BienWithRelations {
+  id: string;
+  titre: string | null;
+  description: string | null;
+  typeLogementId: string | null;
+  typeTransactionId: string | null;
+  statutBienId: string | null;
+  proprietaireId: string;
+  pays: string | null;
+  region: string | null;
+  ville: string | null;
+  quartier: string | null;
+  adresse: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  surface: number | null;
+  nbChambres: number | null;
+  nbSdb: number | null;
+  prix: number | null;
+  photos: string[];
+  statutAnnonce: string;
+  createdAt: Date;
+  updatedAt: Date;
+  typeLogement: { id: string; nom: string; slug: string } | null;
+  typeTransaction: { id: string; nom: string; slug: string } | null;
+  statutBien: { id: string; nom: string; slug: string } | null;
+}
+
+interface SimilarityScore {
+  bien: BienWithRelations;
+  score: number;
+}
+
+/**
+ * Calcule le score de similarité entre deux biens
+ * 
+ * Critères de score:
+ * - Même type de logement: +30 points
+ * - Même quartier: +25 points  
+ * - Prix ±20%: +25 points
+ * - Prix ±10% supplémentaire: +15 points
+ * - Même transaction (vente/location): +20 points
+ */
+function calculateSimilarityScore(
+  bien: BienWithRelations,
+  referenceBien: BienWithRelations
+): number {
+  if (!bien || !referenceBien) return 0;
+
+  let score = 0;
+
+  // Même type de logement (+30 points)
+  if (bien.typeLogementId && referenceBien.typeLogementId && 
+      bien.typeLogementId === referenceBien.typeLogementId) {
+    score += 30;
+  }
+
+  // Même quartier (+25 points)
+  if (bien.quartier && referenceBien.quartier &&
+      bien.quartier.toLowerCase().trim() === referenceBien.quartier.toLowerCase().trim()) {
+    score += 25;
+  }
+
+  // Prix dans la plage ±20% (+25 points)
+  if (bien.prix && referenceBien.prix && referenceBien.prix > 0) {
+    const priceDiff = Math.abs(bien.prix - referenceBien.prix) / referenceBien.prix;
+    
+    if (priceDiff <= 0.20) {
+      score += 25;
+    } else if (priceDiff <= 0.50) {
+      // Prix entre 20% et 50% de différence (+10 points)
+      score += 10;
+    }
+    
+    // Bonus supplémentaire pour prix très proche ±10% (+15 points)
+    if (priceDiff <= 0.10) {
+      score += 15;
+    }
+  }
+
+  // Même type de transaction (vente/location) (+20 points)
+  if (bien.typeTransactionId && referenceBien.typeTransactionId &&
+      bien.typeTransactionId === referenceBien.typeTransactionId) {
+    score += 20;
+  }
+
+  return score;
+}
+
+export const getAnnoncesSimilairesWithScore = async (
+  bienId: string,
+  limit: number = 4
+): Promise<BienWithRelations[]> => {
+  // Récupérer le bien de référence (version légère)
+  const referenceBien = await prisma.bien.findUnique({
+    where: { id: bienId },
+    select: {
+      id: true,
+      typeLogementId: true,
+      typeTransactionId: true,
+      ville: true,
+      quartier: true,
+      prix: true,
+    },
+  });
+  
+  if (!referenceBien) {
+    return [];
+  }
+
+  // Liste des IDs à exclure (le bien actuel)
+  const excludedIds = [bienId];
+
+  // Requête principale: même ville et même transaction
+  let candidates = await prisma.bien.findMany({
+    where: {
+      statutAnnonce: "PUBLIE",
+      id: { notIn: excludedIds },
+      ville: referenceBien.ville,
+      typeTransactionId: referenceBien.typeTransactionId,
+    },
+    include: {
+      typeLogement: { select: { id: true, nom: true, slug: true } },
+      typeTransaction: { select: { id: true, nom: true, slug: true } },
+      statutBien: { select: { id: true, nom: true, slug: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // Ajouter les IDs trouvés à la liste d'exclusion
+  const foundIds = [...excludedIds, ...candidates.map(b => b.id)];
+
+  // Si pas assez de résultats, élargir: même transaction mais autre ville
+  if (candidates.length < limit) {
+    const remainingLimit = limit - candidates.length;
+    const otherCandidates = await prisma.bien.findMany({
+      where: {
+        statutAnnonce: "PUBLIE",
+        id: { notIn: foundIds },
+        typeTransactionId: referenceBien.typeTransactionId,
+        // Exclure si ville définie mais différente
+        ...(referenceBien.ville ? {
+          NOT: {
+            ville: referenceBien.ville
+          }
+        } : {})
+      },
+      include: {
+        typeLogement: { select: { id: true, nom: true, slug: true } },
+        typeTransaction: { select: { id: true, nom: true, slug: true } },
+        statutBien: { select: { id: true, nom: true, slug: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: remainingLimit * 2,
+    });
+    
+    candidates = [...candidates, ...otherCandidates];
+    foundIds.push(...otherCandidates.map(b => b.id));
+  }
+
+  // Si toujours pas assez, prendre d'autres transactions de la même ville
+  if (candidates.length < limit) {
+    const remainingLimit = limit - candidates.length;
+    const fallbackCandidates = await prisma.bien.findMany({
+      where: {
+        statutAnnonce: "PUBLIE",
+        id: { notIn: foundIds },
+        ville: referenceBien.ville,
+      },
+      include: {
+        typeLogement: { select: { id: true, nom: true, slug: true } },
+        typeTransaction: { select: { id: true, nom: true, slug: true } },
+        statutBien: { select: { id: true, nom: true, slug: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: remainingLimit * 2,
+    });
+    
+    candidates = [...candidates, ...fallbackCandidates];
+  }
+
+  // Calculer le score pour chaque candidat
+  const scoredCandidates: SimilarityScore[] = candidates.map(bien => ({
+    bien: bien as BienWithRelations,
+    score: calculateSimilarityScore(bien as BienWithRelations, referenceBien as BienWithRelations),
+  }));
+
+  // Trier par score décroissant et prendre les meilleurs
+  scoredCandidates.sort((a, b) => b.score - a.score);
+
+  // Retourner uniquement les biens avec un score > 0 (pertinents)
+  const relevantResults = scoredCandidates
+    .filter(scored => scored.score > 0)
+    .slice(0, limit)
+    .map(scored => scored.bien);
+
+  return relevantResults;
+};
+
+// Ancienne méthode conservée pour compatibilité (délègue vers la nouvelle)
 export const getAnnoncesSimilaires = async (
   bienId: string,
-  typeLogementId: string | null,
-  typeTransactionId: string | null,
-  ville: string | null,
+  _typeLogementId: string | null,
+  _typeTransactionId: string | null,
+  _ville: string | null,
   limit: number = 4
 ) => {
-  // Build conditions for similar ads
-  const conditions: {
-    statutAnnonce: "PUBLIE";
-    id: { not: string };
-    typeLogementId?: string | null;
-    typeTransactionId?: string | null;
-    ville?: string | null;
-  }[] = [];
-
-  // Start with base condition
-  let whereClause: Record<string, unknown> = {
-    statutAnnonce: "PUBLIE",
-    id: { not: bienId },
-  };
-
-  // Priority 1: Same typeLogement + same typeTransaction + same ville
-  const priority1 = await prisma.bien.findMany({
-    where: {
-      ...whereClause,
-      typeLogementId,
-      typeTransactionId,
-      ville,
-    },
-    take: limit,
-    orderBy: { createdAt: "desc" },
-    include: {
-      typeLogement: { select: { id: true, nom: true, slug: true } },
-      typeTransaction: { select: { id: true, nom: true, slug: true } },
-      statutBien: { select: { id: true, nom: true, slug: true } },
-    },
-  });
-
-  if (priority1.length >= limit) {
-    return priority1;
-  }
-
-  // Priority 2: Same typeLogement + same typeTransaction (any city)
-  const remaining1 = limit - priority1.length;
-  const priority2 = await prisma.bien.findMany({
-    where: {
-      ...whereClause,
-      typeLogementId,
-      typeTransactionId,
-      id: { notIn: priority1.map((b) => b.id) },
-    },
-    take: remaining1,
-    orderBy: { createdAt: "desc" },
-    include: {
-      typeLogement: { select: { id: true, nom: true, slug: true } },
-      typeTransaction: { select: { id: true, nom: true, slug: true } },
-      statutBien: { select: { id: true, nom: true, slug: true } },
-    },
-  });
-
-  if (priority1.length + priority2.length >= limit) {
-    return [...priority1, ...priority2];
-  }
-
-  // Priority 3: Same typeLogement only
-  const remaining2 = limit - (priority1.length + priority2.length);
-  const priority3 = await prisma.bien.findMany({
-    where: {
-      ...whereClause,
-      typeLogementId,
-      id: { notIn: [...priority1.map((b) => b.id), ...priority2.map((b) => b.id)] },
-    },
-    take: remaining2,
-    orderBy: { createdAt: "desc" },
-    include: {
-      typeLogement: { select: { id: true, nom: true, slug: true } },
-      typeTransaction: { select: { id: true, nom: true, slug: true } },
-      statutBien: { select: { id: true, nom: true, slug: true } },
-    },
-  });
-
-  return [...priority1, ...priority2, ...priority3];
+  return getAnnoncesSimilairesWithScore(bienId, limit);
 };

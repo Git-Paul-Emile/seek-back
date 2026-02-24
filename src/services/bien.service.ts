@@ -1,4 +1,5 @@
 import * as BienRepository from "../repositories/bien.repository.js";
+import type { BienWithRelations } from "../repositories/bien.repository.js";
 import * as CloudinaryService from "./cloudinary.service.js";
 import type { SaveDraftInput } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -368,20 +369,19 @@ export const signalerAnnonce = async (
   return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
 };
 
-// ─── Public — annonces similaires ───────────────────────────────────────────
+// ─── Public — annonces similaires avec système de score ─────────────────────
 
 export const getAnnoncesSimilaires = async (
   bienId: string,
-  typeLogementId: string | null,
-  typeTransactionId: string | null,
-  ville: string | null,
   limit: number = 4
-) => {
-  return BienRepository.getAnnoncesSimilaires(
-    bienId,
-    typeLogementId,
-    typeTransactionId,
-    ville,
-    limit
-  );
+): Promise<BienWithRelations[]> => {
+  // Récupérer le bien de référence pour avoir les infos complètes
+  const bien = await BienRepository.getBienById(bienId);
+  
+  if (!bien) {
+    return [];
+  }
+  
+  // Appeler la nouvelle méthode avec score
+  return BienRepository.getAnnoncesSimilairesWithScore(bienId, limit);
 };
