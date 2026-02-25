@@ -191,14 +191,14 @@ export const countAnnoncesPending = async () => {
 };
 
 export const getAnnoncesCounts = async () => {
-  const [brouillon, en_attente, publie, rejete, annule] = await prisma.$transaction([
-    prisma.bien.count({ where: { statutAnnonce: "BROUILLON" } }),
+  const [en_attente, publie, rejete, annule] = await prisma.$transaction([
     prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } }),
     prisma.bien.count({ where: { statutAnnonce: "PUBLIE" } }),
     prisma.bien.count({ where: { statutAnnonce: "REJETE" } }),
     prisma.bien.count({ where: { statutAnnonce: "ANNULE" as any } }),
   ]);
-  return { BROUILLON: brouillon, EN_ATTENTE: en_attente, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
+  // Les brouillons ne sont plus affichés dans l'admin (ce sont des brouillons des propriétaires)
+  return { EN_ATTENTE: en_attente, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
 };
 
 export const getAnnonces = async (params: {
@@ -206,19 +206,22 @@ export const getAnnonces = async (params: {
   page?: number;
   limit?: number;
   includeAnnonule?: boolean;
+  includeBrouillon?: boolean;
 }) => {
   const page = params.page ?? 1;
   const limit = params.limit ?? 20;
   const skip = (page - 1) * limit;
 
-  // Si un filtre de statut spécifique est demandé, l'utiliser tel quel
-  // Sinon, exclure les annulées par défaut (pour la vue "Tous")
+  // Par défaut, exclure les brouillons (ce sont des brouillons des propriétaires)
+  // On n'affiche les brouillons que si explicitement demandé via includeBrouillon
   let where: any = {};
+  
   if (params.statut) {
+    // Si un filtre de statut spécifique est demandé, l'utiliser tel quel
     where.statutAnnonce = params.statut;
-  } else if (!params.includeAnnonule) {
-    // Pas de filtre et pas explicitement demandé - exclure les annulées
-    where.statutAnnonce = { not: "ANNULE" as any };
+  } else {
+    // Pas de filtre de statut - exclure annulés et brouillons par défaut
+    where.statutAnnonce = { notIn: ["ANNULE" as any, "BROUILLON" as any] };
   }
 
   const [items, total] = await prisma.$transaction([
