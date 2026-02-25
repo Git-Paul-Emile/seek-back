@@ -336,14 +336,21 @@ interface SimilarityScore {
 }
 
 /**
- * Calcule le score de similarité entre deux biens
- * 
- * Critères de score:
- * - Même type de logement: +30 points
- * - Même quartier: +25 points  
- * - Prix ±20%: +25 points
- * - Prix ±10% supplémentaire: +15 points
- * - Même transaction (vente/location): +20 points
+ * Score de similarité — adapté aux marchés immobiliers type Seek
+ *
+ * Critères (score max ≈ 135) :
+ *   +35  même type de transaction (vente / location)  — fondamental
+ *   +30  même type de logement                        — très important
+ *   +20  même quartier                                — fort signal géographique
+ *   +10  même ville (si quartier différent)           — signal géographique modéré
+ *   +20  prix ±15 %                                   — très proche
+ *   +12  prix ±30 %                                   — proche
+ *    +5  prix ±50 %                                   — acceptable
+ *   +10  surface ±30 %                                — physiquement comparable
+ *   +10  nb chambres identique                        — même configuration
+ *    +5  nb chambres ±1                               — configuration proche
+ *
+ * Seuil de pertinence : >= 35 (au moins même type de transaction)
  */
 function calculateSimilarityScore(
   bien: BienWithRelations,
@@ -353,49 +360,71 @@ function calculateSimilarityScore(
 
   let score = 0;
 
-  // Même type de logement (+30 points)
-  if (bien.typeLogementId && referenceBien.typeLogementId && 
+  // 1. Même type de transaction — FONDAMENTAL
+  if (bien.typeTransactionId && referenceBien.typeTransactionId &&
+      bien.typeTransactionId === referenceBien.typeTransactionId) {
+    score += 35;
+  }
+
+  // 2. Même type de logement
+  if (bien.typeLogementId && referenceBien.typeLogementId &&
       bien.typeLogementId === referenceBien.typeLogementId) {
     score += 30;
   }
 
-  // Même quartier (+25 points)
-  if (bien.quartier && referenceBien.quartier &&
-      bien.quartier.toLowerCase().trim() === referenceBien.quartier.toLowerCase().trim()) {
-    score += 25;
+  // 3. Géographie
+  const sameVille = bien.ville && referenceBien.ville &&
+    bien.ville.toLowerCase().trim() === referenceBien.ville.toLowerCase().trim();
+  const sameQuartier = bien.quartier && referenceBien.quartier &&
+    bien.quartier.toLowerCase().trim() === referenceBien.quartier.toLowerCase().trim();
+
+  if (sameQuartier) {
+    score += 20; // quartier identique — très fort signal
+  } else if (sameVille) {
+    score += 10; // même ville, quartiers différents
   }
 
-  // Prix dans la plage ±20% (+25 points)
+  // 4. Prix similaire
   if (bien.prix && referenceBien.prix && referenceBien.prix > 0) {
     const priceDiff = Math.abs(bien.prix - referenceBien.prix) / referenceBien.prix;
-    
-    if (priceDiff <= 0.20) {
-      score += 25;
+    if (priceDiff <= 0.15) {
+      score += 20;
+    } else if (priceDiff <= 0.30) {
+      score += 12;
     } else if (priceDiff <= 0.50) {
-      // Prix entre 20% et 50% de différence (+10 points)
-      score += 10;
-    }
-    
-    // Bonus supplémentaire pour prix très proche ±10% (+15 points)
-    if (priceDiff <= 0.10) {
-      score += 15;
+      score += 5;
     }
   }
 
-  // Même type de transaction (vente/location) (+20 points)
-  if (bien.typeTransactionId && referenceBien.typeTransactionId &&
-      bien.typeTransactionId === referenceBien.typeTransactionId) {
-    score += 20;
+  // 5. Surface similaire ±30 %
+  if (bien.surface && referenceBien.surface && referenceBien.surface > 0) {
+    const surfaceDiff = Math.abs(bien.surface - referenceBien.surface) / referenceBien.surface;
+    if (surfaceDiff <= 0.30) {
+      score += 10;
+    }
+  }
+
+  // 6. Nombre de chambres
+  if (bien.nbChambres != null && referenceBien.nbChambres != null) {
+    const chambreDiff = Math.abs(bien.nbChambres - referenceBien.nbChambres);
+    if (chambreDiff === 0) {
+      score += 10;
+    } else if (chambreDiff === 1) {
+      score += 5;
+    }
   }
 
   return score;
 }
 
+// Score minimum pour qu'une annonce soit considérée pertinente
+const MIN_SIMILARITY_SCORE = 35; // au moins même type de transaction
+
 export const getAnnoncesSimilairesWithScore = async (
   bienId: string,
   limit: number = 4
 ): Promise<BienWithRelations[]> => {
-  // Récupérer le bien de référence (version légère)
+  // Récupérer le bien de référence avec tous les champs nécessaires au score
   const referenceBien = await prisma.bien.findUnique({
     where: { id: bienId },
     select: {
@@ -405,23 +434,26 @@ export const getAnnoncesSimilairesWithScore = async (
       ville: true,
       quartier: true,
       prix: true,
+      surface: true,
+      nbChambres: true,
     },
   });
-  
+
   if (!referenceBien) {
     return [];
   }
 
-  // Liste des IDs à exclure (le bien actuel)
   const excludedIds = [bienId];
+  const POOL_FACTOR = 4; // candidats à évaluer par slot demandé
 
-  // Requête principale: même ville et même transaction (exclut automatiquement les annulées)
+  // ── Niveau 1 : même ville + même transaction + même type de logement ──────
   let candidates = await prisma.bien.findMany({
     where: {
       statutAnnonce: "PUBLIE",
       id: { notIn: excludedIds },
       ville: referenceBien.ville,
       typeTransactionId: referenceBien.typeTransactionId,
+      typeLogementId: referenceBien.typeLogementId,
     },
     include: {
       typeLogement: { select: { id: true, nom: true, slug: true } },
@@ -431,45 +463,16 @@ export const getAnnoncesSimilairesWithScore = async (
     orderBy: { createdAt: "desc" },
   });
 
-  // Ajouter les IDs trouvés à la liste d'exclusion
   const foundIds = [...excludedIds, ...candidates.map(b => b.id)];
 
-  // Si pas assez de résultats, élargir: même transaction mais autre ville
-  if (candidates.length < limit) {
-    const remainingLimit = limit - candidates.length;
-    const otherCandidates = await prisma.bien.findMany({
-      where: {
-        statutAnnonce: "PUBLIE",
-        id: { notIn: foundIds },
-        typeTransactionId: referenceBien.typeTransactionId,
-        // Exclure si ville définie mais différente
-        ...(referenceBien.ville ? {
-          NOT: {
-            ville: referenceBien.ville
-          }
-        } : {})
-      },
-      include: {
-        typeLogement: { select: { id: true, nom: true, slug: true } },
-        typeTransaction: { select: { id: true, nom: true, slug: true } },
-        statutBien: { select: { id: true, nom: true, slug: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: remainingLimit * 2,
-    });
-    
-    candidates = [...candidates, ...otherCandidates];
-    foundIds.push(...otherCandidates.map(b => b.id));
-  }
-
-  // Si toujours pas assez, prendre d'autres transactions de la même ville
-  if (candidates.length < limit) {
-    const remainingLimit = limit - candidates.length;
-    const fallbackCandidates = await prisma.bien.findMany({
+  // ── Niveau 2 : même ville + même transaction (type logement libre) ─────────
+  if (candidates.length < limit * POOL_FACTOR) {
+    const extras = await prisma.bien.findMany({
       where: {
         statutAnnonce: "PUBLIE",
         id: { notIn: foundIds },
         ville: referenceBien.ville,
+        typeTransactionId: referenceBien.typeTransactionId,
       },
       include: {
         typeLogement: { select: { id: true, nom: true, slug: true } },
@@ -477,28 +480,45 @@ export const getAnnoncesSimilairesWithScore = async (
         statutBien: { select: { id: true, nom: true, slug: true } },
       },
       orderBy: { createdAt: "desc" },
-      take: remainingLimit * 2,
+      take: limit * POOL_FACTOR,
     });
-    
-    candidates = [...candidates, ...fallbackCandidates];
+    candidates = [...candidates, ...extras];
+    foundIds.push(...extras.map(b => b.id));
   }
 
-  // Calculer le score pour chaque candidat
-  const scoredCandidates: SimilarityScore[] = candidates.map(bien => ({
-    bien: bien as BienWithRelations,
-    score: calculateSimilarityScore(bien as BienWithRelations, referenceBien as BienWithRelations),
+  // ── Niveau 3 : même transaction + même type logement (autre ville) ────────
+  if (candidates.length < limit * POOL_FACTOR) {
+    const extras = await prisma.bien.findMany({
+      where: {
+        statutAnnonce: "PUBLIE",
+        id: { notIn: foundIds },
+        typeTransactionId: referenceBien.typeTransactionId,
+        typeLogementId: referenceBien.typeLogementId,
+        ...(referenceBien.ville ? { NOT: { ville: referenceBien.ville } } : {}),
+      },
+      include: {
+        typeLogement: { select: { id: true, nom: true, slug: true } },
+        typeTransaction: { select: { id: true, nom: true, slug: true } },
+        statutBien: { select: { id: true, nom: true, slug: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: limit * POOL_FACTOR,
+    });
+    candidates = [...candidates, ...extras];
+  }
+
+  // ── Scoring + tri ─────────────────────────────────────────────────────────
+  const scored: SimilarityScore[] = candidates.map(b => ({
+    bien: b as BienWithRelations,
+    score: calculateSimilarityScore(b as BienWithRelations, referenceBien as BienWithRelations),
   }));
 
-  // Trier par score décroissant et prendre les meilleurs
-  scoredCandidates.sort((a, b) => b.score - a.score);
+  scored.sort((a, b) => b.score - a.score);
 
-  // Retourner uniquement les biens avec un score > 0 (pertinents)
-  const relevantResults = scoredCandidates
-    .filter(scored => scored.score > 0)
+  return scored
+    .filter(s => s.score >= MIN_SIMILARITY_SCORE)
     .slice(0, limit)
-    .map(scored => scored.bien);
-
-  return relevantResults;
+    .map(s => s.bien);
 };
 
 // Ancienne méthode conservée pour compatibilité (délègue vers la nouvelle)
