@@ -143,6 +143,112 @@ export const updateStatutAnnonce = async (
   });
 };
 
+// ─── Révision d'une annonce publiée ──────────────────────────────────────────
+
+export interface PendingRevisionData {
+  titre?: string | null;
+  description?: string | null;
+  typeLogementId?: string | null;
+  typeTransactionId?: string | null;
+  statutBienId?: string | null;
+  pays?: string | null;
+  region?: string | null;
+  ville?: string | null;
+  quartier?: string | null;
+  adresse?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  surface?: number | null;
+  nbChambres?: number | null;
+  nbSdb?: number | null;
+  nbSalons?: number | null;
+  nbCuisines?: number | null;
+  nbWc?: number | null;
+  etage?: number | null;
+  nbEtages?: number | null;
+  meuble?: boolean;
+  fumeurs?: boolean;
+  animaux?: boolean;
+  parking?: boolean;
+  ascenseur?: boolean;
+  prix?: number | null;
+  frequencePaiement?: string | null;
+  chargesIncluses?: boolean;
+  caution?: number | null;
+  disponibleLe?: string | null;
+  photos?: string[];
+  equipementIds?: string[];
+  meubles?: { meubleId: string; quantite: number }[];
+  // Resolved labels for display
+  typeLogement?: { nom: string; slug: string } | null;
+  typeTransaction?: { nom: string; slug: string } | null;
+  statutBien?: { nom: string; slug: string } | null;
+}
+
+/** Saves a pending revision on a PUBLIE bien without changing the public-facing data */
+export const soumettreRevision = async (id: string, revisionData: PendingRevisionData) => {
+  return prisma.bien.update({
+    where: { id },
+    data: {
+      hasPendingRevision: true,
+      pendingRevision: revisionData as any,
+    },
+    include: BIEN_INCLUDE,
+  });
+};
+
+/** Admin approves a pending revision — applies revision data to main fields */
+export const approuverRevision = async (id: string) => {
+  const bien = await prisma.bien.findUnique({ where: { id } });
+  if (!bien || !bien.pendingRevision) {
+    throw new Error("Pas de révision en attente");
+  }
+
+  const rev = bien.pendingRevision as PendingRevisionData;
+  const equipementIds = rev.equipementIds ?? [];
+  const meubles = rev.meubles ?? [];
+
+  // Delete old relations
+  await prisma.$transaction([
+    prisma.bienEquipement.deleteMany({ where: { bienId: id } }),
+    prisma.bienMeuble.deleteMany({ where: { bienId: id } }),
+  ]);
+
+  const { equipementIds: _eids, meubles: _mb, typeLogement: _tl, typeTransaction: _tt, statutBien: _sb, disponibleLe, ...rest } = rev;
+
+  return prisma.bien.update({
+    where: { id },
+    data: {
+      ...rest,
+      disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
+      statutAnnonce: "PUBLIE",
+      hasPendingRevision: false,
+      pendingRevision: null as any,
+      noteAdmin: null,
+      ...(equipementIds.length > 0
+        ? { equipements: { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } } }
+        : {}),
+      ...(meubles.length > 0
+        ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
+        : {}),
+    },
+    include: BIEN_INCLUDE,
+  });
+};
+
+/** Admin rejects a pending revision — discards revision, keeps current PUBLIE data */
+export const rejeterRevision = async (id: string, noteAdmin?: string) => {
+  return prisma.bien.update({
+    where: { id },
+    data: {
+      hasPendingRevision: false,
+      pendingRevision: null as any,
+      noteAdmin: noteAdmin ?? null,
+    },
+    include: BIEN_INCLUDE,
+  });
+};
+
 export const createEtablissements = async (items: EtablissementData[]) => {
   if (items.length === 0) return;
   return prisma.etablissement.createMany({ data: items });
@@ -191,14 +297,15 @@ export const countAnnoncesPending = async () => {
 };
 
 export const getAnnoncesCounts = async () => {
-  const [en_attente, publie, rejete, annule] = await prisma.$transaction([
+  const [en_attente, revisions, publie, rejete, annule] = await prisma.$transaction([
     prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } }),
-    prisma.bien.count({ where: { statutAnnonce: "PUBLIE" } }),
+    prisma.bien.count({ where: { statutAnnonce: "PUBLIE", hasPendingRevision: true } }),
+    prisma.bien.count({ where: { statutAnnonce: "PUBLIE", hasPendingRevision: false } }),
     prisma.bien.count({ where: { statutAnnonce: "REJETE" } }),
     prisma.bien.count({ where: { statutAnnonce: "ANNULE" as any } }),
   ]);
-  // Les brouillons ne sont plus affichés dans l'admin (ce sont des brouillons des propriétaires)
-  return { EN_ATTENTE: en_attente, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
+  // EN_ATTENTE count includes PUBLIE biens with pending revisions
+  return { EN_ATTENTE: en_attente + revisions, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
 };
 
 export const getAnnonces = async (params: {
@@ -215,9 +322,18 @@ export const getAnnonces = async (params: {
   // Par défaut, exclure les brouillons (ce sont des brouillons des propriétaires)
   // On n'affiche les brouillons que si explicitement demandé via includeBrouillon
   let where: any = {};
-  
-  if (params.statut) {
-    // Si un filtre de statut spécifique est demandé, l'utiliser tel quel
+
+  if (params.statut === "EN_ATTENTE") {
+    // EN_ATTENTE inclut aussi les PUBLIE avec révision en attente
+    where.OR = [
+      { statutAnnonce: "EN_ATTENTE" },
+      { statutAnnonce: "PUBLIE", hasPendingRevision: true },
+    ];
+  } else if (params.statut === "PUBLIE") {
+    // PUBLIE n'inclut que les biens publiés sans révision en attente
+    where.statutAnnonce = "PUBLIE";
+    where.hasPendingRevision = false;
+  } else if (params.statut) {
     where.statutAnnonce = params.statut;
   } else {
     // Pas de filtre de statut - exclure annulés et brouillons par défaut

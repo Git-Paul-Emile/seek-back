@@ -209,9 +209,13 @@ model Bien {
   photos            String[]
 
   // État & Publication
-  actif             Boolean       @default(true)
-  statutAnnonce     StatutAnnonce @default(BROUILLON)
-  noteAdmin         String?
+  actif              Boolean       @default(true)
+  statutAnnonce      StatutAnnonce @default(BROUILLON)
+  noteAdmin          String?
+
+  // Révision d'une annonce publiée (modification en attente de validation admin)
+  hasPendingRevision Boolean   @default(false)
+  pendingRevision    Json?
 
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt

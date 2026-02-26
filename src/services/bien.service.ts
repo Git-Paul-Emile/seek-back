@@ -1,5 +1,5 @@
 import * as BienRepository from "../repositories/bien.repository.js";
-import type { BienWithRelations } from "../repositories/bien.repository.js";
+import type { BienWithRelations, PendingRevisionData } from "../repositories/bien.repository.js";
 import * as CloudinaryService from "./cloudinary.service.js";
 import type { SaveDraftInput } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -291,6 +291,152 @@ export const retourBrouillon = async (bienId: string, proprietaireId: string) =>
   return BienRepository.updateStatutAnnonce(bienId, "BROUILLON");
 };
 
+// ─── Soumettre une révision (modification d'une annonce publiée) ──────────────
+
+export const soumettreRevision = async (
+  bienId: string,
+  proprietaireId: string,
+  input: SaveDraftInput,
+  files: Express.Multer.File[]
+) => {
+  const bien = await BienRepository.getBienById(bienId);
+  if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+  if (bien.proprietaireId !== proprietaireId) throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+  if (bien.statutAnnonce !== "PUBLIE") {
+    throw new AppError("Seules les annonces publiées peuvent faire l'objet d'une révision", StatusCodes.BAD_REQUEST);
+  }
+  if (bien.hasPendingRevision) {
+    throw new AppError("Une révision est déjà en attente de validation", StatusCodes.BAD_REQUEST);
+  }
+
+  // Upload new photos if provided
+  let newPhotoUrls: string[] = [];
+  if (files.length > 0) {
+    for (const file of files) {
+      const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
+      newPhotoUrls.push(result.url);
+    }
+  }
+
+  const { existingPhotos = [], disponibleLe, equipementIds, meubles, ...rest } = input;
+  const photos = [...existingPhotos, ...newPhotoUrls];
+
+  const normalizeString = (value: string | null | undefined) => {
+    const trimmed = value?.trim();
+    return trimmed ? trimmed : null;
+  };
+
+  const normalizeNumber = (value: number | null | undefined) =>
+    typeof value === "number" && Number.isFinite(value) ? value : null;
+
+  const sortStrings = (values: string[] | null | undefined) =>
+    [...(values ?? [])].sort();
+
+  const sortMeubles = (
+    values: { meubleId: string; quantite: number }[] | null | undefined
+  ) =>
+    [...(values ?? [])]
+      .map((item) => ({ meubleId: item.meubleId, quantite: item.quantite ?? 1 }))
+      .sort((a, b) =>
+        a.meubleId === b.meubleId
+          ? a.quantite - b.quantite
+          : a.meubleId.localeCompare(b.meubleId)
+      );
+
+  const currentComparable = {
+    titre: normalizeString(bien.titre),
+    description: normalizeString(bien.description),
+    typeLogementId: bien.typeLogementId ?? null,
+    typeTransactionId: bien.typeTransactionId ?? null,
+    statutBienId: bien.statutBienId ?? null,
+    pays: normalizeString(bien.pays),
+    region: normalizeString(bien.region),
+    ville: normalizeString(bien.ville),
+    quartier: normalizeString(bien.quartier),
+    adresse: normalizeString(bien.adresse),
+    latitude: normalizeNumber(bien.latitude),
+    longitude: normalizeNumber(bien.longitude),
+    surface: normalizeNumber(bien.surface),
+    nbChambres: normalizeNumber(bien.nbChambres),
+    nbSdb: normalizeNumber(bien.nbSdb),
+    nbSalons: normalizeNumber(bien.nbSalons),
+    nbCuisines: normalizeNumber(bien.nbCuisines),
+    nbWc: normalizeNumber(bien.nbWc),
+    etage: normalizeNumber(bien.etage),
+    meuble: !!bien.meuble,
+    fumeurs: !!bien.fumeurs,
+    animaux: !!bien.animaux,
+    parking: !!bien.parking,
+    ascenseur: !!bien.ascenseur,
+    prix: normalizeNumber(bien.prix),
+    frequencePaiement: normalizeString(bien.frequencePaiement),
+    chargesIncluses: !!bien.chargesIncluses,
+    caution: normalizeNumber(bien.caution),
+    disponibleLe: bien.disponibleLe ? bien.disponibleLe.toISOString().split("T")[0] : null,
+    photos,
+    equipementIds: sortStrings(bien.equipements?.map((e) => e.equipementId)),
+    meubles: sortMeubles(
+      bien.meubles?.map((m) => ({ meubleId: m.meubleId, quantite: m.quantite }))
+    ),
+  };
+
+  const nextComparable = {
+    titre: normalizeString(rest.titre as string | null | undefined),
+    description: normalizeString(rest.description as string | null | undefined),
+    typeLogementId: (rest.typeLogementId as string | null | undefined) ?? null,
+    typeTransactionId: (rest.typeTransactionId as string | null | undefined) ?? null,
+    statutBienId: (rest.statutBienId as string | null | undefined) ?? null,
+    pays: normalizeString(rest.pays as string | null | undefined),
+    region: normalizeString(rest.region as string | null | undefined),
+    ville: normalizeString(rest.ville as string | null | undefined),
+    quartier: normalizeString(rest.quartier as string | null | undefined),
+    adresse: normalizeString(rest.adresse as string | null | undefined),
+    latitude: normalizeNumber(rest.latitude as number | null | undefined),
+    longitude: normalizeNumber(rest.longitude as number | null | undefined),
+    surface: normalizeNumber(rest.surface as number | null | undefined),
+    nbChambres: normalizeNumber(rest.nbChambres as number | null | undefined),
+    nbSdb: normalizeNumber(rest.nbSdb as number | null | undefined),
+    nbSalons: normalizeNumber(rest.nbSalons as number | null | undefined),
+    nbCuisines: normalizeNumber(rest.nbCuisines as number | null | undefined),
+    nbWc: normalizeNumber(rest.nbWc as number | null | undefined),
+    etage: normalizeNumber(rest.etage as number | null | undefined),
+    meuble: !!rest.meuble,
+    fumeurs: !!rest.fumeurs,
+    animaux: !!rest.animaux,
+    parking: !!rest.parking,
+    ascenseur: !!rest.ascenseur,
+    prix: normalizeNumber(rest.prix as number | null | undefined),
+    frequencePaiement: normalizeString(rest.frequencePaiement as string | null | undefined),
+    chargesIncluses: !!rest.chargesIncluses,
+    caution: normalizeNumber(rest.caution as number | null | undefined),
+    disponibleLe: disponibleLe ?? null,
+    photos,
+    equipementIds: sortStrings(equipementIds),
+    meubles: sortMeubles(meubles),
+  };
+
+  if (JSON.stringify(currentComparable) === JSON.stringify(nextComparable)) {
+    throw new AppError(
+      "Aucune modification détectée. Modifiez au moins un élément avant de soumettre.",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  // Build revision data with resolved labels for display in admin
+  const revisionData: PendingRevisionData = {
+    ...rest,
+    photos,
+    disponibleLe: disponibleLe ?? null,
+    equipementIds: equipementIds ?? [],
+    meubles: meubles ?? [],
+    typeLogement: bien.typeLogement ? { nom: (bien.typeLogement as any).nom, slug: (bien.typeLogement as any).slug } : null,
+    typeTransaction: bien.typeTransaction ? { nom: (bien.typeTransaction as any).nom, slug: (bien.typeTransaction as any).slug } : null,
+    statutBien: bien.statutBien ? { nom: (bien.statutBien as any).nom, slug: (bien.statutBien as any).slug } : null,
+  };
+
+  return BienRepository.soumettreRevision(bienId, revisionData);
+};
+
 // ─── Annuler une annonce ───────────────────────────────────────────────────────
 
 export const annulerAnnonce = async (bienId: string, proprietaireId: string) => {
@@ -332,6 +478,7 @@ export const validerAnnonce = async (
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
 
+  // Cas REVISION (action admin manuelle - legacy)
   if (action === "REVISION") {
     if (bien.statutAnnonce !== "PUBLIE") {
       throw new AppError("Seules les annonces publiées peuvent être mises en révision", StatusCodes.BAD_REQUEST);
@@ -339,6 +486,17 @@ export const validerAnnonce = async (
     return BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
   }
 
+  // Cas : révision en attente sur un bien PUBLIE
+  if (bien.statutAnnonce === "PUBLIE" && bien.hasPendingRevision) {
+    if (action === "APPROUVER") {
+      return BienRepository.approuverRevision(bienId);
+    } else {
+      // REJETER : on conserve l'ancienne version publiée, on efface la révision
+      return BienRepository.rejeterRevision(bienId, note);
+    }
+  }
+
+  // Cas normal : annonce EN_ATTENTE (nouvelle soumission)
   if (bien.statutAnnonce !== "EN_ATTENTE") {
     throw new AppError("Cette annonce n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
   }

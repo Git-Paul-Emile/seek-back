@@ -103,6 +103,33 @@ export const annulerAnnonce = async (req: Request, res: Response): Promise<void>
   );
 };
 
+export const soumettreRevision = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  const files = (req.files as Express.Multer.File[]) ?? [];
+  let body: Record<string, unknown> = {};
+  try {
+    body = req.body.data ? JSON.parse(req.body.data as string) : req.body;
+  } catch {
+    body = req.body;
+  }
+
+  const { saveDraftSchema } = await import("../validators/bien.validator.js");
+  const parsed = saveDraftSchema.safeParse(body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: parsed.error.flatten() })
+    );
+    return;
+  }
+
+  const bien = await BienService.soumettreRevision(req.params.id as string, proprietaireId, parsed.data, files);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Révision soumise pour validation", data: bien })
+  );
+};
+
 export const getBienById = async (req: Request, res: Response): Promise<void> => {
   const bien = await BienService.getBienById(req.params.id as string);
   if (!bien) {

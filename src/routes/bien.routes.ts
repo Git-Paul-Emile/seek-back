@@ -46,6 +46,15 @@ router.patch(
   controllerWrapper(BienController.annulerAnnonce)
 );
 
+/** PATCH /api/biens/:id/soumettre-revision — soumettre une modification d'une annonce publiée */
+router.patch(
+  "/:id/soumettre-revision",
+  authenticateOwner,
+  validateId,
+  uploadPhotosMiddleware,
+  controllerWrapper(BienController.soumettreRevision)
+);
+
 /** GET /api/biens — liste des biens du propriétaire */
 router.get(
   "/",
