@@ -647,3 +647,72 @@ export const getAnnoncesSimilaires = async (
 ) => {
   return getAnnoncesSimilairesWithScore(bienId, limit);
 };
+
+// ─── Stats Propriétaire ───────────────────────────────────────────────────────
+
+export interface OwnerStats {
+  totalBiens: number;
+  byStatut: { statut: string; count: number }[];
+  recentBiens: {
+    id: string;
+    titre: string | null;
+    statutAnnonce: string;
+    ville: string | null;
+    prix: number | null;
+    photos: string[];
+    updatedAt: Date;
+    hasPendingRevision: boolean;
+  }[];
+}
+
+export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats> => {
+  const statuts = ["BROUILLON", "EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"] as const;
+
+  const [totalBiens, countsByStatut, recentBiens] = await Promise.all([
+    prisma.bien.count({ where: { proprietaireId } }),
+    Promise.all(
+      statuts.map(async (s) => {
+        let count: number;
+        if (s === "EN_ATTENTE") {
+          count = await prisma.bien.count({
+            where: {
+              proprietaireId,
+              OR: [
+                { statutAnnonce: "EN_ATTENTE" },
+                { statutAnnonce: "PUBLIE", hasPendingRevision: true },
+              ],
+            },
+          });
+        } else if (s === "PUBLIE") {
+          count = await prisma.bien.count({
+            where: { proprietaireId, statutAnnonce: "PUBLIE", hasPendingRevision: false },
+          });
+        } else {
+          count = await prisma.bien.count({ where: { proprietaireId, statutAnnonce: s } });
+        }
+        return { statut: s, count };
+      })
+    ),
+    prisma.bien.findMany({
+      where: { proprietaireId },
+      orderBy: { updatedAt: "desc" },
+      take: 5,
+      select: {
+        id: true,
+        titre: true,
+        statutAnnonce: true,
+        ville: true,
+        prix: true,
+        photos: true,
+        updatedAt: true,
+        hasPendingRevision: true,
+      },
+    }),
+  ]);
+
+  return {
+    totalBiens,
+    byStatut: countsByStatut,
+    recentBiens,
+  };
+};

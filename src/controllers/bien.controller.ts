@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as BienService from "../services/bien.service.js";
+import { getOwnerStats } from "../repositories/bien.repository.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { saveDraftSchema } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -169,6 +170,19 @@ export const signalerAnnonce = async (req: Request, res: Response): Promise<void
   const result = await BienService.signalerAnnonce(req.params.id as string, motif, description);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: result.message, data: result })
+  );
+};
+
+// ─── Stats propriétaire ───────────────────────────────────────────────────────
+
+export const getOwnerStatsController = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  const stats = await getOwnerStats(proprietaireId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Statistiques récupérées", data: stats })
   );
 };
 

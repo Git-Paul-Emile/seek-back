@@ -7,6 +7,13 @@ import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
 
+/** GET /api/biens/stats — statistiques du propriétaire connecté */
+router.get(
+  "/stats",
+  authenticateOwner,
+  controllerWrapper(BienController.getOwnerStatsController)
+);
+
 /** GET /api/biens/draft — récupérer le brouillon du propriétaire */
 router.get(
   "/draft",
