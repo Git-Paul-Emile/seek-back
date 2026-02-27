@@ -92,6 +92,10 @@ export const prolonger = async (id: string, dateFinBail: Date) => {
   });
 };
 
+export const remove = async (id: string) => {
+  return prisma.bailLocation.delete({ where: { id } });
+};
+
 // ─── Statut bien helper ───────────────────────────────────────────────────────
 
 export const getStatutBienBySlug = async (slug: string) => {

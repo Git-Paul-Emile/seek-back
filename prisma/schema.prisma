@@ -361,13 +361,54 @@ model BailLocation {
   updatedAt         DateTime   @updatedAt
 
   bien          Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
-  locataire     Locataire    @relation(fields: [locataireId], references: [id])
+  locataire     Locataire    @relation(fields: [locataireId], references: [id], onDelete: Cascade)
   proprietaire  Proprietaire @relation(fields: [proprietaireId], references: [id])
+  contrat       Contrat?
 
   @@index([bienId])
   @@index([locataireId])
   @@index([proprietaireId])
   @@index([statut])
+}
+
+// ============================================================
+// CONTRATS
+// ============================================================
+
+enum StatutContrat {
+  BROUILLON
+  ACTIF
+  ARCHIVE
+}
+
+model ModeleContrat {
+  id        String    @id @default(uuid())
+  titre     String
+  typeBail  String?
+  contenu   String    @db.Text
+  actif     Boolean   @default(true)
+  ordre     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  contrats  Contrat[]
+}
+
+model Contrat {
+  id        String        @id @default(uuid())
+  bailId    String        @unique
+  modeleId  String?
+  titre     String
+  contenu   String        @db.Text
+  statut    StatutContrat @default(BROUILLON)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  bail      BailLocation   @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  modele    ModeleContrat? @relation(fields: [modeleId], references: [id], onDelete: SetNull)
+
+  @@index([bailId])
+  @@index([modeleId])
 }
 
 model LocataireRefreshToken {

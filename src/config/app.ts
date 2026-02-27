@@ -23,6 +23,7 @@ import geoRouter from "../routes/geo.routes.js";
 import locataireRouter from "../routes/locataire.routes.js";
 import bailRouter from "../routes/bail.routes.js";
 import locataireAuthRouter from "../routes/locataireAuth.routes.js";
+import modeleContratRouter from "../routes/modeleContrat.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -140,6 +141,9 @@ app.use('/api/biens/:id/bail', bailRouter);
 
 // Auth espace locataire
 app.use('/api/locataire/auth', locataireAuthRouter);
+
+// Modèles de contrat (admin CRUD + owner liste)
+app.use('/api/modeles-contrat', modeleContratRouter);
 
 // ============= GESTION DES ERREURS =============
 

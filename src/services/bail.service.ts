@@ -148,6 +148,28 @@ export const resilierBail = async (
   return updated;
 };
 
+// ─── Annuler un bail (suppression + retour bien à "Libre") ───────────────────
+
+export const annulerBail = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+
+  // Supprimer le bail (contrat supprimé en cascade par Prisma)
+  await BailRepo.remove(bailId);
+
+  // Remettre le bien à "Libre"
+  const statutLibreId = await getStatutId("libre");
+  await BailRepo.updateBienStatut(bienId, statutLibreId);
+};
+
 // ─── Prolonger un bail ────────────────────────────────────────────────────────
 
 export const prolongerBail = async (

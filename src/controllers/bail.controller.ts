@@ -67,6 +67,27 @@ export const creerBail = async (
   );
 };
 
+// ─── Annuler un bail ──────────────────────────────────────────────────────────
+
+export const annulerBail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  await BailService.annulerBail(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Bail annulé — le bien est maintenant Libre",
+      data: null,
+    })
+  );
+};
+
 // ─── Terminer un bail ─────────────────────────────────────────────────────────
 
 export const terminerBail = async (

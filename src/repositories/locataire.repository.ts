@@ -145,7 +145,21 @@ export const update = async (
 };
 
 export const remove = async (id: string) => {
-  return prisma.locataire.delete({ where: { id } });
+  return prisma.$transaction(async (tx) => {
+    // Récupère les IDs des baux pour supprimer les contrats liés
+    const bails = await tx.bailLocation.findMany({
+      where: { locataireId: id },
+      select: { id: true },
+    });
+    const bailIds = bails.map((b) => b.id);
+    if (bailIds.length > 0) {
+      await tx.contrat.deleteMany({ where: { bailId: { in: bailIds } } });
+    }
+    // Supprime tokens et baux manuellement (protection si CASCADE non configuré en DB)
+    await tx.locataireRefreshToken.deleteMany({ where: { locataireId: id } });
+    await tx.bailLocation.deleteMany({ where: { locataireId: id } });
+    return tx.locataire.delete({ where: { id } });
+  });
 };
 
 // ─── Refresh tokens ───────────────────────────────────────────────────────────

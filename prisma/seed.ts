@@ -11,6 +11,7 @@ import { StatutBienSeeder } from './seeders/statut-bien.seeder.js';
 import { MeubleSeeder } from './seeders/meuble.seeder.js';
 import { EquipementSeeder } from './seeders/equipement.seeder.js';
 import { CategorieSeeder } from './seeders/categorie.seeder.js';
+import { ModeleContratSeeder } from './seeders/modeleContrat.seeder.js';
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ const SEEDERS: readonly Seeder[] = [
   new CategorieSeeder(),
   new MeubleSeeder(),
   new EquipementSeeder(),
+  new ModeleContratSeeder(),
 ];
 
 async function main(): Promise<void> {
