@@ -1,0 +1,454 @@
+import * as BienRepository from "../repositories/bien.repository.js";
+import * as CloudinaryService from "./cloudinary.service.js";
+import { AppError } from "../utils/AppError.js";
+import { StatusCodes } from "http-status-codes";
+const ETABLISSEMENT_QUERIES = [
+    { type: "hopital", label: "Hôpital", query: '["amenity"="hospital"]' },
+    { type: "pharmacie", label: "Pharmacie", query: '["amenity"="pharmacy"]' },
+    { type: "ecole_maternelle", label: "École maternelle", query: '["amenity"="kindergarten"]' },
+    { type: "ecole_primaire", label: "École primaire", query: '["amenity"="school"]["school"="primary"]' },
+    { type: "college", label: "Collège", query: '["amenity"="school"]["school"="secondary"]' },
+    { type: "lycee", label: "Lycée", query: '["amenity"="school"]["school"="high_school"]' },
+    { type: "universite", label: "Université", query: '["amenity"="university"]' },
+    { type: "supermarche", label: "Supermarché", query: '["shop"="supermarket"]' },
+    { type: "marche", label: "Marché", query: '["amenity"="marketplace"]' },
+    { type: "boulangerie", label: "Boulangerie", query: '["shop"="bakery"]' },
+    { type: "mosquee", label: "Mosquée", query: '["amenity"="place_of_worship"]["religion"="muslim"]' },
+    { type: "eglise", label: "Église", query: '["amenity"="place_of_worship"]["religion"="christian"]' },
+    { type: "gendarmerie", label: "Gendarmerie", query: '["amenity"="police"]' },
+    { type: "pompiers", label: "Caserne des pompiers", query: '["amenity"="fire_station"]' },
+    { type: "mairie", label: "Mairie", query: '["amenity"="townhall"]' },
+    { type: "arret_bus", label: "Arrêt de bus", query: '["highway"="bus_stop"]' },
+    { type: "station_brt", label: "Station BRT", query: '["railway"="station"]' },
+    { type: "route_principale", label: "Route principale", query: '["highway"="primary"]' },
+];
+function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos((lat1 * Math.PI) / 180) *
+            Math.cos((lat2 * Math.PI) / 180) *
+            Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+async function fetchNearestEtablissements(lat, lon) {
+    const radius = 5000;
+    const results = [];
+    const unionParts = ETABLISSEMENT_QUERIES.map(({ query }) => `node${query}(around:${radius},${lat},${lon});`).join("\n");
+    const overpassQuery = `[out:json][timeout:25];\n(\n${unionParts}\n);\nout body;`;
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const response = await fetch("https://overpass-api.de/api/interpreter", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `data=${encodeURIComponent(overpassQuery)}`,
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!response.ok)
+            return results;
+        const json = await response.json();
+        const elements = json.elements ?? [];
+        for (const { type, label } of ETABLISSEMENT_QUERIES) {
+            let nearest = null;
+            let nearestDist = Infinity;
+            for (const el of elements) {
+                if (!matchesType(el, type))
+                    continue;
+                const dist = haversineDistance(lat, lon, el.lat, el.lon);
+                if (dist < nearestDist) {
+                    nearestDist = dist;
+                    nearest = el;
+                }
+            }
+            if (nearest) {
+                results.push({
+                    bienId: "",
+                    type,
+                    nom: nearest.tags?.name ?? label,
+                    latitude: nearest.lat,
+                    longitude: nearest.lon,
+                    distance: Math.round(nearestDist),
+                });
+            }
+        }
+    }
+    catch {
+        // Overpass unavailable - silently skip
+    }
+    return results;
+}
+function matchesType(el, type) {
+    const t = el.tags ?? {};
+    switch (type) {
+        case "hopital": return t.amenity === "hospital";
+        case "pharmacie": return t.amenity === "pharmacy";
+        case "ecole_maternelle": return t.amenity === "kindergarten";
+        case "ecole_primaire": return t.amenity === "school" && (t.school === "primary" || !t.school);
+        case "college": return t.amenity === "school" && t.school === "secondary";
+        case "lycee": return t.amenity === "school" && (t.school === "high_school" || t.school === "lycee");
+        case "universite": return t.amenity === "university";
+        case "supermarche": return t.shop === "supermarket";
+        case "marche": return t.amenity === "marketplace";
+        case "boulangerie": return t.shop === "bakery";
+        case "mosquee": return t.amenity === "place_of_worship" && t.religion === "muslim";
+        case "eglise": return t.amenity === "place_of_worship" && t.religion === "christian";
+        case "gendarmerie": return t.amenity === "police";
+        case "pompiers": return t.amenity === "fire_station";
+        case "mairie": return t.amenity === "townhall";
+        case "arret_bus": return t.highway === "bus_stop";
+        case "station_brt": return t.railway === "station";
+        case "route_principale": return t.highway === "primary";
+        default: return false;
+    }
+}
+// ─── Brouillon ────────────────────────────────────────────────────────────────
+export const getDraftByProprietaire = async (proprietaireId) => {
+    return BienRepository.getDraftByProprietaire(proprietaireId);
+};
+export const saveDraft = async (input, proprietaireId, files) => {
+    const { existingPhotos = [], disponibleLe, ...rest } = input;
+    // Si un ID est fourni, mettre à jour le bien existant
+    if (input.id) {
+        const bien = await BienRepository.getBienById(input.id);
+        if (!bien) {
+            throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+        }
+        if (bien.proprietaireId !== proprietaireId) {
+            throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+        }
+        // Upload new photos if provided
+        let newPhotoUrls = [];
+        if (files.length > 0) {
+            for (const file of files) {
+                const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
+                newPhotoUrls.push(result.url);
+            }
+        }
+        const photos = [...(existingPhotos || []), ...newPhotoUrls];
+        const data = {
+            ...rest,
+            proprietaireId,
+            photos,
+            disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
+        };
+        return await BienRepository.updateBien(input.id, data);
+    }
+    // Sinon, utiliser le comportement existant (brouillon)
+    const existing = await BienRepository.getDraftByProprietaire(proprietaireId);
+    // Upload new photos if provided
+    let newPhotoUrls = [];
+    if (files.length > 0) {
+        for (const file of files) {
+            const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
+            newPhotoUrls.push(result.url);
+        }
+    }
+    const photos = [...existingPhotos, ...newPhotoUrls];
+    const data = {
+        ...rest,
+        proprietaireId,
+        photos,
+        disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
+        statutAnnonce: "BROUILLON",
+    };
+    let saved;
+    if (existing) {
+        saved = await BienRepository.updateBien(existing.id, data);
+    }
+    else {
+        saved = await BienRepository.createBien(data);
+    }
+    return saved;
+};
+// ─── Soumettre pour publication ───────────────────────────────────────────────
+export const soumettreAnnonce = async (bienId, proprietaireId) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien) {
+        throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
+    }
+    if (bien.proprietaireId !== proprietaireId) {
+        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+    }
+    if (bien.statutAnnonce !== "BROUILLON" && bien.statutAnnonce !== "REJETE") {
+        throw new AppError("Cette annonce ne peut pas être soumise dans son état actuel", StatusCodes.BAD_REQUEST);
+    }
+    // Validate required fields
+    const missing = [];
+    if (!bien.titre?.trim())
+        missing.push("titre");
+    if (!bien.typeLogementId)
+        missing.push("type de logement");
+    if (!bien.typeTransactionId)
+        missing.push("type de transaction");
+    if (!bien.statutBienId)
+        missing.push("statut du bien");
+    if (!bien.region?.trim())
+        missing.push("région");
+    if (bien.prix === null || bien.prix === undefined)
+        missing.push("prix");
+    if (!bien.photos || bien.photos.length < 3)
+        missing.push("au moins 3 photos");
+    if (missing.length > 0) {
+        throw new AppError(`Champs requis manquants pour la publication : ${missing.join(", ")}`, StatusCodes.BAD_REQUEST);
+    }
+    const updated = await BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
+    // Register nearby establishments asynchronously
+    if (bien.latitude && bien.longitude) {
+        fetchNearestEtablissements(bien.latitude, bien.longitude)
+            .then(async (etablissements) => {
+            const withBienId = etablissements.map((e) => ({ ...e, bienId: bien.id }));
+            await BienRepository.createEtablissements(withBienId);
+        })
+            .catch(() => { });
+    }
+    return updated;
+};
+// ─── Biens du propriétaire ────────────────────────────────────────────────────
+export const getBiensByProprietaire = async (proprietaireId) => {
+    return BienRepository.getBiensByProprietaire(proprietaireId);
+};
+export const getBienById = async (id) => {
+    return BienRepository.getBienById(id);
+};
+export const deleteBien = async (bienId, proprietaireId) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    if (bien.proprietaireId !== proprietaireId)
+        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+    if (bien.statutAnnonce === "EN_ATTENTE" || bien.statutAnnonce === "PUBLIE") {
+        throw new AppError("Annulez ou dépubliez l'annonce avant de la supprimer", StatusCodes.BAD_REQUEST);
+    }
+    return BienRepository.deleteBienById(bienId);
+};
+export const retourBrouillon = async (bienId, proprietaireId) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    if (bien.proprietaireId !== proprietaireId)
+        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+    if (bien.statutAnnonce !== "EN_ATTENTE" && bien.statutAnnonce !== "PUBLIE") {
+        throw new AppError("Cette action n'est pas disponible pour ce statut", StatusCodes.BAD_REQUEST);
+    }
+    return BienRepository.updateStatutAnnonce(bienId, "BROUILLON");
+};
+// ─── Soumettre une révision (modification d'une annonce publiée) ──────────────
+export const soumettreRevision = async (bienId, proprietaireId, input, files) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    if (bien.proprietaireId !== proprietaireId)
+        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+    if (bien.statutAnnonce !== "PUBLIE") {
+        throw new AppError("Seules les annonces publiées peuvent faire l'objet d'une révision", StatusCodes.BAD_REQUEST);
+    }
+    if (bien.hasPendingRevision) {
+        throw new AppError("Une révision est déjà en attente de validation", StatusCodes.BAD_REQUEST);
+    }
+    // Upload new photos if provided
+    let newPhotoUrls = [];
+    if (files.length > 0) {
+        for (const file of files) {
+            const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
+            newPhotoUrls.push(result.url);
+        }
+    }
+    const { existingPhotos = [], disponibleLe, equipementIds, meubles, ...rest } = input;
+    const photos = [...existingPhotos, ...newPhotoUrls];
+    const normalizeString = (value) => {
+        const trimmed = value?.trim();
+        return trimmed ? trimmed : null;
+    };
+    const normalizeNumber = (value) => typeof value === "number" && Number.isFinite(value) ? value : null;
+    const sortStrings = (values) => [...(values ?? [])].sort();
+    const sortMeubles = (values) => [...(values ?? [])]
+        .map((item) => ({ meubleId: item.meubleId, quantite: item.quantite ?? 1 }))
+        .sort((a, b) => a.meubleId === b.meubleId
+        ? a.quantite - b.quantite
+        : a.meubleId.localeCompare(b.meubleId));
+    const currentComparable = {
+        titre: normalizeString(bien.titre),
+        description: normalizeString(bien.description),
+        typeLogementId: bien.typeLogementId ?? null,
+        typeTransactionId: bien.typeTransactionId ?? null,
+        statutBienId: bien.statutBienId ?? null,
+        pays: normalizeString(bien.pays),
+        region: normalizeString(bien.region),
+        ville: normalizeString(bien.ville),
+        quartier: normalizeString(bien.quartier),
+        adresse: normalizeString(bien.adresse),
+        latitude: normalizeNumber(bien.latitude),
+        longitude: normalizeNumber(bien.longitude),
+        surface: normalizeNumber(bien.surface),
+        nbChambres: normalizeNumber(bien.nbChambres),
+        nbSdb: normalizeNumber(bien.nbSdb),
+        nbSalons: normalizeNumber(bien.nbSalons),
+        nbCuisines: normalizeNumber(bien.nbCuisines),
+        nbWc: normalizeNumber(bien.nbWc),
+        etage: normalizeNumber(bien.etage),
+        meuble: !!bien.meuble,
+        fumeurs: !!bien.fumeurs,
+        animaux: !!bien.animaux,
+        parking: !!bien.parking,
+        ascenseur: !!bien.ascenseur,
+        prix: normalizeNumber(bien.prix),
+        frequencePaiement: normalizeString(bien.frequencePaiement),
+        chargesIncluses: !!bien.chargesIncluses,
+        caution: normalizeNumber(bien.caution),
+        disponibleLe: bien.disponibleLe ? bien.disponibleLe.toISOString().split("T")[0] : null,
+        photos,
+        equipementIds: sortStrings(bien.equipements?.map((e) => e.equipementId)),
+        meubles: sortMeubles(bien.meubles?.map((m) => ({ meubleId: m.meubleId, quantite: m.quantite }))),
+    };
+    const nextComparable = {
+        titre: normalizeString(rest.titre),
+        description: normalizeString(rest.description),
+        typeLogementId: rest.typeLogementId ?? null,
+        typeTransactionId: rest.typeTransactionId ?? null,
+        statutBienId: rest.statutBienId ?? null,
+        pays: normalizeString(rest.pays),
+        region: normalizeString(rest.region),
+        ville: normalizeString(rest.ville),
+        quartier: normalizeString(rest.quartier),
+        adresse: normalizeString(rest.adresse),
+        latitude: normalizeNumber(rest.latitude),
+        longitude: normalizeNumber(rest.longitude),
+        surface: normalizeNumber(rest.surface),
+        nbChambres: normalizeNumber(rest.nbChambres),
+        nbSdb: normalizeNumber(rest.nbSdb),
+        nbSalons: normalizeNumber(rest.nbSalons),
+        nbCuisines: normalizeNumber(rest.nbCuisines),
+        nbWc: normalizeNumber(rest.nbWc),
+        etage: normalizeNumber(rest.etage),
+        meuble: !!rest.meuble,
+        fumeurs: !!rest.fumeurs,
+        animaux: !!rest.animaux,
+        parking: !!rest.parking,
+        ascenseur: !!rest.ascenseur,
+        prix: normalizeNumber(rest.prix),
+        frequencePaiement: normalizeString(rest.frequencePaiement),
+        chargesIncluses: !!rest.chargesIncluses,
+        caution: normalizeNumber(rest.caution),
+        disponibleLe: disponibleLe ?? null,
+        photos,
+        equipementIds: sortStrings(equipementIds),
+        meubles: sortMeubles(meubles),
+    };
+    if (JSON.stringify(currentComparable) === JSON.stringify(nextComparable)) {
+        throw new AppError("Aucune modification détectée. Modifiez au moins un élément avant de soumettre.", StatusCodes.BAD_REQUEST);
+    }
+    // Build revision data with resolved labels for display in admin
+    const revisionData = {
+        ...rest,
+        photos,
+        disponibleLe: disponibleLe ?? null,
+        equipementIds: equipementIds ?? [],
+        meubles: meubles ?? [],
+        typeLogement: bien.typeLogement ? { nom: bien.typeLogement.nom, slug: bien.typeLogement.slug } : null,
+        typeTransaction: bien.typeTransaction ? { nom: bien.typeTransaction.nom, slug: bien.typeTransaction.slug } : null,
+        statutBien: bien.statutBien ? { nom: bien.statutBien.nom, slug: bien.statutBien.slug } : null,
+    };
+    return BienRepository.soumettreRevision(bienId, revisionData);
+};
+// ─── Annuler une annonce ───────────────────────────────────────────────────────
+export const annulerAnnonce = async (bienId, proprietaireId) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    if (bien.proprietaireId !== proprietaireId)
+        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
+    // On peut annuler une annonce si elle est en attente, publiée ou en brouillon
+    if (bien.statutAnnonce === "ANNULE") {
+        throw new AppError("Cette annonce est déjà annulée", StatusCodes.BAD_REQUEST);
+    }
+    return BienRepository.updateStatutAnnonce(bienId, "ANNULE");
+};
+// ─── Admin — annonces ─────────────────────────────────────────────────────────
+export const countAnnoncesPending = async () => {
+    return BienRepository.countAnnoncesPending();
+};
+export const getAnnoncesCounts = async () => {
+    return BienRepository.getAnnoncesCounts();
+};
+export const getAnnonces = async (params) => {
+    return BienRepository.getAnnonces(params);
+};
+export const validerAnnonce = async (bienId, action, note) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
+    // Cas REVISION (action admin manuelle - legacy)
+    if (action === "REVISION") {
+        if (bien.statutAnnonce !== "PUBLIE") {
+            throw new AppError("Seules les annonces publiées peuvent être mises en révision", StatusCodes.BAD_REQUEST);
+        }
+        return BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
+    }
+    // Cas : révision en attente sur un bien PUBLIE
+    if (bien.statutAnnonce === "PUBLIE" && bien.hasPendingRevision) {
+        if (action === "APPROUVER") {
+            // Supprimer de Cloudinary les photos retirées dans la révision
+            const rev = bien.pendingRevision;
+            const newPhotos = rev?.photos ?? [];
+            const oldPhotos = bien.photos ?? [];
+            const orphaned = oldPhotos.filter((url) => !newPhotos.includes(url));
+            await Promise.allSettled(orphaned.map((url) => {
+                const publicId = CloudinaryService.extractPublicId(url);
+                return publicId ? CloudinaryService.deleteImage(publicId) : Promise.resolve();
+            }));
+            return BienRepository.approuverRevision(bienId);
+        }
+        else {
+            // REJETER : on conserve l'ancienne version publiée, on efface la révision
+            return BienRepository.rejeterRevision(bienId, note);
+        }
+    }
+    // Cas normal : annonce EN_ATTENTE (nouvelle soumission)
+    if (bien.statutAnnonce !== "EN_ATTENTE") {
+        throw new AppError("Cette annonce n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
+    }
+    const newStatut = action === "APPROUVER" ? "PUBLIE" : "REJETE";
+    return BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+};
+export const adminDeleteBien = async (bienId) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien)
+        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    return BienRepository.deleteBienById(bienId);
+};
+// ─── Public — dernières annonces (pour page d'accueil) ───────────────────────────
+export const getDernieresAnnonces = async (limit = 8) => {
+    return BienRepository.getDernieresAnnonces(limit);
+};
+// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+export const getAnnoncePublieById = async (id) => {
+    const bien = await BienRepository.getAnnoncePublieById(id);
+    if (!bien) {
+        throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
+    }
+    return bien;
+};
+// ─── Signalement d'annonce ─────────────────────────────────────────────────────
+export const signalerAnnonce = async (bienId, motif, description) => {
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien) {
+        throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
+    }
+    // Log the report - in production you would create a Signalement model
+    console.log(`Signalement d'annonce ${bienId}: ${motif} - ${description || "sans description"}`);
+    return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
+};
+// ─── Public — annonces similaires avec système de score ─────────────────────
+export const getAnnoncesSimilaires = async (bienId, limit = 4) => {
+    // Récupérer le bien de référence pour avoir les infos complètes
+    const bien = await BienRepository.getBienById(bienId);
+    if (!bien) {
+        return [];
+    }
+    // Appeler la nouvelle méthode avec score
+    return BienRepository.getAnnoncesSimilairesWithScore(bienId, limit);
+};
+//# sourceMappingURL=bien.service.js.map

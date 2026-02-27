@@ -48,6 +48,13 @@ export const ModelName = {
     CategorieEquipement: 'CategorieEquipement',
     Meuble: 'Meuble',
     Equipement: 'Equipement',
+    Bien: 'Bien',
+    BienEquipement: 'BienEquipement',
+    BienMeuble: 'BienMeuble',
+    Etablissement: 'Etablissement',
+    Locataire: 'Locataire',
+    BailLocation: 'BailLocation',
+    LocataireRefreshToken: 'LocataireRefreshToken',
     Proprietaire: 'Proprietaire',
     ProprietaireRefreshToken: 'ProprietaireRefreshToken',
     Admin: 'Admin',
@@ -138,6 +145,125 @@ export const EquipementScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
+export const BienScalarFieldEnum = {
+    id: 'id',
+    titre: 'titre',
+    description: 'description',
+    typeLogementId: 'typeLogementId',
+    typeTransactionId: 'typeTransactionId',
+    statutBienId: 'statutBienId',
+    proprietaireId: 'proprietaireId',
+    pays: 'pays',
+    region: 'region',
+    ville: 'ville',
+    quartier: 'quartier',
+    adresse: 'adresse',
+    pointRepere: 'pointRepere',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    surface: 'surface',
+    surfaceParcelle: 'surfaceParcelle',
+    nbChambres: 'nbChambres',
+    nbSdb: 'nbSdb',
+    nbSalons: 'nbSalons',
+    nbCuisines: 'nbCuisines',
+    etage: 'etage',
+    nbEtages: 'nbEtages',
+    nbAppartements: 'nbAppartements',
+    nbPieces: 'nbPieces',
+    nbWc: 'nbWc',
+    typeTerrain: 'typeTerrain',
+    cloture: 'cloture',
+    typeBureau: 'typeBureau',
+    rideauMetallique: 'rideauMetallique',
+    meuble: 'meuble',
+    fumeurs: 'fumeurs',
+    animaux: 'animaux',
+    parking: 'parking',
+    ascenseur: 'ascenseur',
+    prix: 'prix',
+    frequencePaiement: 'frequencePaiement',
+    chargesIncluses: 'chargesIncluses',
+    caution: 'caution',
+    disponibleLe: 'disponibleLe',
+    photos: 'photos',
+    actif: 'actif',
+    statutAnnonce: 'statutAnnonce',
+    noteAdmin: 'noteAdmin',
+    hasPendingRevision: 'hasPendingRevision',
+    pendingRevision: 'pendingRevision',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const BienEquipementScalarFieldEnum = {
+    bienId: 'bienId',
+    equipementId: 'equipementId'
+};
+export const BienMeubleScalarFieldEnum = {
+    bienId: 'bienId',
+    meubleId: 'meubleId',
+    quantite: 'quantite'
+};
+export const EtablissementScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    type: 'type',
+    nom: 'nom',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    distance: 'distance',
+    createdAt: 'createdAt'
+};
+export const LocataireScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    nom: 'nom',
+    prenom: 'prenom',
+    telephone: 'telephone',
+    email: 'email',
+    nbOccupants: 'nbOccupants',
+    presenceEnfants: 'presenceEnfants',
+    dateNaissance: 'dateNaissance',
+    lieuNaissance: 'lieuNaissance',
+    nationalite: 'nationalite',
+    sexe: 'sexe',
+    numPieceIdentite: 'numPieceIdentite',
+    typePiece: 'typePiece',
+    dateDelivrance: 'dateDelivrance',
+    dateExpiration: 'dateExpiration',
+    autoriteDelivrance: 'autoriteDelivrance',
+    situationProfessionnelle: 'situationProfessionnelle',
+    activationToken: 'activationToken',
+    tokenExpiresAt: 'tokenExpiresAt',
+    statut: 'statut',
+    password: 'password',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const BailLocationScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    locataireId: 'locataireId',
+    proprietaireId: 'proprietaireId',
+    typeBail: 'typeBail',
+    dateDebutBail: 'dateDebutBail',
+    dateFinBail: 'dateFinBail',
+    renouvellement: 'renouvellement',
+    montantLoyer: 'montantLoyer',
+    montantCaution: 'montantCaution',
+    frequencePaiement: 'frequencePaiement',
+    statut: 'statut',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const LocataireRefreshTokenScalarFieldEnum = {
+    id: 'id',
+    locataireId: 'locataireId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    revokedAt: 'revokedAt',
+    createdAt: 'createdAt'
+};
 export const ProprietaireScalarFieldEnum = {
     id: 'id',
     prenom: 'prenom',
@@ -176,6 +302,10 @@ export const SortOrder = {
     asc: 'asc',
     desc: 'desc'
 };
+export const NullableJsonNullValueInput = {
+    DbNull: DbNull,
+    JsonNull: JsonNull
+};
 export const QueryMode = {
     default: 'default',
     insensitive: 'insensitive'
@@ -183,5 +313,10 @@ export const QueryMode = {
 export const NullsOrder = {
     first: 'first',
     last: 'last'
+};
+export const JsonNullValueFilter = {
+    DbNull: DbNull,
+    JsonNull: JsonNull,
+    AnyNull: AnyNull
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

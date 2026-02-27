@@ -1,8 +1,18 @@
 import { prisma } from "../config/database.js";
-export const findAll = () => prisma.typeLogement.findMany({
-    where: { actif: true },
-    orderBy: { ordre: "asc" },
-});
+export const findAll = async () => {
+    const types = await prisma.typeLogement.findMany({
+        where: { actif: true },
+        orderBy: { ordre: "asc" },
+    });
+    // Pour chaque type, compter les biens publiés
+    const typesWithCount = await Promise.all(types.map(async (type) => {
+        const count = await prisma.bien.count({
+            where: { typeLogementId: type.id, statutAnnonce: "PUBLIE" },
+        });
+        return { ...type, count };
+    }));
+    return typesWithCount;
+};
 export const findAllAdmin = () => prisma.typeLogement.findMany({ orderBy: { ordre: "asc" } });
 export const findById = (id) => prisma.typeLogement.findUnique({ where: { id } });
 export const findBySlug = (slug) => prisma.typeLogement.findUnique({ where: { slug } });

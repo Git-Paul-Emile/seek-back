@@ -20,6 +20,9 @@ import statsRouter from "../routes/stats.routes.js";
 import bienRouter from "../routes/bien.routes.js";
 import annonceRouter from "../routes/annonce.routes.js";
 import geoRouter from "../routes/geo.routes.js";
+import locataireRouter from "../routes/locataire.routes.js";
+import bailRouter from "../routes/bail.routes.js";
+import locataireAuthRouter from "../routes/locataireAuth.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -128,6 +131,15 @@ app.use('/api/annonces', annonceRouter);
 
 // Géographie (pays / villes)
 app.use('/api/geo', geoRouter);
+
+// Locataires (owner CRUD)
+app.use('/api/owner/locataires', locataireRouter);
+
+// Bails (sous /api/biens/:id/bail)
+app.use('/api/biens/:id/bail', bailRouter);
+
+// Auth espace locataire
+app.use('/api/locataire/auth', locataireAuthRouter);
 
 // ============= GESTION DES ERREURS =============
 

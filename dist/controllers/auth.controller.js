@@ -64,4 +64,14 @@ export const me = async (req, res) => {
         data: { id: admin.id, email: admin.email },
     }));
 };
+// ─── PUT /api/auth/profile ─────────────────────────────────────────────────
+export const updateProfile = async (req, res) => {
+    const admin = req.admin;
+    const updated = await AuthService.updateProfile(admin.id, req.body);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Profil mis à jour avec succès",
+        data: updated,
+    }));
+};
 //# sourceMappingURL=auth.controller.js.map

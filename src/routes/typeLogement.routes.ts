@@ -42,4 +42,5 @@ router.put(
 /** DELETE /api/types-logement/:id — admin */
 router.delete("/:id", authenticate, controllerWrapper(TypeLogementController.remove));
 
+
 export default router;

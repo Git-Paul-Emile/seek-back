@@ -45,5 +45,22 @@ export declare const me: (id: string) => Promise<{
     nom: string;
     telephone: string;
     email: string | undefined;
+    sexe: string | undefined;
 }>;
+export declare const updateProfile: (id: string, data: {
+    prenom?: string;
+    nom?: string;
+    sexe?: string;
+    telephone?: string;
+    email?: string | null;
+    password?: string;
+}) => Promise<{
+    id: string;
+    prenom: string;
+    nom: string;
+    telephone: string;
+    email: string | undefined;
+    sexe: string | undefined;
+}>;
+export declare const deleteProfile: (id: string) => Promise<void>;
 //# sourceMappingURL=owner.service.d.ts.map

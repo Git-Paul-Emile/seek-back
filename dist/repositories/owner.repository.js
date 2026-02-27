@@ -4,6 +4,8 @@ export const findByTelephone = (telephone) => prisma.proprietaire.findUnique({ w
 export const findByEmail = (email) => prisma.proprietaire.findUnique({ where: { email } });
 export const findById = (id) => prisma.proprietaire.findUnique({ where: { id } });
 export const create = (data) => prisma.proprietaire.create({ data });
+export const update = (id, data) => prisma.proprietaire.update({ where: { id }, data });
+export const remove = (id) => prisma.proprietaire.delete({ where: { id } });
 // ─── ProprietaireRefreshToken ─────────────────────────────────────────────────
 export const createRefreshToken = (data) => prisma.proprietaireRefreshToken.create({ data });
 export const findRefreshToken = (tokenHash) => prisma.proprietaireRefreshToken.findUnique({ where: { tokenHash } });

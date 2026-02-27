@@ -124,6 +124,7 @@ export const deleteBienById = async (id: string) => {
   return prisma.bien.delete({ where: { id } });
 };
 
+
 export const getDraftByProprietaire = async (proprietaireId: string) => {
   return prisma.bien.findFirst({
     where: { proprietaireId, statutAnnonce: "BROUILLON" },

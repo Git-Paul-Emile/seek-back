@@ -21,5 +21,12 @@ export declare const refresh: (oldRefreshToken: string) => Promise<{
 }>;
 export declare const logout: (refreshToken: string) => Promise<void>;
 export declare const verifyAccessToken: (token: string) => JwtAdminPayload;
+export declare const updateProfile: (id: string, data: {
+    email?: string;
+    password?: string;
+}) => Promise<{
+    id: any;
+    email: any;
+}>;
 export {};
 //# sourceMappingURL=auth.service.d.ts.map

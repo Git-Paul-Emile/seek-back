@@ -316,9 +316,6 @@ export type ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNested
     updateMany?: Prisma.ProprietaireRefreshTokenUpdateManyWithWhereWithoutProprietaireInput | Prisma.ProprietaireRefreshTokenUpdateManyWithWhereWithoutProprietaireInput[];
     deleteMany?: Prisma.ProprietaireRefreshTokenScalarWhereInput | Prisma.ProprietaireRefreshTokenScalarWhereInput[];
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
-};
 export type ProprietaireRefreshTokenCreateWithoutProprietaireInput = {
     id?: string;
     tokenHash: string;

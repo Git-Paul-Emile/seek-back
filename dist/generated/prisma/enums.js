@@ -7,6 +7,27 @@
 *
 * 🟢 You can import this file directly.
 */
-// This file is empty because there are no enums in the schema.
-export {};
+export const StatutAnnonce = {
+    BROUILLON: 'BROUILLON',
+    EN_ATTENTE: 'EN_ATTENTE',
+    PUBLIE: 'PUBLIE',
+    REJETE: 'REJETE',
+    ANNULE: 'ANNULE'
+};
+export const StatutLocataire = {
+    INVITE: 'INVITE',
+    ACTIF: 'ACTIF',
+    INACTIF: 'INACTIF'
+};
+export const StatutBail = {
+    ACTIF: 'ACTIF',
+    TERMINE: 'TERMINE',
+    RESILIE: 'RESILIE'
+};
+export const TypePieceIdentite = {
+    CNI: 'CNI',
+    PASSEPORT: 'PASSEPORT',
+    CARTE_CONSULAIRE: 'CARTE_CONSULAIRE',
+    AUTRE: 'AUTRE'
+};
 //# sourceMappingURL=enums.js.map

@@ -22,9 +22,9 @@ dotenv.config();
  *  4. TypeLogement     (indépendant)
  *  5. TypeTransaction  (indépendant)
  *  6. StatutBien       (indépendant)
- *  7. Categorie         (catégories pour Meuble et Equipement)
- *  8. Meuble           (dépend de Categorie)
- *  9. Equipement       (dépend de Categorie)
+ *  7. Categorie              (catégories pour Meuble et Equipement)
+ *  8. Meuble                (dépend de Categorie)
+ *  9. Equipement            (dépend de Categorie)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  * Aucun fichier existant à modifier (Open/Closed Principle).

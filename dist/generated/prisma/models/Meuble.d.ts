@@ -147,6 +147,7 @@ export type MeubleWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
+    biens?: Prisma.BienMeubleListRelationFilter;
 };
 export type MeubleOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -156,6 +157,7 @@ export type MeubleOrderByWithRelationInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     categorie?: Prisma.CategorieMeubleOrderByWithRelationInput;
+    biens?: Prisma.BienMeubleOrderByRelationAggregateInput;
 };
 export type MeubleWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -169,6 +171,7 @@ export type MeubleWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
+    biens?: Prisma.BienMeubleListRelationFilter;
 }, "id" | "nom_categorieId">;
 export type MeubleOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -199,6 +202,7 @@ export type MeubleCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     categorie: Prisma.CategorieMeubleCreateNestedOneWithoutMeublesInput;
+    biens?: Prisma.BienMeubleCreateNestedManyWithoutMeubleInput;
 };
 export type MeubleUncheckedCreateInput = {
     id?: string;
@@ -207,6 +211,7 @@ export type MeubleUncheckedCreateInput = {
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutMeubleInput;
 };
 export type MeubleUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -215,6 +220,7 @@ export type MeubleUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     categorie?: Prisma.CategorieMeubleUpdateOneRequiredWithoutMeublesNestedInput;
+    biens?: Prisma.BienMeubleUpdateManyWithoutMeubleNestedInput;
 };
 export type MeubleUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -223,6 +229,7 @@ export type MeubleUncheckedUpdateInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienMeubleUncheckedUpdateManyWithoutMeubleNestedInput;
 };
 export type MeubleCreateManyInput = {
     id?: string;
@@ -283,6 +290,10 @@ export type MeubleMinOrderByAggregateInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
+export type MeubleScalarRelationFilter = {
+    is?: Prisma.MeubleWhereInput;
+    isNot?: Prisma.MeubleWhereInput;
+};
 export type MeubleCreateNestedManyWithoutCategorieInput = {
     create?: Prisma.XOR<Prisma.MeubleCreateWithoutCategorieInput, Prisma.MeubleUncheckedCreateWithoutCategorieInput> | Prisma.MeubleCreateWithoutCategorieInput[] | Prisma.MeubleUncheckedCreateWithoutCategorieInput[];
     connectOrCreate?: Prisma.MeubleCreateOrConnectWithoutCategorieInput | Prisma.MeubleCreateOrConnectWithoutCategorieInput[];
@@ -321,12 +332,25 @@ export type MeubleUncheckedUpdateManyWithoutCategorieNestedInput = {
     updateMany?: Prisma.MeubleUpdateManyWithWhereWithoutCategorieInput | Prisma.MeubleUpdateManyWithWhereWithoutCategorieInput[];
     deleteMany?: Prisma.MeubleScalarWhereInput | Prisma.MeubleScalarWhereInput[];
 };
+export type MeubleCreateNestedOneWithoutBiensInput = {
+    create?: Prisma.XOR<Prisma.MeubleCreateWithoutBiensInput, Prisma.MeubleUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.MeubleCreateOrConnectWithoutBiensInput;
+    connect?: Prisma.MeubleWhereUniqueInput;
+};
+export type MeubleUpdateOneRequiredWithoutBiensNestedInput = {
+    create?: Prisma.XOR<Prisma.MeubleCreateWithoutBiensInput, Prisma.MeubleUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.MeubleCreateOrConnectWithoutBiensInput;
+    upsert?: Prisma.MeubleUpsertWithoutBiensInput;
+    connect?: Prisma.MeubleWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MeubleUpdateToOneWithWhereWithoutBiensInput, Prisma.MeubleUpdateWithoutBiensInput>, Prisma.MeubleUncheckedUpdateWithoutBiensInput>;
+};
 export type MeubleCreateWithoutCategorieInput = {
     id?: string;
     nom: string;
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienMeubleCreateNestedManyWithoutMeubleInput;
 };
 export type MeubleUncheckedCreateWithoutCategorieInput = {
     id?: string;
@@ -334,6 +358,7 @@ export type MeubleUncheckedCreateWithoutCategorieInput = {
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutMeubleInput;
 };
 export type MeubleCreateOrConnectWithoutCategorieInput = {
     where: Prisma.MeubleWhereUniqueInput;
@@ -367,6 +392,51 @@ export type MeubleScalarWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
 };
+export type MeubleCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    actif?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categorie: Prisma.CategorieMeubleCreateNestedOneWithoutMeublesInput;
+};
+export type MeubleUncheckedCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    categorieId: string;
+    actif?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type MeubleCreateOrConnectWithoutBiensInput = {
+    where: Prisma.MeubleWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MeubleCreateWithoutBiensInput, Prisma.MeubleUncheckedCreateWithoutBiensInput>;
+};
+export type MeubleUpsertWithoutBiensInput = {
+    update: Prisma.XOR<Prisma.MeubleUpdateWithoutBiensInput, Prisma.MeubleUncheckedUpdateWithoutBiensInput>;
+    create: Prisma.XOR<Prisma.MeubleCreateWithoutBiensInput, Prisma.MeubleUncheckedCreateWithoutBiensInput>;
+    where?: Prisma.MeubleWhereInput;
+};
+export type MeubleUpdateToOneWithWhereWithoutBiensInput = {
+    where?: Prisma.MeubleWhereInput;
+    data: Prisma.XOR<Prisma.MeubleUpdateWithoutBiensInput, Prisma.MeubleUncheckedUpdateWithoutBiensInput>;
+};
+export type MeubleUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categorie?: Prisma.CategorieMeubleUpdateOneRequiredWithoutMeublesNestedInput;
+};
+export type MeubleUncheckedUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    categorieId?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
 export type MeubleCreateManyCategorieInput = {
     id?: string;
     nom: string;
@@ -380,6 +450,7 @@ export type MeubleUpdateWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienMeubleUpdateManyWithoutMeubleNestedInput;
 };
 export type MeubleUncheckedUpdateWithoutCategorieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -387,6 +458,7 @@ export type MeubleUncheckedUpdateWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienMeubleUncheckedUpdateManyWithoutMeubleNestedInput;
 };
 export type MeubleUncheckedUpdateManyWithoutCategorieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -394,6 +466,30 @@ export type MeubleUncheckedUpdateManyWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type MeubleCountOutputType
+ */
+export type MeubleCountOutputType = {
+    biens: number;
+};
+export type MeubleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | MeubleCountOutputTypeCountBiensArgs;
+};
+/**
+ * MeubleCountOutputType without action
+ */
+export type MeubleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeubleCountOutputType
+     */
+    select?: Prisma.MeubleCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * MeubleCountOutputType without action
+ */
+export type MeubleCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BienMeubleWhereInput;
 };
 export type MeubleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -403,6 +499,8 @@ export type MeubleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt?: boolean;
     updatedAt?: boolean;
     categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
+    biens?: boolean | Prisma.Meuble$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.MeubleCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["meuble"]>;
 export type MeubleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -433,6 +531,8 @@ export type MeubleSelectScalar = {
 export type MeubleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "categorieId" | "actif" | "createdAt" | "updatedAt", ExtArgs["result"]["meuble"]>;
 export type MeubleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
+    biens?: boolean | Prisma.Meuble$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.MeubleCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type MeubleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
@@ -444,6 +544,7 @@ export type $MeublePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     name: "Meuble";
     objects: {
         categorie: Prisma.$CategorieMeublePayload<ExtArgs>;
+        biens: Prisma.$BienMeublePayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -782,6 +883,7 @@ export interface MeubleDelegate<ExtArgs extends runtime.Types.Extensions.Interna
 export interface Prisma__MeubleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     categorie<T extends Prisma.CategorieMeubleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategorieMeubleDefaultArgs<ExtArgs>>): Prisma.Prisma__CategorieMeubleClient<runtime.Types.Result.GetResult<Prisma.$CategorieMeublePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    biens<T extends Prisma.Meuble$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meuble$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienMeublePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1190,6 +1292,29 @@ export type MeubleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * Limit how many Meubles to delete.
      */
     limit?: number;
+};
+/**
+ * Meuble.biens
+ */
+export type Meuble$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BienMeuble
+     */
+    select?: Prisma.BienMeubleSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BienMeuble
+     */
+    omit?: Prisma.BienMeubleOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienMeubleInclude<ExtArgs> | null;
+    where?: Prisma.BienMeubleWhereInput;
+    orderBy?: Prisma.BienMeubleOrderByWithRelationInput | Prisma.BienMeubleOrderByWithRelationInput[];
+    cursor?: Prisma.BienMeubleWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BienMeubleScalarFieldEnum | Prisma.BienMeubleScalarFieldEnum[];
 };
 /**
  * Meuble without action

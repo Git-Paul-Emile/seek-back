@@ -48,7 +48,7 @@ model TypeLogement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  biens Bien[]
+  biens  Bien[]
 
   @@index([slug])
 }
@@ -228,6 +228,7 @@ model Bien {
   equipements    BienEquipement[]
   meubles        BienMeuble[]
   etablissements Etablissement[]
+  bails          BailLocation[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -278,6 +279,112 @@ model Etablissement {
 }
 
 // ============================================================
+// LOCATAIRES
+// ============================================================
+
+enum StatutLocataire {
+  INVITE
+  ACTIF
+  INACTIF
+}
+
+enum StatutBail {
+  ACTIF
+  TERMINE
+  RESILIE
+}
+
+enum TypePieceIdentite {
+  CNI
+  PASSEPORT
+  CARTE_CONSULAIRE
+  AUTRE
+}
+
+model Locataire {
+  id               String            @id @default(uuid())
+  proprietaireId   String
+
+  // Rempli par le propriétaire
+  nom              String
+  prenom           String
+  telephone        String
+  email            String?
+  nbOccupants      Int               @default(1)
+  presenceEnfants  Boolean           @default(false)
+
+  // Rempli par le locataire après activation
+  dateNaissance    DateTime?
+  lieuNaissance    String?
+  nationalite      String?
+  sexe             String?
+  numPieceIdentite String?
+  typePiece        TypePieceIdentite?
+  dateDelivrance   DateTime?
+  dateExpiration   DateTime?
+  autoriteDelivrance String?
+  situationProfessionnelle String?
+
+  // Activation
+  activationToken  String?           @unique
+  tokenExpiresAt   DateTime?
+  statut           StatutLocataire   @default(INVITE)
+  password         String?
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  proprietaire  Proprietaire          @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bails         BailLocation[]
+  refreshTokens LocataireRefreshToken[]
+
+  @@index([proprietaireId])
+  @@index([activationToken])
+}
+
+model BailLocation {
+  id                String     @id @default(uuid())
+  bienId            String
+  locataireId       String
+  proprietaireId    String
+
+  typeBail          String?
+  dateDebutBail     DateTime
+  dateFinBail       DateTime?
+  renouvellement    Boolean    @default(false)
+  montantLoyer      Float
+  montantCaution    Float?
+  frequencePaiement String?
+  statut            StatutBail @default(ACTIF)
+
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  bien          Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  locataire     Locataire    @relation(fields: [locataireId], references: [id])
+  proprietaire  Proprietaire @relation(fields: [proprietaireId], references: [id])
+
+  @@index([bienId])
+  @@index([locataireId])
+  @@index([proprietaireId])
+  @@index([statut])
+}
+
+model LocataireRefreshToken {
+  id          String    @id @default(uuid())
+  locataireId String
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  locataire Locataire @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+
+  @@index([locataireId])
+  @@index([tokenHash])
+}
+
+// ============================================================
 // AUTHENTIFICATION PROPRIÉTAIRES
 // ============================================================
 
@@ -294,6 +401,8 @@ model Proprietaire {
 
   refreshTokens ProprietaireRefreshToken[]
   biens         Bien[]
+  locataires    Locataire[]
+  bails         BailLocation[]
 }
 
 model ProprietaireRefreshToken {

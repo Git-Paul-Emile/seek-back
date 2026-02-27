@@ -17,6 +17,12 @@ import equipementRouter from "../routes/equipement.routes.js";
 import categorieMeubleRouter from "../routes/categorieMeuble.routes.js";
 import categorieEquipementRouter from "../routes/categorieEquipement.routes.js";
 import statsRouter from "../routes/stats.routes.js";
+import bienRouter from "../routes/bien.routes.js";
+import annonceRouter from "../routes/annonce.routes.js";
+import geoRouter from "../routes/geo.routes.js";
+import locataireRouter from "../routes/locataire.routes.js";
+import bailRouter from "../routes/bail.routes.js";
+import locataireAuthRouter from "../routes/locataireAuth.routes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -94,6 +100,18 @@ app.use('/api/categories-meubles', categorieMeubleRouter);
 app.use('/api/categories-equipements', categorieEquipementRouter);
 // Statistiques publiques
 app.use('/api/stats', statsRouter);
+// Biens immobiliers
+app.use('/api/biens', bienRouter);
+// Annonces (admin)
+app.use('/api/annonces', annonceRouter);
+// Géographie (pays / villes)
+app.use('/api/geo', geoRouter);
+// Locataires (owner CRUD)
+app.use('/api/owner/locataires', locataireRouter);
+// Bails (sous /api/biens/:id/bail)
+app.use('/api/biens/:id/bail', bailRouter);
+// Auth espace locataire
+app.use('/api/locataire/auth', locataireAuthRouter);
 // ============= GESTION DES ERREURS =============
 // Middleware pour routes non trouvées
 app.use((req, res) => {

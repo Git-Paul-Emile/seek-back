@@ -184,6 +184,7 @@ export type StatutBienWhereInput = {
     ordre?: Prisma.IntFilter<"StatutBien"> | number;
     createdAt?: Prisma.DateTimeFilter<"StatutBien"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"StatutBien"> | Date | string;
+    biens?: Prisma.BienListRelationFilter;
 };
 export type StatutBienOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -193,6 +194,7 @@ export type StatutBienOrderByWithRelationInput = {
     ordre?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    biens?: Prisma.BienOrderByRelationAggregateInput;
 };
 export type StatutBienWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -205,6 +207,7 @@ export type StatutBienWhereUniqueInput = Prisma.AtLeast<{
     ordre?: Prisma.IntFilter<"StatutBien"> | number;
     createdAt?: Prisma.DateTimeFilter<"StatutBien"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"StatutBien"> | Date | string;
+    biens?: Prisma.BienListRelationFilter;
 }, "id" | "nom" | "slug">;
 export type StatutBienOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -240,6 +243,7 @@ export type StatutBienCreateInput = {
     ordre?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienCreateNestedManyWithoutStatutBienInput;
 };
 export type StatutBienUncheckedCreateInput = {
     id?: string;
@@ -249,6 +253,7 @@ export type StatutBienUncheckedCreateInput = {
     ordre?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutStatutBienInput;
 };
 export type StatutBienUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -258,6 +263,7 @@ export type StatutBienUpdateInput = {
     ordre?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienUpdateManyWithoutStatutBienNestedInput;
 };
 export type StatutBienUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -267,6 +273,7 @@ export type StatutBienUncheckedUpdateInput = {
     ordre?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutStatutBienNestedInput;
 };
 export type StatutBienCreateManyInput = {
     id?: string;
@@ -328,6 +335,97 @@ export type StatutBienMinOrderByAggregateInput = {
 export type StatutBienSumOrderByAggregateInput = {
     ordre?: Prisma.SortOrder;
 };
+export type StatutBienNullableScalarRelationFilter = {
+    is?: Prisma.StatutBienWhereInput | null;
+    isNot?: Prisma.StatutBienWhereInput | null;
+};
+export type StatutBienCreateNestedOneWithoutBiensInput = {
+    create?: Prisma.XOR<Prisma.StatutBienCreateWithoutBiensInput, Prisma.StatutBienUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.StatutBienCreateOrConnectWithoutBiensInput;
+    connect?: Prisma.StatutBienWhereUniqueInput;
+};
+export type StatutBienUpdateOneWithoutBiensNestedInput = {
+    create?: Prisma.XOR<Prisma.StatutBienCreateWithoutBiensInput, Prisma.StatutBienUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.StatutBienCreateOrConnectWithoutBiensInput;
+    upsert?: Prisma.StatutBienUpsertWithoutBiensInput;
+    disconnect?: Prisma.StatutBienWhereInput | boolean;
+    delete?: Prisma.StatutBienWhereInput | boolean;
+    connect?: Prisma.StatutBienWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.StatutBienUpdateToOneWithWhereWithoutBiensInput, Prisma.StatutBienUpdateWithoutBiensInput>, Prisma.StatutBienUncheckedUpdateWithoutBiensInput>;
+};
+export type StatutBienCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    slug: string;
+    actif?: boolean;
+    ordre?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type StatutBienUncheckedCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    slug: string;
+    actif?: boolean;
+    ordre?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type StatutBienCreateOrConnectWithoutBiensInput = {
+    where: Prisma.StatutBienWhereUniqueInput;
+    create: Prisma.XOR<Prisma.StatutBienCreateWithoutBiensInput, Prisma.StatutBienUncheckedCreateWithoutBiensInput>;
+};
+export type StatutBienUpsertWithoutBiensInput = {
+    update: Prisma.XOR<Prisma.StatutBienUpdateWithoutBiensInput, Prisma.StatutBienUncheckedUpdateWithoutBiensInput>;
+    create: Prisma.XOR<Prisma.StatutBienCreateWithoutBiensInput, Prisma.StatutBienUncheckedCreateWithoutBiensInput>;
+    where?: Prisma.StatutBienWhereInput;
+};
+export type StatutBienUpdateToOneWithWhereWithoutBiensInput = {
+    where?: Prisma.StatutBienWhereInput;
+    data: Prisma.XOR<Prisma.StatutBienUpdateWithoutBiensInput, Prisma.StatutBienUncheckedUpdateWithoutBiensInput>;
+};
+export type StatutBienUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    ordre?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type StatutBienUncheckedUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    ordre?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type StatutBienCountOutputType
+ */
+export type StatutBienCountOutputType = {
+    biens: number;
+};
+export type StatutBienCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | StatutBienCountOutputTypeCountBiensArgs;
+};
+/**
+ * StatutBienCountOutputType without action
+ */
+export type StatutBienCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StatutBienCountOutputType
+     */
+    select?: Prisma.StatutBienCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * StatutBienCountOutputType without action
+ */
+export type StatutBienCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BienWhereInput;
+};
 export type StatutBienSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom?: boolean;
@@ -336,6 +434,8 @@ export type StatutBienSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     ordre?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    biens?: boolean | Prisma.StatutBien$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.StatutBienCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["statutBien"]>;
 export type StatutBienSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -365,9 +465,17 @@ export type StatutBienSelectScalar = {
     updatedAt?: boolean;
 };
 export type StatutBienOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "slug" | "actif" | "ordre" | "createdAt" | "updatedAt", ExtArgs["result"]["statutBien"]>;
+export type StatutBienInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | Prisma.StatutBien$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.StatutBienCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type StatutBienIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type StatutBienIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
 export type $StatutBienPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "StatutBien";
-    objects: {};
+    objects: {
+        biens: Prisma.$BienPayload<ExtArgs>[];
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         nom: string;
@@ -705,6 +813,7 @@ export interface StatutBienDelegate<ExtArgs extends runtime.Types.Extensions.Int
  */
 export interface Prisma__StatutBienClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    biens<T extends Prisma.StatutBien$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StatutBien$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -751,6 +860,10 @@ export type StatutBienFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.In
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * Filter, which StatutBien to fetch.
      */
     where: Prisma.StatutBienWhereUniqueInput;
@@ -768,6 +881,10 @@ export type StatutBienFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extens
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * Filter, which StatutBien to fetch.
      */
     where: Prisma.StatutBienWhereUniqueInput;
@@ -784,6 +901,10 @@ export type StatutBienFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
      * Omit specific fields from the StatutBien
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
     /**
      * Filter, which StatutBien to fetch.
      */
@@ -832,6 +953,10 @@ export type StatutBienFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * Filter, which StatutBien to fetch.
      */
     where?: Prisma.StatutBienWhereInput;
@@ -879,6 +1004,10 @@ export type StatutBienFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * Filter, which StatutBiens to fetch.
      */
     where?: Prisma.StatutBienWhereInput;
@@ -920,6 +1049,10 @@ export type StatutBienCreateArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * Omit specific fields from the StatutBien
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
     /**
      * The data needed to create a StatutBien.
      */
@@ -965,6 +1098,10 @@ export type StatutBienUpdateArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * Omit specific fields from the StatutBien
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
     /**
      * The data needed to update a StatutBien.
      */
@@ -1029,6 +1166,10 @@ export type StatutBienUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * The filter to search for the StatutBien to update in case it exists.
      */
     where: Prisma.StatutBienWhereUniqueInput;
@@ -1054,6 +1195,10 @@ export type StatutBienDeleteArgs<ExtArgs extends runtime.Types.Extensions.Intern
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    /**
      * Filter which StatutBien to delete.
      */
     where: Prisma.StatutBienWhereUniqueInput;
@@ -1072,6 +1217,29 @@ export type StatutBienDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
     limit?: number;
 };
 /**
+ * StatutBien.biens
+ */
+export type StatutBien$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Bien
+     */
+    select?: Prisma.BienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Bien
+     */
+    omit?: Prisma.BienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienInclude<ExtArgs> | null;
+    where?: Prisma.BienWhereInput;
+    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
+    cursor?: Prisma.BienWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
+};
+/**
  * StatutBien without action
  */
 export type StatutBienDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1083,6 +1251,10 @@ export type StatutBienDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inter
      * Omit specific fields from the StatutBien
      */
     omit?: Prisma.StatutBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
 };
 export {};
 //# sourceMappingURL=StatutBien.d.ts.map

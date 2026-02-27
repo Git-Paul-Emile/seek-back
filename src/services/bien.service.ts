@@ -146,17 +146,19 @@ export const saveDraft = async (
   proprietaireId: string,
   files: Express.Multer.File[]
 ) => {
+  const { existingPhotos = [], disponibleLe, ...rest } = input;
+
   // Si un ID est fourni, mettre à jour le bien existant
   if (input.id) {
     const bien = await BienRepository.getBienById(input.id);
-    
+
     if (!bien) {
       throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
     }
     if (bien.proprietaireId !== proprietaireId) {
       throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
     }
-    
+
     // Upload new photos if provided
     let newPhotoUrls: string[] = [];
     if (files.length > 0) {
@@ -166,10 +168,7 @@ export const saveDraft = async (
       }
     }
 
-    // Combine: existing photos + new uploads
-    const { existingPhotos = [], disponibleLe, ...rest } = input;
     const photos = [...(existingPhotos || []), ...newPhotoUrls];
-
     const data: BienRepository.BienData = {
       ...rest,
       proprietaireId,
@@ -177,7 +176,7 @@ export const saveDraft = async (
       disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
     };
 
-    return BienRepository.updateBien(input.id, data);
+    return await BienRepository.updateBien(input.id, data);
   }
 
   // Sinon, utiliser le comportement existant (brouillon)
@@ -192,10 +191,7 @@ export const saveDraft = async (
     }
   }
 
-  // Combine: main photo first, then existing, then new uploads
-  const { existingPhotos = [], disponibleLe, ...rest } = input;
   const photos = [...existingPhotos, ...newPhotoUrls];
-
   const data: BienRepository.BienData = {
     ...rest,
     proprietaireId,
@@ -204,11 +200,13 @@ export const saveDraft = async (
     statutAnnonce: "BROUILLON",
   };
 
+  let saved;
   if (existing) {
-    return BienRepository.updateBien(existing.id, data);
+    saved = await BienRepository.updateBien(existing.id, data);
   } else {
-    return BienRepository.createBien(data);
+    saved = await BienRepository.createBien(data);
   }
+  return saved;
 };
 
 // ─── Soumettre pour publication ───────────────────────────────────────────────
@@ -489,6 +487,17 @@ export const validerAnnonce = async (
   // Cas : révision en attente sur un bien PUBLIE
   if (bien.statutAnnonce === "PUBLIE" && bien.hasPendingRevision) {
     if (action === "APPROUVER") {
+      // Supprimer de Cloudinary les photos retirées dans la révision
+      const rev = bien.pendingRevision as PendingRevisionData | null;
+      const newPhotos: string[] = rev?.photos ?? [];
+      const oldPhotos: string[] = bien.photos ?? [];
+      const orphaned = oldPhotos.filter((url) => !newPhotos.includes(url));
+      await Promise.allSettled(
+        orphaned.map((url) => {
+          const publicId = CloudinaryService.extractPublicId(url);
+          return publicId ? CloudinaryService.deleteImage(publicId) : Promise.resolve();
+        })
+      );
       return BienRepository.approuverRevision(bienId);
     } else {
       // REJETER : on conserve l'ancienne version publiée, on efface la révision

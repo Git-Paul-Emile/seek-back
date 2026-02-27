@@ -1,6 +1,10 @@
 import type { Admin, RefreshToken } from "../generated/prisma/index.js";
 export declare const findAdminByEmail: (email: string) => Promise<Admin | null>;
 export declare const findAdminById: (id: string) => Promise<Admin | null>;
+export declare const updateAdmin: (id: string, data: {
+    email?: string;
+    password?: string;
+}) => Promise<Admin>;
 export declare const createRefreshToken: (data: {
     adminId: string;
     tokenHash: string;

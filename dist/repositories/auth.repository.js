@@ -2,6 +2,7 @@ import { prisma } from "../config/database.js";
 // ─── Admin ────────────────────────────────────────────────────────────────────
 export const findAdminByEmail = (email) => prisma.admin.findUnique({ where: { email } });
 export const findAdminById = (id) => prisma.admin.findUnique({ where: { id } });
+export const updateAdmin = (id, data) => prisma.admin.update({ where: { id }, data });
 // ─── RefreshToken ─────────────────────────────────────────────────────────────
 export const createRefreshToken = (data) => prisma.refreshToken.create({ data });
 export const findRefreshToken = (tokenHash) => prisma.refreshToken.findUnique({ where: { tokenHash } });

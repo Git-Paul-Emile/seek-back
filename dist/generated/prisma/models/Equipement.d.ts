@@ -147,6 +147,7 @@ export type EquipementWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
     categorie?: Prisma.XOR<Prisma.CategorieEquipementScalarRelationFilter, Prisma.CategorieEquipementWhereInput>;
+    biens?: Prisma.BienEquipementListRelationFilter;
 };
 export type EquipementOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -156,6 +157,7 @@ export type EquipementOrderByWithRelationInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     categorie?: Prisma.CategorieEquipementOrderByWithRelationInput;
+    biens?: Prisma.BienEquipementOrderByRelationAggregateInput;
 };
 export type EquipementWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -169,6 +171,7 @@ export type EquipementWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
     categorie?: Prisma.XOR<Prisma.CategorieEquipementScalarRelationFilter, Prisma.CategorieEquipementWhereInput>;
+    biens?: Prisma.BienEquipementListRelationFilter;
 }, "id" | "nom_categorieId">;
 export type EquipementOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -199,6 +202,7 @@ export type EquipementCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     categorie: Prisma.CategorieEquipementCreateNestedOneWithoutEquipementsInput;
+    biens?: Prisma.BienEquipementCreateNestedManyWithoutEquipementInput;
 };
 export type EquipementUncheckedCreateInput = {
     id?: string;
@@ -207,6 +211,7 @@ export type EquipementUncheckedCreateInput = {
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutEquipementInput;
 };
 export type EquipementUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -215,6 +220,7 @@ export type EquipementUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     categorie?: Prisma.CategorieEquipementUpdateOneRequiredWithoutEquipementsNestedInput;
+    biens?: Prisma.BienEquipementUpdateManyWithoutEquipementNestedInput;
 };
 export type EquipementUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -223,6 +229,7 @@ export type EquipementUncheckedUpdateInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienEquipementUncheckedUpdateManyWithoutEquipementNestedInput;
 };
 export type EquipementCreateManyInput = {
     id?: string;
@@ -283,6 +290,10 @@ export type EquipementMinOrderByAggregateInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
+export type EquipementScalarRelationFilter = {
+    is?: Prisma.EquipementWhereInput;
+    isNot?: Prisma.EquipementWhereInput;
+};
 export type EquipementCreateNestedManyWithoutCategorieInput = {
     create?: Prisma.XOR<Prisma.EquipementCreateWithoutCategorieInput, Prisma.EquipementUncheckedCreateWithoutCategorieInput> | Prisma.EquipementCreateWithoutCategorieInput[] | Prisma.EquipementUncheckedCreateWithoutCategorieInput[];
     connectOrCreate?: Prisma.EquipementCreateOrConnectWithoutCategorieInput | Prisma.EquipementCreateOrConnectWithoutCategorieInput[];
@@ -321,12 +332,25 @@ export type EquipementUncheckedUpdateManyWithoutCategorieNestedInput = {
     updateMany?: Prisma.EquipementUpdateManyWithWhereWithoutCategorieInput | Prisma.EquipementUpdateManyWithWhereWithoutCategorieInput[];
     deleteMany?: Prisma.EquipementScalarWhereInput | Prisma.EquipementScalarWhereInput[];
 };
+export type EquipementCreateNestedOneWithoutBiensInput = {
+    create?: Prisma.XOR<Prisma.EquipementCreateWithoutBiensInput, Prisma.EquipementUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.EquipementCreateOrConnectWithoutBiensInput;
+    connect?: Prisma.EquipementWhereUniqueInput;
+};
+export type EquipementUpdateOneRequiredWithoutBiensNestedInput = {
+    create?: Prisma.XOR<Prisma.EquipementCreateWithoutBiensInput, Prisma.EquipementUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.EquipementCreateOrConnectWithoutBiensInput;
+    upsert?: Prisma.EquipementUpsertWithoutBiensInput;
+    connect?: Prisma.EquipementWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EquipementUpdateToOneWithWhereWithoutBiensInput, Prisma.EquipementUpdateWithoutBiensInput>, Prisma.EquipementUncheckedUpdateWithoutBiensInput>;
+};
 export type EquipementCreateWithoutCategorieInput = {
     id?: string;
     nom: string;
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienEquipementCreateNestedManyWithoutEquipementInput;
 };
 export type EquipementUncheckedCreateWithoutCategorieInput = {
     id?: string;
@@ -334,6 +358,7 @@ export type EquipementUncheckedCreateWithoutCategorieInput = {
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutEquipementInput;
 };
 export type EquipementCreateOrConnectWithoutCategorieInput = {
     where: Prisma.EquipementWhereUniqueInput;
@@ -367,6 +392,51 @@ export type EquipementScalarWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Equipement"> | Date | string;
 };
+export type EquipementCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    actif?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    categorie: Prisma.CategorieEquipementCreateNestedOneWithoutEquipementsInput;
+};
+export type EquipementUncheckedCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    categorieId: string;
+    actif?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type EquipementCreateOrConnectWithoutBiensInput = {
+    where: Prisma.EquipementWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EquipementCreateWithoutBiensInput, Prisma.EquipementUncheckedCreateWithoutBiensInput>;
+};
+export type EquipementUpsertWithoutBiensInput = {
+    update: Prisma.XOR<Prisma.EquipementUpdateWithoutBiensInput, Prisma.EquipementUncheckedUpdateWithoutBiensInput>;
+    create: Prisma.XOR<Prisma.EquipementCreateWithoutBiensInput, Prisma.EquipementUncheckedCreateWithoutBiensInput>;
+    where?: Prisma.EquipementWhereInput;
+};
+export type EquipementUpdateToOneWithWhereWithoutBiensInput = {
+    where?: Prisma.EquipementWhereInput;
+    data: Prisma.XOR<Prisma.EquipementUpdateWithoutBiensInput, Prisma.EquipementUncheckedUpdateWithoutBiensInput>;
+};
+export type EquipementUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    categorie?: Prisma.CategorieEquipementUpdateOneRequiredWithoutEquipementsNestedInput;
+};
+export type EquipementUncheckedUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    categorieId?: Prisma.StringFieldUpdateOperationsInput | string;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
 export type EquipementCreateManyCategorieInput = {
     id?: string;
     nom: string;
@@ -380,6 +450,7 @@ export type EquipementUpdateWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienEquipementUpdateManyWithoutEquipementNestedInput;
 };
 export type EquipementUncheckedUpdateWithoutCategorieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -387,6 +458,7 @@ export type EquipementUncheckedUpdateWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienEquipementUncheckedUpdateManyWithoutEquipementNestedInput;
 };
 export type EquipementUncheckedUpdateManyWithoutCategorieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -394,6 +466,30 @@ export type EquipementUncheckedUpdateManyWithoutCategorieInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type EquipementCountOutputType
+ */
+export type EquipementCountOutputType = {
+    biens: number;
+};
+export type EquipementCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | EquipementCountOutputTypeCountBiensArgs;
+};
+/**
+ * EquipementCountOutputType without action
+ */
+export type EquipementCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipementCountOutputType
+     */
+    select?: Prisma.EquipementCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * EquipementCountOutputType without action
+ */
+export type EquipementCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BienEquipementWhereInput;
 };
 export type EquipementSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -403,6 +499,8 @@ export type EquipementSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     createdAt?: boolean;
     updatedAt?: boolean;
     categorie?: boolean | Prisma.CategorieEquipementDefaultArgs<ExtArgs>;
+    biens?: boolean | Prisma.Equipement$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.EquipementCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["equipement"]>;
 export type EquipementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -433,6 +531,8 @@ export type EquipementSelectScalar = {
 export type EquipementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "categorieId" | "actif" | "createdAt" | "updatedAt", ExtArgs["result"]["equipement"]>;
 export type EquipementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     categorie?: boolean | Prisma.CategorieEquipementDefaultArgs<ExtArgs>;
+    biens?: boolean | Prisma.Equipement$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.EquipementCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type EquipementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     categorie?: boolean | Prisma.CategorieEquipementDefaultArgs<ExtArgs>;
@@ -444,6 +544,7 @@ export type $EquipementPayload<ExtArgs extends runtime.Types.Extensions.Internal
     name: "Equipement";
     objects: {
         categorie: Prisma.$CategorieEquipementPayload<ExtArgs>;
+        biens: Prisma.$BienEquipementPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -782,6 +883,7 @@ export interface EquipementDelegate<ExtArgs extends runtime.Types.Extensions.Int
 export interface Prisma__EquipementClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     categorie<T extends Prisma.CategorieEquipementDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategorieEquipementDefaultArgs<ExtArgs>>): Prisma.Prisma__CategorieEquipementClient<runtime.Types.Result.GetResult<Prisma.$CategorieEquipementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    biens<T extends Prisma.Equipement$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipement$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienEquipementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1190,6 +1292,29 @@ export type EquipementDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
      * Limit how many Equipements to delete.
      */
     limit?: number;
+};
+/**
+ * Equipement.biens
+ */
+export type Equipement$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BienEquipement
+     */
+    select?: Prisma.BienEquipementSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BienEquipement
+     */
+    omit?: Prisma.BienEquipementOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienEquipementInclude<ExtArgs> | null;
+    where?: Prisma.BienEquipementWhereInput;
+    orderBy?: Prisma.BienEquipementOrderByWithRelationInput | Prisma.BienEquipementOrderByWithRelationInput[];
+    cursor?: Prisma.BienEquipementWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BienEquipementScalarFieldEnum | Prisma.BienEquipementScalarFieldEnum[];
 };
 /**
  * Equipement without action

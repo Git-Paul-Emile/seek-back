@@ -192,6 +192,7 @@ export type TypeLogementWhereInput = {
     ordre?: Prisma.IntFilter<"TypeLogement"> | number;
     createdAt?: Prisma.DateTimeFilter<"TypeLogement"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"TypeLogement"> | Date | string;
+    biens?: Prisma.BienListRelationFilter;
 };
 export type TypeLogementOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -202,6 +203,7 @@ export type TypeLogementOrderByWithRelationInput = {
     ordre?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    biens?: Prisma.BienOrderByRelationAggregateInput;
 };
 export type TypeLogementWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -215,6 +217,7 @@ export type TypeLogementWhereUniqueInput = Prisma.AtLeast<{
     ordre?: Prisma.IntFilter<"TypeLogement"> | number;
     createdAt?: Prisma.DateTimeFilter<"TypeLogement"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"TypeLogement"> | Date | string;
+    biens?: Prisma.BienListRelationFilter;
 }, "id" | "nom" | "slug">;
 export type TypeLogementOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -253,6 +256,7 @@ export type TypeLogementCreateInput = {
     ordre?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienCreateNestedManyWithoutTypeLogementInput;
 };
 export type TypeLogementUncheckedCreateInput = {
     id?: string;
@@ -263,6 +267,7 @@ export type TypeLogementUncheckedCreateInput = {
     ordre?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutTypeLogementInput;
 };
 export type TypeLogementUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -273,6 +278,7 @@ export type TypeLogementUpdateInput = {
     ordre?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienUpdateManyWithoutTypeLogementNestedInput;
 };
 export type TypeLogementUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -283,6 +289,7 @@ export type TypeLogementUncheckedUpdateInput = {
     ordre?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutTypeLogementNestedInput;
 };
 export type TypeLogementCreateManyInput = {
     id?: string;
@@ -350,6 +357,10 @@ export type TypeLogementMinOrderByAggregateInput = {
 export type TypeLogementSumOrderByAggregateInput = {
     ordre?: Prisma.SortOrder;
 };
+export type TypeLogementNullableScalarRelationFilter = {
+    is?: Prisma.TypeLogementWhereInput | null;
+    isNot?: Prisma.TypeLogementWhereInput | null;
+};
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
 };
@@ -363,6 +374,97 @@ export type IntFieldUpdateOperationsInput = {
     multiply?: number;
     divide?: number;
 };
+export type TypeLogementCreateNestedOneWithoutBiensInput = {
+    create?: Prisma.XOR<Prisma.TypeLogementCreateWithoutBiensInput, Prisma.TypeLogementUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.TypeLogementCreateOrConnectWithoutBiensInput;
+    connect?: Prisma.TypeLogementWhereUniqueInput;
+};
+export type TypeLogementUpdateOneWithoutBiensNestedInput = {
+    create?: Prisma.XOR<Prisma.TypeLogementCreateWithoutBiensInput, Prisma.TypeLogementUncheckedCreateWithoutBiensInput>;
+    connectOrCreate?: Prisma.TypeLogementCreateOrConnectWithoutBiensInput;
+    upsert?: Prisma.TypeLogementUpsertWithoutBiensInput;
+    disconnect?: Prisma.TypeLogementWhereInput | boolean;
+    delete?: Prisma.TypeLogementWhereInput | boolean;
+    connect?: Prisma.TypeLogementWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.TypeLogementUpdateToOneWithWhereWithoutBiensInput, Prisma.TypeLogementUpdateWithoutBiensInput>, Prisma.TypeLogementUncheckedUpdateWithoutBiensInput>;
+};
+export type TypeLogementCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    slug: string;
+    image?: string | null;
+    actif?: boolean;
+    ordre?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TypeLogementUncheckedCreateWithoutBiensInput = {
+    id?: string;
+    nom: string;
+    slug: string;
+    image?: string | null;
+    actif?: boolean;
+    ordre?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TypeLogementCreateOrConnectWithoutBiensInput = {
+    where: Prisma.TypeLogementWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TypeLogementCreateWithoutBiensInput, Prisma.TypeLogementUncheckedCreateWithoutBiensInput>;
+};
+export type TypeLogementUpsertWithoutBiensInput = {
+    update: Prisma.XOR<Prisma.TypeLogementUpdateWithoutBiensInput, Prisma.TypeLogementUncheckedUpdateWithoutBiensInput>;
+    create: Prisma.XOR<Prisma.TypeLogementCreateWithoutBiensInput, Prisma.TypeLogementUncheckedCreateWithoutBiensInput>;
+    where?: Prisma.TypeLogementWhereInput;
+};
+export type TypeLogementUpdateToOneWithWhereWithoutBiensInput = {
+    where?: Prisma.TypeLogementWhereInput;
+    data: Prisma.XOR<Prisma.TypeLogementUpdateWithoutBiensInput, Prisma.TypeLogementUncheckedUpdateWithoutBiensInput>;
+};
+export type TypeLogementUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    ordre?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TypeLogementUncheckedUpdateWithoutBiensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    ordre?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type TypeLogementCountOutputType
+ */
+export type TypeLogementCountOutputType = {
+    biens: number;
+};
+export type TypeLogementCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | TypeLogementCountOutputTypeCountBiensArgs;
+};
+/**
+ * TypeLogementCountOutputType without action
+ */
+export type TypeLogementCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TypeLogementCountOutputType
+     */
+    select?: Prisma.TypeLogementCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * TypeLogementCountOutputType without action
+ */
+export type TypeLogementCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BienWhereInput;
+};
 export type TypeLogementSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     nom?: boolean;
@@ -372,6 +474,8 @@ export type TypeLogementSelect<ExtArgs extends runtime.Types.Extensions.Internal
     ordre?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    biens?: boolean | Prisma.TypeLogement$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.TypeLogementCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["typeLogement"]>;
 export type TypeLogementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -404,9 +508,17 @@ export type TypeLogementSelectScalar = {
     updatedAt?: boolean;
 };
 export type TypeLogementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "slug" | "image" | "actif" | "ordre" | "createdAt" | "updatedAt", ExtArgs["result"]["typeLogement"]>;
+export type TypeLogementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    biens?: boolean | Prisma.TypeLogement$biensArgs<ExtArgs>;
+    _count?: boolean | Prisma.TypeLogementCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type TypeLogementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type TypeLogementIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
 export type $TypeLogementPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "TypeLogement";
-    objects: {};
+    objects: {
+        biens: Prisma.$BienPayload<ExtArgs>[];
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         nom: string;
@@ -745,6 +857,7 @@ export interface TypeLogementDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__TypeLogementClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    biens<T extends Prisma.TypeLogement$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TypeLogement$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -792,6 +905,10 @@ export type TypeLogementFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * Filter, which TypeLogement to fetch.
      */
     where: Prisma.TypeLogementWhereUniqueInput;
@@ -809,6 +926,10 @@ export type TypeLogementFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * Filter, which TypeLogement to fetch.
      */
     where: Prisma.TypeLogementWhereUniqueInput;
@@ -825,6 +946,10 @@ export type TypeLogementFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
      * Omit specific fields from the TypeLogement
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
     /**
      * Filter, which TypeLogement to fetch.
      */
@@ -873,6 +998,10 @@ export type TypeLogementFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * Filter, which TypeLogement to fetch.
      */
     where?: Prisma.TypeLogementWhereInput;
@@ -920,6 +1049,10 @@ export type TypeLogementFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * Filter, which TypeLogements to fetch.
      */
     where?: Prisma.TypeLogementWhereInput;
@@ -961,6 +1094,10 @@ export type TypeLogementCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
      * Omit specific fields from the TypeLogement
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
     /**
      * The data needed to create a TypeLogement.
      */
@@ -1006,6 +1143,10 @@ export type TypeLogementUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
      * Omit specific fields from the TypeLogement
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
     /**
      * The data needed to update a TypeLogement.
      */
@@ -1070,6 +1211,10 @@ export type TypeLogementUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * The filter to search for the TypeLogement to update in case it exists.
      */
     where: Prisma.TypeLogementWhereUniqueInput;
@@ -1095,6 +1240,10 @@ export type TypeLogementDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
+    /**
      * Filter which TypeLogement to delete.
      */
     where: Prisma.TypeLogementWhereUniqueInput;
@@ -1113,6 +1262,29 @@ export type TypeLogementDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
     limit?: number;
 };
 /**
+ * TypeLogement.biens
+ */
+export type TypeLogement$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Bien
+     */
+    select?: Prisma.BienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Bien
+     */
+    omit?: Prisma.BienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienInclude<ExtArgs> | null;
+    where?: Prisma.BienWhereInput;
+    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
+    cursor?: Prisma.BienWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
+};
+/**
  * TypeLogement without action
  */
 export type TypeLogementDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1124,6 +1296,10 @@ export type TypeLogementDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
      * Omit specific fields from the TypeLogement
      */
     omit?: Prisma.TypeLogementOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TypeLogementInclude<ExtArgs> | null;
 };
 export {};
 //# sourceMappingURL=TypeLogement.d.ts.map

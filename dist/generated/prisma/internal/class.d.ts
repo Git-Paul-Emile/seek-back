@@ -211,6 +211,83 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.bien`: Exposes CRUD operations for the **Bien** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Biens
+      * const biens = await prisma.bien.findMany()
+      * ```
+      */
+    get bien(): Prisma.BienDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.bienEquipement`: Exposes CRUD operations for the **BienEquipement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more BienEquipements
+      * const bienEquipements = await prisma.bienEquipement.findMany()
+      * ```
+      */
+    get bienEquipement(): Prisma.BienEquipementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.bienMeuble`: Exposes CRUD operations for the **BienMeuble** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more BienMeubles
+      * const bienMeubles = await prisma.bienMeuble.findMany()
+      * ```
+      */
+    get bienMeuble(): Prisma.BienMeubleDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.etablissement`: Exposes CRUD operations for the **Etablissement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Etablissements
+      * const etablissements = await prisma.etablissement.findMany()
+      * ```
+      */
+    get etablissement(): Prisma.EtablissementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.locataire`: Exposes CRUD operations for the **Locataire** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Locataires
+      * const locataires = await prisma.locataire.findMany()
+      * ```
+      */
+    get locataire(): Prisma.LocataireDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.bailLocation`: Exposes CRUD operations for the **BailLocation** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more BailLocations
+      * const bailLocations = await prisma.bailLocation.findMany()
+      * ```
+      */
+    get bailLocation(): Prisma.BailLocationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.locataireRefreshToken`: Exposes CRUD operations for the **LocataireRefreshToken** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more LocataireRefreshTokens
+      * const locataireRefreshTokens = await prisma.locataireRefreshToken.findMany()
+      * ```
+      */
+    get locataireRefreshToken(): Prisma.LocataireRefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.proprietaire`: Exposes CRUD operations for the **Proprietaire** model.
       * Example usage:
       * ```ts

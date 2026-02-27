@@ -15,5 +15,9 @@ router.post("/refresh", controllerWrapper(OwnerController.refresh));
 router.post("/logout", authenticateOwner, controllerWrapper(OwnerController.logout));
 /** GET /api/owner/auth/me — protégé */
 router.get("/me", authenticateOwner, controllerWrapper(OwnerController.me));
+/** PUT /api/owner/profile — protégé */
+router.put("/profile", authenticateOwner, controllerWrapper(OwnerController.updateProfile));
+/** DELETE /api/owner/profile — protégé */
+router.delete("/profile", authenticateOwner, controllerWrapper(OwnerController.deleteProfile));
 export default router;
 //# sourceMappingURL=owner.routes.js.map

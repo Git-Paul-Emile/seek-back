@@ -73,4 +73,24 @@ export const me = async (req, res) => {
         data: proprietaire,
     }));
 };
+// ─── PUT /api/owner/profile ─────────────────────────────────────────────────
+export const updateProfile = async (req, res) => {
+    const owner = req.owner;
+    const updated = await OwnerService.updateProfile(owner.id, req.body);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Profil mis à jour avec succès",
+        data: updated,
+    }));
+};
+// ─── DELETE /api/owner/profile ───────────────────────────────────────────────
+export const deleteProfile = async (req, res) => {
+    const owner = req.owner;
+    await OwnerService.deleteProfile(owner.id);
+    clearTokenCookies(res);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Compte supprimé avec succès. Toutes vos annonces ont également été supprimées.",
+    }));
+};
 //# sourceMappingURL=owner.controller.js.map

@@ -57,6 +57,39 @@ export declare const create: (data: {
 }, never, import("@prisma/client/runtime/library").DefaultArgs, {
     omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
 }>;
+export declare const update: (id: string, data: {
+    prenom?: string;
+    nom?: string;
+    sexe?: string | null;
+    telephone?: string;
+    email?: string | null;
+    password?: string;
+}) => import("../generated/prisma/models.js").Prisma__ProprietaireClient<{
+    id: string;
+    email: string | null;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+    telephone: string;
+    prenom: string;
+    nom: string;
+    sexe: string | null;
+}, never, import("@prisma/client/runtime/library").DefaultArgs, {
+    omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
+}>;
+export declare const remove: (id: string) => import("../generated/prisma/models.js").Prisma__ProprietaireClient<{
+    id: string;
+    email: string | null;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+    telephone: string;
+    prenom: string;
+    nom: string;
+    sexe: string | null;
+}, never, import("@prisma/client/runtime/library").DefaultArgs, {
+    omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
+}>;
 export declare const createRefreshToken: (data: {
     proprietaireId: string;
     tokenHash: string;

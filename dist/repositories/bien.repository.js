@@ -1,0 +1,497 @@
+import { prisma } from "../config/database.js";
+// ─── Include helper ───────────────────────────────────────────────────────────
+const BIEN_INCLUDE = {
+    typeLogement: { select: { id: true, nom: true, slug: true } },
+    typeTransaction: { select: { id: true, nom: true, slug: true } },
+    statutBien: { select: { id: true, nom: true, slug: true } },
+    equipements: {
+        include: { equipement: { select: { id: true, nom: true } } },
+    },
+    meubles: {
+        include: { meuble: { select: { id: true, nom: true } } },
+    },
+    proprietaire: {
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+    },
+};
+// ─── Fonctions CRUD ───────────────────────────────────────────────────────────
+export const createBien = async (data) => {
+    const { equipementIds = [], meubles = [], ...bienData } = data;
+    return prisma.bien.create({
+        data: {
+            ...bienData,
+            equipements: equipementIds.length > 0
+                ? { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } }
+                : undefined,
+            meubles: meubles.length > 0
+                ? { createMany: { data: meubles, skipDuplicates: true } }
+                : undefined,
+        },
+        include: BIEN_INCLUDE,
+    });
+};
+export const updateBien = async (id, data) => {
+    const { equipementIds, meubles, proprietaireId: _pid, ...bienData } = data;
+    // Delete and recreate equipements/meubles if provided
+    if (equipementIds !== undefined || meubles !== undefined) {
+        await prisma.$transaction([
+            ...(equipementIds !== undefined
+                ? [prisma.bienEquipement.deleteMany({ where: { bienId: id } })]
+                : []),
+            ...(meubles !== undefined
+                ? [prisma.bienMeuble.deleteMany({ where: { bienId: id } })]
+                : []),
+        ]);
+    }
+    return prisma.bien.update({
+        where: { id },
+        data: {
+            ...bienData,
+            ...(equipementIds !== undefined && equipementIds.length > 0
+                ? { equipements: { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } } }
+                : {}),
+            ...(meubles !== undefined && meubles.length > 0
+                ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
+                : {}),
+        },
+        include: BIEN_INCLUDE,
+    });
+};
+export const deleteBienById = async (id) => {
+    return prisma.bien.delete({ where: { id } });
+};
+export const getDraftByProprietaire = async (proprietaireId) => {
+    return prisma.bien.findFirst({
+        where: { proprietaireId, statutAnnonce: "BROUILLON" },
+        include: BIEN_INCLUDE,
+    });
+};
+export const updateStatutAnnonce = async (id, statutAnnonce, noteAdmin) => {
+    return prisma.bien.update({
+        where: { id },
+        data: { statutAnnonce, ...(noteAdmin !== undefined ? { noteAdmin } : {}) },
+        include: BIEN_INCLUDE,
+    });
+};
+/** Saves a pending revision on a PUBLIE bien without changing the public-facing data */
+export const soumettreRevision = async (id, revisionData) => {
+    return prisma.bien.update({
+        where: { id },
+        data: {
+            hasPendingRevision: true,
+            pendingRevision: revisionData,
+        },
+        include: BIEN_INCLUDE,
+    });
+};
+/** Admin approves a pending revision — applies revision data to main fields */
+export const approuverRevision = async (id) => {
+    const bien = await prisma.bien.findUnique({ where: { id } });
+    if (!bien || !bien.pendingRevision) {
+        throw new Error("Pas de révision en attente");
+    }
+    const rev = bien.pendingRevision;
+    const equipementIds = rev.equipementIds ?? [];
+    const meubles = rev.meubles ?? [];
+    // Delete old relations
+    await prisma.$transaction([
+        prisma.bienEquipement.deleteMany({ where: { bienId: id } }),
+        prisma.bienMeuble.deleteMany({ where: { bienId: id } }),
+    ]);
+    const { equipementIds: _eids, meubles: _mb, typeLogement: _tl, typeTransaction: _tt, statutBien: _sb, disponibleLe, ...rest } = rev;
+    return prisma.bien.update({
+        where: { id },
+        data: {
+            ...rest,
+            disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
+            statutAnnonce: "PUBLIE",
+            hasPendingRevision: false,
+            pendingRevision: null,
+            noteAdmin: null,
+            ...(equipementIds.length > 0
+                ? { equipements: { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } } }
+                : {}),
+            ...(meubles.length > 0
+                ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
+                : {}),
+        },
+        include: BIEN_INCLUDE,
+    });
+};
+/** Admin rejects a pending revision — discards revision, keeps current PUBLIE data */
+export const rejeterRevision = async (id, noteAdmin) => {
+    return prisma.bien.update({
+        where: { id },
+        data: {
+            hasPendingRevision: false,
+            pendingRevision: null,
+            noteAdmin: noteAdmin ?? null,
+        },
+        include: BIEN_INCLUDE,
+    });
+};
+export const createEtablissements = async (items) => {
+    if (items.length === 0)
+        return;
+    return prisma.etablissement.createMany({ data: items });
+};
+export const getBiensByProprietaire = async (proprietaireId) => {
+    return prisma.bien.findMany({
+        where: { proprietaireId },
+        orderBy: { createdAt: "desc" },
+        include: {
+            typeLogement: { select: { id: true, nom: true, slug: true } },
+            typeTransaction: { select: { id: true, nom: true, slug: true } },
+            statutBien: { select: { id: true, nom: true, slug: true } },
+            proprietaire: {
+                select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+            },
+        },
+    });
+};
+export const getBienById = async (id) => {
+    return prisma.bien.findUnique({
+        where: { id },
+        include: {
+            typeLogement: true,
+            typeTransaction: true,
+            statutBien: true,
+            equipements: {
+                include: { equipement: { include: { categorie: true } } },
+            },
+            meubles: {
+                include: { meuble: { include: { categorie: true } } },
+            },
+            etablissements: true,
+            proprietaire: {
+                select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+            },
+        },
+    });
+};
+// ─── Admin — annonces ─────────────────────────────────────────────────────────
+export const countAnnoncesPending = async () => {
+    return prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } });
+};
+export const getAnnoncesCounts = async () => {
+    const [en_attente, revisions, publie, rejete, annule] = await prisma.$transaction([
+        prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } }),
+        prisma.bien.count({ where: { statutAnnonce: "PUBLIE", hasPendingRevision: true } }),
+        prisma.bien.count({ where: { statutAnnonce: "PUBLIE", hasPendingRevision: false } }),
+        prisma.bien.count({ where: { statutAnnonce: "REJETE" } }),
+        prisma.bien.count({ where: { statutAnnonce: "ANNULE" } }),
+    ]);
+    // EN_ATTENTE count includes PUBLIE biens with pending revisions
+    return { EN_ATTENTE: en_attente + revisions, PUBLIE: publie, REJETE: rejete, ANNULE: annule };
+};
+export const getAnnonces = async (params) => {
+    const page = params.page ?? 1;
+    const limit = params.limit ?? 20;
+    const skip = (page - 1) * limit;
+    // Par défaut, exclure les brouillons (ce sont des brouillons des propriétaires)
+    // On n'affiche les brouillons que si explicitement demandé via includeBrouillon
+    let where = {};
+    if (params.statut === "EN_ATTENTE") {
+        // EN_ATTENTE inclut aussi les PUBLIE avec révision en attente
+        where.OR = [
+            { statutAnnonce: "EN_ATTENTE" },
+            { statutAnnonce: "PUBLIE", hasPendingRevision: true },
+        ];
+    }
+    else if (params.statut === "PUBLIE") {
+        // PUBLIE n'inclut que les biens publiés sans révision en attente
+        where.statutAnnonce = "PUBLIE";
+        where.hasPendingRevision = false;
+    }
+    else if (params.statut) {
+        where.statutAnnonce = params.statut;
+    }
+    else {
+        // Pas de filtre de statut - exclure annulés et brouillons par défaut
+        where.statutAnnonce = { notIn: ["ANNULE", "BROUILLON"] };
+    }
+    const [items, total] = await prisma.$transaction([
+        prisma.bien.findMany({
+            where,
+            skip,
+            take: limit,
+            orderBy: { updatedAt: "desc" },
+            include: {
+                typeLogement: { select: { id: true, nom: true, slug: true } },
+                typeTransaction: { select: { id: true, nom: true, slug: true } },
+                statutBien: { select: { id: true, nom: true, slug: true } },
+                proprietaire: {
+                    select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+                },
+            },
+        }),
+        prisma.bien.count({ where }),
+    ]);
+    return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+};
+// ─── Public — dernières annonces (pour page d'accueil) ────────────────────────
+export const getDernieresAnnonces = async (limit = 8) => {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const biens = await prisma.bien.findMany({
+        where: {
+            statutAnnonce: "PUBLIE",
+            // Exclure automatiquement les annonces annulées
+        },
+        take: limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+            typeLogement: { select: { id: true, nom: true, slug: true } },
+            typeTransaction: { select: { id: true, nom: true, slug: true } },
+            statutBien: { select: { id: true, nom: true, slug: true } },
+        },
+    });
+    // Ajouter un flag "isNew" pour les annonces publiées il y a moins de 7 jours
+    return biens.map((bien) => ({
+        ...bien,
+        isNew: bien.createdAt >= sevenDaysAgo,
+    }));
+};
+// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+export const getAnnoncePublieById = async (id) => {
+    return prisma.bien.findFirst({
+        where: {
+            id,
+            // Exclure les annonces annulées - elles ne doivent pas être visibles
+            statutAnnonce: { not: "ANNULE" }
+        },
+        include: {
+            typeLogement: true,
+            typeTransaction: true,
+            statutBien: true,
+            equipements: {
+                include: { equipement: { include: { categorie: true } } },
+            },
+            meubles: {
+                include: { meuble: { include: { categorie: true } } },
+            },
+            etablissements: true,
+            proprietaire: {
+                select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+            },
+        },
+    });
+};
+/**
+ * Score de similarité — adapté aux marchés immobiliers type Seek
+ *
+ * Critères (score max ≈ 135) :
+ *   +35  même type de transaction (vente / location)  — fondamental
+ *   +30  même type de logement                        — très important
+ *   +20  même quartier                                — fort signal géographique
+ *   +10  même ville (si quartier différent)           — signal géographique modéré
+ *   +20  prix ±15 %                                   — très proche
+ *   +12  prix ±30 %                                   — proche
+ *    +5  prix ±50 %                                   — acceptable
+ *   +10  surface ±30 %                                — physiquement comparable
+ *   +10  nb chambres identique                        — même configuration
+ *    +5  nb chambres ±1                               — configuration proche
+ *
+ * Seuil de pertinence : >= 35 (au moins même type de transaction)
+ */
+function calculateSimilarityScore(bien, referenceBien) {
+    if (!bien || !referenceBien)
+        return 0;
+    let score = 0;
+    // 1. Même type de transaction — FONDAMENTAL
+    if (bien.typeTransactionId && referenceBien.typeTransactionId &&
+        bien.typeTransactionId === referenceBien.typeTransactionId) {
+        score += 35;
+    }
+    // 2. Même type de logement
+    if (bien.typeLogementId && referenceBien.typeLogementId &&
+        bien.typeLogementId === referenceBien.typeLogementId) {
+        score += 30;
+    }
+    // 3. Géographie
+    const sameVille = bien.ville && referenceBien.ville &&
+        bien.ville.toLowerCase().trim() === referenceBien.ville.toLowerCase().trim();
+    const sameQuartier = bien.quartier && referenceBien.quartier &&
+        bien.quartier.toLowerCase().trim() === referenceBien.quartier.toLowerCase().trim();
+    if (sameQuartier) {
+        score += 20; // quartier identique — très fort signal
+    }
+    else if (sameVille) {
+        score += 10; // même ville, quartiers différents
+    }
+    // 4. Prix similaire
+    if (bien.prix && referenceBien.prix && referenceBien.prix > 0) {
+        const priceDiff = Math.abs(bien.prix - referenceBien.prix) / referenceBien.prix;
+        if (priceDiff <= 0.15) {
+            score += 20;
+        }
+        else if (priceDiff <= 0.30) {
+            score += 12;
+        }
+        else if (priceDiff <= 0.50) {
+            score += 5;
+        }
+    }
+    // 5. Surface similaire ±30 %
+    if (bien.surface && referenceBien.surface && referenceBien.surface > 0) {
+        const surfaceDiff = Math.abs(bien.surface - referenceBien.surface) / referenceBien.surface;
+        if (surfaceDiff <= 0.30) {
+            score += 10;
+        }
+    }
+    // 6. Nombre de chambres
+    if (bien.nbChambres != null && referenceBien.nbChambres != null) {
+        const chambreDiff = Math.abs(bien.nbChambres - referenceBien.nbChambres);
+        if (chambreDiff === 0) {
+            score += 10;
+        }
+        else if (chambreDiff === 1) {
+            score += 5;
+        }
+    }
+    return score;
+}
+// Score minimum pour qu'une annonce soit considérée pertinente
+const MIN_SIMILARITY_SCORE = 35; // au moins même type de transaction
+export const getAnnoncesSimilairesWithScore = async (bienId, limit = 4) => {
+    // Récupérer le bien de référence avec tous les champs nécessaires au score
+    const referenceBien = await prisma.bien.findUnique({
+        where: { id: bienId },
+        select: {
+            id: true,
+            typeLogementId: true,
+            typeTransactionId: true,
+            ville: true,
+            quartier: true,
+            prix: true,
+            surface: true,
+            nbChambres: true,
+        },
+    });
+    if (!referenceBien) {
+        return [];
+    }
+    const excludedIds = [bienId];
+    const POOL_FACTOR = 4; // candidats à évaluer par slot demandé
+    // ── Niveau 1 : même ville + même transaction + même type de logement ──────
+    let candidates = await prisma.bien.findMany({
+        where: {
+            statutAnnonce: "PUBLIE",
+            id: { notIn: excludedIds },
+            ville: referenceBien.ville,
+            typeTransactionId: referenceBien.typeTransactionId,
+            typeLogementId: referenceBien.typeLogementId,
+        },
+        include: {
+            typeLogement: { select: { id: true, nom: true, slug: true } },
+            typeTransaction: { select: { id: true, nom: true, slug: true } },
+            statutBien: { select: { id: true, nom: true, slug: true } },
+        },
+        orderBy: { createdAt: "desc" },
+    });
+    const foundIds = [...excludedIds, ...candidates.map(b => b.id)];
+    // ── Niveau 2 : même ville + même transaction (type logement libre) ─────────
+    if (candidates.length < limit * POOL_FACTOR) {
+        const extras = await prisma.bien.findMany({
+            where: {
+                statutAnnonce: "PUBLIE",
+                id: { notIn: foundIds },
+                ville: referenceBien.ville,
+                typeTransactionId: referenceBien.typeTransactionId,
+            },
+            include: {
+                typeLogement: { select: { id: true, nom: true, slug: true } },
+                typeTransaction: { select: { id: true, nom: true, slug: true } },
+                statutBien: { select: { id: true, nom: true, slug: true } },
+            },
+            orderBy: { createdAt: "desc" },
+            take: limit * POOL_FACTOR,
+        });
+        candidates = [...candidates, ...extras];
+        foundIds.push(...extras.map(b => b.id));
+    }
+    // ── Niveau 3 : même transaction + même type logement (autre ville) ────────
+    if (candidates.length < limit * POOL_FACTOR) {
+        const extras = await prisma.bien.findMany({
+            where: {
+                statutAnnonce: "PUBLIE",
+                id: { notIn: foundIds },
+                typeTransactionId: referenceBien.typeTransactionId,
+                typeLogementId: referenceBien.typeLogementId,
+                ...(referenceBien.ville ? { NOT: { ville: referenceBien.ville } } : {}),
+            },
+            include: {
+                typeLogement: { select: { id: true, nom: true, slug: true } },
+                typeTransaction: { select: { id: true, nom: true, slug: true } },
+                statutBien: { select: { id: true, nom: true, slug: true } },
+            },
+            orderBy: { createdAt: "desc" },
+            take: limit * POOL_FACTOR,
+        });
+        candidates = [...candidates, ...extras];
+    }
+    // ── Scoring + tri ─────────────────────────────────────────────────────────
+    const scored = candidates.map(b => ({
+        bien: b,
+        score: calculateSimilarityScore(b, referenceBien),
+    }));
+    scored.sort((a, b) => b.score - a.score);
+    return scored
+        .filter(s => s.score >= MIN_SIMILARITY_SCORE)
+        .slice(0, limit)
+        .map(s => s.bien);
+};
+// Ancienne méthode conservée pour compatibilité (délègue vers la nouvelle)
+export const getAnnoncesSimilaires = async (bienId, _typeLogementId, _typeTransactionId, _ville, limit = 4) => {
+    return getAnnoncesSimilairesWithScore(bienId, limit);
+};
+export const getOwnerStats = async (proprietaireId) => {
+    const statuts = ["BROUILLON", "EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"];
+    const [totalBiens, countsByStatut, recentBiens] = await Promise.all([
+        prisma.bien.count({ where: { proprietaireId } }),
+        Promise.all(statuts.map(async (s) => {
+            let count;
+            if (s === "EN_ATTENTE") {
+                count = await prisma.bien.count({
+                    where: {
+                        proprietaireId,
+                        OR: [
+                            { statutAnnonce: "EN_ATTENTE" },
+                            { statutAnnonce: "PUBLIE", hasPendingRevision: true },
+                        ],
+                    },
+                });
+            }
+            else if (s === "PUBLIE") {
+                count = await prisma.bien.count({
+                    where: { proprietaireId, statutAnnonce: "PUBLIE", hasPendingRevision: false },
+                });
+            }
+            else {
+                count = await prisma.bien.count({ where: { proprietaireId, statutAnnonce: s } });
+            }
+            return { statut: s, count };
+        })),
+        prisma.bien.findMany({
+            where: { proprietaireId },
+            orderBy: { updatedAt: "desc" },
+            take: 5,
+            select: {
+                id: true,
+                titre: true,
+                statutAnnonce: true,
+                ville: true,
+                prix: true,
+                photos: true,
+                updatedAt: true,
+                hasPendingRevision: true,
+            },
+        }),
+    ]);
+    return {
+        totalBiens,
+        byStatut: countsByStatut,
+        recentBiens,
+    };
+};
+//# sourceMappingURL=bien.repository.js.map

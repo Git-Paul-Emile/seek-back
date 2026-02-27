@@ -50,6 +50,13 @@ export declare const ModelName: {
     readonly CategorieEquipement: "CategorieEquipement";
     readonly Meuble: "Meuble";
     readonly Equipement: "Equipement";
+    readonly Bien: "Bien";
+    readonly BienEquipement: "BienEquipement";
+    readonly BienMeuble: "BienMeuble";
+    readonly Etablissement: "Etablissement";
+    readonly Locataire: "Locataire";
+    readonly BailLocation: "BailLocation";
+    readonly LocataireRefreshToken: "LocataireRefreshToken";
     readonly Proprietaire: "Proprietaire";
     readonly ProprietaireRefreshToken: "ProprietaireRefreshToken";
     readonly Admin: "Admin";
@@ -148,6 +155,132 @@ export declare const EquipementScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type EquipementScalarFieldEnum = (typeof EquipementScalarFieldEnum)[keyof typeof EquipementScalarFieldEnum];
+export declare const BienScalarFieldEnum: {
+    readonly id: "id";
+    readonly titre: "titre";
+    readonly description: "description";
+    readonly typeLogementId: "typeLogementId";
+    readonly typeTransactionId: "typeTransactionId";
+    readonly statutBienId: "statutBienId";
+    readonly proprietaireId: "proprietaireId";
+    readonly pays: "pays";
+    readonly region: "region";
+    readonly ville: "ville";
+    readonly quartier: "quartier";
+    readonly adresse: "adresse";
+    readonly pointRepere: "pointRepere";
+    readonly latitude: "latitude";
+    readonly longitude: "longitude";
+    readonly surface: "surface";
+    readonly surfaceParcelle: "surfaceParcelle";
+    readonly nbChambres: "nbChambres";
+    readonly nbSdb: "nbSdb";
+    readonly nbSalons: "nbSalons";
+    readonly nbCuisines: "nbCuisines";
+    readonly etage: "etage";
+    readonly nbEtages: "nbEtages";
+    readonly nbAppartements: "nbAppartements";
+    readonly nbPieces: "nbPieces";
+    readonly nbWc: "nbWc";
+    readonly typeTerrain: "typeTerrain";
+    readonly cloture: "cloture";
+    readonly typeBureau: "typeBureau";
+    readonly rideauMetallique: "rideauMetallique";
+    readonly meuble: "meuble";
+    readonly fumeurs: "fumeurs";
+    readonly animaux: "animaux";
+    readonly parking: "parking";
+    readonly ascenseur: "ascenseur";
+    readonly prix: "prix";
+    readonly frequencePaiement: "frequencePaiement";
+    readonly chargesIncluses: "chargesIncluses";
+    readonly caution: "caution";
+    readonly disponibleLe: "disponibleLe";
+    readonly photos: "photos";
+    readonly actif: "actif";
+    readonly statutAnnonce: "statutAnnonce";
+    readonly noteAdmin: "noteAdmin";
+    readonly hasPendingRevision: "hasPendingRevision";
+    readonly pendingRevision: "pendingRevision";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type BienScalarFieldEnum = (typeof BienScalarFieldEnum)[keyof typeof BienScalarFieldEnum];
+export declare const BienEquipementScalarFieldEnum: {
+    readonly bienId: "bienId";
+    readonly equipementId: "equipementId";
+};
+export type BienEquipementScalarFieldEnum = (typeof BienEquipementScalarFieldEnum)[keyof typeof BienEquipementScalarFieldEnum];
+export declare const BienMeubleScalarFieldEnum: {
+    readonly bienId: "bienId";
+    readonly meubleId: "meubleId";
+    readonly quantite: "quantite";
+};
+export type BienMeubleScalarFieldEnum = (typeof BienMeubleScalarFieldEnum)[keyof typeof BienMeubleScalarFieldEnum];
+export declare const EtablissementScalarFieldEnum: {
+    readonly id: "id";
+    readonly bienId: "bienId";
+    readonly type: "type";
+    readonly nom: "nom";
+    readonly latitude: "latitude";
+    readonly longitude: "longitude";
+    readonly distance: "distance";
+    readonly createdAt: "createdAt";
+};
+export type EtablissementScalarFieldEnum = (typeof EtablissementScalarFieldEnum)[keyof typeof EtablissementScalarFieldEnum];
+export declare const LocataireScalarFieldEnum: {
+    readonly id: "id";
+    readonly proprietaireId: "proprietaireId";
+    readonly nom: "nom";
+    readonly prenom: "prenom";
+    readonly telephone: "telephone";
+    readonly email: "email";
+    readonly nbOccupants: "nbOccupants";
+    readonly presenceEnfants: "presenceEnfants";
+    readonly dateNaissance: "dateNaissance";
+    readonly lieuNaissance: "lieuNaissance";
+    readonly nationalite: "nationalite";
+    readonly sexe: "sexe";
+    readonly numPieceIdentite: "numPieceIdentite";
+    readonly typePiece: "typePiece";
+    readonly dateDelivrance: "dateDelivrance";
+    readonly dateExpiration: "dateExpiration";
+    readonly autoriteDelivrance: "autoriteDelivrance";
+    readonly situationProfessionnelle: "situationProfessionnelle";
+    readonly activationToken: "activationToken";
+    readonly tokenExpiresAt: "tokenExpiresAt";
+    readonly statut: "statut";
+    readonly password: "password";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type LocataireScalarFieldEnum = (typeof LocataireScalarFieldEnum)[keyof typeof LocataireScalarFieldEnum];
+export declare const BailLocationScalarFieldEnum: {
+    readonly id: "id";
+    readonly bienId: "bienId";
+    readonly locataireId: "locataireId";
+    readonly proprietaireId: "proprietaireId";
+    readonly typeBail: "typeBail";
+    readonly dateDebutBail: "dateDebutBail";
+    readonly dateFinBail: "dateFinBail";
+    readonly renouvellement: "renouvellement";
+    readonly montantLoyer: "montantLoyer";
+    readonly montantCaution: "montantCaution";
+    readonly frequencePaiement: "frequencePaiement";
+    readonly statut: "statut";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type BailLocationScalarFieldEnum = (typeof BailLocationScalarFieldEnum)[keyof typeof BailLocationScalarFieldEnum];
+export declare const LocataireRefreshTokenScalarFieldEnum: {
+    readonly id: "id";
+    readonly locataireId: "locataireId";
+    readonly tokenHash: "tokenHash";
+    readonly expiresAt: "expiresAt";
+    readonly revokedAt: "revokedAt";
+    readonly createdAt: "createdAt";
+};
+export type LocataireRefreshTokenScalarFieldEnum = (typeof LocataireRefreshTokenScalarFieldEnum)[keyof typeof LocataireRefreshTokenScalarFieldEnum];
 export declare const ProprietaireScalarFieldEnum: {
     readonly id: "id";
     readonly prenom: "prenom";
@@ -191,6 +324,21 @@ export declare const SortOrder: {
     readonly desc: "desc";
 };
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const NullableJsonNullValueInput: {
+    readonly DbNull: {
+        "__#private@#private": any;
+        _getNamespace(): string;
+        _getName(): string;
+        toString(): string;
+    };
+    readonly JsonNull: {
+        "__#private@#private": any;
+        _getNamespace(): string;
+        _getName(): string;
+        toString(): string;
+    };
+};
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
 export declare const QueryMode: {
     readonly default: "default";
     readonly insensitive: "insensitive";
@@ -201,4 +349,25 @@ export declare const NullsOrder: {
     readonly last: "last";
 };
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const JsonNullValueFilter: {
+    readonly DbNull: {
+        "__#private@#private": any;
+        _getNamespace(): string;
+        _getName(): string;
+        toString(): string;
+    };
+    readonly JsonNull: {
+        "__#private@#private": any;
+        _getNamespace(): string;
+        _getName(): string;
+        toString(): string;
+    };
+    readonly AnyNull: {
+        "__#private@#private": any;
+        _getNamespace(): string;
+        _getName(): string;
+        toString(): string;
+    };
+};
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
 //# sourceMappingURL=prismaNamespaceBrowser.d.ts.map

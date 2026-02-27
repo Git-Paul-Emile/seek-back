@@ -104,4 +104,31 @@ export const verifyAccessToken = (token) => {
         throw new AppError("Token d'accès invalide ou expiré", StatusCodes.UNAUTHORIZED);
     }
 };
+// ─── Service : Mise à jour du profil admin ─────────────────────────────────
+export const updateProfile = async (id, data) => {
+    const admin = await AuthRepository.findAdminById(id);
+    if (!admin) {
+        throw new AppError("Admin introuvable", StatusCodes.NOT_FOUND);
+    }
+    // Vérification de l'unicité de l'email si modifié
+    if (data.email && data.email !== admin.email) {
+        const existingEmail = await AuthRepository.findAdminByEmail(data.email);
+        if (existingEmail && existingEmail.id !== id) {
+            throw new AppError("Cette adresse email est déjà utilisée par un autre admin.", StatusCodes.CONFLICT);
+        }
+    }
+    // Hachage du mot de passe si fourni
+    if (data.password) {
+        const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+        data.password = await bcrypt.hash(data.password, saltRounds);
+    }
+    const updated = await AuthRepository.updateAdmin(id, {
+        email: data.email,
+        password: data.password,
+    });
+    return {
+        id: updated.id,
+        email: updated.email,
+    };
+};
 //# sourceMappingURL=auth.service.js.map

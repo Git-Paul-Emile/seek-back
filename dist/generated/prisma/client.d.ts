@@ -65,6 +65,41 @@ export type Meuble = Prisma.MeubleModel;
  */
 export type Equipement = Prisma.EquipementModel;
 /**
+ * Model Bien
+ *
+ */
+export type Bien = Prisma.BienModel;
+/**
+ * Model BienEquipement
+ *
+ */
+export type BienEquipement = Prisma.BienEquipementModel;
+/**
+ * Model BienMeuble
+ *
+ */
+export type BienMeuble = Prisma.BienMeubleModel;
+/**
+ * Model Etablissement
+ *
+ */
+export type Etablissement = Prisma.EtablissementModel;
+/**
+ * Model Locataire
+ *
+ */
+export type Locataire = Prisma.LocataireModel;
+/**
+ * Model BailLocation
+ *
+ */
+export type BailLocation = Prisma.BailLocationModel;
+/**
+ * Model LocataireRefreshToken
+ *
+ */
+export type LocataireRefreshToken = Prisma.LocataireRefreshTokenModel;
+/**
  * Model Proprietaire
  *
  */

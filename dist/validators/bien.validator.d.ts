@@ -1,0 +1,108 @@
+import { z } from "zod";
+export declare const saveDraftSchema: z.ZodObject<{
+    id: z.ZodOptional<z.ZodString>;
+    titre: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    description: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    typeLogementId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    typeTransactionId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    statutBienId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    pays: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    region: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    ville: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    quartier: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    adresse: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    pointRepere: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    latitude: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    longitude: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    surface: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbChambres: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbSdb: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbSalons: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbCuisines: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbWc: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    etage: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbEtages: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    meuble: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    fumeurs: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    animaux: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    parking: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    ascenseur: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    prix: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    frequencePaiement: z.ZodNullable<z.ZodOptional<z.ZodEnum<{
+        journalier: "journalier";
+        hebdomadaire: "hebdomadaire";
+        mensuel: "mensuel";
+        trimestriel: "trimestriel";
+        semestriel: "semestriel";
+        annuel: "annuel";
+        unique: "unique";
+    }>>>;
+    chargesIncluses: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    caution: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    disponibleLe: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    equipementIds: z.ZodDefault<z.ZodArray<z.ZodString>>;
+    meubles: z.ZodDefault<z.ZodArray<z.ZodObject<{
+        meubleId: z.ZodString;
+        quantite: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
+    }, z.core.$strip>>>;
+    existingPhotos: z.ZodDefault<z.ZodArray<z.ZodString>>;
+}, z.core.$strip>;
+export type SaveDraftInput = z.infer<typeof saveDraftSchema>;
+export declare const createBienSchema: z.ZodObject<{
+    titre: z.ZodString;
+    description: z.ZodOptional<z.ZodString>;
+    typeLogementId: z.ZodString;
+    typeTransactionId: z.ZodString;
+    statutBienId: z.ZodString;
+    pays: z.ZodOptional<z.ZodString>;
+    region: z.ZodString;
+    ville: z.ZodOptional<z.ZodString>;
+    quartier: z.ZodOptional<z.ZodString>;
+    adresse: z.ZodOptional<z.ZodString>;
+    pointRepere: z.ZodOptional<z.ZodString>;
+    latitude: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    longitude: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    surface: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbChambres: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbSdb: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbSalons: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbCuisines: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbWc: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    etage: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    nbEtages: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    meuble: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    fumeurs: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    animaux: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    parking: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    ascenseur: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    prix: z.ZodCoercedNumber<unknown>;
+    frequencePaiement: z.ZodNullable<z.ZodOptional<z.ZodEnum<{
+        journalier: "journalier";
+        hebdomadaire: "hebdomadaire";
+        mensuel: "mensuel";
+        trimestriel: "trimestriel";
+        semestriel: "semestriel";
+        annuel: "annuel";
+        unique: "unique";
+    }>>>;
+    chargesIncluses: z.ZodDefault<z.ZodCoercedBoolean<unknown>>;
+    caution: z.ZodNullable<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+    disponibleLe: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    equipementIds: z.ZodDefault<z.ZodArray<z.ZodString>>;
+    meubles: z.ZodDefault<z.ZodArray<z.ZodObject<{
+        meubleId: z.ZodString;
+        quantite: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
+    }, z.core.$strip>>>;
+    existingPhotos: z.ZodDefault<z.ZodArray<z.ZodString>>;
+}, z.core.$strip>;
+export type CreateBienInput = z.infer<typeof createBienSchema>;
+export declare const validerAnnonceSchema: z.ZodObject<{
+    action: z.ZodEnum<{
+        APPROUVER: "APPROUVER";
+        REJETER: "REJETER";
+        REVISION: "REVISION";
+    }>;
+    note: z.ZodOptional<z.ZodString>;
+}, z.core.$strip>;
+export type ValiderAnnonceInput = z.infer<typeof validerAnnonceSchema>;
+//# sourceMappingURL=bien.validator.d.ts.map
