@@ -665,12 +665,16 @@ export interface OwnerStats {
     updatedAt: Date;
     hasPendingRevision: boolean;
   }[];
+  nbLocatairesActifs: number;
+  nbBailsActifs: number;
+  montantMensuelLoyers: number;
+  nbEcheancesEnRetard: number;
 }
 
 export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats> => {
   const statuts = ["BROUILLON", "EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"] as const;
 
-  const [totalBiens, countsByStatut, recentBiens] = await Promise.all([
+  const [totalBiens, countsByStatut, recentBiens, nbLocatairesActifs, bailsActifs, nbEcheancesEnRetard] = await Promise.all([
     prisma.bien.count({ where: { proprietaireId } }),
     Promise.all(
       statuts.map(async (s) => {
@@ -710,11 +714,28 @@ export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats>
         hasPendingRevision: true,
       },
     }),
+    prisma.locataire.count({ where: { proprietaireId, statut: "ACTIF" } }),
+    prisma.bailLocation.findMany({
+      where: { proprietaireId, statut: "ACTIF" },
+      select: { montantLoyer: true },
+    }),
+    prisma.echeancierLoyer.count({
+      where: {
+        bail: { proprietaireId },
+        statut: "EN_RETARD",
+      },
+    }),
   ]);
+
+  const montantMensuelLoyers = bailsActifs.reduce((sum, b) => sum + b.montantLoyer, 0);
 
   return {
     totalBiens,
     byStatut: countsByStatut,
     recentBiens,
+    nbLocatairesActifs,
+    nbBailsActifs: bailsActifs.length,
+    montantMensuelLoyers,
+    nbEcheancesEnRetard,
   };
 };
