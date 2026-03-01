@@ -2,6 +2,11 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 import * as LocataireAuthService from "../services/locataireAuth.service.js";
+import * as BailService from "../services/bail.service.js";
+import * as MobileMoneyService from "../services/mobileMoney.service.js";
+import * as QuittanceService from "../services/quittance.service.js";
+import * as NotificationService from "../services/notification.service.js";
+import { prisma } from "../config/database.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
 
@@ -204,5 +209,119 @@ export const updateProfil = async (
   );
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Profil mis à jour", data: updated })
+  );
+};
+
+// ─── Échéancier du bail actif ─────────────────────────────────────────────────
+
+export const getEcheancier = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  const echeancier = await BailService.getEcheancierForLocataire(req.locataire.id);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Échéancier récupéré", data: echeancier })
+  );
+};
+
+// ─── Contrat du bail actif ────────────────────────────────────────────────────
+
+export const getContrat = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  const contrat = await BailService.getContratForLocataire(req.locataire.id);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: contrat ? "Contrat récupéré" : "Aucun contrat trouvé", data: contrat })
+  );
+};
+
+// ─── Initier un paiement Mobile Money (locataire) ─────────────────────────────
+
+const initierPaiementSchema = z.object({
+  echeanceId: z.string().min(1),
+  provider: z.string().min(1),
+});
+
+export const initierPaiement = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  const parsed = initierPaiementSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null })
+    );
+    return;
+  }
+
+  const { echeanceId, provider } = parsed.data;
+  const locataireId = req.locataire.id;
+
+  // Récupérer l'échéance + bail + bien + propriétaire
+  const echeance = await prisma.echeancierLoyer.findUnique({
+    where: { id: echeanceId },
+    include: {
+      bail: {
+        include: {
+          bien: { select: { id: true, titre: true } },
+          proprietaire: { select: { id: true, telephone: true } },
+        },
+      },
+    },
+  });
+  if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
+  if (echeance.locataireId !== locataireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+  if (echeance.statut === "PAYE" || echeance.statut === "ANNULE")
+    throw new AppError("Cette échéance est déjà soldée ou annulée", StatusCodes.BAD_REQUEST);
+
+  // Récupérer le téléphone du locataire (non présent dans le JWT)
+  const locataireDb = await prisma.locataire.findUnique({
+    where: { id: locataireId },
+    select: { telephone: true },
+  });
+
+  const montant = echeance.montant;
+  const reference = `LOYER-${echeance.id.slice(0, 8).toUpperCase()}`;
+
+  const result = await MobileMoneyService.initierPaiementMobileMoney({
+    provider,
+    montant,
+    telephonePayeur: locataireDb?.telephone ?? "",
+    telephoneBeneficiaire: echeance.bail.proprietaire.telephone,
+    reference,
+    echeanceId,
+    bailId: echeance.bailId,
+    bienId: echeance.bienId,
+    locataireId,
+    proprietaireId: echeance.proprietaireId,
+  });
+
+  // Notifier le propriétaire
+  await NotificationService.envoyerInitiationPaiement({
+    proprietaireTelephone: echeance.bail.proprietaire.telephone,
+    locataireNom: `${req.locataire.prenom} ${req.locataire.nom}`,
+    montant,
+    dateEcheance: echeance.dateEcheance.toISOString(),
+    provider,
+    bienTitre: echeance.bail.bien.titre,
+    echeanceId,
+    bailId: echeance.bailId,
+    bienId: echeance.bienId,
+    proprietaireId: echeance.proprietaireId,
+    locataireId,
+  });
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: result.message, data: result })
+  );
+};
+
+// ─── Quittances du locataire ──────────────────────────────────────────────────
+
+export const getQuittances = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  const quittances = await QuittanceService.getQuittancesLocataire(req.locataire.id);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Quittances récupérées", data: quittances })
   );
 };

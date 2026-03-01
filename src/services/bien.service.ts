@@ -5,6 +5,7 @@ import type { SaveDraftInput } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
+import { prisma } from "../config/database.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -259,7 +260,11 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
 // ─── Biens du propriétaire ────────────────────────────────────────────────────
 
 export const getBiensByProprietaire = async (proprietaireId: string) => {
-  return BienRepository.getBiensByProprietaire(proprietaireId);
+  const biens = await BienRepository.getBiensByProprietaire(proprietaireId);
+  return biens.map(({ bails, ...bien }) => ({
+    ...bien,
+    hasBailActif: bails.length > 0,
+  }));
 };
 
 export const getBienById = async (id: string) => {
@@ -273,6 +278,16 @@ export const deleteBien = async (bienId: string, proprietaireId: string) => {
   if (bien.statutAnnonce === "EN_ATTENTE" || bien.statutAnnonce === "PUBLIE") {
     throw new AppError(
       "Annulez ou dépubliez l'annonce avant de la supprimer",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const activeBail = await prisma.bailLocation.findFirst({
+    where: { bienId, statut: "ACTIF" },
+    select: { id: true },
+  });
+  if (activeBail) {
+    throw new AppError(
+      "Ce bien est associé à un locataire actif. Terminez ou résiliez le bail avant de supprimer.",
       StatusCodes.BAD_REQUEST
     );
   }

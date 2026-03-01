@@ -8,6 +8,8 @@ export const createBailSchema = z.object({
   renouvellement: z.boolean().optional(),
   montantLoyer: z.number().positive("Le montant du loyer doit être positif"),
   montantCaution: z.number().nonnegative().optional().nullable(),
+  cautionVersee: z.boolean().optional(),
+  jourLimitePaiement: z.number().int().min(1).max(28).optional().nullable(),
   frequencePaiement: z.string().optional().nullable(),
 });
 

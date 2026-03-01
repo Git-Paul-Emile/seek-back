@@ -266,6 +266,7 @@ export const getBiensByProprietaire = async (proprietaireId: string) => {
       proprietaire: {
         select: { id: true, prenom: true, nom: true, telephone: true, email: true },
       },
+      bails: { where: { statut: "ACTIF" }, select: { id: true } },
     },
   });
 };

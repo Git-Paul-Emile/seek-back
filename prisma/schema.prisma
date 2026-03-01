@@ -354,21 +354,165 @@ model BailLocation {
   renouvellement    Boolean    @default(false)
   montantLoyer      Float
   montantCaution    Float?
+  cautionVersee     Boolean    @default(false)
+  jourLimitePaiement Int?
   frequencePaiement String?
   statut            StatutBail @default(ACTIF)
 
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
 
-  bien          Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
-  locataire     Locataire    @relation(fields: [locataireId], references: [id], onDelete: Cascade)
-  proprietaire  Proprietaire @relation(fields: [proprietaireId], references: [id])
+  bien          Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  locataire     Locataire         @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+  proprietaire  Proprietaire      @relation(fields: [proprietaireId], references: [id])
   contrat       Contrat?
+  echeancier    EcheancierLoyer[]
+  depotCaution  DepotCaution?
 
   @@index([bienId])
   @@index([locataireId])
   @@index([proprietaireId])
   @@index([statut])
+}
+
+// ============================================================
+// SUIVI FINANCIER
+// ============================================================
+
+enum StatutPaiement {
+  A_VENIR    // Échéance future — pas encore due
+  EN_ATTENTE // Due ce mois-ci (dans la période de grâce)
+  EN_RETARD  // Non payée après la période de grâce
+  PAYE       // Intégralement payée
+  PARTIEL    // Partiellement payée
+  ANNULE     // Annulée
+}
+
+model EcheancierLoyer {
+  id              String         @id @default(uuid())
+  bailId          String
+  bienId          String
+  proprietaireId  String
+  locataireId     String
+
+  dateEcheance    DateTime
+  montant         Float          // Loyer seul
+  statut          StatutPaiement @default(A_VENIR)
+
+  datePaiement    DateTime?
+  modePaiement    String?
+  reference       String?
+  note            String?
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  bail      BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  quittance Quittance?
+
+  @@index([bailId])
+  @@index([bienId])
+  @@index([statut])
+  @@index([dateEcheance])
+}
+
+// ============================================================
+// QUITTANCES
+// ============================================================
+
+model Quittance {
+  id             String   @id @default(uuid())
+  echeanceId     String   @unique
+  bailId         String
+  bienId         String
+  proprietaireId String
+  locataireId    String
+  numero         String
+
+  dateGeneration DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  echeance EcheancierLoyer @relation(fields: [echeanceId], references: [id], onDelete: Cascade)
+
+  @@index([bailId])
+  @@index([bienId])
+  @@index([locataireId])
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+
+enum StatutNotification {
+  EN_ATTENTE
+  ENVOYE
+  ECHEC
+}
+
+enum TypeNotification {
+  RAPPEL_LOYER
+  CONFIRMATION_PAIEMENT
+  ALERTE_RETARD
+  INITIATION_PAIEMENT
+}
+
+model Notification {
+  id             String             @id @default(uuid())
+  type           TypeNotification
+  canal          String             @default("SMS") // SMS | EMAIL | WHATSAPP
+  destinataire   String             // numéro ou email
+  sujet          String?
+  contenu        String
+  statut         StatutNotification @default(EN_ATTENTE)
+  messageRetour  String?            // réponse de l'API externe (stub: message)
+
+  echeanceId     String?
+  bailId         String?
+  bienId         String?
+  proprietaireId String?
+  locataireId    String?
+
+  envoyeAt       DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([bailId])
+  @@index([echeanceId])
+  @@index([locataireId])
+  @@index([type])
+  @@index([statut])
+}
+
+enum StatutDepot {
+  RECU
+  RESTITUE
+  PARTIELLEMENT_RESTITUE
+  RETENU
+}
+
+model DepotCaution {
+  id              String      @id @default(uuid())
+  bailId          String      @unique
+  bienId          String
+  proprietaireId  String
+  locataireId     String
+
+  montant         Float
+  statut          StatutDepot @default(RECU)
+  dateReception   DateTime    @default(now())
+
+  dateRestitution DateTime?
+  montantRestitue Float?
+  motifRetenue    String?
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  bail BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
+
+  @@index([bailId])
+  @@index([bienId])
 }
 
 // ============================================================

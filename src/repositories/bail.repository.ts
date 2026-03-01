@@ -13,6 +13,8 @@ export interface CreateBailData {
   renouvellement?: boolean;
   montantLoyer: number;
   montantCaution?: number | null;
+  cautionVersee?: boolean;
+  jourLimitePaiement?: number | null;
   frequencePaiement?: string | null;
 }
 

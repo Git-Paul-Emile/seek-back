@@ -7,6 +7,29 @@ import {
   createBailSchema,
   prolongerBailSchema,
 } from "../validators/bail.validator.js";
+import { z } from "zod";
+
+const payerEcheanceSchema = z.object({
+  datePaiement: z.coerce.date(),
+  modePaiement: z.string().optional(),
+  reference: z.string().optional(),
+  note: z.string().optional(),
+  montant: z.number().positive().optional(),
+});
+
+const payerMoisMultiplesSchema = z.object({
+  datePaiement: z.coerce.date(),
+  nombreMois: z.number().int().min(1).max(36),
+  modePaiement: z.string().optional(),
+  reference: z.string().optional(),
+  note: z.string().optional(),
+});
+
+const restituerCautionSchema = z.object({
+  montantRestitue: z.number().min(0),
+  motifRetenue: z.string().optional(),
+  dateRestitution: z.coerce.date().optional(),
+});
 
 const getOwner = (req: Request) => {
   if (!req.owner?.id)
@@ -162,4 +185,107 @@ export const prolongerBail = async (
       data: bail,
     })
   );
+};
+
+// ─── Échéancier ───────────────────────────────────────────────────────────────
+
+export const getEcheancier = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const echeancier = await BailService.getEcheancier(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Échéancier récupéré", data: echeancier }));
+};
+
+export const payerEcheance = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const parsed = payerEcheanceSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null }));
+    return;
+  }
+  const echeance = await BailService.payerEcheance(
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.echeanceId as string,
+    proprietaireId,
+    parsed.data
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Paiement enregistré", data: echeance }));
+};
+
+// ─── Caution ──────────────────────────────────────────────────────────────────
+
+export const getCaution = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const caution = await BailService.getCaution(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: caution ? "Caution récupérée" : "Aucun dépôt de caution", data: caution ?? null }));
+};
+
+// ─── Mobile Money ─────────────────────────────────────────────────────────────
+
+export const getMobileMoney = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const result = await BailService.getMobileMoney(req.params.id as string, proprietaireId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Informations Mobile Money", data: result })
+  );
+};
+
+// ─── Solde ────────────────────────────────────────────────────────────────────
+
+export const getSolde = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const solde = await BailService.getSolde(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Solde récupéré", data: solde })
+  );
+};
+
+export const restituerCaution = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const parsed = restituerCautionSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null }));
+    return;
+  }
+  const caution = await BailService.restituerCaution(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId,
+    parsed.data
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Caution mise à jour", data: caution }));
+};
+
+// ─── Payer plusieurs mois d'un coup ───────────────────────────────────────────
+
+export const payerMoisMultiples = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const parsed = payerMoisMultiplesSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null }));
+    return;
+  }
+  const result = await BailService.payerMoisMultiples(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId,
+    parsed.data
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({
+    status: "success",
+    message: `${result.paye} paiement(s) enregistré(s)`,
+    data: result,
+  }));
 };

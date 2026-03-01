@@ -35,4 +35,32 @@ router.put(
   controllerWrapper(LocataireAuthController.updateProfil)
 );
 
+/** GET /api/locataire/auth/echeancier */
+router.get(
+  "/echeancier",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getEcheancier)
+);
+
+/** GET /api/locataire/auth/contrat */
+router.get(
+  "/contrat",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getContrat)
+);
+
+/** POST /api/locataire/auth/paiement/initier — initier un paiement Mobile Money */
+router.post(
+  "/paiement/initier",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.initierPaiement)
+);
+
+/** GET /api/locataire/auth/quittances — quittances du locataire */
+router.get(
+  "/quittances",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getQuittances)
+);
+
 export default router;
