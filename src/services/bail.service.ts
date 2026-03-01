@@ -23,7 +23,8 @@ function genererEcheances(
   bailId: string, bienId: string,
   proprietaireId: string, locataireId: string,
   dateDebut: Date, dateFin: Date | null,
-  frequence: string, montant: number
+  frequence: string, montant: number,
+  dateMax?: Date // arrêt au 31/12 de l'année cible
 ): EcheancierLoyerCreateManyInput[] {
   const MAX = 36;
   const today = new Date();
@@ -33,6 +34,7 @@ function genererEcheances(
   let current = new Date(dateDebut);
   while (echeances.length < MAX) {
     if (dateFin && current > dateFin) break;
+    if (dateMax && current > dateMax) break;
     const due = new Date(current);
     due.setHours(0, 0, 0, 0);
     // Statut initial : EN_ATTENTE si déjà due, A_VENIR sinon
@@ -151,12 +153,15 @@ export const creerBail = async (
     data: { statut: "ACTIF" },
   });
 
-  // 3. Génération de l'échéancier de loyers
+  // 3. Génération de l'échéancier de loyers (limité au 31/12 de l'année en cours)
+  const now = new Date();
+  const dateMax = new Date(now.getFullYear(), 11, 31);
   const echeances = genererEcheances(
     bail.id, bienId, proprietaireId, data.locataireId,
     data.dateDebutBail, data.dateFinBail ?? null,
     data.frequencePaiement ?? "mensuel",
-    data.montantLoyer
+    data.montantLoyer,
+    dateMax
   );
   if (echeances.length > 0) {
     await prisma.echeancierLoyer.createMany({ data: echeances });
@@ -178,6 +183,84 @@ export const creerBail = async (
   return bail;
 };
 
+// ─── Mettre un bail en préavis ────────────────────────────────────────────────
+
+export const mettreEnPreavis = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+  if (bail.statut !== "ACTIF")
+    throw new AppError("Le bail doit être actif pour passer en préavis", StatusCodes.BAD_REQUEST);
+  if (!bail.dateFinBail)
+    throw new AppError("Impossible de mettre en préavis un bail sans date de fin", StatusCodes.BAD_REQUEST);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return BailRepo.updateStatut(bailId, "EN_PREAVIS" as any);
+};
+
+// ─── Mettre un bail en renouvellement ────────────────────────────────────────
+
+export const mettreEnRenouvellement = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+  if ((bail.statut as string) !== "EN_PREAVIS")
+    throw new AppError("Le bail doit être en préavis pour passer en renouvellement", StatusCodes.BAD_REQUEST);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return BailRepo.updateStatut(bailId, "EN_RENOUVELLEMENT" as any);
+};
+
+// ─── Archiver un bail ─────────────────────────────────────────────────────────
+
+export const archiverBail = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+  if (bail.statut !== "TERMINE" && bail.statut !== "RESILIE")
+    throw new AppError("Seul un bail terminé ou résilié peut être archivé", StatusCodes.BAD_REQUEST);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updated = await BailRepo.updateStatut(bailId, "ARCHIVE" as any);
+
+  // Locataire → ANCIEN
+  await prisma.locataire.update({
+    where: { id: bail.locataireId },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: { statut: "ANCIEN" as any },
+  });
+
+  return updated;
+};
+
+// ─── Récupérer le bail à archiver d'un bien ──────────────────────────────────
+
+export const getBailAArchiver = async (bienId: string, proprietaireId: string) => {
+  await assertBienOwner(bienId, proprietaireId);
+  return BailRepo.findAArchiverByBien(bienId);
+};
+
 // ─── Terminer un bail ─────────────────────────────────────────────────────────
 
 export const terminerBail = async (
@@ -191,8 +274,8 @@ export const terminerBail = async (
   if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
   if (bail.bienId !== bienId)
     throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
-  if (bail.statut !== "ACTIF")
-    throw new AppError("Ce bail n'est pas actif", StatusCodes.BAD_REQUEST);
+  if (!["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string))
+    throw new AppError("Ce bail ne peut pas être terminé dans son état actuel", StatusCodes.BAD_REQUEST);
 
   const updated = await BailRepo.updateStatut(bailId, "TERMINE");
 
@@ -216,8 +299,8 @@ export const resilierBail = async (
   if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
   if (bail.bienId !== bienId)
     throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
-  if (bail.statut !== "ACTIF")
-    throw new AppError("Ce bail n'est pas actif", StatusCodes.BAD_REQUEST);
+  if (!["ACTIF", "EN_PREAVIS"].includes(bail.statut as string))
+    throw new AppError("Ce bail ne peut pas être résilié dans son état actuel", StatusCodes.BAD_REQUEST);
 
   const updated = await BailRepo.updateStatut(bailId, "RESILIE");
 
@@ -264,9 +347,20 @@ export const prolongerBail = async (
   if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
   if (bail.bienId !== bienId)
     throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
-  if (bail.statut !== "ACTIF")
-    throw new AppError("Ce bail n'est pas actif", StatusCodes.BAD_REQUEST);
+  if (!["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string))
+    throw new AppError("Ce bail ne peut pas être prolongé dans son état actuel", StatusCodes.BAD_REQUEST);
 
+  // Si en préavis ou renouvellement, la prolongation remet le bail en ACTIF
+  if ((bail.statut as string) === "EN_PREAVIS" || (bail.statut as string) === "EN_RENOUVELLEMENT") {
+    return prisma.bailLocation.update({
+      where: { id: bailId },
+      data: { dateFinBail, statut: "ACTIF", renouvellement: true },
+      include: {
+        locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true, nbOccupants: true, presenceEnfants: true } },
+        bien: { select: { id: true, titre: true, ville: true, quartier: true, prix: true, caution: true, frequencePaiement: true, typeTransaction: { select: { slug: true } } } },
+      },
+    });
+  }
   return BailRepo.prolonger(bailId, dateFinBail);
 };
 
@@ -335,7 +429,8 @@ export const payerEcheance = async (
   const montantPaye = data.montant ?? echeance.montant;
   const statut = montantPaye >= echeance.montant ? "PAYE" : "PARTIEL";
 
-  return prisma.echeancierLoyer.update({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (prisma.echeancierLoyer.update as any)({
     where: { id: echeanceId },
     data: {
       statut,
@@ -344,6 +439,7 @@ export const payerEcheance = async (
       reference: data.reference,
       note: data.note,
       montant: echeance.montant,
+      sourceEnregistrement: "PROPRIETAIRE",
     },
   });
 };
@@ -369,7 +465,8 @@ export const payerMoisMultiples = async (
   if (unpaid.length === 0) throw new AppError("Aucune échéance à payer", StatusCodes.BAD_REQUEST);
 
   const ids = unpaid.map(e => e.id);
-  await prisma.echeancierLoyer.updateMany({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (prisma.echeancierLoyer.updateMany as any)({
     where: { id: { in: ids } },
     data: {
       statut: "PAYE",
@@ -377,6 +474,52 @@ export const payerMoisMultiples = async (
       modePaiement: data.modePaiement,
       reference: data.reference,
       note: data.note,
+      sourceEnregistrement: "PROPRIETAIRE",
+    },
+  });
+
+  return { paye: unpaid.length, ids };
+};
+
+// ─── Paiement par le locataire (enregistrement direct) ───────────────────────
+
+export const payerEcheancesLocataire = async (
+  locataireId: string,
+  data: {
+    nombreMois: number;
+    datePaiement: Date;
+    modePaiement: string;
+    reference?: string;
+    note?: string;
+  }
+) => {
+  // Récupérer le bail actif du locataire
+  const bail = await prisma.bailLocation.findFirst({
+    where: { locataireId, statut: "ACTIF" },
+  });
+  if (!bail) throw new AppError("Aucun bail actif trouvé", StatusCodes.BAD_REQUEST);
+
+  // Récupérer les N premières échéances non payées dans l'ordre chronologique
+  const unpaid = await prisma.echeancierLoyer.findMany({
+    where: { bailId: bail.id, statut: { notIn: ["PAYE", "ANNULE"] } },
+    orderBy: { dateEcheance: "asc" },
+    take: data.nombreMois,
+  });
+
+  if (unpaid.length === 0)
+    throw new AppError("Aucune échéance à payer", StatusCodes.BAD_REQUEST);
+
+  const ids = unpaid.map(e => e.id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (prisma.echeancierLoyer.updateMany as any)({
+    where: { id: { in: ids } },
+    data: {
+      statut: "PAYE",
+      datePaiement: data.datePaiement,
+      modePaiement: data.modePaiement,
+      reference: data.reference ?? null,
+      note: data.note ?? null,
+      sourceEnregistrement: "LOCATAIRE",
     },
   });
 
@@ -543,6 +686,76 @@ export const getSolde = async (
     montantEnRetard,
     solde: montantTotalDu - montantPaye,
   };
+};
+
+// ─── Prolonger l'échéancier d'une année ──────────────────────────────────────
+
+export const prolongerEcheancesAnnee = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string,
+  anneeActuelle: number
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+  if (!["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string))
+    throw new AppError("Le bail doit être actif pour renouveler les paiements", StatusCodes.BAD_REQUEST);
+
+  const anneeProchaine = anneeActuelle + 1;
+  const prochaineAnneeDebut = new Date(anneeProchaine, 0, 1);
+  const prochaineAnneeFin  = new Date(anneeProchaine, 11, 31);
+
+  // Si des échéances pour l'année prochaine existent déjà (vieux bail), on les retourne
+  const dejaExistantes = await prisma.echeancierLoyer.count({
+    where: {
+      bailId,
+      dateEcheance: { gte: prochaineAnneeDebut, lte: prochaineAnneeFin },
+    },
+  });
+  if (dejaExistantes > 0) {
+    return { generated: 0, annee: anneeProchaine, existed: dejaExistantes };
+  }
+
+  // Trouver la dernière échéance de l'année actuelle pour calculer le prochain départ
+  const lastCurrentYear = await prisma.echeancierLoyer.findFirst({
+    where: {
+      bailId,
+      dateEcheance: { lte: new Date(anneeActuelle, 11, 31) },
+    },
+    orderBy: { dateEcheance: "desc" },
+  });
+  if (!lastCurrentYear)
+    throw new AppError("Aucune échéance trouvée pour l'année en cours", StatusCodes.BAD_REQUEST);
+
+  // La prochaine période commence juste après la dernière de l'année actuelle
+  const nextStart = advanceByFrequence(
+    new Date(lastCurrentYear.dateEcheance),
+    bail.frequencePaiement ?? "mensuel"
+  );
+
+  // Respecter la date de fin du bail si elle est plus tôt que le 31/12 de l'année prochaine
+  const stopDate =
+    bail.dateFinBail && new Date(bail.dateFinBail) < prochaineAnneeFin
+      ? new Date(bail.dateFinBail)
+      : null;
+
+  const echeances = genererEcheances(
+    bailId, bienId, proprietaireId, bail.locataireId,
+    nextStart, stopDate,
+    bail.frequencePaiement ?? "mensuel",
+    bail.montantLoyer,
+    stopDate ? undefined : prochaineAnneeFin
+  );
+
+  if (echeances.length === 0)
+    throw new AppError("Aucune nouvelle échéance à générer pour cette période", StatusCodes.BAD_REQUEST);
+
+  await prisma.echeancierLoyer.createMany({ data: echeances });
+  return { generated: echeances.length, annee: anneeProchaine };
 };
 
 // ─── Échéancier (vue locataire) ───────────────────────────────────────────────

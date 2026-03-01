@@ -49,6 +49,13 @@ router.get(
   controllerWrapper(LocataireAuthController.getContrat)
 );
 
+/** POST /api/locataire/auth/paiement/payer — enregistrer un paiement (1 ou N mois) */
+router.post(
+  "/paiement/payer",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.payerEcheances)
+);
+
 /** POST /api/locataire/auth/paiement/initier — initier un paiement Mobile Money */
 router.post(
   "/paiement/initier",

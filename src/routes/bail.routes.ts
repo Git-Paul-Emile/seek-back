@@ -46,15 +46,42 @@ router.patch(
   controllerWrapper(BailController.prolongerBail)
 );
 
+/** PATCH /api/biens/:id/bail/:bailId/preavis */
+router.patch(
+  "/:bailId/preavis",
+  validateId,
+  controllerWrapper(BailController.mettreEnPreavis)
+);
+
+/** PATCH /api/biens/:id/bail/:bailId/renouvellement */
+router.patch(
+  "/:bailId/renouvellement",
+  validateId,
+  controllerWrapper(BailController.mettreEnRenouvellement)
+);
+
+/** PATCH /api/biens/:id/bail/:bailId/archiver */
+router.patch(
+  "/:bailId/archiver",
+  validateId,
+  controllerWrapper(BailController.archiverBail)
+);
+
 // ─── Mobile Money ─────────────────────────────────────────────────────────────
 
 /** GET /api/biens/:id/bail/mobile-money — providers Mobile Money selon le pays du bien */
 router.get("/mobile-money", controllerWrapper(BailController.getMobileMoney));
 
+/** GET /api/biens/:id/bail/a-archiver — bail terminé/résilié en attente d'archivage */
+router.get("/a-archiver", controllerWrapper(BailController.getBailAArchiver));
+
 // ─── Échéancier ───────────────────────────────────────────────────────────────
 
 /** GET /api/biens/:id/bail/:bailId/echeancier */
 router.get("/:bailId/echeancier", validateId, controllerWrapper(BailController.getEcheancier));
+
+/** POST /api/biens/:id/bail/:bailId/echeancier/prolonger-annee — générer les paiements de l'année suivante */
+router.post("/:bailId/echeancier/prolonger-annee", validateId, controllerWrapper(BailController.prolongerEcheancesAnnee));
 
 /** PATCH /api/biens/:id/bail/:bailId/echeancier/payer-multiple — payer N mois d'un coup */
 router.patch("/:bailId/echeancier/payer-multiple", validateId, controllerWrapper(BailController.payerMoisMultiples));

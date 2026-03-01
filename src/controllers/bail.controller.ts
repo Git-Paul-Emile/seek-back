@@ -111,6 +111,77 @@ export const annulerBail = async (
   );
 };
 
+// ─── Mettre en préavis ────────────────────────────────────────────────────────
+
+export const mettreEnPreavis = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const bail = await BailService.mettreEnPreavis(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Bail en préavis", data: bail })
+  );
+};
+
+// ─── Mettre en renouvellement ─────────────────────────────────────────────────
+
+export const mettreEnRenouvellement = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const bail = await BailService.mettreEnRenouvellement(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Bail en renouvellement", data: bail })
+  );
+};
+
+// ─── Archiver un bail ─────────────────────────────────────────────────────────
+
+export const archiverBail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const bail = await BailService.archiverBail(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Bail archivé — locataire passé en ancien locataire", data: bail })
+  );
+};
+
+// ─── Bail à archiver d'un bien ────────────────────────────────────────────────
+
+export const getBailAArchiver = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const bail = await BailService.getBailAArchiver(
+    req.params.id as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: bail ? "Bail à archiver trouvé" : "Aucun bail à archiver",
+      data: bail ?? null,
+    })
+  );
+};
+
 // ─── Terminer un bail ─────────────────────────────────────────────────────────
 
 export const terminerBail = async (
@@ -214,6 +285,39 @@ export const payerEcheance = async (req: Request, res: Response): Promise<void> 
     parsed.data
   );
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Paiement enregistré", data: echeance }));
+};
+
+// ─── Prolonger l'échéancier d'une année ──────────────────────────────────────
+
+const prolongerEcheancesAnneeSchema = z.object({
+  anneeActuelle: z.number().int().min(2020).max(2100),
+});
+
+export const prolongerEcheancesAnnee = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const parsed = prolongerEcheancesAnneeSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({
+      status: "fail",
+      message: parsed.error.issues[0]?.message ?? "Données invalides",
+      data: null,
+    }));
+    return;
+  }
+  const result = await BailService.prolongerEcheancesAnnee(
+    req.params.id as string,
+    req.params.bailId as string,
+    proprietaireId,
+    parsed.data.anneeActuelle
+  );
+  const msg = result.generated > 0
+    ? `${result.generated} échéance(s) générée(s) pour ${result.annee}`
+    : `Les paiements de ${result.annee} sont déjà planifiés`;
+  res.status(StatusCodes.OK).json(jsonResponse({
+    status: "success",
+    message: msg,
+    data: result,
+  }));
 };
 
 // ─── Caution ──────────────────────────────────────────────────────────────────

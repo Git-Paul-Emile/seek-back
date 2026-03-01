@@ -286,12 +286,16 @@ enum StatutLocataire {
   INVITE
   ACTIF
   INACTIF
+  ANCIEN
 }
 
 enum StatutBail {
   ACTIF
+  EN_PREAVIS
+  EN_RENOUVELLEMENT
   TERMINE
   RESILIE
+  ARCHIVE
 }
 
 enum TypePieceIdentite {
@@ -399,10 +403,11 @@ model EcheancierLoyer {
   montant         Float          // Loyer seul
   statut          StatutPaiement @default(A_VENIR)
 
-  datePaiement    DateTime?
-  modePaiement    String?
-  reference       String?
-  note            String?
+  datePaiement         DateTime?
+  modePaiement         String?
+  reference            String?
+  note                 String?
+  sourceEnregistrement String?   // "LOCATAIRE" | "PROPRIETAIRE"
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt

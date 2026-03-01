@@ -65,8 +65,16 @@ export const findById = async (id: string) => {
 
 export const findActifByBien = async (bienId: string) => {
   return prisma.bailLocation.findFirst({
-    where: { bienId, statut: "ACTIF" },
+    where: { bienId, statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"] } },
     include: BAIL_INCLUDE,
+  });
+};
+
+export const findAArchiverByBien = async (bienId: string) => {
+  return prisma.bailLocation.findFirst({
+    where: { bienId, statut: { in: ["TERMINE", "RESILIE"] } },
+    include: BAIL_INCLUDE,
+    orderBy: { updatedAt: "desc" },
   });
 };
 

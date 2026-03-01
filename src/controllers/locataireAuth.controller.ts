@@ -236,6 +236,37 @@ export const getContrat = async (req: Request, res: Response): Promise<void> => 
   );
 };
 
+// ─── Enregistrer un paiement (locataire) ──────────────────────────────────────
+
+const payerEcheancesSchema = z.object({
+  nombreMois:   z.number().int().min(1).max(36),
+  datePaiement: z.coerce.date(),
+  modePaiement: z.string().min(1, "Mode de paiement requis"),
+  reference:    z.string().optional(),
+  note:         z.string().optional(),
+});
+
+export const payerEcheances = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  const parsed = payerEcheancesSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null })
+    );
+    return;
+  }
+
+  const result = await BailService.payerEcheancesLocataire(req.locataire.id, parsed.data);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: `${result.paye} paiement(s) enregistré(s)`,
+      data: result,
+    })
+  );
+};
+
 // ─── Initier un paiement Mobile Money (locataire) ─────────────────────────────
 
 const initierPaiementSchema = z.object({
