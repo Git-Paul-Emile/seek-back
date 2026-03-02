@@ -450,19 +450,32 @@ export const soumettreRevision = async (
   return BienRepository.soumettreRevision(bienId, revisionData);
 };
 
-// ─── Annuler une annonce ───────────────────────────────────────────────────────
+// ─── Annuler une annonce (= suppression définitive) ──────────────────────────
 
 export const annulerAnnonce = async (bienId: string, proprietaireId: string) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
   if (bien.proprietaireId !== proprietaireId) throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
-  
-  // On peut annuler une annonce si elle est en attente, publiée ou en brouillon
-  if ((bien.statutAnnonce as string) === "ANNULE") {
-    throw new AppError("Cette annonce est déjà annulée", StatusCodes.BAD_REQUEST);
+
+  if (bien.statutAnnonce !== "BROUILLON" && bien.statutAnnonce !== "REJETE") {
+    throw new AppError(
+      "Seules les annonces en brouillon ou rejetées peuvent être supprimées via cette action",
+      StatusCodes.BAD_REQUEST
+    );
   }
-  
-  return BienRepository.updateStatutAnnonce(bienId, "ANNULE" as StatutAnnonce);
+
+  const activeBail = await prisma.bailLocation.findFirst({
+    where: { bienId, statut: "ACTIF" },
+    select: { id: true },
+  });
+  if (activeBail) {
+    throw new AppError(
+      "Ce bien est associé à un locataire actif. Terminez ou résiliez le bail avant de supprimer.",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  return BienRepository.deleteBienById(bienId);
 };
 
 // ─── Admin — annonces ─────────────────────────────────────────────────────────

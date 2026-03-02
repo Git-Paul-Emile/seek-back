@@ -217,10 +217,10 @@ model Bien {
   ascenseur         Boolean   @default(false)
 
   // Prix
-  prix              Float?
+  prix              Int?
   frequencePaiement String?
   chargesIncluses   Boolean   @default(false)
-  caution           Float?
+  caution           Int?
   disponibleLe      DateTime?
 
   // Médias

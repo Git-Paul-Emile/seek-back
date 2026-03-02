@@ -98,10 +98,8 @@ export const retourBrouillon = async (req: Request, res: Response): Promise<void
 export const annulerAnnonce = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = req.owner?.id;
   if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
-  const bien = await BienService.annulerAnnonce(req.params.id as string, proprietaireId);
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Annonce annulée", data: bien })
-  );
+  await BienService.annulerAnnonce(req.params.id as string, proprietaireId);
+  res.status(StatusCodes.NO_CONTENT).send();
 };
 
 export const soumettreRevision = async (req: Request, res: Response): Promise<void> => {

@@ -4,13 +4,13 @@ import { z } from "zod";
 
 export const saveDraftSchema = z.object({
   // ID optionnel pour la mise à jour d'un bien existant
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
   
   titre: z.string().max(200).optional().nullable(),
   description: z.string().max(5000).optional().nullable(),
-  typeLogementId: z.string().uuid().optional().nullable(),
-  typeTransactionId: z.string().uuid().optional().nullable(),
-  statutBienId: z.string().uuid().optional().nullable(),
+  typeLogementId: z.uuid().optional().nullable(),
+  typeTransactionId: z.uuid().optional().nullable(),
+  statutBienId: z.uuid().optional().nullable(),
 
   pays: z.string().optional().nullable(),
   region: z.string().optional().nullable(),
@@ -36,10 +36,10 @@ export const saveDraftSchema = z.object({
   parking: z.coerce.boolean().default(false),
   ascenseur: z.coerce.boolean().default(false),
 
-  prix: z.coerce.number().min(0).optional().nullable(),
+  prix: z.coerce.number().int().min(0).optional().nullable(),
   frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
   chargesIncluses: z.coerce.boolean().default(false),
-  caution: z.coerce.number().min(0).optional().nullable(),
+  caution: z.coerce.number().int().min(0).optional().nullable(),
   disponibleLe: z.string().optional().nullable(),
 
   equipementIds: z.array(z.string().uuid()).default([]),
@@ -89,10 +89,10 @@ export const createBienSchema = z.object({
   parking: z.coerce.boolean().default(false),
   ascenseur: z.coerce.boolean().default(false),
 
-  prix: z.coerce.number().min(0, "Le prix doit être positif"),
+  prix: z.coerce.number().int().min(0, "Le prix doit être positif"),
   frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
   chargesIncluses: z.coerce.boolean().default(false),
-  caution: z.coerce.number().min(0).optional().nullable(),
+  caution: z.coerce.number().int().min(0).optional().nullable(),
   disponibleLe: z.string().optional().nullable(),
 
   equipementIds: z.array(z.string().uuid()).default([]),

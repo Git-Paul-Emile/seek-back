@@ -372,7 +372,7 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
   const biens = await prisma.bien.findMany({
     where: { 
       statutAnnonce: "PUBLIE",
-      // Exclure automatiquement les annonces annulées
+      actif: true,
     },
     take: limit,
     orderBy: { createdAt: "desc" },
@@ -396,8 +396,8 @@ export const getAnnoncePublieById = async (id: string) => {
   return prisma.bien.findFirst({
     where: { 
       id, 
-      // Exclure les annonces annulées - elles ne doivent pas être visibles
-      statutAnnonce: { not: "ANNULE" as any }
+      statutAnnonce: "PUBLIE",
+      actif: true,
     },
     include: {
       typeLogement: true,
@@ -459,7 +459,7 @@ export const searchAnnoncePubliques = async (params: {
   const limit = Math.min(params.limit ?? 12, 50);
   const skip = (page - 1) * limit;
 
-  const where: any = { statutAnnonce: "PUBLIE" };
+  const where: any = { statutAnnonce: "PUBLIE", actif: true };
 
   if (params.quartier?.trim()) {
     const q = params.quartier.trim();
@@ -675,6 +675,7 @@ export const getAnnoncesSimilairesWithScore = async (
   let candidates = await prisma.bien.findMany({
     where: {
       statutAnnonce: "PUBLIE",
+      actif: true,
       id: { notIn: excludedIds },
       ville: referenceBien.ville,
       typeTransactionId: referenceBien.typeTransactionId,
@@ -695,6 +696,7 @@ export const getAnnoncesSimilairesWithScore = async (
     const extras = await prisma.bien.findMany({
       where: {
         statutAnnonce: "PUBLIE",
+        actif: true,
         id: { notIn: foundIds },
         ville: referenceBien.ville,
         typeTransactionId: referenceBien.typeTransactionId,
@@ -716,6 +718,7 @@ export const getAnnoncesSimilairesWithScore = async (
     const extras = await prisma.bien.findMany({
       where: {
         statutAnnonce: "PUBLIE",
+        actif: true,
         id: { notIn: foundIds },
         typeTransactionId: referenceBien.typeTransactionId,
         typeLogementId: referenceBien.typeLogementId,
