@@ -417,26 +417,22 @@ export const getAnnoncePublieById = async (id: string) => {
   });
 };
 
-// ─── Public — lieux distincts (quartiers + villes) des annonces publiées ───────
+// ─── Public — lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
 
 export const getDistinctLieux = async () => {
   const [quartierRows, villeRows] = await prisma.$transaction([
-    prisma.bien.findMany({
-      where: { statutAnnonce: "PUBLIE", quartier: { not: null } },
-      select: { quartier: true },
-      distinct: ["quartier"],
-      orderBy: { quartier: "asc" },
+    prisma.quartier.findMany({
+      select: { nom: true },
+      orderBy: { nom: "asc" },
     }),
-    prisma.bien.findMany({
-      where: { statutAnnonce: "PUBLIE", ville: { not: null } },
-      select: { ville: true },
-      distinct: ["ville"],
-      orderBy: { ville: "asc" },
+    prisma.ville.findMany({
+      select: { nom: true },
+      orderBy: { nom: "asc" },
     }),
   ]);
   return {
-    quartiers: quartierRows.map((r) => r.quartier as string).filter(Boolean),
-    villes:    villeRows.map((r) => r.ville as string).filter(Boolean),
+    quartiers: quartierRows.map((r) => r.nom),
+    villes:    villeRows.map((r) => r.nom),
   };
 };
 

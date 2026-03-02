@@ -29,9 +29,26 @@ model Ville {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  pays Pays @relation(fields: [paysId], references: [id])
+  pays      Pays       @relation(fields: [paysId], references: [id])
+  quartiers Quartier[]
 
   @@unique([nom, paysId])
+}
+
+model Quartier {
+  id        String   @id @default(uuid())
+  nom       String
+  villeId   String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ville Ville  @relation(fields: [villeId], references: [id])
+  biens Bien[]
+
+  @@unique([nom, villeId])
+  @@index([villeId])
 }
 
 // ============================================================
@@ -169,6 +186,7 @@ model Bien {
   region            String?
   ville             String?
   quartier          String?
+  quartierId        String?
   adresse           String?
   pointRepere       String?
   latitude          Float?
@@ -224,6 +242,7 @@ model Bien {
   typeTransaction TypeTransaction? @relation(fields: [typeTransactionId], references: [id])
   statutBien      StatutBien?      @relation(fields: [statutBienId], references: [id])
   proprietaire    Proprietaire     @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  quartierRel     Quartier?        @relation(fields: [quartierId], references: [id])
 
   equipements    BienEquipement[]
   meubles        BienMeuble[]

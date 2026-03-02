@@ -3,6 +3,7 @@ import type { Seeder } from './seeder.interface.js';
 
 const TYPES: readonly { nom: string; slug: string; ordre: number }[] = [
   { nom: 'Location', slug: 'location', ordre: 1 },
+  { nom: 'Vente',    slug: 'vente',    ordre: 2 },
 ];
 
 export class TypeTransactionSeeder implements Seeder {

@@ -12,6 +12,8 @@ import { MeubleSeeder } from './seeders/meuble.seeder.js';
 import { EquipementSeeder } from './seeders/equipement.seeder.js';
 import { CategorieSeeder } from './seeders/categorie.seeder.js';
 import { ModeleContratSeeder } from './seeders/modeleContrat.seeder.js';
+import { QuartierSeeder } from './seeders/quartier.seeder.js';
+import { ProprietaireSeeder } from './seeders/proprietaire.seeder.js';
 
 dotenv.config();
 
@@ -19,13 +21,15 @@ dotenv.config();
  * Ordre d'exécution — respecter les dépendances entre entités :
  *  1. Pays             (référencé par Ville)
  *  2. Ville            (dépend de Pays)
- *  3. Admin            (indépendant)
- *  4. TypeLogement     (indépendant)
- *  5. TypeTransaction  (indépendant)
- *  6. StatutBien       (indépendant)
- *  7. Categorie              (catégories pour Meuble et Equipement)
- *  8. Meuble                (dépend de Categorie)
- *  9. Equipement            (dépend de Categorie)
+ *  3. Quartier         (dépend de Ville)
+ *  4. Admin            (indépendant)
+ *  5. TypeLogement     (indépendant)
+ *  6. TypeTransaction  (indépendant)
+ *  7. StatutBien       (indépendant)
+ *  8. Categorie              (catégories pour Meuble et Equipement)
+ *  9. Meuble                (dépend de Categorie)
+ * 10. Equipement            (dépend de Categorie)
+ * 11. Proprietaire          (indépendant — comptes de test)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  * Aucun fichier existant à modifier (Open/Closed Principle).
@@ -33,6 +37,7 @@ dotenv.config();
 const SEEDERS: readonly Seeder[] = [
   new PaysSeeder(),
   new VilleSeeder(),
+  new QuartierSeeder(),
   new AdminSeeder(),
   new TypeLogementSeeder(),
   new TypeTransactionSeeder(),
@@ -41,6 +46,7 @@ const SEEDERS: readonly Seeder[] = [
   new MeubleSeeder(),
   new EquipementSeeder(),
   new ModeleContratSeeder(),
+  new ProprietaireSeeder(),
 ];
 
 async function main(): Promise<void> {
