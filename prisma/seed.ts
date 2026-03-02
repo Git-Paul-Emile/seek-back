@@ -14,6 +14,7 @@ import { CategorieSeeder } from './seeders/categorie.seeder.js';
 import { ModeleContratSeeder } from './seeders/modeleContrat.seeder.js';
 import { QuartierSeeder } from './seeders/quartier.seeder.js';
 import { ProprietaireSeeder } from './seeders/proprietaire.seeder.js';
+import { TemoignageSeeder } from './seeders/temoignage.seeder.js';
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ const SEEDERS: readonly Seeder[] = [
   new EquipementSeeder(),
   new ModeleContratSeeder(),
   new ProprietaireSeeder(),
+  new TemoignageSeeder(),
 ];
 
 async function main(): Promise<void> {

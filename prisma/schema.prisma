@@ -655,3 +655,19 @@ model RefreshToken {
   @@index([adminId])
   @@index([tokenHash])
 }
+
+// ============================================================
+// TEMOIGNAGES
+// ============================================================
+
+model Temoignage {
+  id        String   @id @default(uuid())
+  nom       String
+  temoignage String  @db.Text
+  actif     Boolean  @default(true)
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([actif])
+}

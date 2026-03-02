@@ -12,7 +12,8 @@
     "start": "node dist/index.js",
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:temoignage": "tsx prisma/seed-temoignage.ts"
   },
   "keywords": [],
   "author": "",
