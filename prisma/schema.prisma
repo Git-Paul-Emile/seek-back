@@ -657,6 +657,36 @@ model RefreshToken {
 }
 
 // ============================================================
+// ALERTES (NOUVELLES ANNONCES)
+// ============================================================
+
+enum StatutAlerte {
+  ACTIVE
+  DESACTIVE
+}
+
+model Alerte {
+  id        String      @id @default(uuid())
+  telephone String
+  // Critères de recherche
+  ville           String?
+  quartier        String?
+  typeLogement    String?
+  typeTransaction String?
+  prixMin         Int?
+  prixMax         Int?
+
+  canalPrefere String @default("SMS") // SMS | WHATSAPP
+  statut       StatutAlerte @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([telephone])
+  @@index([statut])
+}
+
+// ============================================================
 // TEMOIGNAGES
 // ============================================================
 

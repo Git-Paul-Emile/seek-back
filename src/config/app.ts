@@ -25,6 +25,7 @@ import bailRouter from "../routes/bail.routes.js";
 import locataireAuthRouter from "../routes/locataireAuth.routes.js";
 import modeleContratRouter from "../routes/modeleContrat.routes.js";
 import temoignageRouter from "../routes/temoignage.routes.js";
+import alerteRouter from "../routes/alerte.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -148,6 +149,9 @@ app.use('/api/modeles-contrat', modeleContratRouter);
 
 // Témoignages (public)
 app.use('/api/temoignages', temoignageRouter);
+
+// Alertes (public)
+app.use('/api/alertes', alerteRouter);
 
 // ============= GESTION DES ERREURS =============
 
