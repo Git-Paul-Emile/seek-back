@@ -555,6 +555,14 @@ export const searchAnnoncePubliques = async (params: {
   typeTransactionSlug?: string;
   prixMin?: number;
   prixMax?: number;
+  nbChambresMin?: number;
+  surfaceMin?: number;
+  surfaceMax?: number;
+  meuble?: boolean;
+  parking?: boolean;
+  ascenseur?: boolean;
+  sortBy?: "prix" | "createdAt";
+  sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
 }) => {

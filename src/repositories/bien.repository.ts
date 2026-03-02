@@ -448,6 +448,14 @@ export const searchAnnoncePubliques = async (params: {
   typeTransactionSlug?: string;
   prixMin?: number;
   prixMax?: number;
+  nbChambresMin?: number;
+  surfaceMin?: number;
+  surfaceMax?: number;
+  meuble?: boolean;
+  parking?: boolean;
+  ascenseur?: boolean;
+  sortBy?: "prix" | "createdAt";
+  sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
 }) => {
@@ -481,12 +489,33 @@ export const searchAnnoncePubliques = async (params: {
     if (params.prixMax !== undefined) where.prix.lte = params.prixMax;
   }
 
+  if (params.nbChambresMin !== undefined) {
+    where.nbChambres = { gte: params.nbChambresMin };
+  }
+
+  if (params.surfaceMin !== undefined || params.surfaceMax !== undefined) {
+    where.surface = {};
+    if (params.surfaceMin !== undefined) where.surface.gte = params.surfaceMin;
+    if (params.surfaceMax !== undefined) where.surface.lte = params.surfaceMax;
+  }
+
+  if (params.meuble === true)    where.meuble    = true;
+  if (params.parking === true)   where.parking   = true;
+  if (params.ascenseur === true) where.ascenseur = true;
+
+  const sortField = params.sortBy ?? "createdAt";
+  const sortDir   = params.sortOrder ?? "desc";
+  // For prix sort, nulls last: put null prices at end regardless of direction
+  const orderBy = sortField === "prix"
+    ? [{ prix: { sort: sortDir, nulls: "last" as const } }]
+    : [{ createdAt: sortDir as "asc" | "desc" }];
+
   const [items, total] = await prisma.$transaction([
     prisma.bien.findMany({
       where,
       skip,
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy,
       include: {
         typeLogement:    { select: { id: true, nom: true, slug: true } },
         typeTransaction: { select: { id: true, nom: true, slug: true } },

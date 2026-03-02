@@ -163,15 +163,31 @@ export const getDistinctLieux = async (_req: Request, res: Response): Promise<vo
 // ─── Public — recherche avec filtres ──────────────────────────────────────────
 
 export const searchAnnoncesPubliques = async (req: Request, res: Response): Promise<void> => {
-  const { quartier, typeLogement, typeTransaction, prixMin, prixMax, page, limit } = req.query as Record<string, string>;
+  const {
+    quartier, typeLogement, typeTransaction,
+    prixMin, prixMax,
+    chambres, surfaceMin, surfaceMax,
+    meuble, parking, ascenseur,
+    sortBy, sortOrder,
+    page, limit,
+  } = req.query as Record<string, string>;
+
   const result = await BienService.searchAnnoncePubliques({
     quartier:            quartier || undefined,
     typeLogementSlug:    typeLogement || undefined,
     typeTransactionSlug: typeTransaction || undefined,
-    prixMin:  prixMin  ? parseInt(prixMin)  : undefined,
-    prixMax:  prixMax  ? parseInt(prixMax)  : undefined,
-    page:     page     ? parseInt(page)     : undefined,
-    limit:    limit    ? parseInt(limit)    : undefined,
+    prixMin:       prixMin   ? parseInt(prixMin)   : undefined,
+    prixMax:       prixMax   ? parseInt(prixMax)   : undefined,
+    nbChambresMin: chambres  ? parseInt(chambres)  : undefined,
+    surfaceMin:    surfaceMin ? parseInt(surfaceMin) : undefined,
+    surfaceMax:    surfaceMax ? parseInt(surfaceMax) : undefined,
+    meuble:        meuble    === "1" ? true : undefined,
+    parking:       parking   === "1" ? true : undefined,
+    ascenseur:     ascenseur === "1" ? true : undefined,
+    sortBy:    (sortBy === "prix" || sortBy === "createdAt") ? sortBy : undefined,
+    sortOrder: (sortOrder === "asc" || sortOrder === "desc") ? sortOrder : undefined,
+    page:      page  ? parseInt(page)  : undefined,
+    limit:     limit ? parseInt(limit) : undefined,
   });
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Résultats de recherche", data: result })
