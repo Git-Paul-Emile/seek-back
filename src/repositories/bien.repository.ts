@@ -417,6 +417,88 @@ export const getAnnoncePublieById = async (id: string) => {
   });
 };
 
+// ─── Public — lieux distincts (quartiers + villes) des annonces publiées ───────
+
+export const getDistinctLieux = async () => {
+  const [quartierRows, villeRows] = await prisma.$transaction([
+    prisma.bien.findMany({
+      where: { statutAnnonce: "PUBLIE", quartier: { not: null } },
+      select: { quartier: true },
+      distinct: ["quartier"],
+      orderBy: { quartier: "asc" },
+    }),
+    prisma.bien.findMany({
+      where: { statutAnnonce: "PUBLIE", ville: { not: null } },
+      select: { ville: true },
+      distinct: ["ville"],
+      orderBy: { ville: "asc" },
+    }),
+  ]);
+  return {
+    quartiers: quartierRows.map((r) => r.quartier as string).filter(Boolean),
+    villes:    villeRows.map((r) => r.ville as string).filter(Boolean),
+  };
+};
+
+// ─── Public — recherche avec filtres combinés ─────────────────────────────────
+
+export const searchAnnoncePubliques = async (params: {
+  quartier?: string;
+  typeLogementSlug?: string;
+  typeTransactionSlug?: string;
+  prixMin?: number;
+  prixMax?: number;
+  page?: number;
+  limit?: number;
+}) => {
+  const page = Math.max(params.page ?? 1, 1);
+  const limit = Math.min(params.limit ?? 12, 50);
+  const skip = (page - 1) * limit;
+
+  const where: any = { statutAnnonce: "PUBLIE" };
+
+  if (params.quartier?.trim()) {
+    const q = params.quartier.trim();
+    where.OR = [
+      { quartier: { contains: q, mode: "insensitive" } },
+      { ville:    { contains: q, mode: "insensitive" } },
+      { adresse:  { contains: q, mode: "insensitive" } },
+      { region:   { contains: q, mode: "insensitive" } },
+    ];
+  }
+
+  if (params.typeLogementSlug) {
+    where.typeLogement = { slug: params.typeLogementSlug };
+  }
+
+  if (params.typeTransactionSlug) {
+    where.typeTransaction = { slug: params.typeTransactionSlug };
+  }
+
+  if (params.prixMin !== undefined || params.prixMax !== undefined) {
+    where.prix = {};
+    if (params.prixMin !== undefined) where.prix.gte = params.prixMin;
+    if (params.prixMax !== undefined) where.prix.lte = params.prixMax;
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.bien.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        typeLogement:    { select: { id: true, nom: true, slug: true } },
+        typeTransaction: { select: { id: true, nom: true, slug: true } },
+        statutBien:      { select: { id: true, nom: true, slug: true } },
+      },
+    }),
+    prisma.bien.count({ where }),
+  ]);
+
+  return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+};
+
 // ─── Public — annonces similaires avec système de score ───────────────────────
 
 // Type pour un bien avec les relations de base

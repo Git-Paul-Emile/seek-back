@@ -90,6 +90,18 @@ router.get(
   controllerWrapper(BienController.getDernieresAnnonces)
 );
 
+/** GET /api/biens/public/lieux — quartiers + villes distincts des annonces publiées */
+router.get(
+  "/public/lieux",
+  controllerWrapper(BienController.getDistinctLieux)
+);
+
+/** GET /api/biens/public/recherche — recherche publique avec filtres */
+router.get(
+  "/public/recherche",
+  controllerWrapper(BienController.searchAnnoncesPubliques)
+);
+
 /** GET /api/biens/public/:id — une annonce publiée (accessible publiquement) */
 router.get(
   "/public/:id",

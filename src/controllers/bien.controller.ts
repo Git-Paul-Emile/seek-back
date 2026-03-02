@@ -151,6 +151,33 @@ export const getDernieresAnnonces = async (req: Request, res: Response): Promise
   );
 };
 
+// ─── Public — lieux distincts ─────────────────────────────────────────────────
+
+export const getDistinctLieux = async (_req: Request, res: Response): Promise<void> => {
+  const lieux = await BienService.getDistinctLieux();
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Lieux récupérés", data: lieux })
+  );
+};
+
+// ─── Public — recherche avec filtres ──────────────────────────────────────────
+
+export const searchAnnoncesPubliques = async (req: Request, res: Response): Promise<void> => {
+  const { quartier, typeLogement, typeTransaction, prixMin, prixMax, page, limit } = req.query as Record<string, string>;
+  const result = await BienService.searchAnnoncePubliques({
+    quartier:            quartier || undefined,
+    typeLogementSlug:    typeLogement || undefined,
+    typeTransactionSlug: typeTransaction || undefined,
+    prixMin:  prixMin  ? parseInt(prixMin)  : undefined,
+    prixMax:  prixMax  ? parseInt(prixMax)  : undefined,
+    page:     page     ? parseInt(page)     : undefined,
+    limit:    limit    ? parseInt(limit)    : undefined,
+  });
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Résultats de recherche", data: result })
+  );
+};
+
 // ─── Public — annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublie = async (req: Request, res: Response): Promise<void> => {

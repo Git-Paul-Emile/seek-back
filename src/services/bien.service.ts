@@ -541,6 +541,26 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
   return BienRepository.getDernieresAnnonces(limit);
 };
 
+// ─── Public — lieux distincts ────────────────────────────────────────────────
+
+export const getDistinctLieux = async () => {
+  return BienRepository.getDistinctLieux();
+};
+
+// ─── Public — recherche avec filtres ──────────────────────────────────────────
+
+export const searchAnnoncePubliques = async (params: {
+  quartier?: string;
+  typeLogementSlug?: string;
+  typeTransactionSlug?: string;
+  prixMin?: number;
+  prixMax?: number;
+  page?: number;
+  limit?: number;
+}) => {
+  return BienRepository.searchAnnoncePubliques(params);
+};
+
 // ─── Public — annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublieById = async (id: string) => {
