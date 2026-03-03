@@ -295,7 +295,14 @@ export const getBienById = async (id: string) => {
 // ─── Admin — annonces ─────────────────────────────────────────────────────────
 
 export const countAnnoncesPending = async () => {
-  return prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" } });
+  return prisma.bien.count({
+    where: {
+      OR: [
+        { statutAnnonce: "EN_ATTENTE" },
+        { statutAnnonce: "PUBLIE", hasPendingRevision: true },
+      ],
+    },
+  });
 };
 
 export const getAnnoncesCounts = async () => {

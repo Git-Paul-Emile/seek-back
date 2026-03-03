@@ -9,6 +9,8 @@ import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 import authRouter from "../routes/auth.routes.js";
 import ownerRouter from "../routes/owner.routes.js";
+import verificationRouter from "../routes/verification.routes.js";
+import adminVerificationRouter from "../routes/adminVerification.routes.js";
 import typeLogementRouter from "../routes/typeLogement.routes.js";
 import typeTransactionRouter from "../routes/typeTransaction.routes.js";
 import statutBienRouter from "../routes/statutBien.routes.js";
@@ -106,6 +108,12 @@ app.use('/api/auth', authRouter);
 
 // Auth propriétaires
 app.use('/api/owner/auth', ownerRouter);
+
+// Vérification d'identité propriétaire
+app.use('/api/owner/verification', verificationRouter);
+
+// Vérification admin
+app.use('/api/admin', adminVerificationRouter);
 
 // Types de logement
 app.use('/api/types-logement', typeLogementRouter);

@@ -314,6 +314,8 @@ export const me = async (id: string) => {
     telephone: p.telephone,
     email: p.email ?? undefined,
     sexe: p.sexe ?? undefined,
+    statutVerification: p.statutVerification,
+    verifiedAt: p.verifiedAt,
   };
 };
 

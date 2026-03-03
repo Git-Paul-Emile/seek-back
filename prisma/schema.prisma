@@ -605,21 +605,57 @@ model LocataireRefreshToken {
 // AUTHENTIFICATION PROPRIÉTAIRES
 // ============================================================
 
-model Proprietaire {
-  id        String   @id @default(uuid())
-  prenom    String
-  nom       String
-  sexe      String?
-  telephone String   @unique
-  email     String?  @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum StatutVerification {
+  NOT_VERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
 
-  refreshTokens ProprietaireRefreshToken[]
-  biens         Bien[]
-  locataires    Locataire[]
-  bails         BailLocation[]
+model VerificationDocuments {
+  id             String    @id @default(uuid())
+  proprietaireId String    @unique
+  
+  // Type de pièce d'identité
+  typePiece       String    @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
+  
+  // Documents
+  pieceIdentiteRecto  String?  // URL Cloudinary - recto
+  pieceIdentiteVerso  String?  // URL Cloudinary - verso (pour CNI)
+  selfie             String?  // URL Cloudinary
+  
+  // Consentement
+  conditionsAcceptees Boolean   @default(false)
+  
+  // Traitement admin
+  motifRejet        String?   // Motif de rejet (si rejeté)
+  traitePar         String?   // ID de l'admin qui a traité
+  dateTraitement    DateTime?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+}
+
+model Proprietaire {
+  id                 String            @id @default(uuid())
+  prenom             String
+  nom                String
+  sexe               String?
+  telephone          String            @unique
+  email              String?           @unique
+  password           String
+  statutVerification StatutVerification @default(NOT_VERIFIED)
+  verifiedAt         DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  refreshTokens      ProprietaireRefreshToken[]
+  biens              Bien[]
+  locataires         Locataire[]
+  bails              BailLocation[]
+  verification      VerificationDocuments?
 }
 
 model ProprietaireRefreshToken {
