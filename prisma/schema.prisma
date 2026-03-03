@@ -231,6 +231,14 @@ model Bien {
   statutAnnonce      StatutAnnonce @default(BROUILLON)
   noteAdmin          String?
 
+  // Promotion / Mise en avant
+  estPremium           Boolean  @default(false)
+  estMisEnAvant        Boolean  @default(false)
+  dateDebutPromotion   DateTime?
+  dateFinPromotion     DateTime?
+  positionRotation     Int      @default(0) // Position dans la rotation
+  dernierAffichage    DateTime? // Dernière fois où l'annonce a été affichée en page d'accueil
+
   // Révision d'une annonce publiée (modification en attente de validation admin)
   hasPendingRevision Boolean   @default(false)
   pendingRevision    Json?

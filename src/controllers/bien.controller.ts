@@ -5,6 +5,7 @@ import { getOwnerStats } from "../repositories/bien.repository.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { saveDraftSchema } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
+import * as PromotionService from "../services/promotion.service.js";
 
 // ─── Brouillon ────────────────────────────────────────────────────────────────
 
@@ -143,9 +144,32 @@ export const getBienById = async (req: Request, res: Response): Promise<void> =>
 
 export const getDernieresAnnonces = async (req: Request, res: Response): Promise<void> => {
   const limit = parseInt(req.query.limit as string) || 8;
-  const annonces = await BienService.getDernieresAnnonces(limit);
+  
+  // D'abord récupérer les annonces mises en avant (via rotation intelligente)
+  const promotedResult = await PromotionService.getAnnoncesMiseEnAvant(4);
+  const promotedAnnonces = promotedResult.annonces;
+  
+  // Calculer combien d'annonces supplémentaires il faut récupérer
+  const remainingSlots = Math.max(0, limit - promotedAnnonces.length);
+  
+  // Récupérer les dernières annonces publiées non boostées
+  const regularAnnonces = remainingSlots > 0 
+    ? await BienService.getDernieresAnnonces(remainingSlots)
+    : [];
+  
+  // Filtrer les annonces régulières pour exclure celles qui sont déjà en promotion
+  const promotedIds = new Set(promotedAnnonces.map((a: any) => a.id));
+  const filteredRegular = regularAnnonces.filter((a: any) => !promotedIds.has(a.id));
+  
+  // Combiner : boostées en premier, puis régulières
+  const combined = [...promotedAnnonces, ...filteredRegular];
+  
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Dernières annonces récupérées", data: annonces })
+    jsonResponse({ 
+      status: "success", 
+      message: "Annonces récupérées", 
+      data: combined 
+    })
   );
 };
 

@@ -26,6 +26,7 @@ import locataireAuthRouter from "../routes/locataireAuth.routes.js";
 import modeleContratRouter from "../routes/modeleContrat.routes.js";
 import temoignageRouter from "../routes/temoignage.routes.js";
 import alerteRouter from "../routes/alerte.routes.js";
+import promotionRouter from "../routes/promotion.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -152,6 +153,9 @@ app.use('/api/temoignages', temoignageRouter);
 
 // Alertes (public)
 app.use('/api/alertes', alerteRouter);
+
+// Promotion / Mise en avant des annonces
+app.use('/api/promotions', promotionRouter);
 
 // ============= GESTION DES ERREURS =============
 
