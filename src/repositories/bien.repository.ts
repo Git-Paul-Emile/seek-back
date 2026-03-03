@@ -67,7 +67,7 @@ const BIEN_INCLUDE = {
     include: { meuble: { select: { id: true, nom: true } } },
   },
   proprietaire: {
-    select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+    select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
   },
 } as const;
 
@@ -264,7 +264,7 @@ export const getBiensByProprietaire = async (proprietaireId: string) => {
       typeTransaction: { select: { id: true, nom: true, slug: true } },
       statutBien: { select: { id: true, nom: true, slug: true } },
       proprietaire: {
-        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
       },
       bails: { where: { statut: "ACTIF" }, select: { id: true } },
     },
@@ -286,7 +286,7 @@ export const getBienById = async (id: string) => {
       },
       etablissements: true,
       proprietaire: {
-        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
       },
     },
   });
@@ -360,7 +360,7 @@ export const getAnnonces = async (params: {
         typeTransaction: { select: { id: true, nom: true, slug: true } },
         statutBien: { select: { id: true, nom: true, slug: true } },
         proprietaire: {
-          select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+          select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
         },
       },
     }),
@@ -387,6 +387,9 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
       typeLogement: { select: { id: true, nom: true, slug: true } },
       typeTransaction: { select: { id: true, nom: true, slug: true } },
       statutBien: { select: { id: true, nom: true, slug: true } },
+      proprietaire: {
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
+      },
     },
   });
 
@@ -418,7 +421,7 @@ export const getAnnoncePublieById = async (id: string) => {
       },
       etablissements: true,
       proprietaire: {
-        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
       },
     },
   });
@@ -523,6 +526,7 @@ export const searchAnnoncePubliques = async (params: {
         typeLogement:    { select: { id: true, nom: true, slug: true } },
         typeTransaction: { select: { id: true, nom: true, slug: true } },
         statutBien:      { select: { id: true, nom: true, slug: true } },
+        proprietaire:   { select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true } },
       },
     }),
     prisma.bien.count({ where }),
