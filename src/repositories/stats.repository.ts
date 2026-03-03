@@ -39,6 +39,189 @@ export interface AdminStats {
   }[];
 }
 
+// ─── Stats Propriétaires ────────────────────────────────────────────────────────
+
+export interface ProprietaireStats {
+  total: number;
+  byStatutVerification: { statut: string; count: number }[];
+  byVille: { ville: string; count: number }[];
+  topProprietaires: {
+    id: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email: string | null;
+    totalBiens: number;
+    biensActifs: number;
+    totalLocataires: number;
+  }[];
+  recentProprietaires: {
+    id: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email: string | null;
+    statutVerification: string;
+    createdAt: Date;
+  }[];
+}
+
+export const getProprietairesStats = async (): Promise<ProprietaireStats> => {
+  const [total, byStatut, byVille, topProprietaires, recentProprietaires] = await Promise.all([
+    // Total propriétaires
+    prisma.proprietaire.count(),
+    
+    // Répartition par statut de vérification
+    prisma.proprietaire.groupBy({
+      by: ["statutVerification"],
+      _count: true,
+    }).then((rows) =>
+      rows.map((r) => ({
+        statut: r.statutVerification,
+        count: r._count,
+      }))
+    ),
+    
+    // Répartition par ville (basé sur les biens)
+    prisma.bien.groupBy({
+      by: ["ville"],
+      where: { ville: { not: null } },
+      _count: true,
+      orderBy: { _count: { ville: "desc" } },
+      take: 10,
+    }).then((rows) =>
+      rows.map((r) => ({ ville: r.ville!, count: r._count }))
+    ),
+    
+    // Top 10 propriétaires par nombre de biens
+    prisma.proprietaire.findMany({
+      take: 10,
+      orderBy: {
+        biens: { _count: "desc" },
+      },
+      include: {
+        _count: {
+          select: { biens: true },
+        },
+        biens: {
+          where: { statutAnnonce: "PUBLIE" },
+          select: { id: true },
+        },
+        locataires: {
+          select: { id: true },
+        },
+      },
+    }).then((rows) =>
+      rows.map((p) => ({
+        id: p.id,
+        nom: p.nom,
+        prenom: p.prenom,
+        telephone: p.telephone,
+        email: p.email,
+        totalBiens: p._count.biens,
+        biensActifs: p.biens.length,
+        totalLocataires: p.locataires.length,
+      }))
+    ),
+    
+    // 10 derniers propriétaires inscrits
+    prisma.proprietaire.findMany({
+      take: 10,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        nom: true,
+        prenom: true,
+        telephone: true,
+        email: true,
+        statutVerification: true,
+        createdAt: true,
+      },
+    }),
+  ]);
+
+  return {
+    total,
+    byStatutVerification: byStatut,
+    byVille,
+    topProprietaires,
+    recentProprietaires,
+  };
+};
+
+// ─── Détails d'un propriétaire pour l'admin ──────────────────────────────────
+
+export interface ProprietaireDetail {
+  id: string;
+  prenom: string;
+  nom: string;
+  telephone: string;
+  email: string | null;
+  statutVerification: string;
+  verifiedAt: Date | null;
+  createdAt: Date;
+  totalBiens: number;
+  biens: {
+    id: string;
+    titre: string | null;
+    ville: string | null;
+    statutAnnonce: string;
+    prix: number | null;
+    createdAt: Date;
+  }[];
+  totalLocataires: number;
+  totalBails: number;
+  bailsActifs: number;
+}
+
+export const getProprietaireDetail = async (id: string): Promise<ProprietaireDetail | null> => {
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id },
+    include: {
+      _count: {
+        select: {
+          biens: true,
+          locataire: true,
+          bails: true,
+        },
+      },
+      biens: {
+        select: {
+          id: true,
+          titre: true,
+          ville: true,
+          statutAnnonce: true,
+          prix: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: "desc" },
+      },
+      bails: {
+        where: { statut: "ACTIF" },
+        select: { id: true },
+      },
+    },
+  });
+
+  if (!proprietaire) return null;
+
+  return {
+    id: proprietaire.id,
+    prenom: proprietaire.prenom,
+    nom: proprietaire.nom,
+    telephone: proprietaire.telephone,
+    email: proprietaire.email,
+    statutVerification: proprietaire.statutVerification,
+    verifiedAt: proprietaire.verifiedAt,
+    createdAt: proprietaire.createdAt,
+    totalBiens: proprietaire._count.biens,
+    biens: proprietaire.biens,
+    totalLocataires: proprietaire._count.locataire,
+    totalBails: proprietaire._count.bails,
+    bailsActifs: proprietaire.bails.length,
+  };
+};
+
 export const getAdminStats = async (): Promise<AdminStats> => {
   // Les brouillons n'ont aucune visibilité côté admin
   const statuts = ["EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"] as const;
