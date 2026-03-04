@@ -92,6 +92,30 @@ export const initierPaiementMobileMoney = async (
   // TODO: Remplacer par l'appel API réel (OAuth2 + POST /transactions)
   const instructions = getInstructions(params);
 
+  // Enregistrer la transaction dans l'historique
+  const transaction = await prisma.transaction.create({
+    data: {
+      proprietaireId: params.proprietaireId,
+      type: "PAIEMENT_LOYER",
+      statut: "EN_ATTENTE",
+      montant: params.montant,
+      devise: "XOF",
+      modePaiement: params.provider,
+      provider: params.provider,
+      reference: params.reference,
+      bienId: params.bienId,
+      bailId: params.bailId,
+      echeanceId: params.echeanceId,
+      locataireId: params.locataireId,
+      dateEcheance: new Date(),
+      instructions,
+      metadata: {
+        telephonePayeur: params.telephonePayeur,
+        telephoneBeneficiaire: params.telephoneBeneficiaire,
+      },
+    },
+  });
+
   // Tracer la tentative en base via Notification
   await prisma.notification.create({
     data: {

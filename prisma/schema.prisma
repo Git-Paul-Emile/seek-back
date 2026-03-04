@@ -258,6 +258,7 @@ model Bien {
   meubles        BienMeuble[]
   etablissements Etablissement[]
   bails          BailLocation[]
+  transactions   Transaction[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -370,6 +371,7 @@ model Locataire {
   proprietaire  Proprietaire          @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
   bails         BailLocation[]
   refreshTokens LocataireRefreshToken[]
+  transactions  Transaction[]
 
   @@index([proprietaireId])
   @@index([activationToken])
@@ -401,6 +403,7 @@ model BailLocation {
   contrat       Contrat?
   echeancier    EcheancierLoyer[]
   depotCaution  DepotCaution?
+  transactions  Transaction[]
 
   @@index([bienId])
   @@index([locataireId])
@@ -443,6 +446,7 @@ model EcheancierLoyer {
 
   bail      BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
   quittance Quittance?
+  transactions Transaction[]
 
   @@index([bailId])
   @@index([bienId])
@@ -658,6 +662,7 @@ model Proprietaire {
   locataires         Locataire[]
   bails              BailLocation[]
   verification      VerificationDocuments?
+  transactions       Transaction[]
 }
 
 model ProprietaireRefreshToken {
@@ -736,6 +741,79 @@ model Alerte {
 // TEMOIGNAGES
 // ============================================================
 
+// ============================================================
+// HISTORIQUE DES TRANSACTIONS DE PAIEMENT
+// ============================================================
+
+enum TypePaiement {
+  PAIEMENT_LOYER        // Paiement de loyer par un locataire
+  PAIEMENT_PREMIUM      // Paiement pour mise en avant d'annonce
+  PAIEMENT_PROMOTION    // Paiement pour promotion d'annonce
+  REMBOURSEMENT         // Remboursement au propriétaire
+  RESTITUTION_CAUTION   // Restitution de caution au locataire
+}
+
+enum StatutTransaction {
+  EN_ATTENTE   // Initiation du paiement en cours
+  CONFIRME     // Paiement confirmé
+  ECHEC        // Paiement échoué
+  ANNULE       // Transaction annulée
+  REMBOURSE    // Montant remboursé
+}
+
+model Transaction {
+  id              String            @id @default(uuid())
+  proprietaireId  String
+
+  // Type et statut
+  type            TypePaiement
+  statut          StatutTransaction @default(EN_ATTENTE)
+
+  // Montant et devise
+  montant         Float
+  devise          String            @default("XOF") // Franc CFA
+
+  // Informations du paiement
+  modePaiement    String            // "Orange Money", "MTN", "Wave", "Moov", etc.
+  provider        String?          // Provider spécifique (optionnel)
+  reference       String?          // Référence de la transaction externe
+  transactionId   String?           // ID de transaction du provider
+
+  // Dates
+  dateInitiation  DateTime          @default(now())
+  dateConfirmation DateTime?
+  dateEcheance    DateTime?         // Pour les paiements de loyer
+
+  // Lien avec les entités
+  bienId          String?
+  bailId          String?
+  echeanceId      String?
+  locataireId     String?
+
+  // Informations supplémentaires
+  note            String?
+  instructions    String?           // Instructions de paiement (pour les stubs)
+  metadata        Json?             // Données supplémentaires
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relations
+  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bien            Bien?             @relation(fields: [bienId], references: [id], onDelete: SetNull)
+  bail            BailLocation?    @relation(fields: [bailId], references: [id], onDelete: SetNull)
+  echeance        EcheancierLoyer? @relation(fields: [echeanceId], references: [id], onDelete: SetNull)
+  locataire        Locataire?       @relation(fields: [locataireId], references: [id], onDelete: SetNull)
+
+  @@index([proprietaireId])
+  @@index([type])
+  @@index([statut])
+  @@index([bienId])
+  @@index([bailId])
+  @@index([dateInitiation])
+  @@index([transactionId])
+}
+
 model Temoignage {
   id        String   @id @default(uuid())
   nom       String
@@ -746,4 +824,52 @@ model Temoignage {
   updatedAt DateTime @updatedAt
 
   @@index([actif])
+}
+
+// ============================================================
+// HISTORIQUE DES MISES EN AVANT (PROMOTIONS)
+// ============================================================
+
+enum StatutPromotion {
+  ACTIVE      // Promotion en cours
+  TERMINEE    // Promotion terminée naturellement
+  ARRETEE     // Promotion arrêtée manuellement par le propriétaire
+  EXPIREE     // Promotion expirée (non utilisée)
+}
+
+model PromotionHistory {
+  id              String           @id @default(uuid())
+  bienId          String
+  proprietaireId  String
+  transactionId   String?          // Lien vers la transaction de paiement
+
+  // Informations de la formule
+  formuleId       String
+  formuleNom      String
+  dureeJours      Int
+  montant         Float
+
+  // Dates
+  dateDebut       DateTime
+  dateFin         DateTime         // Date de fin prévue
+  dateFinReelle   DateTime?        // Date de fin réelle (si arrêté avant)
+
+  // Statut
+  statut          StatutPromotion  @default(ACTIVE)
+  motifArret      String?          // Motif de l'arrêt (si arrêté manuellement)
+
+  // Jours restants au moment de l'arrêt
+  joursRestants   Int?
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  bien            Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([bienId])
+  @@index([proprietaireId])
+  @@index([statut])
+  @@index([dateDebut])
 }

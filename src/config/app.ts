@@ -29,6 +29,8 @@ import modeleContratRouter from "../routes/modeleContrat.routes.js";
 import temoignageRouter from "../routes/temoignage.routes.js";
 import alerteRouter from "../routes/alerte.routes.js";
 import promotionRouter from "../routes/promotion.routes.js";
+import premiumRouter from "../routes/premium.routes.js";
+import transactionRouter from "../routes/transaction.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,7 +74,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-owner-id'],
 };
 
 app.use(cors(corsOptions));
@@ -164,6 +166,12 @@ app.use('/api/alertes', alerteRouter);
 
 // Promotion / Mise en avant des annonces
 app.use('/api/promotions', promotionRouter);
+
+// Premium / Mise en avant payante
+app.use('/api/premium', premiumRouter);
+
+// Transactions / Historique des paiements
+app.use('/api/transactions', transactionRouter);
 
 // ============= GESTION DES ERREURS =============
 
