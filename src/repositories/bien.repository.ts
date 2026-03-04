@@ -32,6 +32,8 @@ export interface BienData {
   parking?: boolean;
   ascenseur?: boolean;
   prix?: number | null;
+  prixAncien?: number | null;
+  dateDerniereModificationPrix?: Date | null;
   frequencePaiement?: string | null;
   chargesIncluses?: boolean;
   caution?: number | null;
@@ -217,22 +219,37 @@ export const approuverRevision = async (id: string) => {
 
   const { equipementIds: _eids, meubles: _mb, typeLogement: _tl, typeTransaction: _tt, statutBien: _sb, disponibleLe, ...rest } = rev;
 
+  // Gérer la logique de baisse de prix lors de l'approbation
+  const nouveauPrix = rest.prix;
+  const ancienPrix = bien.prix;
+  let updateData: any = {
+    ...rest,
+    disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
+    statutAnnonce: "PUBLIE",
+    hasPendingRevision: false,
+    pendingRevision: null,
+    noteAdmin: null,
+    ...(equipementIds.length > 0
+      ? { equipements: { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } } }
+      : {}),
+    ...(meubles.length > 0
+      ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
+      : {}),
+  };
+
+  // Si le nouveau prix est inférieur à l'ancien prix, enregistrer l'ancien prix et la date
+  if (nouveauPrix !== null && nouveauPrix !== undefined && ancienPrix && nouveauPrix < ancienPrix) {
+    // Nouvelle baisse de prix significative (minimum 5%)
+    const pourcentageBaisse = ((ancienPrix - nouveauPrix) / ancienPrix) * 100;
+    if (pourcentageBaisse >= 5) {
+      updateData.prixAncien = ancienPrix;
+      updateData.dateDerniereModificationPrix = new Date();
+    }
+  }
+
   return prisma.bien.update({
     where: { id },
-    data: {
-      ...rest,
-      disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
-      statutAnnonce: "PUBLIE",
-      hasPendingRevision: false,
-      pendingRevision: null as any,
-      noteAdmin: null,
-      ...(equipementIds.length > 0
-        ? { equipements: { createMany: { data: equipementIds.map((equipementId) => ({ equipementId })), skipDuplicates: true } } }
-        : {}),
-      ...(meubles.length > 0
-        ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
-        : {}),
-    },
+    data: updateData,
     include: BIEN_INCLUDE,
   });
 };

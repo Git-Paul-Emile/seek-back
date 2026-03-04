@@ -177,6 +177,20 @@ export const saveDraft = async (
       disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
     };
 
+    // Gérer la logique de baisse de prix
+    // Si le nouveau prix est inférieur à l'ancien prix, enregistrer l'ancien prix et la date
+    if (input.id && rest.prix !== undefined) {
+      const bienExistant = await BienRepository.getBienById(input.id);
+      if (bienExistant && bienExistant.prix && rest.prix !== null && rest.prix < bienExistant.prix) {
+        // Nouvelle baisse de prix significative (minimum 5%)
+        const pourcentageBaisse = ((bienExistant.prix - rest.prix) / bienExistant.prix) * 100;
+        if (pourcentageBaisse >= 5) {
+          (data as any).prixAncien = bienExistant.prix;
+          (data as any).dateDerniereModificationPrix = new Date();
+        }
+      }
+    }
+
     return await BienRepository.updateBien(input.id, data);
   }
 

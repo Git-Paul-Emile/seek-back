@@ -217,7 +217,9 @@ model Bien {
   ascenseur         Boolean   @default(false)
 
   // Prix
-  prix              Int?
+  prix              Float?
+  prixAncien        Float?      // Prix précédent (pour calculer la baisse)
+  dateDerniereModificationPrix DateTime? // Date de la dernière modification de prix
   frequencePaiement String?
   chargesIncluses   Boolean   @default(false)
   caution           Int?

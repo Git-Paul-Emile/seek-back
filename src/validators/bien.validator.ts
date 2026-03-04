@@ -36,7 +36,7 @@ export const saveDraftSchema = z.object({
   parking: z.coerce.boolean().default(false),
   ascenseur: z.coerce.boolean().default(false),
 
-  prix: z.coerce.number().int().min(0).optional().nullable(),
+  prix: z.coerce.number().min(0).optional().nullable(),
   frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
   chargesIncluses: z.coerce.boolean().default(false),
   caution: z.coerce.number().int().min(0).optional().nullable(),
@@ -89,7 +89,7 @@ export const createBienSchema = z.object({
   parking: z.coerce.boolean().default(false),
   ascenseur: z.coerce.boolean().default(false),
 
-  prix: z.coerce.number().int().min(0, "Le prix doit être positif"),
+  prix: z.coerce.number().min(0, "Le prix doit être positif"),
   frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
   chargesIncluses: z.coerce.boolean().default(false),
   caution: z.coerce.number().int().min(0).optional().nullable(),
