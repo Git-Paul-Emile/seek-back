@@ -420,7 +420,7 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
 // ─── Public — annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublieById = async (id: string) => {
-  return prisma.bien.findFirst({
+  const bien = await prisma.bien.findFirst({
     where: { 
       id, 
       statutAnnonce: "PUBLIE",
@@ -442,6 +442,22 @@ export const getAnnoncePublieById = async (id: string) => {
       },
     },
   });
+
+  if (!bien) return null;
+
+  // Compter le nombre d'annonces publiées du propriétaire
+  const nombreAnnonces = await prisma.bien.count({
+    where: {
+      proprietaireId: bien.proprietaireId,
+      statutAnnonce: "PUBLIE",
+      actif: true,
+    },
+  });
+
+  return {
+    ...bien,
+    nombreAnnoncesProprietaire: nombreAnnonces,
+  };
 };
 
 // ─── Public — lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
