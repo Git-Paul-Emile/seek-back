@@ -89,6 +89,9 @@ export const findById = async (id: string) => {
           bien: {
             select: { id: true, titre: true, ville: true, quartier: true },
           },
+          contrat: {
+            select: { id: true, statut: true },
+          },
         },
         orderBy: { createdAt: "desc" },
       },
@@ -126,6 +129,9 @@ export const findByProprietaire = async (proprietaireId: string) => {
           dateFinBail: true,
           montantLoyer: true,
           bien: { select: { id: true, titre: true, ville: true } },
+          contrat: {
+            select: { id: true, statut: true },
+          },
         },
       },
     },
