@@ -3,8 +3,9 @@ import type { Seeder } from './seeder.interface.js';
 
 const STATUTS: readonly { nom: string; slug: string; ordre: number }[] = [
   { nom: 'Libre',          slug: 'libre',          ordre: 1 },
-  { nom: 'Loué',           slug: 'loue',           ordre: 2 },
-  { nom: 'En maintenance', slug: 'en-maintenance', ordre: 3 },
+  { nom: 'Réservé',        slug: 'reserve',        ordre: 2 },
+  { nom: 'Loué',           slug: 'loue',           ordre: 3 },
+  { nom: 'En maintenance', slug: 'en-maintenance', ordre: 4 },
 ];
 
 export class StatutBienSeeder implements Seeder {

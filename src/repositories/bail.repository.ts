@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { StatutBail } from "../generated/prisma/enums.js";
+import { StatutBail } from "../generated/prisma/enums.js";
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -65,14 +65,27 @@ export const findById = async (id: string) => {
 
 export const findActifByBien = async (bienId: string) => {
   return prisma.bailLocation.findFirst({
-    where: { bienId, statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"] } },
+    where: {
+      bienId,
+      statut: {
+        in: [
+          StatutBail.ACTIF,
+          StatutBail.EN_ATTENTE,
+          StatutBail.EN_PREAVIS,
+          StatutBail.EN_RENOUVELLEMENT,
+        ],
+      },
+    },
     include: BAIL_INCLUDE,
   });
 };
 
 export const findAArchiverByBien = async (bienId: string) => {
   return prisma.bailLocation.findFirst({
-    where: { bienId, statut: { in: ["TERMINE", "RESILIE"] } },
+    where: {
+      bienId,
+      statut: { in: [StatutBail.TERMINE, StatutBail.RESILIE] },
+    },
     include: BAIL_INCLUDE,
     orderBy: { updatedAt: "desc" },
   });

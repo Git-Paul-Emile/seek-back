@@ -125,7 +125,7 @@ export const creerBail = async (
   if (locataire.proprietaireId !== proprietaireId)
     throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
 
-  // Créer le bail
+  // Créer le bail (sera en EN_ATTENTE par défaut, activation lors de la validation du contrat)
   const bail = await BailRepo.create({
     bienId,
     locataireId: data.locataireId,
@@ -140,45 +140,6 @@ export const creerBail = async (
     jourLimitePaiement: data.jourLimitePaiement,
     frequencePaiement: data.frequencePaiement,
   });
-
-  // ── Actions automatiques ──────────────────────────────────────────────────
-
-  // 1. Bien → statut "Loué"
-  const statutLoueId = await getStatutId("loue");
-  await BailRepo.updateBienStatut(bienId, statutLoueId);
-
-  // 2. Locataire → statut ACTIF (dossier actif)
-  await prisma.locataire.update({
-    where: { id: data.locataireId },
-    data: { statut: "ACTIF" },
-  });
-
-  // 3. Génération de l'échéancier de loyers (limité au 31/12 de l'année en cours)
-  const now = new Date();
-  const dateMax = new Date(now.getFullYear(), 11, 31);
-  const echeances = genererEcheances(
-    bail.id, bienId, proprietaireId, data.locataireId,
-    data.dateDebutBail, data.dateFinBail ?? null,
-    data.frequencePaiement ?? "mensuel",
-    data.montantLoyer,
-    dateMax
-  );
-  if (echeances.length > 0) {
-    await prisma.echeancierLoyer.createMany({ data: echeances });
-  }
-
-  // 4. Création du dépôt de caution
-  if (data.montantCaution && data.montantCaution > 0) {
-    await prisma.depotCaution.create({
-      data: {
-        bailId: bail.id,
-        bienId,
-        proprietaireId,
-        locataireId: data.locataireId,
-        montant: data.montantCaution,
-      },
-    });
-  }
 
   return bail;
 };
@@ -756,6 +717,65 @@ export const prolongerEcheancesAnnee = async (
 
   await prisma.echeancierLoyer.createMany({ data: echeances });
   return { generated: echeances.length, annee: anneeProchaine };
+};
+
+// ─── Activer un bail (après validation du contrat) ──────────────────────────
+
+export const activerBail = async (
+  bienId: string,
+  bailId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+  if (bail.bienId !== bienId)
+    throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
+  if ((bail.statut as string) !== "EN_ATTENTE")
+    throw new AppError("Seul un bail en attente peut être activé", StatusCodes.BAD_REQUEST);
+
+  // Activer le bail
+  const bailActif = await BailRepo.updateStatut(bailId, "ACTIF");
+
+  // 1. Bien → statut "Loué"
+  const statutLoueId = await getStatutId("loue");
+  await BailRepo.updateBienStatut(bienId, statutLoueId);
+
+  // 2. Locataire → statut ACTIF (dossier actif)
+  await prisma.locataire.update({
+    where: { id: bail.locataireId },
+    data: { statut: "ACTIF" },
+  });
+
+  // 3. Génération de l'échéancier de loyers (limité au 31/12 de l'année en cours)
+  const now = new Date();
+  const dateMax = new Date(now.getFullYear(), 11, 31);
+  const echeances = genererEcheances(
+    bailId, bienId, proprietaireId, bail.locataireId,
+    bail.dateDebutBail, bail.dateFinBail ?? null,
+    bail.frequencePaiement ?? "mensuel",
+    bail.montantLoyer,
+    dateMax
+  );
+  if (echeances.length > 0) {
+    await prisma.echeancierLoyer.createMany({ data: echeances });
+  }
+
+  // 4. Création du dépôt de caution
+  if (bail.montantCaution && bail.montantCaution > 0) {
+    await prisma.depotCaution.create({
+      data: {
+        bailId,
+        bienId,
+        proprietaireId,
+        locataireId: bail.locataireId,
+        montant: bail.montantCaution,
+      },
+    });
+  }
+
+  return bailActif;
 };
 
 // ─── Échéancier (vue locataire) ───────────────────────────────────────────────

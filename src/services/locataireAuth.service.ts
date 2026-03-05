@@ -238,7 +238,7 @@ export const refresh = async (
   if (!stored) {
     await LocataireRepo.revokeAllRefreshTokens(payload.sub);
     throw new AppError(
-      "Token révoqué ou inconnu — session terminée",
+      "Session expirée ou invalide. Veuillez vous reconnecter.",
       StatusCodes.UNAUTHORIZED
     );
   }

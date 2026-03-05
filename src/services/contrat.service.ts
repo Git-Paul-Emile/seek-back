@@ -3,6 +3,8 @@ import { AppError } from "../utils/AppError.js";
 import { prisma } from "../config/database.js";
 import * as ContratRepo from "../repositories/contrat.repository.js";
 import { sendMail } from "../utils/mailer.js";
+import * as LocataireService from "./locataire.service.js";
+import * as BailService from "./bail.service.js";
 
 // ─── Substitution de variables ────────────────────────────────────────────────
 
@@ -205,6 +207,18 @@ export const genererContrat = async (
     titre: modele.titre,
     contenu,
   });
+
+  // Marquer le bien comme réservé pendant la négociation du contrat
+  const statutReserveId = await prisma.statutBien.findUnique({
+    where: { slug: "reserve" },
+    select: { id: true },
+  });
+  if (statutReserveId) {
+    await prisma.bien.update({
+      where: { id: bienId },
+      data: { statutBienId: statutReserveId!.id },
+    });
+  }
 };
 
 export const updateContrat = async (
@@ -235,7 +249,30 @@ export const activerContrat = async (
     throw new AppError("Contrat introuvable", StatusCodes.NOT_FOUND);
   if (contrat.statut === "ACTIF")
     throw new AppError("Le contrat est déjà actif", StatusCodes.BAD_REQUEST);
-  return ContratRepo.updateStatut(contratId, "ACTIF");
+  
+  // Activer le contrat
+  const contratActif = await ContratRepo.updateStatut(contratId, "ACTIF");
+
+  // Activer le bail et effectuer les actions associées
+  await BailService.activerBail(bienId, bailId, proprietaireId);
+  
+  // Récupérer le lien d'activation du locataire
+  const bail = await getBailWithRelations(bailId, bienId);
+  let lienActivation = null;
+  
+  if (bail.locataire) {
+    try {
+      const lienData = await LocataireService.getLien(bail.locataire.id, proprietaireId);
+      lienActivation = lienData.lien;
+    } catch (error) {
+      console.warn("[activerContrat] Impossible de générer le lien d'activation:", (error as Error).message);
+    }
+  }
+  
+  return {
+    contrat: contratActif,
+    lienActivation,
+  };
 };
 
 /** Active le contrat ET notifie le locataire (email / whatsapp / sms).
@@ -257,6 +294,17 @@ export const envoyerContrat = async (
   }
 
   const bail = await getBailWithRelations(bailId, bienId);
+  
+  // Récupérer le lien d'activation du locataire
+  let lienActivation = null;
+  if (bail.locataire) {
+    try {
+      const lienData = await LocataireService.getLien(bail.locataire.id, proprietaireId);
+      lienActivation = lienData.lien;
+    } catch (error) {
+      console.warn("[envoyerContrat] Impossible de générer le lien d'activation:", (error as Error).message);
+    }
+  }
 
   // Envoi email best-effort (ne bloque pas si pas d'email ou si SMTP non configuré)
   if (bail.locataire.email) {
@@ -300,5 +348,5 @@ export const envoyerContrat = async (
 
   // TODO : intégration WhatsApp / SMS (bail.locataire.telephone)
 
-  return { sent: true, email: bail.locataire.email ?? null };
+  return { sent: true, email: bail.locataire.email ?? null, lienActivation };
 };
