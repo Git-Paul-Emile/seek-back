@@ -293,6 +293,9 @@ export const envoyerContrat = async (
     await ContratRepo.updateStatut(contratId, "ACTIF");
   }
 
+  // Activer le bail et effectuer les actions associées (statut bien → Loué, échéancier, etc.)
+  await BailService.activerBail(bienId, bailId, proprietaireId);
+
   const bail = await getBailWithRelations(bailId, bienId);
   
   // Récupérer le lien d'activation du locataire

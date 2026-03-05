@@ -742,11 +742,9 @@ export const activerBail = async (
   const statutLoueId = await getStatutId("loue");
   await BailRepo.updateBienStatut(bienId, statutLoueId);
 
-  // 2. Locataire → statut ACTIF (dossier actif)
-  await prisma.locataire.update({
-    where: { id: bail.locataireId },
-    data: { statut: "ACTIF" },
-  });
+  // 2. NOTE: Le locataire reste en statut INVITE jusqu'à ce qu'il active son compte
+  // Le changement de statut vers ACTIF se fait lors de l'activation du compte locataire
+  // (voir locataireAuth.service.ts - fonction activer())
 
   // 3. Génération de l'échéancier de loyers (limité au 31/12 de l'année en cours)
   const now = new Date();
