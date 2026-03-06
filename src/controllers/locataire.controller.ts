@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import * as LocataireService from "../services/locataire.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
+import { z } from "zod";
 import {
   createLocataireSchema,
   updateLocataireSchema,
@@ -140,6 +141,86 @@ export const getLienActivation = async (
       status: "success",
       message: "Lien d'activation récupéré",
       data: result,
+    })
+  );
+};
+
+// ─── Validation de la vérification du locataire ───────────────────────────────────
+
+const approveVerificationSchema = z.object({});
+
+export const approveLocataireVerification = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const id = req.params.id;
+  
+  if (!id || Array.isArray(id)) {
+    throw new AppError("ID invalide", StatusCodes.BAD_REQUEST);
+  }
+
+  const result = await LocataireService.approveLocataireVerification(id, proprietaireId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Vérification du locataire approuvée",
+      data: result,
+    })
+  );
+};
+
+const rejectVerificationSchema = z.object({
+  motif: z.string().min(1, "Le motif de rejet est obligatoire"),
+});
+
+export const rejectLocataireVerification = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const id = req.params.id;
+  
+  if (!id || Array.isArray(id)) {
+    throw new AppError("ID invalide", StatusCodes.BAD_REQUEST);
+  }
+
+  const parsed = rejectVerificationSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({
+        status: "fail",
+        message: parsed.error.issues[0]?.message ?? "Données invalides",
+        data: parsed.error.flatten(),
+      })
+    );
+    return;
+  }
+
+  const { motif } = parsed.data;
+  const result = await LocataireService.rejectLocataireVerification(id, proprietaireId, motif);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Vérification du locataire rejetée",
+      data: result,
+    })
+  );
+};
+
+// ─── Nombre de vérifications en attente ───────────────────────────────────
+
+export const getPendingVerificationsCount = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const count = await LocataireService.getPendingVerificationsCount(proprietaireId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Nombre de vérifications en attente",
+      data: { count },
     })
   );
 };

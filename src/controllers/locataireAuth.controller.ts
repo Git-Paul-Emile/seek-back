@@ -192,6 +192,19 @@ export const updateProfil = async (
   if (!req.locataire?.id) {
     throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
   }
+  
+  // Vérifier si le locataire a une vérification en cours
+  const verification = await prisma.locataireVerification.findUnique({
+    where: { locataireId: req.locataire.id },
+  });
+  
+  if (verification && verification.statut === "PENDING") {
+    throw new AppError(
+      "Vous ne pouvez pas modifier vos informations pendant qu'une demande de vérification est en cours d'analyse. Annulez d'abord votre demande de vérification.",
+      StatusCodes.FORBIDDEN
+    );
+  }
+  
   const parsed = updateProfilSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(StatusCodes.BAD_REQUEST).json(
@@ -354,5 +367,159 @@ export const getQuittances = async (req: Request, res: Response): Promise<void> 
   const quittances = await QuittanceService.getQuittancesLocataire(req.locataire.id);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Quittances récupérées", data: quittances })
+  );
+};
+
+// ─── Vérification des documents ────────────────────────────────────────────────
+
+export const getVerification = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  
+  const verification = await prisma.locataireVerification.findUnique({
+    where: { locataireId: req.locataire.id },
+  });
+  
+  // Formater la réponse comme pour le propriétaire
+  const response = {
+    locataireId: req.locataire.id,
+    statut: (verification?.statut ?? "NOT_VERIFIED") as "NOT_VERIFIED" | "PENDING" | "VERIFIED" | "REJECTED",
+    verifiedAt: verification?.statut === "VERIFIED" ? verification.dateTraitement?.toISOString() ?? null : null,
+    documents: verification ? {
+      typePiece: verification.typePiece,
+      pieceIdentiteRecto: verification.pieceIdentiteRecto,
+      pieceIdentiteVerso: verification.pieceIdentiteVerso,
+      selfie: verification.selfie,
+      conditionsAcceptees: verification.conditionsAcceptees,
+      motifRejet: verification.motifRejet,
+      traitePar: verification.traitePar,
+      dateTraitement: verification.dateTraitement?.toISOString() ?? null,
+    } : undefined,
+  };
+  
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Statut de vérification récupéré", data: response })
+  );
+};
+
+const submitVerificationSchema = z.object({
+  typePiece: z.enum(["CNI", "PASSEPORT"]),
+  pieceIdentiteRecto: z.string().min(1, "Le recto est obligatoire"),
+  pieceIdentiteVerso: z.string().optional(),
+  selfie: z.string().min(1, "Le selfie est obligatoire"),
+  conditionsAcceptees: z.boolean().refine(val => val === true, "Vous devez accepter les conditions"),
+});
+
+export const submitVerification = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  
+  const parsed = submitVerificationSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({
+        status: "fail",
+        message: parsed.error.issues[0]?.message ?? "Données invalides",
+        data: parsed.error.flatten(),
+      })
+    );
+    return;
+  }
+  
+  const { data } = parsed;
+  
+  try {
+    // Vérifier si une demande de vérification est déjà en cours
+    const existingVerification = await prisma.locataireVerification.findUnique({
+      where: { locataireId: req.locataire.id },
+      select: { statut: true },
+    });
+    
+    if (existingVerification && existingVerification.statut === "PENDING") {
+      throw new AppError(
+        "Vous avez déjà une demande de vérification en cours d'analyse. Vous ne pouvez pas soumettre une nouvelle demande avant que la précédente soit traitée.",
+        StatusCodes.CONFLICT
+      );
+    }
+    
+    // Vérifier que le locataire a des informations d'identité
+    const locataire = await prisma.locataire.findUnique({
+      where: { id: req.locataire.id },
+      select: { numPieceIdentite: true, typePiece: true },
+    });
+    
+    if (!locataire?.numPieceIdentite || !locataire?.typePiece) {
+      throw new AppError(
+        "Vous devez d'abord compléter vos informations d'identité dans votre profil",
+        StatusCodes.BAD_REQUEST
+      );
+    }
+    
+    // Créer ou mettre à jour la vérification
+    const verification = await prisma.locataireVerification.upsert({
+      where: { locataireId: req.locataire.id },
+      create: {
+        locataireId: req.locataire.id,
+        typePiece: data.typePiece ?? locataire.typePiece ?? "CNI",
+        pieceIdentiteRecto: data.pieceIdentiteRecto,
+        pieceIdentiteVerso: data.pieceIdentiteVerso,
+        selfie: data.selfie,
+        conditionsAcceptees: data.conditionsAcceptees ?? false,
+        statut: "PENDING",
+      },
+      update: {
+        typePiece: data.typePiece ?? locataire.typePiece,
+        pieceIdentiteRecto: data.pieceIdentiteRecto,
+        pieceIdentiteVerso: data.pieceIdentiteVerso,
+        selfie: data.selfie,
+        conditionsAcceptees: data.conditionsAcceptees,
+        statut: "PENDING",
+        motifRejet: null,
+        dateTraitement: null,
+      },
+    });
+
+    res.status(StatusCodes.OK).json(
+      jsonResponse({ status: "success", message: "Documents soumis pour vérification", data: verification })
+    );
+  } catch (error) {
+    // Re-throw AppError as-is
+    if (error instanceof AppError) {
+      throw error;
+    }
+    // Log and re-throw other errors
+    console.error("Erreur lors de la soumission de vérification:", error);
+    throw new AppError("Erreur lors de la soumission des documents", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+// ─── Annuler la vérification ────────────────────────────────────────────────────
+
+export const cancelVerification = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  
+  const verification = await prisma.locataireVerification.findUnique({
+    where: { locataireId: req.locataire.id },
+  });
+  
+  if (!verification) {
+    throw new AppError("Aucune vérification en cours", StatusCodes.NOT_FOUND);
+  }
+  
+  if (verification.statut !== "PENDING") {
+    throw new AppError("Impossible d'annuler une vérification qui n'est pas en attente", StatusCodes.BAD_REQUEST);
+  }
+  
+  // Supprimer la vérification
+  await prisma.locataireVerification.delete({
+    where: { locataireId: req.locataire.id },
+  });
+  
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Vérification annulée", data: null })
   );
 };

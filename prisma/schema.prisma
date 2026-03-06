@@ -357,7 +357,7 @@ model Locataire {
   numPieceIdentite String?
   typePiece        TypePieceIdentite?
   dateDelivrance   DateTime?
-  dateExpiration   DateTime?
+  dateExpirationPiece DateTime?
   autoriteDelivrance String?
   situationProfessionnelle String?
 
@@ -366,6 +366,9 @@ model Locataire {
   tokenExpiresAt   DateTime?
   statut           StatutLocataire   @default(INVITE)
   password         String?
+
+  // Vérification
+  verification     LocataireVerification?
 
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -377,6 +380,46 @@ model Locataire {
 
   @@index([proprietaireId])
   @@index([activationToken])
+}
+
+// ============================================================
+// VÉRIFICATION LOCATAIRE
+// ============================================================
+
+enum StatutVerificationLocataire {
+  NOT_VERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model LocataireVerification {
+  id             String                      @id @default(uuid())
+  locataireId    String                      @unique
+
+  // Type de pièce d'identité
+  typePiece       String                      @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
+
+  // Documents
+  pieceIdentiteRecto  String?  // URL Cloudinary - recto
+  pieceIdentiteVerso  String?  // URL Cloudinary - verso (pour CNI)
+  selfie             String?  // URL Cloudinary
+
+  // Statut
+  statut         StatutVerificationLocataire @default(NOT_VERIFIED)
+
+  // Consentement
+  conditionsAcceptees Boolean   @default(false)
+
+  // Traitement admin
+  motifRejet        String?   // Motif de rejet (si rejeté)
+  traitePar         String?   // ID de l'admin qui a traité
+  dateTraitement    DateTime?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  locataire Locataire @relation(fields: [locataireId], references: [id], onDelete: Cascade)
 }
 
 model BailLocation {
@@ -495,6 +538,7 @@ enum TypeNotification {
   CONFIRMATION_PAIEMENT
   ALERTE_RETARD
   INITIATION_PAIEMENT
+  VERIFICATION_LOCATAIRE
 }
 
 model Notification {

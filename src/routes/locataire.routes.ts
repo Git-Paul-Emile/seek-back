@@ -9,6 +9,14 @@ const router = Router();
 // Toutes les routes nécessitent l'authentification owner
 router.use(authenticateOwner);
 
+// ⚠️ Routes spécifiques AVANT les routes paramétrées
+
+/** GET /api/owner/locataires/verifications/pending/count — Nombre de demandes de vérification en attente */
+router.get(
+  "/verifications/pending/count",
+  controllerWrapper(LocataireController.getPendingVerificationsCount)
+);
+
 /** GET /api/owner/locataires */
 router.get("/", controllerWrapper(LocataireController.getLocataires));
 
@@ -41,6 +49,20 @@ router.delete(
   "/:id",
   validateId,
   controllerWrapper(LocataireController.deleteLocataire)
+);
+
+/** POST /api/owner/locataires/:id/verification/approve — Approuver la vérification du locataire */
+router.post(
+  "/:id/verification/approve",
+  validateId,
+  controllerWrapper(LocataireController.approveLocataireVerification)
+);
+
+/** POST /api/owner/locataires/:id/verification/reject — Rejeter la vérification du locataire */
+router.post(
+  "/:id/verification/reject",
+  validateId,
+  controllerWrapper(LocataireController.rejectLocataireVerification)
 );
 
 export default router;

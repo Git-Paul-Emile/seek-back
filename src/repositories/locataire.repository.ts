@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { StatutLocataire, TypePieceIdentite } from "../generated/prisma/enums.js";
+import { StatutVerificationLocataire, type StatutLocataire, type TypePieceIdentite } from "../generated/prisma/enums.js";
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -67,6 +67,21 @@ const LOCATAIRE_SELECT = {
   tokenExpiresAt: true,
   createdAt: true,
   updatedAt: true,
+  verification: {
+    select: {
+      id: true,
+      typePiece: true,
+      pieceIdentiteRecto: true,
+      pieceIdentiteVerso: true,
+      selfie: true,
+      statut: true,
+      conditionsAcceptees: true,
+      motifRejet: true,
+      dateTraitement: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  },
 } as const;
 
 // ─── CRUD ─────────────────────────────────────────────────────────────────────
@@ -193,5 +208,127 @@ export const revokeAllRefreshTokens = async (locataireId: string) => {
   return prisma.locataireRefreshToken.updateMany({
     where: { locataireId, revokedAt: null },
     data: { revokedAt: new Date() },
+  });
+};
+
+// ─── Vérification des documents ───────────────────────────────────────────────
+
+export interface CreateLocataireVerificationData {
+  locataireId: string;
+  typePiece?: string;
+  pieceIdentiteRecto?: string;
+  pieceIdentiteVerso?: string;
+  selfie?: string;
+  conditionsAcceptees?: boolean;
+}
+
+export interface UpdateLocataireVerificationData {
+  typePiece?: string;
+  pieceIdentiteRecto?: string;
+  pieceIdentiteVerso?: string;
+  selfie?: string;
+  conditionsAcceptees?: boolean;
+  statut?: StatutVerificationLocataire;
+  motifRejet?: string | null;
+  traitePar?: string | null;
+  dateTraitement?: Date | null;
+}
+
+export const createVerification = async (data: CreateLocataireVerificationData) => {
+  return prisma.locataireVerification.create({
+    data: {
+      locataireId: data.locataireId,
+      typePiece: data.typePiece ?? "CNI",
+      pieceIdentiteRecto: data.pieceIdentiteRecto,
+      pieceIdentiteVerso: data.pieceIdentiteVerso,
+      selfie: data.selfie,
+      conditionsAcceptees: data.conditionsAcceptees ?? false,
+      statut: StatutVerificationLocataire.PENDING,
+    },
+  });
+};
+
+export const updateVerification = async (
+  locataireId: string,
+  data: UpdateLocataireVerificationData
+) => {
+  return prisma.locataireVerification.upsert({
+    where: { locataireId },
+    create: {
+      locataireId,
+      typePiece: data.typePiece ?? "CNI",
+      pieceIdentiteRecto: data.pieceIdentiteRecto,
+      pieceIdentiteVerso: data.pieceIdentiteVerso,
+      selfie: data.selfie,
+      conditionsAcceptees: data.conditionsAcceptees ?? false,
+      statut: data.statut ?? StatutVerificationLocataire.PENDING,
+    },
+    update: data,
+  });
+};
+
+export const getVerificationByLocataireId = async (locataireId: string) => {
+  return prisma.locataireVerification.findUnique({
+    where: { locataireId },
+  });
+};
+
+// ─── Validation de la vérification par le propriétaire ─────────────────────────────
+
+export const approveVerification = async (
+  locataireId: string,
+  proprietaireId: string
+) => {
+  // Vérifier que le locataire appartient bien au propriétaire
+  const locataire = await prisma.locataire.findFirst({
+    where: { id: locataireId, proprietaireId },
+  });
+  
+  if (!locataire) {
+    return null;
+  }
+  
+  return prisma.locataireVerification.update({
+    where: { locataireId },
+    data: {
+      statut: StatutVerificationLocataire.VERIFIED,
+      dateTraitement: new Date(),
+      motifRejet: null,
+    },
+  });
+};
+
+export const rejectVerification = async (
+  locataireId: string,
+  proprietaireId: string,
+  motifRejet: string
+) => {
+  // Vérifier que le locataire appartient bien au propriétaire
+  const locataire = await prisma.locataire.findFirst({
+    where: { id: locataireId, proprietaireId },
+  });
+  
+  if (!locataire) {
+    return null;
+  }
+  
+  return prisma.locataireVerification.update({
+    where: { locataireId },
+    data: {
+      statut: StatutVerificationLocataire.REJECTED,
+      dateTraitement: new Date(),
+      motifRejet,
+    },
+  });
+};
+
+// ─── Nombre de vérifications en attente ─────────────────────────────────────
+
+export const getPendingVerificationsCount = async (proprietaireId: string) => {
+  return prisma.locataireVerification.count({
+    where: {
+      statut: StatutVerificationLocataire.PENDING,
+      locataire: { proprietaireId },
+    },
   });
 };

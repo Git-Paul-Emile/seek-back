@@ -2,6 +2,8 @@ import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as LocataireAuthController from "../controllers/locataireAuth.controller.js";
 import { authenticateLocataire } from "../middlewares/locataireAuth.middleware.js";
+import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
+import { uploadImage } from "../services/cloudinary.service.js";
 
 const router = Router();
 
@@ -68,6 +70,42 @@ router.get(
   "/quittances",
   authenticateLocataire,
   controllerWrapper(LocataireAuthController.getQuittances)
+);
+
+/** GET /api/locataire/auth/verification — récupérer le statut de vérification */
+router.get(
+  "/verification",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getVerification)
+);
+
+/** POST /api/locataire/auth/verification — soumettre les documents de vérification */
+router.post(
+  "/verification",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.submitVerification)
+);
+
+/** DELETE /api/locataire/auth/verification — annuler la demande de vérification */
+router.delete(
+  "/verification",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.cancelVerification)
+);
+
+/** POST /api/locataire/auth/verification/upload — uploader une image de vérification */
+router.post(
+  "/verification/upload",
+  authenticateLocataire,
+  uploadImageMiddleware,
+  controllerWrapper(async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ status: "error", message: "Aucun fichier fourni" });
+    }
+    
+    const result = await uploadImage(req.file.buffer, "seek/verifications/locataires");
+    res.json({ status: "success", data: result });
+  })
 );
 
 export default router;

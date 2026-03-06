@@ -150,3 +150,90 @@ export const getLien = async (id: string, proprietaireId: string) => {
     },
   };
 };
+
+// ─── Validation de la vérification par le propriétaire ────────────────────────────
+
+export const approveLocataireVerification = async (
+  locataireId: string,
+  proprietaireId: string
+) => {
+  // Vérifier que le locataire existe et appartient au propriétaire
+  const locataire = await LocataireRepo.findById(locataireId);
+  if (!locataire) {
+    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+  }
+  if (locataire.proprietaireId !== proprietaireId) {
+    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+  }
+
+  // Vérifier qu'il y a une vérification en cours
+  const verification = await LocataireRepo.getVerificationByLocataireId(locataireId);
+  if (!verification) {
+    throw new AppError(
+      "Aucune demande de vérification trouvée pour ce locataire",
+      StatusCodes.NOT_FOUND
+    );
+  }
+  if (verification.statut !== "PENDING") {
+    throw new AppError(
+      "Cette demande de vérification n'est pas en attente",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  // Approuver la vérification
+  const updated = await LocataireRepo.approveVerification(locataireId, proprietaireId);
+  if (!updated) {
+    throw new AppError("Erreur lors de l'approbation", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
+  return updated;
+};
+
+export const rejectLocataireVerification = async (
+  locataireId: string,
+  proprietaireId: string,
+  motifRejet: string
+) => {
+  // Vérifier que le locataire existe et appartient au propriétaire
+  const locataire = await LocataireRepo.findById(locataireId);
+  if (!locataire) {
+    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+  }
+  if (locataire.proprietaireId !== proprietaireId) {
+    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+  }
+
+  if (!motifRejet || motifRejet.trim().length === 0) {
+    throw new AppError("Le motif de rejet est obligatoire", StatusCodes.BAD_REQUEST);
+  }
+
+  // Vérifier qu'il y a une vérification en cours
+  const verification = await LocataireRepo.getVerificationByLocataireId(locataireId);
+  if (!verification) {
+    throw new AppError(
+      "Aucune demande de vérification trouvée pour ce locataire",
+      StatusCodes.NOT_FOUND
+    );
+  }
+  if (verification.statut !== "PENDING") {
+    throw new AppError(
+      "Cette demande de vérification n'est pas en attente",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  // Rejeter la vérification
+  const updated = await LocataireRepo.rejectVerification(locataireId, proprietaireId, motifRejet);
+  if (!updated) {
+    throw new AppError("Erreur lors du rejet", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
+  return updated;
+};
+
+// ─── Nombre de vérifications en attente ─────────────────────────────────────
+
+export const getPendingVerificationsCount = async (proprietaireId: string) => {
+  return LocataireRepo.getPendingVerificationsCount(proprietaireId);
+};

@@ -3,7 +3,7 @@ import { prisma } from "../config/database.js";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface NotificationPayload {
-  type: "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT";
+  type: "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT" | "VERIFICATION_LOCATAIRE";
   canal?: "SMS" | "EMAIL" | "WHATSAPP";
   destinataire: string;
   sujet?: string;
@@ -44,7 +44,7 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
   // Enregistrer en base (statut EN_ATTENTE)
   const notification = await prisma.notification.create({
     data: {
-      type: payload.type,
+      type: payload.type as any,
       canal,
       destinataire: payload.destinataire,
       sujet: payload.sujet,
