@@ -65,6 +65,11 @@ const LOCATAIRE_SELECT = {
   statut: true,
   activationToken: true,
   tokenExpiresAt: true,
+  // Suspension
+  estSuspendu: true,
+  motifSuspension: true,
+  dateSuspension: true,
+  suspenduPar: true,
   createdAt: true,
   updatedAt: true,
   verification: {
@@ -102,7 +107,7 @@ export const findById = async (id: string) => {
       bails: {
         include: {
           bien: {
-            select: { id: true, titre: true, ville: true, quartier: true },
+            select: { id: true, titre: true, ville: true, quartier: true, actif: true },
           },
           contrat: {
             select: { id: true, statut: true },

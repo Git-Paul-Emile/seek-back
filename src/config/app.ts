@@ -31,6 +31,7 @@ import alerteRouter from "../routes/alerte.routes.js";
 import promotionRouter from "../routes/promotion.routes.js";
 import premiumRouter from "../routes/premium.routes.js";
 import transactionRouter from "../routes/transaction.routes.js";
+import suspensionRouter from "../routes/suspension.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -172,6 +173,9 @@ app.use('/api/premium', premiumRouter);
 
 // Transactions / Historique des paiements
 app.use('/api/transactions', transactionRouter);
+
+// Suspension de comptes (admin)
+app.use('/api/suspension', suspensionRouter);
 
 // ============= GESTION DES ERREURS =============
 

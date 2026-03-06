@@ -367,6 +367,12 @@ model Locataire {
   statut           StatutLocataire   @default(INVITE)
   password         String?
 
+  // Suspension
+  estSuspendu      Boolean           @default(false)
+  motifSuspension  String?
+  dateSuspension   DateTime?
+  suspenduPar      String?
+
   // Vérification
   verification     LocataireVerification?
 
@@ -700,6 +706,13 @@ model Proprietaire {
   password           String
   statutVerification StatutVerification @default(NOT_VERIFIED)
   verifiedAt         DateTime?
+
+  // Suspension
+  estSuspendu        Boolean           @default(false)
+  motifSuspension    String?
+  dateSuspension     DateTime?
+  suspenduPar        String?
+
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 

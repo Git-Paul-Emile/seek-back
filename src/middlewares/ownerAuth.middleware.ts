@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { verifyOwnerAccessToken } from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
+import * as OwnerRepo from "../repositories/owner.repository.js";
 
 declare global {
   namespace Express {
@@ -11,11 +12,11 @@ declare global {
   }
 }
 
-export const authenticateOwner = (
+export const authenticateOwner = async (
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   let token: string | undefined = req.cookies?.ownerAccessToken;
 
   if (!token) {
@@ -34,6 +35,31 @@ export const authenticateOwner = (
 
   try {
     const payload = verifyOwnerAccessToken(token);
+
+    // Vérifier si le compte n'est pas suspendu
+    const proprietaire = await OwnerRepo.findById(payload.sub);
+    if (!proprietaire) {
+      res.status(StatusCodes.UNAUTHORIZED).json(
+        jsonResponse({ status: "unauthorized", message: "Compte introuvable" })
+      );
+      return;
+    }
+
+    if (proprietaire.estSuspendu) {
+      res.status(StatusCodes.FORBIDDEN).json(
+        jsonResponse({
+          status: "error",
+          message: "Votre compte a été suspendu",
+          data: {
+            suspendu: true,
+            motif: proprietaire.motifSuspension,
+            dateSuspension: proprietaire.dateSuspension,
+          },
+        })
+      );
+      return;
+    }
+
     req.owner = { id: payload.sub, prenom: payload.prenom, nom: payload.nom };
     next();
   } catch {

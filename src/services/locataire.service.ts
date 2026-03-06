@@ -113,6 +113,17 @@ export const remove = async (id: string, proprietaireId: string) => {
     );
   }
 
+  // Vérifier si le locataire est associé à un logement actif
+  const logementActif = locataire.bails?.find(
+    (b) => b.bien && b.bien.actif === true
+  );
+  if (logementActif) {
+    throw new AppError(
+      "Ce locataire est associé à un logement actif. Vous ne pouvez pas supprimer ce compte.",
+      StatusCodes.CONFLICT
+    );
+  }
+
   await LocataireRepo.remove(id);
 };
 
