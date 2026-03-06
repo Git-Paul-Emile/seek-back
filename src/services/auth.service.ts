@@ -205,3 +205,48 @@ export const updateProfile = async (
     email: updated.email,
   };
 };
+
+// ─── Service : Changement de mot de passe ──────────────────────────────────
+
+export const changePassword = async (
+  adminId: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<{ message: string }> => {
+  // 1. Trouver l'admin
+  const admin = await AuthRepository.findAdminById(adminId);
+  if (!admin) {
+    throw new AppError("Admin introuvable", StatusCodes.NOT_FOUND);
+  }
+
+  // 2. Vérifier le mot de passe actuel
+  const passwordValid = await bcrypt.compare(currentPassword, admin.password);
+  if (!passwordValid) {
+    throw new AppError(
+      "Le mot de passe actuel est incorrect",
+      StatusCodes.UNAUTHORIZED
+    );
+  }
+
+  // 3. Vérifier que le nouveau mot de passe est différent de l'actuel
+  if (currentPassword === newPassword) {
+    throw new AppError(
+      "Le nouveau mot de passe doit être différent de l'actuel",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  // 4. Hachage du nouveau mot de passe
+  const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+  // 5. Mise à jour du mot de passe
+  await AuthRepository.updateAdmin(adminId, { password: hashedPassword });
+
+  // 6. Révoquer tous les tokens existants pour des raisons de sécurité
+  await AuthRepository.revokeAllRefreshTokens(adminId);
+
+  return {
+    message: "Mot de passe modifié avec succès. Veuillez vous reconnecter.",
+  };
+};

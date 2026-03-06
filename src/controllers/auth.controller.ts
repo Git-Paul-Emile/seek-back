@@ -121,3 +121,25 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
     })
   );
 };
+
+// ─── PUT /api/auth/change-password ───────────────────────────────────────────
+
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+  const admin = (req as any).admin as { id: string; email: string };
+  const { currentPassword, newPassword } = req.body as {
+    currentPassword: string;
+    newPassword: string;
+  };
+
+  const result = await AuthService.changePassword(admin.id, currentPassword, newPassword);
+  
+  // Révoquer les cookies
+  clearTokenCookies(res);
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: result.message,
+    })
+  );
+};

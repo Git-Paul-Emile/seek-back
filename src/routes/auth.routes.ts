@@ -3,7 +3,7 @@ import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as AuthController from "../controllers/auth.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { loginSchema } from "../validators/auth.validator.js";
+import { loginSchema, changePasswordSchema } from "../validators/auth.validator.js";
 import { limiteurAuth, limiteurRefresh } from "../middlewares/rateLimiter.middleware.js";
 
 const router = Router();
@@ -58,6 +58,17 @@ router.put(
   "/profile",
   authenticate,
   controllerWrapper(AuthController.updateProfile)
+);
+
+/**
+ * PUT /api/auth/change-password
+ * Protégé : changement de mot de passe avec vérification de l'ancien mot de passe
+ */
+router.put(
+  "/change-password",
+  authenticate,
+  validate(changePasswordSchema),
+  controllerWrapper(AuthController.changePassword)
 );
 
 export default router;
