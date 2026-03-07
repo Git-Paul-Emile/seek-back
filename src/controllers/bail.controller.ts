@@ -57,6 +57,26 @@ export const getBailActif = async (
   );
 };
 
+// ─── Historique des baux d'un bien ───────────────────────────────────────────
+
+export const getHistoriqueBails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const bails = await BailService.getHistoriqueBails(
+    req.params.id as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Historique des baux récupéré",
+      data: bails,
+    })
+  );
+};
+
 // ─── Créer un bail ────────────────────────────────────────────────────────────
 
 export const creerBail = async (

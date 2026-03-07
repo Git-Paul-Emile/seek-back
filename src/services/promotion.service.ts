@@ -144,12 +144,14 @@ export const getAnnoncesMiseEnAvant = async (limit: number = CONFIG.NB_ANNOACES_
     include: {
       typeLogement: true,
       typeTransaction: true,
+      statutBien: true,
       proprietaire: {
         select: {
           id: true,
           prenom: true,
           nom: true,
           telephone: true,
+          statutVerification: true,
         },
       },
     },

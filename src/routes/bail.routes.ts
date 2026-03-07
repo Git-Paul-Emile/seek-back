@@ -15,6 +15,9 @@ router.use(authenticateOwner);
 /** GET /api/biens/:id/bail — bail actif du bien */
 router.get("/", controllerWrapper(BailController.getBailActif));
 
+/** GET /api/biens/:id/bail/historique — historique de tous les baux */
+router.get("/historique", controllerWrapper(BailController.getHistoriqueBails));
+
 /** POST /api/biens/:id/bail — créer un bail */
 router.post("/", controllerWrapper(BailController.creerBail));
 
