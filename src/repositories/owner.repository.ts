@@ -57,3 +57,23 @@ export const revokeAllRefreshTokens = (proprietaireId: string) =>
     where: { proprietaireId, revokedAt: null },
     data: { revokedAt: new Date() },
   });
+
+// ─── PasswordResetToken ────────────────────────────────────────────────────────
+
+export const createPasswordResetToken = (data: {
+  proprietaireId: string;
+  tokenHash: string;
+  expiresAt: Date;
+}) => prisma.passwordResetToken.create({ data });
+
+export const findPasswordResetToken = (tokenHash: string) =>
+  prisma.passwordResetToken.findUnique({ where: { tokenHash } });
+
+export const markPasswordResetTokenUsed = (tokenHash: string) =>
+  prisma.passwordResetToken.update({ where: { tokenHash }, data: { usedAt: new Date() } });
+
+export const invalidatePasswordResetTokens = (proprietaireId: string) =>
+  prisma.passwordResetToken.updateMany({
+    where: { proprietaireId, usedAt: null },
+    data: { usedAt: new Date() },
+  });

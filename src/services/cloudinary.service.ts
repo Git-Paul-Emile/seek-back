@@ -40,6 +40,28 @@ export const uploadImage = (
 };
 
 /**
+ * Upload un fichier quelconque (PDF, image) vers Cloudinary (resource_type: auto)
+ */
+export const uploadFile = (
+  buffer: Buffer,
+  folder: string,
+  filename?: string
+): Promise<CloudinaryUploadResult> => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: "auto", use_filename: true, public_id: filename },
+      (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+        if (error || !result) {
+          return reject(new AppError("Échec de l'upload vers Cloudinary", StatusCodes.INTERNAL_SERVER_ERROR));
+        }
+        resolve({ url: result.secure_url, publicId: result.public_id });
+      }
+    );
+    stream.end(buffer);
+  });
+};
+
+/**
  * Supprime une image Cloudinary à partir de son public ID.
  * Ne lance pas d'erreur si la suppression échoue (image déjà absente).
  */

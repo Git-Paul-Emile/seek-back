@@ -24,6 +24,12 @@ router.post(
 /** POST /api/owner/auth/refresh */
 router.post("/refresh", controllerWrapper(OwnerController.refresh));
 
+/** POST /api/owner/auth/forgot-password */
+router.post("/forgot-password", controllerWrapper(OwnerController.forgotPassword));
+
+/** POST /api/owner/auth/reset-password */
+router.post("/reset-password", controllerWrapper(OwnerController.resetPassword));
+
 /** POST /api/owner/auth/logout — protégé */
 router.post(
   "/logout",

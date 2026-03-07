@@ -20,6 +20,67 @@ export const getSiteStats = async (): Promise<SiteStats> => {
   };
 };
 
+// ─── Stats Revenus ────────────────────────────────────────────────────────────
+
+export interface RevenusStats {
+  totalRevenus: number;
+  revenusMois: number;
+  revenus12Mois: { mois: string; montant: number }[];
+  revenusPremium: number;
+  revenus12MoisPremium: { mois: string; montant: number }[];
+  topProprietairesLoyer: { id: string; nom: string; prenom: string; telephone: string; montant: number }[];
+}
+
+export const getRevenusStats = async (): Promise<RevenusStats> => {
+  const now = new Date();
+  const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [totalLoyer, loyerMois, totalPremium] = await Promise.all([
+    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] } }, _sum: { montant: true } }),
+    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] }, datePaiement: { gte: debutMois } }, _sum: { montant: true } }),
+    prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME" }, _sum: { montant: true } }),
+  ]);
+
+  // Revenus loyers sur 12 mois
+  const revenus12Mois: { mois: string; montant: number }[] = [];
+  const revenus12MoisPremium: { mois: string; montant: number }[] = [];
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const dFin = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+    const label = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const [agg, aggPremium] = await Promise.all([
+      prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] }, datePaiement: { gte: d, lt: dFin } }, _sum: { montant: true } }),
+      prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME", dateConfirmation: { gte: d, lt: dFin } }, _sum: { montant: true } }),
+    ]);
+    revenus12Mois.push({ mois: label, montant: agg._sum.montant ?? 0 });
+    revenus12MoisPremium.push({ mois: label, montant: aggPremium._sum.montant ?? 0 });
+  }
+
+  const topLoc = await prisma.echeancierLoyer.groupBy({
+    by: ["proprietaireId"],
+    where: { statut: { in: ["PAYE", "PARTIEL"] } },
+    _sum: { montant: true },
+    orderBy: { _sum: { montant: "desc" } },
+    take: 5,
+  });
+  const propIds = topLoc.map((r) => r.proprietaireId);
+  const props = await prisma.proprietaire.findMany({ where: { id: { in: propIds } }, select: { id: true, nom: true, prenom: true, telephone: true } });
+  const propsMap = new Map(props.map((p) => [p.id, p]));
+
+  return {
+    totalRevenus: (totalLoyer._sum.montant ?? 0) + (totalPremium._sum.montant ?? 0),
+    revenusMois: loyerMois._sum.montant ?? 0,
+    revenus12Mois,
+    revenusPremium: totalPremium._sum.montant ?? 0,
+    revenus12MoisPremium,
+    topProprietairesLoyer: topLoc.map((r) => ({
+      id: r.proprietaireId,
+      ...(propsMap.get(r.proprietaireId) ?? { nom: "?", prenom: "?", telephone: "?" }),
+      montant: r._sum.montant ?? 0,
+    })),
+  };
+};
+
 // ─── Stats Admin ──────────────────────────────────────────────────────────────
 
 export interface AdminStats {

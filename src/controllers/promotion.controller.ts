@@ -134,6 +134,71 @@ export const extendPromotion = async (req: Request, res: Response): Promise<void
   );
 };
 
+// ─── Admin : historique de toutes les mises en avant ─────────────────────────
+
+export const getAdminHistoriquePromotions = async (req: Request, res: Response): Promise<void> => {
+  const page = req.query.page ? parseInt(req.query.page as string) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 20;
+  const statut = req.query.statut as string | undefined;
+  const proprietaireId = req.query.proprietaireId as string | undefined;
+  const skip = (page - 1) * limit;
+
+  const { prisma } = await import("../config/database.js");
+  const where: any = {};
+  if (statut) where.statut = statut;
+  if (proprietaireId) where.proprietaireId = proprietaireId;
+
+  const [total, items] = await Promise.all([
+    prisma.promotionHistory.count({ where }),
+    prisma.promotionHistory.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        bien: { select: { id: true, titre: true, ville: true } },
+        proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true } },
+      },
+    }),
+  ]);
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Historique des mises en avant récupéré",
+      data: { items, meta: { total, page, limit, totalPages: Math.ceil(total / limit) } },
+    })
+  );
+};
+
+export const getAdminStatsPromotions = async (_req: Request, res: Response): Promise<void> => {
+  const { prisma } = await import("../config/database.js");
+  const now = new Date();
+  const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [total, actives, montantTotal, montantMois, parFormule] = await Promise.all([
+    prisma.promotionHistory.count(),
+    prisma.promotionHistory.count({ where: { statut: "ACTIVE" } }),
+    prisma.promotionHistory.aggregate({ _sum: { montant: true } }),
+    prisma.promotionHistory.aggregate({ where: { createdAt: { gte: debutMois } }, _sum: { montant: true } }),
+    prisma.promotionHistory.groupBy({ by: ["formuleNom"], _count: true, _sum: { montant: true } }),
+  ]);
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "Stats promotions récupérées",
+      data: {
+        total,
+        actives,
+        montantTotal: montantTotal._sum.montant ?? 0,
+        montantMois: montantMois._sum.montant ?? 0,
+        parFormule: parFormule.map((r) => ({ formule: r.formuleNom, nombre: r._count, montant: r._sum.montant ?? 0 })),
+      },
+    })
+  );
+};
+
 // ─── Récupérer les annonces mises en avant (public - pour page d'accueil) ────
 
 export const getAnnoncesMiseEnAvant = async (req: Request, res: Response): Promise<void> => {

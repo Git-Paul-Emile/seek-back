@@ -867,3 +867,41 @@ export const getContratForLocataire = async (locataireId: string) => {
     },
   };
 };
+
+// ─── Infos propriétaire (vue locataire) ───────────────────────────────────────
+
+export const getProprietaireForLocataire = async (locataireId: string) => {
+  // Récupérer le bail actif du locataire
+  const bail = await prisma.bailLocation.findFirst({
+    where: { locataireId, statut: "ACTIF" },
+    include: {
+      bien: {
+        select: {
+          id: true,
+          titre: true,
+          adresse: true,
+          quartier: true,
+          ville: true,
+          region: true,
+          pays: true,
+        },
+      },
+      proprietaire: {
+        select: {
+          id: true,
+          nom: true,
+          prenom: true,
+          telephone: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  if (!bail) return null;
+
+  return {
+    bien: bail.bien,
+    proprietaire: bail.proprietaire,
+  };
+};

@@ -143,3 +143,61 @@ export const deleteProfile = async (req: Request, res: Response): Promise<void> 
     })
   );
 };
+
+// ─── POST /api/owner/auth/forgot-password ────────────────────────────────────
+
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+  const { identifiant } = req.body;
+  if (!identifiant) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Identifiant requis" }));
+    return;
+  }
+
+  try {
+    const { token, email, prenom } = await OwnerService.requestPasswordReset(identifiant);
+
+    // Envoyer l'email si disponible
+    if (email) {
+      try {
+        const { sendMail } = await import("../utils/mailer.js");
+        const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+        await sendMail({
+          to: email,
+          subject: "Réinitialisation de votre mot de passe SEEK",
+          html: `<p>Bonjour ${prenom},</p>
+<p>Cliquez sur ce lien pour réinitialiser votre mot de passe (valable 1 heure) :</p>
+<p><a href="${frontUrl}/owner/reset-password?token=${token}">${frontUrl}/owner/reset-password?token=${token}</a></p>
+<p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>`,
+        });
+      } catch (e) {
+        console.error("[OWNER] Erreur envoi email reset:", e);
+      }
+    }
+  } catch (e: any) {
+    if (e.statusCode === StatusCodes.OK) {
+      // Compte non trouvé, on répond OK quand même (ne pas révéler)
+    } else {
+      throw e;
+    }
+  }
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Si ce compte existe, un lien de réinitialisation a été envoyé." })
+  );
+};
+
+// ─── POST /api/owner/auth/reset-password ─────────────────────────────────────
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { token, password } = req.body;
+  if (!token || !password) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Token et nouveau mot de passe requis" }));
+    return;
+  }
+  if (password.length < 8) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Le mot de passe doit contenir au moins 8 caractères" }));
+    return;
+  }
+  await OwnerService.resetPassword(token, password);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Mot de passe réinitialisé avec succès" }));
+};

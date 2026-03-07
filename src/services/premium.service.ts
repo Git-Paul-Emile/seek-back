@@ -55,8 +55,23 @@ export const simulerPaiementEtActiverPromotion = async (
     );
   }
 
-  // 3. Vérifier que la formule existe
-  const formule = FORMULES_PREMIUM.find((f) => f.id === formuleId);
+  // 3. Vérifier que la formule existe (DB d'abord, puis fallback hardcoded)
+  let formule: FormulePremium | undefined;
+  const dbFormule = await prisma.formulePremium.findFirst({ where: { code: formuleId, actif: true } });
+  if (dbFormule) {
+    formule = {
+      id: dbFormule.code,
+      nom: dbFormule.nom,
+      dureeJours: dbFormule.dureeJours,
+      prix: dbFormule.prix,
+      accroche: dbFormule.accroche,
+      description: dbFormule.description,
+      idealPour: dbFormule.idealPour,
+      populer: dbFormule.populer,
+    };
+  } else {
+    formule = FORMULES_PREMIUM.find((f) => f.id === formuleId);
+  }
   if (!formule) {
     throw new AppError("Formule premium introuvable", StatusCodes.NOT_FOUND);
   }
@@ -157,9 +172,22 @@ export const simulerPaiementEtActiverPromotion = async (
 };
 
 /**
- * Récupère les formules premium disponibles
+ * Récupère les formules premium disponibles (DB d'abord, fallback hardcoded)
  */
-export const getFormulesPremium = (): FormulePremium[] => {
+export const getFormulesPremium = async (): Promise<FormulePremium[]> => {
+  const dbFormules = await prisma.formulePremium.findMany({ where: { actif: true }, orderBy: { ordre: "asc" } });
+  if (dbFormules.length > 0) {
+    return dbFormules.map((f) => ({
+      id: f.code,
+      nom: f.nom,
+      dureeJours: f.dureeJours,
+      prix: f.prix,
+      accroche: f.accroche,
+      description: f.description,
+      idealPour: f.idealPour,
+      populer: f.populer,
+    }));
+  }
   return FORMULES_PREMIUM;
 };
 
@@ -168,6 +196,32 @@ export const getFormulesPremium = (): FormulePremium[] => {
  */
 export const getFormuleById = (formuleId: string): FormulePremium | undefined => {
   return FORMULES_PREMIUM.find((f) => f.id === formuleId);
+};
+
+// ─── Admin CRUD FormulePremium ────────────────────────────────────────────────
+
+export const adminGetAllFormules = async () => {
+  return prisma.formulePremium.findMany({ orderBy: { ordre: "asc" } });
+};
+
+export const adminCreateFormule = async (data: {
+  code: string; nom: string; dureeJours: number; prix: number;
+  accroche: string; description: string; idealPour: string[]; populer?: boolean;
+  actif?: boolean; ordre?: number;
+}) => {
+  return prisma.formulePremium.create({ data });
+};
+
+export const adminUpdateFormule = async (id: string, data: Partial<{
+  code: string; nom: string; dureeJours: number; prix: number;
+  accroche: string; description: string; idealPour: string[]; populer: boolean;
+  actif: boolean; ordre: number;
+}>) => {
+  return prisma.formulePremium.update({ where: { id }, data });
+};
+
+export const adminDeleteFormule = async (id: string) => {
+  return prisma.formulePremium.delete({ where: { id } });
 };
 
 /**

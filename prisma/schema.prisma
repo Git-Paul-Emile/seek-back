@@ -161,6 +161,78 @@ model Equipement {
 }
 
 // ============================================================
+// FORMULES PREMIUM (admin configurable)
+// ============================================================
+
+model FormulePremium {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  nom         String
+  dureeJours  Int
+  prix        Float
+  accroche    String
+  description String
+  idealPour   String[]
+  populer     Boolean  @default(false)
+  actif       Boolean  @default(true)
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============================================================
+// SIGNALEMENTS
+// ============================================================
+
+enum TypeSignalement {
+  ANNONCE
+  PROPRIETAIRE
+  LOCATAIRE
+}
+
+enum StatutSignalement {
+  EN_ATTENTE
+  EN_COURS
+  TRAITE
+  REJETE
+}
+
+model Signalement {
+  id              String            @id @default(uuid())
+  type            TypeSignalement
+  motif           String
+  description     String?
+  statut          StatutSignalement @default(EN_ATTENTE)
+
+  // Qui signale
+  signaleParType  String?   // "PUBLIC" | "OWNER" | "LOCATAIRE"
+  signaleParId    String?
+  signaleParNom   String?
+  signaleParEmail String?
+  signaleParTel   String?
+
+  // Ce qui est signalé
+  bienId                String?
+  proprietaireSignaleId String?
+  locataireSignaleId    String?
+
+  // Traitement admin
+  traitePar      String?
+  noteAdmin      String?
+  dateTraitement DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bien Bien? @relation(fields: [bienId], references: [id], onDelete: SetNull)
+
+  @@index([statut])
+  @@index([type])
+  @@index([bienId])
+  @@index([createdAt])
+}
+
+// ============================================================
 // BIENS
 // ============================================================
 
@@ -228,6 +300,9 @@ model Bien {
   // Médias
   photos            String[]
 
+  // Statistiques
+  nbVues            Int       @default(0)
+
   // État & Publication
   actif              Boolean       @default(true)
   statutAnnonce      StatutAnnonce @default(BROUILLON)
@@ -254,12 +329,14 @@ model Bien {
   proprietaire    Proprietaire     @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
   quartierRel     Quartier?        @relation(fields: [quartierId], references: [id])
 
-  equipements       BienEquipement[]
-  meubles           BienMeuble[]
-  etablissements    Etablissement[]
-  bails             BailLocation[]
-  transactions      Transaction[]
+  equipements        BienEquipement[]
+  meubles            BienMeuble[]
+  etablissements     Etablissement[]
+  bails              BailLocation[]
+  transactions       Transaction[]
   promotionHistories PromotionHistory[]
+  signalements       Signalement[]
+  documents          DocumentBien[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -287,6 +364,28 @@ model BienMeuble {
   meuble Meuble @relation(fields: [meubleId], references: [id])
 
   @@unique([bienId, meubleId])
+}
+
+// ============================================================
+// DOCUMENTS D'UN BIEN
+// ============================================================
+
+model DocumentBien {
+  id             String   @id @default(uuid())
+  bienId         String
+  proprietaireId String
+  nom            String
+  type           String   // "ACTE_PROPRIETE" | "PLAN_CADASTRAL" | "PERMIS_CONSTRUIRE" | "AUTRE"
+  url            String
+  taille         Int?     // en octets
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([bienId])
+  @@index([proprietaireId])
 }
 
 // ============================================================
@@ -716,13 +815,15 @@ model Proprietaire {
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 
-  refreshTokens      ProprietaireRefreshToken[]
-  biens              Bien[]
-  locataire         Locataire[]
-  bails              BailLocation[]
-  verification      VerificationDocuments?
-  transactions       Transaction[]
-  promotionHistories PromotionHistory[]
+  refreshTokens       ProprietaireRefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  biens               Bien[]
+  locataire           Locataire[]
+  bails               BailLocation[]
+  verification        VerificationDocuments?
+  transactions        Transaction[]
+  promotionHistories  PromotionHistory[]
+  documentsBien       DocumentBien[]
 }
 
 model ProprietaireRefreshToken {
@@ -731,6 +832,20 @@ model ProprietaireRefreshToken {
   tokenHash      String    @unique
   expiresAt      DateTime
   revokedAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([proprietaireId])
+  @@index([tokenHash])
+}
+
+model PasswordResetToken {
+  id             String    @id @default(uuid())
+  proprietaireId String
+  tokenHash      String    @unique
+  expiresAt      DateTime
+  usedAt         DateTime?
   createdAt      DateTime  @default(now())
 
   proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)

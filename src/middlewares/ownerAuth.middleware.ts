@@ -12,6 +12,29 @@ declare global {
   }
 }
 
+// Middleware optionnel — ne rejette pas si pas de token
+export const optionalAuthOwner = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): Promise<void> => {
+  let token: string | undefined = req.cookies?.ownerAccessToken;
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith("Bearer ")) token = authHeader.slice(7);
+  }
+  if (token) {
+    try {
+      const payload = verifyOwnerAccessToken(token);
+      const proprietaire = await OwnerRepo.findById(payload.sub);
+      if (proprietaire && !proprietaire.estSuspendu) {
+        req.owner = { id: payload.sub, prenom: payload.prenom, nom: payload.nom };
+      }
+    } catch { /* token invalide, on continue sans auth */ }
+  }
+  next();
+};
+
 export const authenticateOwner = async (
   req: Request,
   res: Response,

@@ -116,6 +116,32 @@ export const getTransactionDetail = async (req: Request, res: Response): Promise
   }
 };
 
+// ─── Admin ────────────────────────────────────────────────────────────────────
+
+export const getAdminHistorique = async (req: Request, res: Response): Promise<void> => {
+  const { page, limit, type, statut, proprietaireId, dateDebut, dateFin } = req.query;
+  const result = await TransactionService.getAdminHistoriqueTransactions(
+    { page: page ? parseInt(page as string) : undefined, limit: limit ? parseInt(limit as string) : undefined },
+    {
+      type: type as string | undefined,
+      statut: statut as string | undefined,
+      proprietaireId: proprietaireId as string | undefined,
+      dateDebut: dateDebut ? new Date(dateDebut as string) : undefined,
+      dateFin: dateFin ? new Date(dateFin as string) : undefined,
+    }
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Historique admin récupéré", data: result })
+  );
+};
+
+export const getAdminStats = async (_req: Request, res: Response): Promise<void> => {
+  const stats = await TransactionService.getAdminStatsTransactions();
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Stats admin récupérées", data: stats })
+  );
+};
+
 /**
  * Récupère les statistiques des transactions du propriétaire
  */

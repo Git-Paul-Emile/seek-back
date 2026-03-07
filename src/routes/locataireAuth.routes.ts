@@ -19,7 +19,6 @@ router.post("/refresh", controllerWrapper(LocataireAuthController.refreshToken))
 /** POST /api/locataire/auth/logout */
 router.post(
   "/logout",
-  authenticateLocataire,
   controllerWrapper(LocataireAuthController.logout)
 );
 
@@ -91,6 +90,13 @@ router.delete(
   "/verification",
   authenticateLocataire,
   controllerWrapper(LocataireAuthController.cancelVerification)
+);
+
+/** GET /api/locataire/auth/proprietaire — récupérer les infos du propriétaire */
+router.get(
+  "/proprietaire",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getProprietaire)
 );
 
 /** POST /api/locataire/auth/verification/upload — uploader une image de vérification */

@@ -170,6 +170,74 @@ export const getTransactionById = async (
   return transaction;
 };
 
+// ─── Admin ────────────────────────────────────────────────────────────────────
+
+export const getAdminHistoriqueTransactions = async (
+  options: PaginationOptions = {},
+  filters?: { type?: string; statut?: string; proprietaireId?: string; dateDebut?: Date; dateFin?: Date }
+): Promise<PaginatedResult<any>> => {
+  const page = Math.max(1, options.page || 1);
+  const limit = Math.min(100, Math.max(1, options.limit || 20));
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+  if (filters?.type) where.type = filters.type;
+  if (filters?.statut) where.statut = filters.statut;
+  if (filters?.proprietaireId) where.proprietaireId = filters.proprietaireId;
+  if (filters?.dateDebut || filters?.dateFin) {
+    where.dateInitiation = {};
+    if (filters?.dateDebut) where.dateInitiation.gte = filters.dateDebut;
+    if (filters?.dateFin) where.dateInitiation.lte = filters.dateFin;
+  }
+
+  const [transactions, total] = await Promise.all([
+    prisma.transaction.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { dateInitiation: "desc" },
+      include: {
+        bien: { select: { id: true, titre: true } },
+        proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true } },
+        locataire: { select: { id: true, nom: true, prenom: true, telephone: true } },
+      },
+    }),
+    prisma.transaction.count({ where }),
+  ]);
+
+  return {
+    data: transactions,
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  };
+};
+
+export const getAdminStatsTransactions = async () => {
+  const now = new Date();
+  const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
+  const debutAnnee = new Date(now.getFullYear(), 0, 1);
+
+  const [totalConfirme, montantTotal, montantMois, montantAnnee, parType] = await Promise.all([
+    prisma.transaction.count({ where: { statut: "CONFIRME" } }),
+    prisma.transaction.aggregate({ where: { statut: "CONFIRME" }, _sum: { montant: true } }),
+    prisma.transaction.aggregate({ where: { statut: "CONFIRME", dateConfirmation: { gte: debutMois } }, _sum: { montant: true } }),
+    prisma.transaction.aggregate({ where: { statut: "CONFIRME", dateConfirmation: { gte: debutAnnee } }, _sum: { montant: true } }),
+    prisma.transaction.groupBy({
+      by: ["type"],
+      where: { statut: "CONFIRME" },
+      _count: true,
+      _sum: { montant: true },
+    }),
+  ]);
+
+  return {
+    totalConfirme,
+    montantTotal: montantTotal._sum.montant ?? 0,
+    montantMois: montantMois._sum.montant ?? 0,
+    montantAnnee: montantAnnee._sum.montant ?? 0,
+    parType: parType.map((r) => ({ type: r.type, nombre: r._count, montant: r._sum.montant ?? 0 })),
+  };
+};
+
 /**
  * Récupère les statistiques des transactions d'un propriétaire
  */

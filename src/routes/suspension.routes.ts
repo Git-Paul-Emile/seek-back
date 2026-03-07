@@ -162,4 +162,14 @@ router.delete(
   controllerWrapper(SuspensionController.supprimerLocataire)
 );
 
+/**
+ * GET /api/suspension/locataires/:id/documents
+ * Locataire avec documents de vérification
+ */
+router.get(
+  "/locataires/:id/documents",
+  authenticate,
+  controllerWrapper(SuspensionController.getLocataireAvecDocuments)
+);
+
 export default router;

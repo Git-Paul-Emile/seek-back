@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { jsonResponse } from "../utils/responseApi.js";
 import * as SuspensionService from "../services/suspension.service.js";
+import * as SuspensionRepo from "../repositories/suspension.repository.js";
 
 // ─── Validation DTO ───────────────────────────────────────────────────────────
 
@@ -167,6 +168,18 @@ export const getLocataireById = async (req: Request, res: Response): Promise<voi
 
     res.status(status).json(jsonResponse({ status: "error", message }));
   }
+};
+
+// ─── Admin : locataire avec documents de vérification ────────────────────────
+
+export const getLocataireAvecDocuments = async (req: Request, res: Response): Promise<void> => {
+  const id = req.params.id as string;
+  const locataire = await SuspensionRepo.getLocataireAvecDocuments(id);
+  if (!locataire) {
+    res.status(StatusCodes.NOT_FOUND).json(jsonResponse({ status: "not_found", message: "Locataire introuvable" }));
+    return;
+  }
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Locataire récupéré", data: locataire }));
 };
 
 // ─── Supprimer un propriétaire ───────────────────────────────────────────────

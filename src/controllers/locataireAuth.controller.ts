@@ -20,6 +20,10 @@ const setAuthCookies = (
   refreshToken: string,
   refreshTokenExpiresAt: Date
 ) => {
+  // Nettoyer d'anciens cookies potentiellement créés avec un path différent
+  res.clearCookie("locataireRefreshToken");
+  res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
+
   res.cookie("locataireAccessToken", accessToken, {
     httpOnly: true,
     secure: IS_PROD,
@@ -31,12 +35,12 @@ const setAuthCookies = (
     secure: IS_PROD,
     sameSite: "strict",
     expires: refreshTokenExpiresAt,
-    path: "/api/locataire/auth",
   });
 };
 
 const clearAuthCookies = (res: Response) => {
   res.clearCookie("locataireAccessToken");
+  res.clearCookie("locataireRefreshToken");
   res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
 };
 
@@ -130,19 +134,26 @@ export const refreshToken = async (
 ): Promise<void> => {
   const token = req.cookies?.locataireRefreshToken as string | undefined;
   if (!token) {
+    clearAuthCookies(res);
     throw new AppError("Refresh token manquant", StatusCodes.UNAUTHORIZED);
   }
 
-  const tokens = await LocataireAuthService.refresh(token);
-  setAuthCookies(
-    res,
-    tokens.accessToken,
-    tokens.refreshToken,
-    tokens.refreshTokenExpiresAt
-  );
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Token renouvelé", data: null })
-  );
+  try {
+    const tokens = await LocataireAuthService.refresh(token);
+    setAuthCookies(
+      res,
+      tokens.accessToken,
+      tokens.refreshToken,
+      tokens.refreshTokenExpiresAt
+    );
+    res.status(StatusCodes.OK).json(
+      jsonResponse({ status: "success", message: "Token renouvelé", data: null })
+    );
+  } catch (error) {
+    // Nettoyer les cookies quand le refresh échoue pour éviter une boucle avec token révoqué
+    clearAuthCookies(res);
+    throw error;
+  }
 };
 
 // ─── Logout ───────────────────────────────────────────────────────────────────
@@ -521,5 +532,26 @@ export const cancelVerification = async (req: Request, res: Response): Promise<v
   
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Vérification annulée", data: null })
+  );
+};
+
+// ─── Infos propriétaire pour le locataire ──────────────────────────────────────
+
+export const getProprietaire = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  
+  const proprietaireInfo = await BailService.getProprietaireForLocataire(req.locataire.id);
+  
+  if (!proprietaireInfo) {
+    res.status(StatusCodes.OK).json(
+      jsonResponse({ status: "success", message: "Aucun bail actif", data: null })
+    );
+    return;
+  }
+  
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Informations du propriétaire", data: proprietaireInfo })
   );
 };

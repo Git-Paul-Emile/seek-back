@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { getSiteStats, getAdminStats, getProprietairesStats, getProprietaireDetail } from "../repositories/stats.repository.js";
+import { getSiteStats, getAdminStats, getProprietairesStats, getProprietaireDetail, getRevenusStats } from "../repositories/stats.repository.js";
 import { jsonResponse } from "../utils/responseApi.js";
 
 // GET /api/stats — public
@@ -24,6 +24,14 @@ export const getProprietairesStatsController = async (_req: Request, res: Respon
   const stats = await getProprietairesStats();
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Statistiques des propriétaires récupérées", data: stats })
+  );
+};
+
+// GET /api/stats/revenus — admin auth requis
+export const getRevenusStatsController = async (_req: Request, res: Response): Promise<void> => {
+  const stats = await getRevenusStats();
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Statistiques des revenus récupérées", data: stats })
   );
 };
 

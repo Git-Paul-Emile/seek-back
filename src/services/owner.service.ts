@@ -402,8 +402,48 @@ export const deleteProfile = async (id: string): Promise<void> => {
   if (!existing) {
     throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
   }
-
-  // La suppression en cascade supprimera automatiquement les biens associés
-  // grâce à onDelete: Cascade dans le schéma Prisma
   await OwnerRepo.remove(id);
+};
+
+// ─── Mot de passe oublié ──────────────────────────────────────────────────────
+
+export const requestPasswordReset = async (identifiant: string): Promise<{ token: string; email: string | null; prenom: string }> => {
+  const cryptoLib = await import("crypto");
+  const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
+  let proprietaire = await OwnerRepo.findByTelephone(stripped);
+  if (!proprietaire && !stripped.startsWith("+")) {
+    proprietaire = await OwnerRepo.findByTelephone(`+221${stripped}`);
+  }
+  if (!proprietaire) {
+    proprietaire = await OwnerRepo.findByEmail(identifiant.trim());
+  }
+  if (!proprietaire) {
+    throw new AppError("Si ce compte existe, un lien de réinitialisation a été envoyé.", StatusCodes.OK);
+  }
+
+  await OwnerRepo.invalidatePasswordResetTokens(proprietaire.id);
+
+  const rawToken = cryptoLib.randomBytes(32).toString("hex");
+  const tokenHash = cryptoLib.createHash("sha256").update(rawToken).digest("hex");
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+  await OwnerRepo.createPasswordResetToken({ proprietaireId: proprietaire.id, tokenHash, expiresAt });
+
+  return { token: rawToken, email: proprietaire.email, prenom: proprietaire.prenom };
+};
+
+export const resetPassword = async (rawToken: string, newPassword: string): Promise<void> => {
+  const cryptoLib = await import("crypto");
+  const tokenHash = cryptoLib.createHash("sha256").update(rawToken).digest("hex");
+  const stored = await OwnerRepo.findPasswordResetToken(tokenHash);
+
+  if (!stored) throw new AppError("Token invalide ou expiré", StatusCodes.BAD_REQUEST);
+  if (stored.usedAt) throw new AppError("Ce lien a déjà été utilisé", StatusCodes.BAD_REQUEST);
+  if (stored.expiresAt < new Date()) throw new AppError("Ce lien a expiré", StatusCodes.BAD_REQUEST);
+
+  const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+  await OwnerRepo.update(stored.proprietaireId, { password: hashedPassword });
+  await OwnerRepo.markPasswordResetTokenUsed(tokenHash);
 };

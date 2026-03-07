@@ -2,9 +2,14 @@ import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as PromotionController from "../controllers/promotion.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
+
+// Admin
+router.get("/admin/historique", authenticate, controllerWrapper(PromotionController.getAdminHistoriquePromotions));
+router.get("/admin/stats", authenticate, controllerWrapper(PromotionController.getAdminStatsPromotions));
 
 /**
  * GET /api/promotions/accueil - Récupérer les annonces mises en avant pour la page d'accueil (public)

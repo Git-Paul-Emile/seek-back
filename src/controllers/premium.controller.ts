@@ -7,19 +7,52 @@ import { ModePaiement, MOYENS_PAIEMENT } from "../types/premium.types.js";
 
 // ─── Récupérer les formules premium disponibles ─────────────────────────────────
 
-export const getFormulesPremium = async (req: Request, res: Response): Promise<void> => {
-  const formules = PremiumService.getFormulesPremium();
+export const getFormulesPremium = async (_req: Request, res: Response): Promise<void> => {
+  const formules = await PremiumService.getFormulesPremium();
 
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
       message: "Formules premium récupérées",
-      data: {
-        formules,
-        moyenPaiement: MOYENS_PAIEMENT,
-      },
+      data: { formules, moyenPaiement: MOYENS_PAIEMENT },
     })
   );
+};
+
+// ─── Admin CRUD FormulePremium ────────────────────────────────────────────────
+
+export const adminGetFormules = async (_req: Request, res: Response): Promise<void> => {
+  const formules = await PremiumService.adminGetAllFormules();
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formules récupérées", data: formules }));
+};
+
+export const adminCreateFormule = async (req: Request, res: Response): Promise<void> => {
+  const { code, nom, dureeJours, prix, accroche, description, idealPour, populer, actif, ordre } = req.body;
+  if (!code || !nom || !dureeJours || !prix || !accroche || !description) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Champs obligatoires manquants" }));
+    return;
+  }
+  const formule = await PremiumService.adminCreateFormule({
+    code, nom,
+    dureeJours: parseInt(dureeJours),
+    prix: parseFloat(prix),
+    accroche, description,
+    idealPour: idealPour ?? [],
+    populer, actif, ordre,
+  });
+  res.status(StatusCodes.CREATED).json(jsonResponse({ status: "success", message: "Formule créée", data: formule }));
+};
+
+export const adminUpdateFormule = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const formule = await PremiumService.adminUpdateFormule(id, req.body);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule mise à jour", data: formule }));
+};
+
+export const adminDeleteFormule = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  await PremiumService.adminDeleteFormule(id);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule supprimée" }));
 };
 
 // ─── Initier le paiement et activer la mise en avant (simulation) ─────────────

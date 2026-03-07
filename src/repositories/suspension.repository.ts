@@ -331,6 +331,24 @@ export const getLocataireWithBails = async (id: string) => {
   });
 };
 
+// ─── Admin : locataire avec documents de vérification ────────────────────────
+
+export const getLocataireAvecDocuments = async (id: string) => {
+  return prisma.locataire.findUnique({
+    where: { id },
+    include: {
+      proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true, email: true } },
+      verification: true,
+      bails: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          bien: { select: { id: true, titre: true, ville: true, adresse: true } },
+        },
+      },
+    },
+  });
+};
+
 // ─── Suspension Propriétaire ─────────────────────────────────────────────────────
 
 export const suspendreProprietaire = async (

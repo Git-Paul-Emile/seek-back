@@ -220,6 +220,10 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
 
 export const getAnnoncePublie = async (req: Request, res: Response): Promise<void> => {
   const bien = await BienService.getAnnoncePublieById(req.params.id as string);
+  // Incrémenter le compteur de vues en arrière-plan (sans bloquer la réponse)
+  const { prisma } = await import("../config/database.js");
+  prisma.bien.update({ where: { id: req.params.id as string }, data: { nbVues: { increment: 1 } } })
+    .catch(() => { /* ignore */ });
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Annonce récupérée", data: bien })
   );

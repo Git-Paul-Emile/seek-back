@@ -2,9 +2,16 @@ import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as PremiumController from "../controllers/premium.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
+
+// Admin CRUD FormulePremium
+router.get("/admin/formules", authenticate, controllerWrapper(PremiumController.adminGetFormules));
+router.post("/admin/formules", authenticate, controllerWrapper(PremiumController.adminCreateFormule));
+router.put("/admin/formules/:id", authenticate, controllerWrapper(PremiumController.adminUpdateFormule));
+router.delete("/admin/formules/:id", authenticate, controllerWrapper(PremiumController.adminDeleteFormule));
 
 /**
  * GET /api/premium/formules - Récupérer les formules premium et moyens de paiement (public)
