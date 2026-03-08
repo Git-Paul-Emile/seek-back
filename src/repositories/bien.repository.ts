@@ -481,6 +481,25 @@ export const getDistinctLieux = async () => {
 
 // ─── Public — recherche avec filtres combinés ─────────────────────────────────
 
+function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+const INCLUDE_PUBLIC = {
+  typeLogement:    { select: { id: true, nom: true, slug: true } },
+  typeTransaction: { select: { id: true, nom: true, slug: true } },
+  statutBien:      { select: { id: true, nom: true, slug: true } },
+  proprietaire:    { select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true } },
+} as const;
+
 export const searchAnnoncePubliques = async (params: {
   quartier?: string;
   typeLogementSlug?: string;
@@ -497,14 +516,19 @@ export const searchAnnoncePubliques = async (params: {
   sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
+  // Recherche par proximité
+  lat?: number;
+  lng?: number;
+  radius?: number; // km — défaut 5
 }) => {
-  const page = Math.max(params.page ?? 1, 1);
+  const page  = Math.max(params.page  ?? 1,  1);
   const limit = Math.min(params.limit ?? 12, 50);
-  const skip = (page - 1) * limit;
+  const skip  = (page - 1) * limit;
 
   const where: any = { statutAnnonce: "PUBLIE", actif: true };
 
-  if (params.quartier?.trim()) {
+  // Filtre quartier/ville uniquement si pas de recherche par proximité
+  if (!params.lat && params.quartier?.trim()) {
     const q = params.quartier.trim();
     where.OR = [
       { quartier: { contains: q, mode: "insensitive" } },
@@ -514,13 +538,8 @@ export const searchAnnoncePubliques = async (params: {
     ];
   }
 
-  if (params.typeLogementSlug) {
-    where.typeLogement = { slug: params.typeLogementSlug };
-  }
-
-  if (params.typeTransactionSlug) {
-    where.typeTransaction = { slug: params.typeTransactionSlug };
-  }
+  if (params.typeLogementSlug)    where.typeLogement    = { slug: params.typeLogementSlug };
+  if (params.typeTransactionSlug) where.typeTransaction = { slug: params.typeTransactionSlug };
 
   if (params.prixMin !== undefined || params.prixMax !== undefined) {
     where.prix = {};
@@ -528,9 +547,7 @@ export const searchAnnoncePubliques = async (params: {
     if (params.prixMax !== undefined) where.prix.lte = params.prixMax;
   }
 
-  if (params.nbChambresMin !== undefined) {
-    where.nbChambres = { gte: params.nbChambresMin };
-  }
+  if (params.nbChambresMin !== undefined) where.nbChambres = { gte: params.nbChambresMin };
 
   if (params.surfaceMin !== undefined || params.surfaceMax !== undefined) {
     where.surface = {};
@@ -538,30 +555,44 @@ export const searchAnnoncePubliques = async (params: {
     if (params.surfaceMax !== undefined) where.surface.lte = params.surfaceMax;
   }
 
-  if (params.meuble === true)    where.meuble    = true;
-  if (params.parking === true)   where.parking   = true;
+  if (params.meuble    === true) where.meuble    = true;
+  if (params.parking   === true) where.parking   = true;
   if (params.ascenseur === true) where.ascenseur = true;
 
+  // ── Mode proximité : tri par distance ────────────────────────────────────────
+  if (params.lat !== undefined && params.lng !== undefined) {
+    const lat = params.lat;
+    const lng = params.lng;
+
+    // Récupérer tous les biens avec coordonnées (pas de pagination en DB)
+    const allBiens = await prisma.bien.findMany({
+      where: { ...where, latitude: { not: null }, longitude: { not: null } },
+      include: INCLUDE_PUBLIC,
+    });
+
+    const radiusKm = params.radius ?? 5;
+
+    // Calculer la distance, filtrer par rayon et trier
+    const withDist = allBiens
+      .map((b) => ({ ...b, distance: haversineKm(lat, lng, b.latitude!, b.longitude!) }))
+      .filter((b) => b.distance <= radiusKm)
+      .sort((a, b) => a.distance - b.distance);
+
+    const total = withDist.length;
+    const items = withDist.slice(skip, skip + limit);
+
+    return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+  }
+
+  // ── Mode normal : tri par champ ───────────────────────────────────────────────
   const sortField = params.sortBy ?? "createdAt";
   const sortDir   = params.sortOrder ?? "desc";
-  // For prix sort, nulls last: put null prices at end regardless of direction
-  const orderBy = sortField === "prix"
+  const orderBy   = sortField === "prix"
     ? [{ prix: { sort: sortDir, nulls: "last" as const } }]
     : [{ createdAt: sortDir as "asc" | "desc" }];
 
   const [items, total] = await prisma.$transaction([
-    prisma.bien.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy,
-      include: {
-        typeLogement:    { select: { id: true, nom: true, slug: true } },
-        typeTransaction: { select: { id: true, nom: true, slug: true } },
-        statutBien:      { select: { id: true, nom: true, slug: true } },
-        proprietaire:   { select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true } },
-      },
-    }),
+    prisma.bien.findMany({ where, skip, take: limit, orderBy, include: INCLUDE_PUBLIC }),
     prisma.bien.count({ where }),
   ]);
 

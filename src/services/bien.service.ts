@@ -592,6 +592,9 @@ export const searchAnnoncePubliques = async (params: {
   sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
+  lat?: number;
+  lng?: number;
+  radius?: number;
 }) => {
   return BienRepository.searchAnnoncePubliques(params);
 };

@@ -192,6 +192,7 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
     meuble, parking, ascenseur,
     sortBy, sortOrder,
     page, limit,
+    lat, lng, radius,
   } = req.query as Record<string, string>;
 
   const result = await BienService.searchAnnoncePubliques({
@@ -208,8 +209,11 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
     ascenseur:     ascenseur === "1" ? true : undefined,
     sortBy:    (sortBy === "prix" || sortBy === "createdAt") ? sortBy : undefined,
     sortOrder: (sortOrder === "asc" || sortOrder === "desc") ? sortOrder : undefined,
-    page:      page  ? parseInt(page)  : undefined,
-    limit:     limit ? parseInt(limit) : undefined,
+    page:      page   ? parseInt(page)     : undefined,
+    limit:     limit  ? parseInt(limit)    : undefined,
+    lat:       lat    ? parseFloat(lat)    : undefined,
+    lng:       lng    ? parseFloat(lng)    : undefined,
+    radius:    radius ? parseFloat(radius) : undefined,
   });
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Résultats de recherche", data: result })
