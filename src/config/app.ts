@@ -36,6 +36,7 @@ import signalementRouter from "../routes/signalement.routes.js";
 import documentBienRouter from "../routes/documentBien.routes.js";
 import favoriRouter from "../routes/favori.routes.js";
 import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
+import proprietairesRouter, { ownerScoreRouter } from "../routes/trustScore.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -192,6 +193,12 @@ app.use('/api/public/auth', comptePublicAuthRouter);
 
 // Favoris (compte public authentifié)
 app.use('/api/public/favoris', favoriRouter);
+
+// Score de confiance des propriétaires (public)
+app.use('/api/proprietaires', proprietairesRouter);
+
+// Score de confiance du propriétaire connecté
+app.use('/api/owner', ownerScoreRouter);
 
 // ============= GESTION DES ERREURS =============
 

@@ -6,6 +6,7 @@ import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
 import { prisma } from "../config/database.js";
+import { computeScoreForProprietaire } from "./trustScore.service.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -607,7 +608,12 @@ export const getAnnoncePublieById = async (id: string) => {
   if (!bien) {
     throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
   }
-  return bien;
+  // Calcul du score de confiance du propriétaire en arrière-plan (non bloquant)
+  const scoreProprietaire = await computeScoreForProprietaire(bien.proprietaireId).catch(() => null);
+  return {
+    ...bien,
+    scoreProprietaire,
+  };
 };
 
 // ─── Signalement d'annonce ─────────────────────────────────────────────────────
