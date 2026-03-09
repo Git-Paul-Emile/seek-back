@@ -21,6 +21,8 @@ const setAuthCookies = (
   refreshTokenExpiresAt: Date
 ) => {
   // Nettoyer d'anciens cookies potentiellement créés avec un path différent
+  res.clearCookie("locataireAccessToken");
+  res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
   res.clearCookie("locataireRefreshToken");
   res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
 
@@ -40,6 +42,7 @@ const setAuthCookies = (
 
 const clearAuthCookies = (res: Response) => {
   res.clearCookie("locataireAccessToken");
+  res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
   res.clearCookie("locataireRefreshToken");
   res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
 };
@@ -553,5 +556,71 @@ export const getProprietaire = async (req: Request, res: Response): Promise<void
   
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Informations du propriétaire", data: proprietaireInfo })
+  );
+};
+
+
+// ─── POST /api/locataire/auth/forgot-password ────────────────────────────────
+
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+  const { identifiant } = req.body;
+  if (!identifiant) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Identifiant requis" })
+    );
+    return;
+  }
+
+  try {
+    const { token, email, prenom } = await LocataireAuthService.requestPasswordReset(identifiant);
+
+    if (email) {
+      try {
+        const { sendMail } = await import("../utils/mailer.js");
+        const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+        await sendMail({
+          to: email,
+          subject: "Réinitialisation de votre mot de passe SEEK",
+          html: `<p>Bonjour ${prenom},</p>
+<p>Cliquez sur ce lien pour réinitialiser votre mot de passe locataire (valable 1 heure) :</p>
+<p><a href="${frontUrl}/locataire/reset-password?token=${token}">${frontUrl}/locataire/reset-password?token=${token}</a></p>
+<p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>`,
+        });
+      } catch (e) {
+        console.error("[LOCATAIRE] Erreur envoi email reset:", e);
+      }
+    }
+  } catch (e: any) {
+    if (e.statusCode === StatusCodes.OK) {
+      // Compte non trouvé, on répond OK quand même (ne pas révéler)
+    } else {
+      throw e;
+    }
+  }
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Si ce compte existe, un lien de réinitialisation a été envoyé." })
+  );
+};
+
+// ─── POST /api/locataire/auth/reset-password ─────────────────────────────────
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { token, password } = req.body;
+  if (!token || !password) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Token et nouveau mot de passe requis" })
+    );
+    return;
+  }
+  if (password.length < 6) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Le mot de passe doit contenir au moins 6 caractères" })
+    );
+    return;
+  }
+  await LocataireAuthService.resetPassword(token, password);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Mot de passe réinitialisé avec succès" })
   );
 };

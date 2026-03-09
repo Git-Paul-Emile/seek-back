@@ -10,6 +10,12 @@ const router = Router();
 /** POST /api/locataire/auth/activer — activer le compte avec le token */
 router.post("/activer", controllerWrapper(LocataireAuthController.activer));
 
+/** POST /api/locataire/auth/forgot-password */
+router.post("/forgot-password", controllerWrapper(LocataireAuthController.forgotPassword));
+
+/** POST /api/locataire/auth/reset-password */
+router.post("/reset-password", controllerWrapper(LocataireAuthController.resetPassword));
+
 /** POST /api/locataire/auth/login */
 router.post("/login", controllerWrapper(LocataireAuthController.login));
 

@@ -147,9 +147,12 @@ export const activer = async (data: {
     expiresAt: tokens.refreshTokenExpiresAt,
   });
 
+  const fullLocataire = await LocataireRepo.findById(locataire.id);
+  if (!fullLocataire) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+
   return {
     ...tokens,
-    locataire: { id: locataire.id, nom: locataire.nom, prenom: locataire.prenom },
+    locataire: fullLocataire,
   };
 };
 
@@ -208,9 +211,12 @@ export const login = async (data: {
     expiresAt: tokens.refreshTokenExpiresAt,
   });
 
+  const locataireComplet = await LocataireRepo.findById(full.id);
+  if (!locataireComplet) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+
   return {
     ...tokens,
-    locataire: { id: full.id, nom: full.nom, prenom: full.prenom },
+    locataire: locataireComplet,
   };
 };
 
@@ -309,4 +315,50 @@ export const updateProfil = async (
   const existing = await LocataireRepo.findById(id);
   if (!existing) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
   return LocataireRepo.update(id, data);
+};
+
+// ─── Mot de passe oublié ──────────────────────────────────────────────────────
+
+export const requestPasswordReset = async (
+  identifiant: string
+): Promise<{ token: string; email: string | null; prenom: string }> => {
+  const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
+  let locataire = await LocataireRepo.findByTelephone(stripped);
+  if (!locataire && !stripped.startsWith("+")) {
+    locataire = await LocataireRepo.findByTelephone(`+221${stripped}`);
+  }
+  if (!locataire) {
+    locataire = await LocataireRepo.findByEmail(identifiant.trim());
+  }
+  if (!locataire) {
+    throw new AppError("Si ce compte existe, un lien a été envoyé.", StatusCodes.OK);
+  }
+  if (!locataire.password) {
+    throw new AppError("Ce compte n'a pas encore été activé.", StatusCodes.BAD_REQUEST);
+  }
+
+  await LocataireRepo.invalidatePasswordResetTokens(locataire.id);
+
+  const rawToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1h
+
+  await LocataireRepo.createPasswordResetToken({ locataireId: locataire.id, tokenHash, expiresAt });
+
+  return { token: rawToken, email: locataire.email ?? null, prenom: locataire.prenom };
+};
+
+export const resetPassword = async (rawToken: string, newPassword: string): Promise<void> => {
+  const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+  const stored = await LocataireRepo.findPasswordResetToken(tokenHash);
+
+  if (!stored) throw new AppError("Token invalide ou expiré", StatusCodes.BAD_REQUEST);
+  if (stored.usedAt) throw new AppError("Ce lien a déjà été utilisé", StatusCodes.BAD_REQUEST);
+  if (stored.expiresAt < new Date()) throw new AppError("Ce lien a expiré", StatusCodes.BAD_REQUEST);
+
+  const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+  await LocataireRepo.update(stored.locataireId, { password: hashedPassword });
+  await LocataireRepo.markPasswordResetTokenUsed(tokenHash);
 };

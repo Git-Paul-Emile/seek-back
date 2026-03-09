@@ -59,7 +59,7 @@ const LOCATAIRE_SELECT = {
   numPieceIdentite: true,
   typePiece: true,
   dateDelivrance: true,
-  dateExpiration: true,
+  dateExpirationPiece: true,
   autoriteDelivrance: true,
   situationProfessionnelle: true,
   statut: true,
@@ -324,6 +324,31 @@ export const rejectVerification = async (
       dateTraitement: new Date(),
       motifRejet,
     },
+  });
+};
+
+// ─── Password reset tokens ────────────────────────────────────────────────────
+
+export const createPasswordResetToken = async (data: {
+  locataireId: string;
+  tokenHash: string;
+  expiresAt: Date;
+}) => {
+  return prisma.locatairePasswordResetToken.create({ data });
+};
+
+export const findPasswordResetToken = async (tokenHash: string) => {
+  return prisma.locatairePasswordResetToken.findUnique({ where: { tokenHash } });
+};
+
+export const invalidatePasswordResetTokens = async (locataireId: string) => {
+  return prisma.locatairePasswordResetToken.deleteMany({ where: { locataireId } });
+};
+
+export const markPasswordResetTokenUsed = async (tokenHash: string) => {
+  return prisma.locatairePasswordResetToken.update({
+    where: { tokenHash },
+    data: { usedAt: new Date() },
   });
 };
 
