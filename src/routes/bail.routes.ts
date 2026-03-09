@@ -1,142 +1,77 @@
 import { Router } from "express";
+import multer from "multer";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as BailController from "../controllers/bail.controller.js";
 import * as ContratController from "../controllers/contrat.controller.js";
 import * as QuittanceController from "../controllers/quittance.controller.js";
 import * as NotificationController from "../controllers/notification.controller.js";
+import * as EtatDesLieuxController from "../controllers/etatDesLieux.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
 const router = Router({ mergeParams: true });
+const etatDesLieuxPhotoUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    cb(null, ["image/jpeg", "image/png", "image/webp"].includes(file.mimetype));
+  },
+});
 
-// Toutes les routes nécessitent l'authentification owner
 router.use(authenticateOwner);
 
-/** GET /api/biens/:id/bail — bail actif du bien */
 router.get("/", controllerWrapper(BailController.getBailActif));
-
-/** GET /api/biens/:id/bail/historique — historique de tous les baux */
 router.get("/historique", controllerWrapper(BailController.getHistoriqueBails));
-
-/** POST /api/biens/:id/bail — créer un bail */
 router.post("/", controllerWrapper(BailController.creerBail));
 
-/** DELETE /api/biens/:id/bail/:bailId — annuler un bail (suppression) */
-router.delete(
-  "/:bailId",
-  validateId,
-  controllerWrapper(BailController.annulerBail)
-);
+router.delete("/:bailId", validateId, controllerWrapper(BailController.annulerBail));
+router.patch("/:bailId/terminer", validateId, controllerWrapper(BailController.terminerBail));
+router.patch("/:bailId/resilier", validateId, controllerWrapper(BailController.resilierBail));
+router.patch("/:bailId/prolonger", validateId, controllerWrapper(BailController.prolongerBail));
+router.patch("/:bailId/preavis", validateId, controllerWrapper(BailController.mettreEnPreavis));
+router.patch("/:bailId/renouvellement", validateId, controllerWrapper(BailController.mettreEnRenouvellement));
+router.patch("/:bailId/archiver", validateId, controllerWrapper(BailController.archiverBail));
 
-/** PATCH /api/biens/:id/bail/:bailId/terminer */
-router.patch(
-  "/:bailId/terminer",
-  validateId,
-  controllerWrapper(BailController.terminerBail)
-);
-
-/** PATCH /api/biens/:id/bail/:bailId/resilier */
-router.patch(
-  "/:bailId/resilier",
-  validateId,
-  controllerWrapper(BailController.resilierBail)
-);
-
-/** PATCH /api/biens/:id/bail/:bailId/prolonger */
-router.patch(
-  "/:bailId/prolonger",
-  validateId,
-  controllerWrapper(BailController.prolongerBail)
-);
-
-/** PATCH /api/biens/:id/bail/:bailId/preavis */
-router.patch(
-  "/:bailId/preavis",
-  validateId,
-  controllerWrapper(BailController.mettreEnPreavis)
-);
-
-/** PATCH /api/biens/:id/bail/:bailId/renouvellement */
-router.patch(
-  "/:bailId/renouvellement",
-  validateId,
-  controllerWrapper(BailController.mettreEnRenouvellement)
-);
-
-/** PATCH /api/biens/:id/bail/:bailId/archiver */
-router.patch(
-  "/:bailId/archiver",
-  validateId,
-  controllerWrapper(BailController.archiverBail)
-);
-
-// ─── Mobile Money ─────────────────────────────────────────────────────────────
-
-/** GET /api/biens/:id/bail/mobile-money — providers Mobile Money selon le pays du bien */
 router.get("/mobile-money", controllerWrapper(BailController.getMobileMoney));
-
-/** GET /api/biens/:id/bail/a-archiver — bail terminé/résilié en attente d'archivage */
 router.get("/a-archiver", controllerWrapper(BailController.getBailAArchiver));
 
-// ─── Échéancier ───────────────────────────────────────────────────────────────
-
-/** GET /api/biens/:id/bail/:bailId/echeancier */
 router.get("/:bailId/echeancier", validateId, controllerWrapper(BailController.getEcheancier));
-
-/** POST /api/biens/:id/bail/:bailId/echeancier/prolonger-annee — générer les paiements de l'année suivante */
 router.post("/:bailId/echeancier/prolonger-annee", validateId, controllerWrapper(BailController.prolongerEcheancesAnnee));
-
-/** PATCH /api/biens/:id/bail/:bailId/echeancier/payer-multiple — payer N mois d'un coup */
 router.patch("/:bailId/echeancier/payer-multiple", validateId, controllerWrapper(BailController.payerMoisMultiples));
-
-/** PATCH /api/biens/:id/bail/:bailId/echeancier/:echeanceId/payer */
 router.patch("/:bailId/echeancier/:echeanceId/payer", validateId, controllerWrapper(BailController.payerEcheance));
 
-/** GET    /api/biens/:id/bail/:bailId/echeancier/:echeanceId/quittance */
 router.get("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.getQuittance));
-
-/** POST   /api/biens/:id/bail/:bailId/echeancier/:echeanceId/quittance */
 router.post("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.genererQuittance));
-
-/** POST   /api/biens/:id/bail/:bailId/echeancier/:echeanceId/rappel */
 router.post("/:bailId/echeancier/:echeanceId/rappel", validateId, controllerWrapper(NotificationController.envoyerRappel));
 
-// ─── Quittances d'un bail ─────────────────────────────────────────────────────
-
-/** GET /api/biens/:id/bail/:bailId/quittances */
 router.get("/:bailId/quittances", validateId, controllerWrapper(QuittanceController.getQuittancesBail));
-
-// ─── Notifications d'un bail ──────────────────────────────────────────────────
-
-/** GET /api/biens/:id/bail/:bailId/notifications */
 router.get("/:bailId/notifications", validateId, controllerWrapper(NotificationController.getNotificationsBail));
 
-// ─── Caution ──────────────────────────────────────────────────────────────────
-
-/** GET /api/biens/:id/bail/:bailId/solde — solde du locataire */
 router.get("/:bailId/solde", validateId, controllerWrapper(BailController.getSolde));
-
-/** GET /api/biens/:id/bail/:bailId/caution */
 router.get("/:bailId/caution", validateId, controllerWrapper(BailController.getCaution));
-
-/** PATCH /api/biens/:id/bail/:bailId/caution/restituer */
 router.patch("/:bailId/caution/restituer", validateId, controllerWrapper(BailController.restituerCaution));
 
-// ─── Contrats ─────────────────────────────────────────────────────────────────
+router.get("/:bailId/etat-des-lieux", controllerWrapper(EtatDesLieuxController.getEtatsDesLieux));
+router.post("/:bailId/etat-des-lieux", controllerWrapper(EtatDesLieuxController.createEtatDesLieux));
+router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId", controllerWrapper(EtatDesLieuxController.updateEtatDesLieux));
+router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId/signer", controllerWrapper(EtatDesLieuxController.signerEtatDesLieuxOwner));
+router.post("/:bailId/etat-des-lieux/:etatDesLieuxId/items", controllerWrapper(EtatDesLieuxController.addItem));
+router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId", controllerWrapper(EtatDesLieuxController.updateItem));
+router.delete("/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId", controllerWrapper(EtatDesLieuxController.deleteItem));
+router.post(
+  "/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId/photos",
+  etatDesLieuxPhotoUpload.single("photo"),
+  controllerWrapper(EtatDesLieuxController.addPhoto)
+);
+router.delete(
+  "/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId/photos/:photoId",
+  controllerWrapper(EtatDesLieuxController.deletePhoto)
+);
 
-/** GET /api/biens/:id/bail/:bailId/contrat — contrat du bail */
 router.get("/:bailId/contrat", validateId, controllerWrapper(ContratController.getContrat));
-
-/** POST /api/biens/:id/bail/:bailId/contrat — générer contrat depuis modèle */
 router.post("/:bailId/contrat", validateId, controllerWrapper(ContratController.genererContrat));
-
-/** PATCH /api/biens/:id/bail/:bailId/contrat/:contratId — sauvegarder édition */
 router.patch("/:bailId/contrat/:contratId", validateId, controllerWrapper(ContratController.updateContrat));
-
-/** PATCH /api/biens/:id/bail/:bailId/contrat/:contratId/activer */
 router.patch("/:bailId/contrat/:contratId/activer", validateId, controllerWrapper(ContratController.activerContrat));
-
-/** POST /api/biens/:id/bail/:bailId/contrat/:contratId/envoyer — activer + envoyer par email */
 router.post("/:bailId/contrat/:contratId/envoyer", validateId, controllerWrapper(ContratController.envoyerContrat));
 
 export default router;
