@@ -560,6 +560,83 @@ export const getProprietaire = async (req: Request, res: Response): Promise<void
 };
 
 
+// ─── Historique des logements ────────────────────────────────────────────────
+
+export const getHistoriqueLogement = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  const bails = await prisma.bailLocation.findMany({
+    where: { locataireId: req.locataire.id },
+    include: {
+      bien: {
+        select: {
+          id: true,
+          titre: true,
+          adresse: true,
+          ville: true,
+          region: true,
+          pays: true,
+          photos: true,
+          typeLogement: { select: { nom: true } },
+          typeTransaction: { select: { nom: true, slug: true } },
+        },
+      },
+      echeancier: {
+        select: { statut: true, montant: true, datePaiement: true },
+      },
+    },
+    orderBy: { dateDebutBail: "desc" },
+  });
+
+  // Enrichir chaque bail avec des stats rapides
+  const result = bails.map((bail) => {
+    const total = bail.echeancier.length;
+    const payes = bail.echeancier.filter((e) => e.statut === "PAYE" || e.statut === "PARTIEL").length;
+    const montantTotal = bail.echeancier.reduce((sum, e) => sum + e.montant, 0);
+    const montantPaye = bail.echeancier
+      .filter((e) => e.statut === "PAYE")
+      .reduce((sum, e) => sum + e.montant, 0);
+    return {
+      ...bail,
+      echeancier: undefined,
+      stats: { total, payes, montantTotal, montantPaye },
+    };
+  });
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Historique des logements", data: result })
+  );
+};
+
+// ─── Documents du bien (bail actif) ──────────────────────────────────────────
+
+export const getDocumentsBien = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  // Trouver le bail actif
+  const bailActif = await prisma.bailLocation.findFirst({
+    where: { locataireId: req.locataire.id, statut: "ACTIF" },
+    select: { bienId: true },
+  });
+
+  if (!bailActif) {
+    res.status(StatusCodes.OK).json(
+      jsonResponse({ status: "success", message: "Aucun bail actif", data: [] })
+    );
+    return;
+  }
+
+  const documents = await prisma.documentBien.findMany({
+    where: { bienId: bailActif.bienId },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, nom: true, type: true, url: true, taille: true, createdAt: true },
+  });
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Documents du bien", data: documents })
+  );
+};
+
 // ─── POST /api/locataire/auth/forgot-password ────────────────────────────────
 
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {

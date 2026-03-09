@@ -2,6 +2,7 @@ import type { UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
 import cloudinary from "../config/cloudinary.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
+import { optimizeImage, type OptimizeOptions } from "../utils/optimizeImage.js";
 
 export interface CloudinaryUploadResult {
   url: string;
@@ -9,17 +10,21 @@ export interface CloudinaryUploadResult {
 }
 
 /**
- * Upload un buffer en mémoire (fourni par Multer) vers Cloudinary.
- * @param buffer - Le buffer du fichier (Multer memoryStorage)
- * @param folder - Le dossier Cloudinary cible (ex: "seek/types-logement")
+ * Optimise (compression + resize + WebP) puis upload vers Cloudinary.
+ * @param buffer  - Buffer brut fourni par Multer (memoryStorage)
+ * @param folder  - Dossier Cloudinary cible (ex: "seek/biens")
+ * @param options - Paramètres d'optimisation optionnels (maxDimension, quality)
  */
-export const uploadImage = (
+export const uploadImage = async (
   buffer: Buffer,
-  folder: string
+  folder: string,
+  options?: OptimizeOptions
 ): Promise<CloudinaryUploadResult> => {
+  const optimized = await optimizeImage(buffer, options);
+
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder, resource_type: "image" },
+      { folder, resource_type: "image", format: "webp" },
       (
         error: UploadApiErrorResponse | undefined,
         result: UploadApiResponse | undefined
@@ -35,7 +40,7 @@ export const uploadImage = (
         resolve({ url: result.secure_url, publicId: result.public_id });
       }
     );
-    stream.end(buffer);
+    stream.end(optimized);
   });
 };
 

@@ -105,6 +105,20 @@ router.get(
   controllerWrapper(LocataireAuthController.getProprietaire)
 );
 
+/** GET /api/locataire/auth/historique — historique de tous les logements */
+router.get(
+  "/historique",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getHistoriqueLogement)
+);
+
+/** GET /api/locataire/auth/documents — documents du bien (bail actif) */
+router.get(
+  "/documents",
+  authenticateLocataire,
+  controllerWrapper(LocataireAuthController.getDocumentsBien)
+);
+
 /** POST /api/locataire/auth/verification/upload — uploader une image de vérification */
 router.post(
   "/verification/upload",

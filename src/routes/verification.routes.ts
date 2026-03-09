@@ -22,7 +22,7 @@ router.post(
       });
     }
 
-    const result = await uploadImage(req.file.buffer, "seek/verifications");
+    const result = await uploadImage(req.file.buffer, "seek/verifications", { maxDimension: 2000, quality: 88 });
     
     res.json({
       status: "success",

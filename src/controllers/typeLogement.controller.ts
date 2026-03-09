@@ -25,7 +25,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   let imageUrl: string | undefined;
 
   if (req.file) {
-    const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement");
+    const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement", { maxDimension: 600, quality: 85 });
     imageUrl = result.url;
   }
 
@@ -57,7 +57,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement");
+    const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement", { maxDimension: 600, quality: 85 });
     imageUrl = result.url;
   }
 
