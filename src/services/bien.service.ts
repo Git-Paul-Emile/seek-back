@@ -577,6 +577,7 @@ export const getDistinctLieux = async () => {
 // ─── Public — recherche avec filtres ──────────────────────────────────────────
 
 export const searchAnnoncePubliques = async (params: {
+  ville?: string;
   quartier?: string;
   typeLogementSlug?: string;
   typeTransactionSlug?: string;

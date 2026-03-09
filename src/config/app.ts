@@ -34,6 +34,8 @@ import transactionRouter from "../routes/transaction.routes.js";
 import suspensionRouter from "../routes/suspension.routes.js";
 import signalementRouter from "../routes/signalement.routes.js";
 import documentBienRouter from "../routes/documentBien.routes.js";
+import favoriRouter from "../routes/favori.routes.js";
+import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -184,6 +186,12 @@ app.use('/api/signalements', signalementRouter);
 
 // Documents des biens (owner)
 app.use('/api/biens/:bienId/documents', documentBienRouter);
+
+// Auth compte public (visiteurs)
+app.use('/api/public/auth', comptePublicAuthRouter);
+
+// Favoris (compte public authentifié)
+app.use('/api/public/favoris', favoriRouter);
 
 // ============= GESTION DES ERREURS =============
 

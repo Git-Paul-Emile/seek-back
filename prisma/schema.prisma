@@ -337,12 +337,61 @@ model Bien {
   promotionHistories PromotionHistory[]
   signalements       Signalement[]
   documents          DocumentBien[]
+  favoris            Favori[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
   @@index([typeTransactionId])
   @@index([statutBienId])
   @@index([statutAnnonce])
+}
+
+model ComptePublic {
+  id        String   @id @default(uuid())
+  nom       String
+  prenom    String
+  telephone String   @unique
+  email     String?  @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  favoris       Favori[]
+  refreshTokens ComptePublicRefreshToken[]
+}
+
+model ComptePublicRefreshToken {
+  id             String       @id @default(uuid())
+  comptePublicId String
+  tokenHash      String       @unique
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  createdAt      DateTime     @default(now())
+
+  comptePublic ComptePublic @relation(fields: [comptePublicId], references: [id], onDelete: Cascade)
+
+  @@index([comptePublicId])
+  @@index([tokenHash])
+}
+
+model Favori {
+  id             String   @id @default(uuid())
+  comptePublicId String
+  bienId         String
+
+  // Snapshot pour détecter les changements (suivi prix/statut)
+  prixSnapshot   Float?
+  statutSnapshot String?  // slug du statut
+  actifSnapshot  Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comptePublic ComptePublic @relation(fields: [comptePublicId], references: [id], onDelete: Cascade)
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+
+  @@unique([comptePublicId, bienId])
+  @@index([comptePublicId])
 }
 
 model BienEquipement {

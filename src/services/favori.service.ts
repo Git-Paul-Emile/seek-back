@@ -1,0 +1,151 @@
+import { StatusCodes } from "http-status-codes";
+import { AppError } from "../utils/AppError.js";
+import { prisma } from "../config/database.js";
+
+const BIEN_SELECT = {
+  id: true,
+  titre: true,
+  prix: true,
+  prixAncien: true,
+  photos: true,
+  pays: true,
+  region: true,
+  quartier: true,
+  surface: true,
+  nbChambres: true,
+  nbSdb: true,
+  actif: true,
+  statutAnnonce: true,
+  parking: true,
+  dateDerniereModificationPrix: true,
+  estMisEnAvant: true,
+  typeLogement: { select: { nom: true } },
+  typeTransaction: { select: { nom: true, slug: true } },
+  statutBien: { select: { nom: true, slug: true } },
+  proprietaire: {
+    select: {
+      id: true,
+      prenom: true,
+      nom: true,
+      telephone: true,
+      email: true,
+      statutVerification: true,
+    },
+  },
+} as const;
+
+export const getFavoris = async (comptePublicId: string) => {
+  const favoris = await prisma.favori.findMany({
+    where: { comptePublicId },
+    orderBy: { createdAt: "desc" },
+    include: { bien: { select: BIEN_SELECT } },
+  });
+
+  return favoris.map((f) => {
+    const bien = f.bien;
+    const prixChange =
+      f.prixSnapshot !== null && bien.prix !== null && bien.prix !== f.prixSnapshot;
+    const statutChange =
+      f.statutSnapshot !== null && bien.statutBien?.slug !== f.statutSnapshot;
+    const bienSuppr = !bien.actif || bien.statutAnnonce !== "PUBLIE";
+
+    return {
+      id: f.id,
+      bienId: f.bienId,
+      createdAt: f.createdAt,
+      prixSnapshot: f.prixSnapshot,
+      statutSnapshot: f.statutSnapshot,
+      actifSnapshot: f.actifSnapshot,
+      bien,
+      changements: {
+        prixChange,
+        nouveauPrix: prixChange ? bien.prix : null,
+        prixAncienSnapshot: prixChange ? f.prixSnapshot : null,
+        statutChange,
+        nouveauStatut: statutChange ? bien.statutBien?.slug : null,
+        bienSuppr,
+      },
+    };
+  });
+};
+
+export const addFavori = async (comptePublicId: string, bienId: string) => {
+  const bien = await prisma.bien.findFirst({
+    where: { id: bienId, actif: true, statutAnnonce: "PUBLIE" },
+    select: { id: true, prix: true, statutBien: { select: { slug: true } } },
+  });
+
+  if (!bien) {
+    throw new AppError("Annonce introuvable ou non disponible", StatusCodes.NOT_FOUND);
+  }
+
+  const existing = await prisma.favori.findUnique({
+    where: { comptePublicId_bienId: { comptePublicId, bienId } },
+  });
+
+  if (existing) return existing;
+
+  return prisma.favori.create({
+    data: {
+      comptePublicId,
+      bienId,
+      prixSnapshot: bien.prix ?? null,
+      statutSnapshot: bien.statutBien?.slug ?? null,
+      actifSnapshot: true,
+    },
+  });
+};
+
+export const toggleFavori = async (comptePublicId: string, bienId: string) => {
+  const existing = await prisma.favori.findUnique({
+    where: { comptePublicId_bienId: { comptePublicId, bienId } },
+  });
+
+  if (existing) {
+    await prisma.favori.delete({
+      where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    });
+    return { action: "removed" as const };
+  }
+
+  await addFavori(comptePublicId, bienId);
+  return { action: "added" as const };
+};
+
+export const removeFavori = async (comptePublicId: string, bienId: string) => {
+  const existing = await prisma.favori.findUnique({
+    where: { comptePublicId_bienId: { comptePublicId, bienId } },
+  });
+
+  if (!existing) throw new AppError("Favori introuvable", StatusCodes.NOT_FOUND);
+
+  await prisma.favori.delete({
+    where: { comptePublicId_bienId: { comptePublicId, bienId } },
+  });
+};
+
+export const updateSnapshot = async (comptePublicId: string, bienId: string) => {
+  const bien = await prisma.bien.findFirst({
+    where: { id: bienId },
+    select: { prix: true, statutBien: { select: { slug: true } }, actif: true },
+  });
+
+  if (!bien) return;
+
+  await prisma.favori.update({
+    where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    data: {
+      prixSnapshot: bien.prix ?? null,
+      statutSnapshot: bien.statutBien?.slug ?? null,
+      actifSnapshot: bien.actif,
+    },
+  });
+};
+
+export const getFavoriIds = async (comptePublicId: string): Promise<string[]> => {
+  const favoris = await prisma.favori.findMany({
+    where: { comptePublicId },
+    select: { bienId: true },
+  });
+  return favoris.map((f) => f.bienId);
+};

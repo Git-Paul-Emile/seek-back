@@ -501,6 +501,7 @@ const INCLUDE_PUBLIC = {
 } as const;
 
 export const searchAnnoncePubliques = async (params: {
+  ville?: string;
   quartier?: string;
   typeLogementSlug?: string;
   typeTransactionSlug?: string;
@@ -527,15 +528,28 @@ export const searchAnnoncePubliques = async (params: {
 
   const where: any = { statutAnnonce: "PUBLIE", actif: true };
 
-  // Filtre quartier/ville uniquement si pas de recherche par proximité
-  if (!params.lat && params.quartier?.trim()) {
-    const q = params.quartier.trim();
-    where.OR = [
-      { quartier: { contains: q, mode: "insensitive" } },
-      { ville:    { contains: q, mode: "insensitive" } },
-      { adresse:  { contains: q, mode: "insensitive" } },
-      { region:   { contains: q, mode: "insensitive" } },
-    ];
+  // Filtres géographiques (ignorés si mode proximité actif)
+  if (!params.lat) {
+    if (params.ville?.trim()) {
+      const v = params.ville.trim();
+      where.AND = [
+        ...(where.AND ?? []),
+        { OR: [
+          { ville:  { contains: v, mode: "insensitive" } },
+          { region: { contains: v, mode: "insensitive" } },
+        ]},
+      ];
+    }
+    if (params.quartier?.trim()) {
+      const q = params.quartier.trim();
+      where.AND = [
+        ...(where.AND ?? []),
+        { OR: [
+          { quartier: { contains: q, mode: "insensitive" } },
+          { adresse:  { contains: q, mode: "insensitive" } },
+        ]},
+      ];
+    }
   }
 
   if (params.typeLogementSlug)    where.typeLogement    = { slug: params.typeLogementSlug };

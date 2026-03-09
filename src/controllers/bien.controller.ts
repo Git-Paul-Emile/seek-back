@@ -186,7 +186,7 @@ export const getDistinctLieux = async (_req: Request, res: Response): Promise<vo
 
 export const searchAnnoncesPubliques = async (req: Request, res: Response): Promise<void> => {
   const {
-    quartier, typeLogement, typeTransaction,
+    ville, quartier, typeLogement, typeTransaction,
     prixMin, prixMax,
     chambres, surfaceMin, surfaceMax,
     meuble, parking, ascenseur,
@@ -196,6 +196,7 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
   } = req.query as Record<string, string>;
 
   const result = await BienService.searchAnnoncePubliques({
+    ville:               ville    || undefined,
     quartier:            quartier || undefined,
     typeLogementSlug:    typeLogement || undefined,
     typeTransactionSlug: typeTransaction || undefined,
