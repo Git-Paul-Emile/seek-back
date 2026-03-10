@@ -340,6 +340,21 @@ export const prolongerEcheancesAnnee = async (req: Request, res: Response): Prom
   }));
 };
 
+// ─── Confirmation de réception (propriétaire) ────────────────────────────────
+
+export const confirmerReception = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const echeance = await BailService.confirmerReceptionPaiement(
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.echeanceId as string,
+    proprietaireId
+  );
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Réception du paiement confirmée", data: echeance })
+  );
+};
+
 // ─── Caution ──────────────────────────────────────────────────────────────────
 
 export const getCaution = async (req: Request, res: Response): Promise<void> => {

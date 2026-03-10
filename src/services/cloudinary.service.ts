@@ -83,3 +83,17 @@ export const extractPublicId = (url: string): string | null => {
   const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+$/);
   return match ? match[1] : null;
 };
+
+/**
+ * Supprime en masse des ressources Cloudinary à partir d'une liste d'URLs.
+ * Les URLs nulles/undefined et les échecs individuels sont ignorés silencieusement.
+ */
+export const deleteUrls = async (urls: (string | null | undefined)[]): Promise<void> => {
+  const tasks = urls
+    .filter((u): u is string => !!u)
+    .map((url) => {
+      const publicId = extractPublicId(url);
+      return publicId ? deleteImage(publicId) : Promise.resolve();
+    });
+  await Promise.allSettled(tasks);
+};

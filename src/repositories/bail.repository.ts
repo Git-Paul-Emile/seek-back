@@ -15,6 +15,7 @@ export interface CreateBailData {
   montantCaution?: number | null;
   cautionVersee?: boolean;
   jourLimitePaiement?: number | null;
+  delaiGrace?: number;
   frequencePaiement?: string | null;
 }
 

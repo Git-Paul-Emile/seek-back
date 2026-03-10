@@ -108,6 +108,37 @@ export const getQuittancesBail = async (
   });
 };
 
+// ─── Générer une quittance en interne (sans vérification d'accès) ─────────────
+
+/**
+ * Génère (ou récupère si déjà existante) la quittance d'une échéance payée.
+ * Usage interne uniquement — ne vérifie pas les droits propriétaire.
+ */
+export const genererQuittanceInterne = async (echeanceId: string): Promise<void> => {
+  const echeance = await prisma.echeancierLoyer.findUnique({
+    where: { id: echeanceId },
+    include: {
+      quittance: true,
+      bail: { select: { locataireId: true } },
+    },
+  });
+  if (!echeance) return;
+  if (echeance.statut !== "PAYE" && echeance.statut !== "PARTIEL") return;
+  if (echeance.quittance) return; // déjà générée
+
+  const numero = await genererNumero();
+  await prisma.quittance.create({
+    data: {
+      echeanceId,
+      bailId: echeance.bailId,
+      bienId: echeance.bienId,
+      proprietaireId: echeance.proprietaireId,
+      locataireId: echeance.bail.locataireId,
+      numero,
+    },
+  });
+};
+
 // ─── Récupérer quittance côté locataire ───────────────────────────────────────
 
 export const getQuittancesLocataire = async (locataireId: string) =>

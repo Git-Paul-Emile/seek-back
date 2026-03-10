@@ -4,6 +4,8 @@ import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as OwnerRepo from "../repositories/owner.repository.js";
+import { prisma } from "../config/database.js";
+import * as CloudinaryService from "./cloudinary.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -402,6 +404,39 @@ export const deleteProfile = async (id: string): Promise<void> => {
   if (!existing) {
     throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
   }
+
+  const [verifOwner, biens, docs, locataires, etatPhotos] = await Promise.all([
+    prisma.verificationDocuments.findUnique({
+      where: { proprietaireId: id },
+      select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true },
+    }),
+    prisma.bien.findMany({ where: { proprietaireId: id }, select: { photos: true } }),
+    prisma.documentBien.findMany({ where: { proprietaireId: id }, select: { url: true } }),
+    prisma.locataire.findMany({
+      where: { proprietaireId: id },
+      select: { verification: { select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true } } },
+    }),
+    prisma.etatDesLieuxPhoto.findMany({
+      where: { item: { etatDesLieux: { proprietaireId: id } } },
+      select: { url: true },
+    }),
+  ]);
+
+  const urls: (string | null | undefined)[] = [
+    verifOwner?.pieceIdentiteRecto,
+    verifOwner?.pieceIdentiteVerso,
+    verifOwner?.selfie,
+    ...biens.flatMap((b) => b.photos),
+    ...docs.map((d) => d.url),
+    ...locataires.flatMap((l) =>
+      l.verification
+        ? [l.verification.pieceIdentiteRecto, l.verification.pieceIdentiteVerso, l.verification.selfie]
+        : []
+    ),
+    ...etatPhotos.map((p) => p.url),
+  ];
+
+  await CloudinaryService.deleteUrls(urls);
   await OwnerRepo.remove(id);
 };
 

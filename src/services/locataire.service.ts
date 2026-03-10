@@ -2,6 +2,8 @@ import { randomUUID } from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
+import { prisma } from "../config/database.js";
+import * as CloudinaryService from "./cloudinary.service.js";
 
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
 const TOKEN_EXPIRY_HOURS = 72;
@@ -122,6 +124,14 @@ export const remove = async (id: string, proprietaireId: string) => {
       "Ce locataire est associé à un logement actif. Vous ne pouvez pas supprimer ce compte.",
       StatusCodes.CONFLICT
     );
+  }
+
+  const verif = await prisma.locataireVerification.findUnique({
+    where: { locataireId: id },
+    select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true },
+  });
+  if (verif) {
+    await CloudinaryService.deleteUrls([verif.pieceIdentiteRecto, verif.pieceIdentiteVerso, verif.selfie]);
   }
 
   await LocataireRepo.remove(id);

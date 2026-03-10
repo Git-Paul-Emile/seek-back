@@ -3,7 +3,7 @@ import { prisma } from "../config/database.js";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface NotificationPayload {
-  type: "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT" | "VERIFICATION_LOCATAIRE";
+  type: "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT" | "VERIFICATION_LOCATAIRE" | "PAIEMENT_LOCATAIRE";
   canal?: "SMS" | "EMAIL" | "WHATSAPP";
   destinataire: string;
   sujet?: string;
@@ -206,6 +206,52 @@ export const envoyerInitiationPaiement = async (params: {
     canal: "SMS",
     destinataire: params.proprietaireTelephone,
     sujet: "Initiation de paiement locataire",
+    contenu,
+    echeanceId: params.echeanceId,
+    bailId: params.bailId,
+    bienId: params.bienId,
+    proprietaireId: params.proprietaireId,
+    locataireId: params.locataireId,
+  });
+};
+
+// ─── Paiement enregistré par le locataire (notifier le propriétaire) ──────────
+
+export const envoyerPaiementLocataire = async (params: {
+  proprietaireTelephone: string;
+  locataireNom: string;
+  montant: number;
+  montantPaye: number;
+  datePaiement: string;
+  reference?: string | null;
+  bienTitre?: string | null;
+  nombreMois?: number;
+  echeanceId?: string;
+  bailId: string;
+  bienId: string;
+  proprietaireId: string;
+  locataireId: string;
+}) => {
+  const montantStr = params.montant.toLocaleString("fr-FR");
+  const montantPayeStr = params.montantPaye.toLocaleString("fr-FR");
+  const dateStr = new Date(params.datePaiement).toLocaleDateString("fr-FR");
+  const nbMois = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
+  const partiel = params.montantPaye < params.montant
+    ? ` — paiement partiel, reste ${(params.montant - params.montantPaye).toLocaleString("fr-FR")} FCFA`
+    : "";
+
+  const contenu =
+    `Votre locataire ${params.locataireNom} a enregistré un paiement de loyer de ` +
+    `${montantPayeStr} FCFA${nbMois} le ${dateStr}` +
+    (params.reference ? ` (réf: ${params.reference})` : "") +
+    (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+    `${partiel}. Merci de confirmer la réception. — SEEK Immobilier`;
+
+  return envoyerNotification({
+    type: "PAIEMENT_LOCATAIRE",
+    canal: "SMS",
+    destinataire: params.proprietaireTelephone,
+    sujet: "Paiement de loyer enregistré par votre locataire",
     contenu,
     echeanceId: params.echeanceId,
     bailId: params.bailId,

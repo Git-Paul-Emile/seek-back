@@ -10,6 +10,7 @@ export const createBailSchema = z.object({
   montantCaution: z.number().nonnegative().optional().nullable(),
   cautionVersee: z.boolean().optional(),
   jourLimitePaiement: z.number().int().min(1).max(28).optional().nullable(),
+  delaiGrace: z.number().int().min(0).max(30).optional(),
   frequencePaiement: z.string().optional().nullable(),
 });
 

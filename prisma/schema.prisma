@@ -614,6 +614,7 @@ model BailLocation {
   montantCaution    Float?
   cautionVersee     Boolean    @default(false)
   jourLimitePaiement Int?
+  delaiGrace        Int        @default(5)
   frequencePaiement String?
   statut            StatutBail @default(EN_ATTENTE)
 
@@ -722,6 +723,14 @@ model EcheancierLoyer {
   reference            String?
   note                 String?
   sourceEnregistrement String?   // "LOCATAIRE" | "PROPRIETAIRE"
+  montantPaye          Float?    // Montant réellement payé (null si non payé, < montant si partiel)
+
+  commissionTaux    Float?    // Taux commission au moment du paiement
+  commissionMontant Float?    // Montant commission prélevé
+  montantNet        Float?    // Montant reçu par le propriétaire (montantPaye - commissionMontant)
+
+  confirmeParProprietaire Boolean   @default(false)
+  dateConfirmation        DateTime?
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -776,6 +785,7 @@ enum TypeNotification {
   ALERTE_RETARD
   INITIATION_PAIEMENT
   VERIFICATION_LOCATAIRE
+  PAIEMENT_LOCATAIRE       // Propriétaire notifié quand le locataire enregistre un paiement
 }
 
 model Notification {
@@ -970,6 +980,7 @@ model Proprietaire {
   transactions        Transaction[]
   promotionHistories  PromotionHistory[]
   documentsBien       DocumentBien[]
+  abonnements         AbonnementProprietaire[]
 }
 
 model ProprietaireRefreshToken {
@@ -1072,6 +1083,9 @@ enum TypePaiement {
   PAIEMENT_PROMOTION    // Paiement pour promotion d'annonce
   REMBOURSEMENT         // Remboursement au propriétaire
   RESTITUTION_CAUTION   // Restitution de caution au locataire
+  ABONNEMENT            // Paiement d'abonnement propriétaire
+  COMMISSION_LOYER      // Commission prélevée sur loyer
+  MISE_EN_AVANT         // Paiement de mise en avant (nouveau flux)
 }
 
 enum StatutTransaction {
@@ -1152,10 +1166,18 @@ model Temoignage {
 // ============================================================
 
 enum StatutPromotion {
+  EN_ATTENTE  // En attente de confirmation admin
   ACTIVE      // Promotion en cours
   TERMINEE    // Promotion terminée naturellement
   ARRETEE     // Promotion arrêtée manuellement par le propriétaire
   EXPIREE     // Promotion expirée (non utilisée)
+}
+
+enum StatutAbonnement {
+  EN_ATTENTE
+  ACTIF
+  EXPIRE
+  RESILIE
 }
 
 model PromotionHistory {
@@ -1175,6 +1197,13 @@ model PromotionHistory {
   dateFin         DateTime         // Date de fin prévue
   dateFinReelle   DateTime?        // Date de fin réelle (si arrêté avant)
 
+  // Paiement
+  modePaiement      String?
+  reference         String?
+  note              String?
+  confirmeParAdmin  Boolean  @default(false)
+  dateConfirmation  DateTime?
+
   // Statut
   statut          StatutPromotion  @default(ACTIVE)
   motifArret      String?          // Motif de l'arrêt (si arrêté manuellement)
@@ -1193,4 +1222,58 @@ model PromotionHistory {
   @@index([proprietaireId])
   @@index([statut])
   @@index([dateDebut])
+}
+
+// ============================================================
+// MONÉTISATION - CONFIG
+// ============================================================
+
+model ConfigMonetisation {
+  id                String   @id @default("config")
+  miseEnAvantActive Boolean  @default(false)
+  commissionActive  Boolean  @default(false)
+  abonnementActive  Boolean  @default(false)
+  tauxCommission    Float    @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ============================================================
+// ABONNEMENTS
+// ============================================================
+
+model PlanAbonnement {
+  id          String   @id @default(uuid())
+  nom         String
+  prix        Float    @default(0)
+  maxAnnonces Int?
+  actif       Boolean  @default(true)
+  ordre       Int      @default(0)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  abonnements AbonnementProprietaire[]
+}
+
+model AbonnementProprietaire {
+  id             String           @id @default(uuid())
+  proprietaireId String
+  planId         String
+  statut         StatutAbonnement @default(EN_ATTENTE)
+  dateDebut      DateTime
+  dateFin        DateTime
+  montant        Float
+  modePaiement   String?
+  reference      String?
+  note           String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  proprietaire Proprietaire   @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  plan         PlanAbonnement @relation(fields: [planId], references: [id])
+
+  @@index([proprietaireId])
+  @@index([statut])
+  @@index([planId])
 }

@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
 import { prisma } from "../config/database.js";
 import { computeScoreForProprietaire } from "./trustScore.service.js";
+import { verifierLimiteAnnonces } from "./abonnement.service.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -240,6 +241,9 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
     throw new AppError("Cette annonce ne peut pas être soumise dans son état actuel", StatusCodes.BAD_REQUEST);
   }
 
+  // Vérifier la limite d'annonces selon le plan d'abonnement
+  await verifierLimiteAnnonces(proprietaireId);
+
   // Validate required fields
   const missing: string[] = [];
   if (!bien.titre?.trim()) missing.push("titre");
@@ -286,6 +290,25 @@ export const getBienById = async (id: string) => {
   return BienRepository.getBienById(id);
 };
 
+// ─── Nettoyage Cloudinary d'un bien (photos + documents + photos état des lieux) ──
+
+const deleteCloudinaryForBien = async (bienId: string): Promise<void> => {
+  const [bien, docs, etatPhotos] = await Promise.all([
+    prisma.bien.findUnique({ where: { id: bienId }, select: { photos: true } }),
+    prisma.documentBien.findMany({ where: { bienId }, select: { url: true } }),
+    prisma.etatDesLieuxPhoto.findMany({
+      where: { item: { etatDesLieux: { bienId } } },
+      select: { url: true },
+    }),
+  ]);
+  const urls: (string | null | undefined)[] = [
+    ...(bien?.photos ?? []),
+    ...docs.map((d) => d.url),
+    ...etatPhotos.map((p) => p.url),
+  ];
+  await CloudinaryService.deleteUrls(urls);
+};
+
 export const deleteBien = async (bienId: string, proprietaireId: string) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
@@ -306,6 +329,7 @@ export const deleteBien = async (bienId: string, proprietaireId: string) => {
       StatusCodes.BAD_REQUEST
     );
   }
+  await deleteCloudinaryForBien(bienId);
   return BienRepository.deleteBienById(bienId);
 };
 
@@ -560,6 +584,7 @@ export const validerAnnonce = async (
 export const adminDeleteBien = async (bienId: string) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+  await deleteCloudinaryForBien(bienId);
   return BienRepository.deleteBienById(bienId);
 };
 

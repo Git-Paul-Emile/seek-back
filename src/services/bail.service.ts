@@ -3,6 +3,9 @@ import { AppError } from "../utils/AppError.js";
 import * as BailRepo from "../repositories/bail.repository.js";
 import { prisma } from "../config/database.js";
 import type { EcheancierLoyerCreateManyInput } from "../generated/prisma/models/EcheancierLoyer.js";
+import { genererQuittanceInterne } from "./quittance.service.js";
+import { envoyerConfirmationPaiement, envoyerPaiementLocataire } from "./notification.service.js";
+import { getConfig } from "./configMonetisation.service.js";
 
 // ─── Génération de l'échéancier ───────────────────────────────────────────────
 
@@ -102,6 +105,7 @@ export const creerBail = async (
     montantCaution?: number | null;
     cautionVersee?: boolean;
     jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
   }
 ) => {
@@ -138,6 +142,7 @@ export const creerBail = async (
     montantCaution: data.montantCaution,
     cautionVersee: data.cautionVersee ?? false,
     jourLimitePaiement: data.jourLimitePaiement,
+    delaiGrace: data.delaiGrace ?? 5,
     frequencePaiement: data.frequencePaiement,
   });
 
@@ -327,13 +332,15 @@ export const prolongerBail = async (
 
 // ─── Échéancier ───────────────────────────────────────────────────────────────
 
-const GRACE_DAYS = 5; // jours après l'échéance avant EN_RETARD
-
 export const getEcheancier = async (bienId: string, bailId: string, proprietaireId: string) => {
   await assertBienOwner(bienId, proprietaireId);
 
+  const bail = await BailRepo.findById(bailId);
+  if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
+
   const now = new Date();
-  const graceLimit = new Date(now.getTime() - GRACE_DAYS * 24 * 60 * 60 * 1000);
+  const graceDays = (bail as unknown as { delaiGrace?: number }).delaiGrace ?? 5;
+  const graceLimit = new Date(now.getTime() - graceDays * 24 * 60 * 60 * 1000);
 
   // A_VENIR → EN_ATTENTE quand la date est arrivée
   await prisma.echeancierLoyer.updateMany({
@@ -341,11 +348,56 @@ export const getEcheancier = async (bienId: string, bailId: string, proprietaire
     data: { statut: "EN_ATTENTE" },
   });
 
-  // EN_ATTENTE → EN_RETARD après la période de grâce (5 jours)
+  // EN_ATTENTE → EN_RETARD après le délai de grâce configuré par le propriétaire
   await prisma.echeancierLoyer.updateMany({
     where: { bailId, statut: "EN_ATTENTE", dateEcheance: { lt: graceLimit } },
     data: { statut: "EN_RETARD" },
   });
+
+  // Renouvellement automatique : si bail actif et on est en novembre ou décembre,
+  // générer l'échéancier de l'année prochaine s'il n'existe pas encore
+  const isActiveForRenewal = ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string);
+  if (isActiveForRenewal && now.getMonth() >= 10) { // novembre = 10, décembre = 11
+    const anneeActuelle = now.getFullYear();
+    const anneeProchaine = anneeActuelle + 1;
+    const dejaExistantes = await prisma.echeancierLoyer.count({
+      where: {
+        bailId,
+        dateEcheance: {
+          gte: new Date(anneeProchaine, 0, 1),
+          lte: new Date(anneeProchaine, 11, 31),
+        },
+      },
+    });
+    if (dejaExistantes === 0) {
+      // Trouver la dernière échéance de l'année actuelle
+      const lastCurrentYear = await prisma.echeancierLoyer.findFirst({
+        where: { bailId, dateEcheance: { lte: new Date(anneeActuelle, 11, 31) } },
+        orderBy: { dateEcheance: "desc" },
+      });
+      if (lastCurrentYear) {
+        const nextStart = advanceByFrequence(
+          new Date(lastCurrentYear.dateEcheance),
+          bail.frequencePaiement ?? "mensuel"
+        );
+        const prochaineAnneeFin = new Date(anneeProchaine, 11, 31);
+        const stopDate =
+          bail.dateFinBail && new Date(bail.dateFinBail) < prochaineAnneeFin
+            ? new Date(bail.dateFinBail)
+            : null;
+        const echeances = genererEcheances(
+          bailId, bienId, proprietaireId, bail.locataireId,
+          nextStart, stopDate,
+          bail.frequencePaiement ?? "mensuel",
+          bail.montantLoyer,
+          stopDate ? undefined : prochaineAnneeFin
+        );
+        if (echeances.length > 0) {
+          await prisma.echeancierLoyer.createMany({ data: echeances });
+        }
+      }
+    }
+  }
 
   return prisma.echeancierLoyer.findMany({
     where: { bailId },
@@ -390,8 +442,19 @@ export const payerEcheance = async (
   const montantPaye = data.montant ?? echeance.montant;
   const statut = montantPaye >= echeance.montant ? "PAYE" : "PARTIEL";
 
+  // Commission
+  const config = await getConfig();
+  let commissionTaux: number | null = null;
+  let commissionMontant: number | null = null;
+  let montantNet: number | null = null;
+  if (config.commissionActive && config.tauxCommission > 0) {
+    commissionTaux = config.tauxCommission;
+    commissionMontant = Math.round(montantPaye * commissionTaux / 100);
+    montantNet = montantPaye - commissionMontant;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (prisma.echeancierLoyer.update as any)({
+  const updated = await (prisma.echeancierLoyer.update as any)({
     where: { id: echeanceId },
     data: {
       statut,
@@ -400,9 +463,74 @@ export const payerEcheance = async (
       reference: data.reference,
       note: data.note,
       montant: echeance.montant,
+      montantPaye,
       sourceEnregistrement: "PROPRIETAIRE",
+      ...(commissionTaux !== null && {
+        commissionTaux,
+        commissionMontant,
+        montantNet,
+      }),
     },
   });
+
+  // Créer la transaction COMMISSION_LOYER si commission active
+  if (commissionMontant && commissionMontant > 0) {
+    const bail = await prisma.bailLocation.findUnique({ where: { id: bailId } });
+    if (bail) {
+      await prisma.transaction.create({
+        data: {
+          proprietaireId: bail.proprietaireId,
+          bienId: bail.bienId,
+          bailId,
+          echeanceId,
+          locataireId: bail.locataireId,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          type: "COMMISSION_LOYER" as any,
+          statut: "CONFIRME",
+          montant: commissionMontant,
+          modePaiement: data.modePaiement ?? "Mobile Money",
+          reference: data.reference,
+          note: `Commission ${commissionTaux}% sur loyer`,
+          dateConfirmation: new Date(),
+          metadata: {
+            echeanceId,
+            tauxCommission: commissionTaux,
+            montantLoyer: montantPaye,
+            montantNet,
+          },
+        },
+      });
+    }
+  }
+
+  // Auto-génération quittance
+  genererQuittanceInterne(echeanceId).catch(() => null);
+
+  // Notification de confirmation au locataire (fire-and-forget)
+  prisma.bailLocation.findUnique({
+    where: { id: bailId },
+    include: {
+      locataire: { select: { telephone: true, nom: true, prenom: true } },
+      bien: { select: { titre: true } },
+    },
+  }).then(bail => {
+    if (!bail?.locataire?.telephone) return;
+    envoyerConfirmationPaiement({
+      locataireTelephone: bail.locataire.telephone,
+      locataireNom: `${bail.locataire.prenom} ${bail.locataire.nom}`,
+      montant: montantPaye,
+      datePaiement: data.datePaiement.toISOString(),
+      reference: data.reference,
+      bienTitre: bail.bien?.titre,
+      echeanceId,
+      bailId,
+      bienId,
+      proprietaireId,
+      locataireId: bail.locataireId,
+    }).catch(() => null);
+  }).catch(() => null);
+
+  return updated;
 };
 
 export const payerMoisMultiples = async (
@@ -436,8 +564,14 @@ export const payerMoisMultiples = async (
       reference: data.reference,
       note: data.note,
       sourceEnregistrement: "PROPRIETAIRE",
+      // montantPaye = montant (paiement intégral pour chaque mois)
     },
   });
+
+  // Auto-génération quittances pour chaque échéance (fire-and-forget)
+  for (const id of ids) {
+    genererQuittanceInterne(id).catch(() => null);
+  }
 
   return { paye: unpaid.length, ids };
 };
@@ -471,6 +605,8 @@ export const payerEcheancesLocataire = async (
     throw new AppError("Aucune échéance à payer", StatusCodes.BAD_REQUEST);
 
   const ids = unpaid.map(e => e.id);
+  const montantTotal = unpaid.reduce((sum, e) => sum + e.montant, 0);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await (prisma.echeancierLoyer.updateMany as any)({
     where: { id: { in: ids } },
@@ -481,10 +617,78 @@ export const payerEcheancesLocataire = async (
       reference: data.reference ?? null,
       note: data.note ?? null,
       sourceEnregistrement: "LOCATAIRE",
+      // montantPaye = montant de chaque échéance (intégral)
     },
   });
 
+  // Auto-génération quittances (fire-and-forget)
+  for (const id of ids) {
+    genererQuittanceInterne(id).catch(() => null);
+  }
+
+  // Notification au propriétaire (fire-and-forget)
+  prisma.bailLocation.findUnique({
+    where: { id: bail.id },
+    include: {
+      locataire: { select: { telephone: true, nom: true, prenom: true } },
+      proprietaire: { select: { telephone: true } },
+      bien: { select: { titre: true } },
+    },
+  }).then(bailFull => {
+    if (!bailFull?.proprietaire?.telephone) return;
+    const locataireNom = bailFull.locataire
+      ? `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`
+      : "Locataire";
+    envoyerPaiementLocataire({
+      proprietaireTelephone: bailFull.proprietaire.telephone,
+      locataireNom,
+      montant: unpaid[0]?.montant ?? 0,
+      montantPaye: montantTotal,
+      datePaiement: data.datePaiement.toISOString(),
+      reference: data.reference,
+      bienTitre: bailFull.bien?.titre,
+      nombreMois: data.nombreMois,
+      echeanceId: ids[0],
+      bailId: bail.id,
+      bienId: bail.bienId,
+      proprietaireId: bail.proprietaireId,
+      locataireId,
+    }).catch(() => null);
+  }).catch(() => null);
+
   return { paye: unpaid.length, ids };
+};
+
+// ─── Confirmation de réception (propriétaire) ─────────────────────────────────
+
+/**
+ * Le propriétaire confirme qu'il a bien reçu le paiement enregistré par le locataire.
+ * Applicable uniquement aux échéances enregistrées par le locataire (sourceEnregistrement = "LOCATAIRE").
+ */
+export const confirmerReceptionPaiement = async (
+  bienId: string,
+  bailId: string,
+  echeanceId: string,
+  proprietaireId: string
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
+  if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
+  if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
+  if (echeance.statut !== "PAYE" && echeance.statut !== "PARTIEL")
+    throw new AppError("Impossible de confirmer une échéance non payée", StatusCodes.BAD_REQUEST);
+  if (echeance.confirmeParProprietaire)
+    throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (prisma.echeancierLoyer.update as any)({
+    where: { id: echeanceId },
+    data: {
+      confirmeParProprietaire: true,
+      dateConfirmation: new Date(),
+    },
+  });
 };
 
 // ─── Caution ──────────────────────────────────────────────────────────────────
@@ -524,52 +728,9 @@ export const restituerCaution = async (
 // ─── Mobile Money ─────────────────────────────────────────────────────────────
 
 const MOBILE_MONEY_PAR_PAYS: Record<string, { nom: string; instructions: string }[]> = {
-  "Côte d'Ivoire": [
-    { nom: "Orange Money",      instructions: "Composez *144# pour accéder au service Orange Money." },
-    { nom: "MTN Mobile Money",  instructions: "Composez *133# pour accéder au service MTN MoMo." },
-    { nom: "Wave",              instructions: "Utilisez l'application Wave pour effectuer le virement." },
-    { nom: "Moov Money",        instructions: "Composez *555# pour accéder au service Moov Money." },
-  ],
   "Sénégal": [
-    { nom: "Orange Money",  instructions: "Composez *144# pour accéder au service Orange Money Sénégal." },
-    { nom: "Wave",          instructions: "Utilisez l'application Wave pour effectuer le virement." },
-    { nom: "Free Money",    instructions: "Composez *555# pour accéder au service Free Money." },
-  ],
-  "Cameroun": [
-    { nom: "Orange Money",     instructions: "Composez *150*2# pour Orange Money Cameroun." },
-    { nom: "MTN Mobile Money", instructions: "Composez *126# pour MTN MoMo Cameroun." },
-  ],
-  "Burkina Faso": [
-    { nom: "Orange Money", instructions: "Composez *144# pour Orange Money Burkina." },
-    { nom: "Moov Money",   instructions: "Composez *555# pour Moov Money." },
-  ],
-  "Mali": [
-    { nom: "Orange Money", instructions: "Composez *144# pour Orange Money Mali." },
-    { nom: "Moov Money",   instructions: "Composez *555# pour Moov Money Mali." },
-  ],
-  "Bénin": [
-    { nom: "MTN Mobile Money", instructions: "Composez *880# pour MTN MoMo Bénin." },
-    { nom: "Moov Money",       instructions: "Composez *555# pour Moov Money Bénin." },
-  ],
-  "Togo": [
-    { nom: "T-Money", instructions: "Composez *145# pour T-Money (Togocel)." },
-    { nom: "Flooz",   instructions: "Composez *155# pour Flooz (Moov Togo)." },
-  ],
-  "Guinée": [
-    { nom: "Orange Money",     instructions: "Composez *144# pour Orange Money Guinée." },
-    { nom: "MTN Mobile Money", instructions: "Composez *155# pour MTN MoMo Guinée." },
-  ],
-  "Niger": [
-    { nom: "Orange Money",  instructions: "Composez *144# pour Orange Money Niger." },
-    { nom: "Airtel Money",  instructions: "Utilisez l'application Airtel Money Niger." },
-  ],
-  "Congo": [
-    { nom: "MTN Mobile Money", instructions: "Composez *126# pour MTN MoMo Congo." },
-    { nom: "Airtel Money",     instructions: "Utilisez l'application Airtel Money Congo." },
-  ],
-  "Gabon": [
-    { nom: "Airtel Money", instructions: "Utilisez l'application Airtel Money Gabon." },
-    { nom: "Moov Money",   instructions: "Composez *555# pour Moov Money Gabon." },
+    { nom: "Orange Money", instructions: "Composez *144# pour accéder au service Orange Money Sénégal." },
+    { nom: "Wave",         instructions: "Utilisez l'application Wave pour effectuer le virement." },
   ],
 };
 
@@ -785,7 +946,8 @@ export const getEcheancierForLocataire = async (locataireId: string) => {
   if (!bail) return [];
 
   const now = new Date();
-  const graceLimit = new Date(now.getTime() - GRACE_DAYS * 24 * 60 * 60 * 1000);
+  const graceDays = (bail as unknown as { delaiGrace?: number }).delaiGrace ?? 5;
+  const graceLimit = new Date(now.getTime() - graceDays * 24 * 60 * 60 * 1000);
 
   await prisma.echeancierLoyer.updateMany({
     where: { bailId: bail.id, statut: "A_VENIR", dateEcheance: { lte: now } },
