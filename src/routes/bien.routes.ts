@@ -14,6 +14,19 @@ router.get(
   controllerWrapper(BienController.getOwnerStatsController)
 );
 
+/** GET /api/biens/stats/vues — stats vues globales (toutes annonces du propriétaire) */
+router.get(
+  "/stats/vues",
+  authenticateOwner,
+  controllerWrapper(BienController.getStatsVuesOwnerController)
+);
+
+/** GET /api/biens/stats/vues/admin — stats vues globales admin */
+router.get(
+  "/stats/vues/admin",
+  controllerWrapper(BienController.getAdminStatsVuesController)
+);
+
 /** GET /api/biens/draft — récupérer le brouillon du propriétaire */
 router.get(
   "/draft",
@@ -75,6 +88,14 @@ router.delete(
   authenticateOwner,
   validateId,
   controllerWrapper(BienController.deleteBien)
+);
+
+/** GET /api/biens/:id/stats-vues — stats vues d'un bien (propriétaire) */
+router.get(
+  "/:id/stats-vues",
+  authenticateOwner,
+  validateId,
+  controllerWrapper(BienController.getStatsVuesBienController)
 );
 
 /** GET /api/biens/:id */

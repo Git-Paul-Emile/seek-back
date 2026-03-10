@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as BienService from "../services/bien.service.js";
-import { getOwnerStats } from "../repositories/bien.repository.js";
+import { getOwnerStats, getStatsVuesBien, getStatsVuesOwner, getAdminStatsVues } from "../repositories/bien.repository.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { saveDraftSchema } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -225,10 +225,33 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
 
 export const getAnnoncePublie = async (req: Request, res: Response): Promise<void> => {
   const bien = await BienService.getAnnoncePublieById(req.params.id as string);
-  // Incrémenter le compteur de vues en arrière-plan (sans bloquer la réponse)
-  const { prisma } = await import("../config/database.js");
-  prisma.bien.update({ where: { id: req.params.id as string }, data: { nbVues: { increment: 1 } } })
-    .catch(() => { /* ignore */ });
+  // Enregistrer la vue en arrière-plan avec déduplication (30 min par IP)
+  const bienId = req.params.id as string;
+  const ip = (req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0]?.trim()
+    ?? req.socket.remoteAddress
+    ?? "unknown";
+  const userId = (req as any).comptePublic?.id ?? null;
+  (async () => {
+    try {
+      const { prisma } = await import("../config/database.js");
+      const since = new Date(Date.now() - 30 * 60 * 1000);
+      const existing = await prisma.vueBien.findFirst({
+        where: {
+          bienId,
+          createdAt: { gte: since },
+          OR: [
+            { ipAddress: ip },
+            ...(userId ? [{ userId }] : []),
+          ],
+        },
+        select: { id: true },
+      });
+      if (!existing) {
+        await prisma.vueBien.create({ data: { bienId, ipAddress: ip, userId } });
+        await prisma.bien.update({ where: { id: bienId }, data: { nbVues: { increment: 1 } } });
+      }
+    } catch { /* ignore */ }
+  })();
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Annonce récupérée", data: bien })
   );
@@ -258,6 +281,31 @@ export const getOwnerStatsController = async (req: Request, res: Response): Prom
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Statistiques récupérées", data: stats })
   );
+};
+
+// ─── Stats vues par bien (propriétaire) ──────────────────────────────────────
+
+export const getStatsVuesBienController = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  const stats = await getStatsVuesBien(req.params.id as string, proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats vues récupérées", data: stats }));
+};
+
+// ─── Stats vues globales owner ────────────────────────────────────────────────
+
+export const getStatsVuesOwnerController = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  const stats = await getStatsVuesOwner(proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats vues récupérées", data: stats }));
+};
+
+// ─── Stats vues admin ─────────────────────────────────────────────────────────
+
+export const getAdminStatsVuesController = async (_req: Request, res: Response): Promise<void> => {
+  const stats = await getAdminStatsVues();
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats vues admin récupérées", data: stats }));
 };
 
 // ─── Public — annonces similaires ────────────────────────────────────────────

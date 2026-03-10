@@ -38,6 +38,7 @@ import favoriRouter from "../routes/favori.routes.js";
 import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
 import proprietairesRouter, { ownerScoreRouter } from "../routes/trustScore.routes.js";
 import monetisationRouter from "../routes/monetisation.routes.js";
+import ogRouter from "../routes/og.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -203,6 +204,9 @@ app.use('/api/owner', ownerScoreRouter);
 
 // Monétisation (abonnements, commissions, mises en avant)
 app.use('/api/monetisation', monetisationRouter);
+
+// Open Graph preview (WhatsApp / Facebook / SMS)
+app.use('/og', ogRouter);
 
 // ============= GESTION DES ERREURS =============
 

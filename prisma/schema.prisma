@@ -338,6 +338,7 @@ model Bien {
   signalements       Signalement[]
   documents          DocumentBien[]
   favoris            Favori[]
+  vues               VueBien[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -392,6 +393,21 @@ model Favori {
 
   @@unique([comptePublicId, bienId])
   @@index([comptePublicId])
+}
+
+model VueBien {
+  id        String   @id @default(uuid())
+  bienId    String
+  userId    String?  // ComptePublic id (nullable — visiteur anonyme)
+  ipAddress String
+
+  createdAt DateTime @default(now())
+
+  bien Bien @relation(fields: [bienId], references: [id], onDelete: Cascade)
+
+  @@index([bienId])
+  @@index([bienId, createdAt])
+  @@index([ipAddress, bienId])
 }
 
 model BienEquipement {

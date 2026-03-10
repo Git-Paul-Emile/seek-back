@@ -664,7 +664,7 @@ interface SimilarityScore {
  *   +10  nb chambres identique                        — même configuration
  *    +5  nb chambres ±1                               — configuration proche
  *
- * Seuil de pertinence : >= 35 (au moins même type de transaction)
+ * Seuil de pertinence : >= 65 (au moins même type de transaction + même type de logement)
  */
 function calculateSimilarityScore(
   bien: BienWithRelations,
@@ -732,7 +732,7 @@ function calculateSimilarityScore(
 }
 
 // Score minimum pour qu'une annonce soit considérée pertinente
-const MIN_SIMILARITY_SCORE = 35; // au moins même type de transaction
+const MIN_SIMILARITY_SCORE = 65; // au moins même type de transaction + même type de logement
 
 export const getAnnoncesSimilairesWithScore = async (
   bienId: string,
@@ -936,5 +936,160 @@ export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats>
     nbBailsActifs: bailsActifs.length,
     montantMensuelLoyers,
     nbEcheancesEnRetard,
+  };
+};
+
+// ─── Stats vues d'un bien (propriétaire) ─────────────────────────────────────
+
+export interface StatsVuesBien {
+  vuesTotales: number;
+  vuesAujourdhui: number;
+  vuesCetteSemaine: number;
+  evolution: { date: string; count: number }[]; // 7 derniers jours
+}
+
+export const getStatsVuesBien = async (bienId: string, proprietaireId: string): Promise<StatsVuesBien> => {
+  // Vérifier que le bien appartient au propriétaire
+  const bien = await prisma.bien.findFirst({ where: { id: bienId, proprietaireId }, select: { nbVues: true } });
+  if (!bien) throw new Error("Bien introuvable");
+
+  const now = new Date();
+  const debutJour = new Date(now); debutJour.setHours(0, 0, 0, 0);
+  const debutSemaine = new Date(now); debutSemaine.setDate(now.getDate() - 6); debutSemaine.setHours(0, 0, 0, 0);
+
+  const [vuesAujourdhui, vuesCetteSemaine, vuesParJour] = await Promise.all([
+    prisma.vueBien.count({ where: { bienId, createdAt: { gte: debutJour } } }),
+    prisma.vueBien.count({ where: { bienId, createdAt: { gte: debutSemaine } } }),
+    prisma.$queryRaw<{ date: Date; count: bigint }[]>`
+      SELECT DATE("createdAt") as date, COUNT(*) as count
+      FROM "VueBien"
+      WHERE "bienId" = ${bienId}
+        AND "createdAt" >= ${debutSemaine}
+      GROUP BY DATE("createdAt")
+      ORDER BY date ASC
+    `,
+  ]);
+
+  // Construire l'évolution sur 7 jours (remplir les jours sans vues avec 0)
+  const evolution: { date: string; count: number }[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    const found = vuesParJour.find(r => r.date.toISOString().slice(0, 10) === key);
+    evolution.push({ date: key, count: found ? Number(found.count) : 0 });
+  }
+
+  return {
+    vuesTotales: bien.nbVues,
+    vuesAujourdhui,
+    vuesCetteSemaine,
+    evolution,
+  };
+};
+
+// ─── Stats vues globales owner (toutes ses annonces) ─────────────────────────
+
+export interface StatsVuesOwner {
+  vuesTotales: number;
+  vuesAujourdhui: number;
+  vuesCetteSemaine: number;
+  topAnnonces: { id: string; titre: string | null; ville: string | null; nbVues: number; vuesAujourdhui: number; vuesCetteSemaine: number }[];
+}
+
+export const getStatsVuesOwner = async (proprietaireId: string): Promise<StatsVuesOwner> => {
+  const now = new Date();
+  const debutJour = new Date(now); debutJour.setHours(0, 0, 0, 0);
+  const debutSemaine = new Date(now); debutSemaine.setDate(now.getDate() - 6); debutSemaine.setHours(0, 0, 0, 0);
+
+  const biens = await prisma.bien.findMany({
+    where: { proprietaireId, statutAnnonce: "PUBLIE" },
+    select: { id: true, titre: true, ville: true, nbVues: true },
+  });
+
+  const bienIds = biens.map(b => b.id);
+  if (bienIds.length === 0) {
+    return { vuesTotales: 0, vuesAujourdhui: 0, vuesCetteSemaine: 0, topAnnonces: [] };
+  }
+
+  const [vuesAujourdhui, vuesCetteSemaine, vuesParBienAujourdhui, vuesParBienSemaine] = await Promise.all([
+    prisma.vueBien.count({ where: { bienId: { in: bienIds }, createdAt: { gte: debutJour } } }),
+    prisma.vueBien.count({ where: { bienId: { in: bienIds }, createdAt: { gte: debutSemaine } } }),
+    prisma.vueBien.groupBy({ by: ["bienId"], where: { bienId: { in: bienIds }, createdAt: { gte: debutJour } }, _count: { id: true } }),
+    prisma.vueBien.groupBy({ by: ["bienId"], where: { bienId: { in: bienIds }, createdAt: { gte: debutSemaine } }, _count: { id: true } }),
+  ]);
+
+  const topAnnonces = biens
+    .map(b => ({
+      id: b.id,
+      titre: b.titre,
+      ville: b.ville,
+      nbVues: b.nbVues,
+      vuesAujourdhui: vuesParBienAujourdhui.find(r => r.bienId === b.id)?._count.id ?? 0,
+      vuesCetteSemaine: vuesParBienSemaine.find(r => r.bienId === b.id)?._count.id ?? 0,
+    }))
+    .sort((a, b) => b.nbVues - a.nbVues)
+    .slice(0, 10);
+
+  return {
+    vuesTotales: biens.reduce((s, b) => s + b.nbVues, 0),
+    vuesAujourdhui,
+    vuesCetteSemaine,
+    topAnnonces,
+  };
+};
+
+// ─── Stats vues admin (globales plateforme) ───────────────────────────────────
+
+export interface AdminStatsVues {
+  totalVuesPlateforme: number;
+  vuesAujourdhui: number;
+  vuesCetteSemaine: number;
+  topAnnonces: { id: string; titre: string | null; ville: string | null; nbVues: number }[];
+  vuesParVille: { ville: string; count: number }[];
+  vuesParTypeLogement: { typeLogement: string; count: number }[];
+}
+
+export const getAdminStatsVues = async (): Promise<AdminStatsVues> => {
+  const now = new Date();
+  const debutJour = new Date(now); debutJour.setHours(0, 0, 0, 0);
+  const debutSemaine = new Date(now); debutSemaine.setDate(now.getDate() - 6); debutSemaine.setHours(0, 0, 0, 0);
+
+  const [totalVuesPlateforme, vuesAujourdhui, vuesCetteSemaine, topAnnonces, vuesParVilleRaw, vuesParTypeRaw] = await Promise.all([
+    prisma.bien.aggregate({ _sum: { nbVues: true } }).then(r => r._sum.nbVues ?? 0),
+    prisma.vueBien.count({ where: { createdAt: { gte: debutJour } } }),
+    prisma.vueBien.count({ where: { createdAt: { gte: debutSemaine } } }),
+    prisma.bien.findMany({
+      where: { statutAnnonce: "PUBLIE", actif: true },
+      orderBy: { nbVues: "desc" },
+      take: 10,
+      select: { id: true, titre: true, ville: true, nbVues: true },
+    }),
+    prisma.$queryRaw<{ ville: string; count: bigint }[]>`
+      SELECT b.ville, COUNT(v.id) as count
+      FROM "VueBien" v
+      JOIN "Bien" b ON b.id = v."bienId"
+      WHERE b.ville IS NOT NULL
+      GROUP BY b.ville
+      ORDER BY count DESC
+      LIMIT 10
+    `,
+    prisma.$queryRaw<{ typeLogement: string; count: bigint }[]>`
+      SELECT tl.nom as "typeLogement", COUNT(v.id) as count
+      FROM "VueBien" v
+      JOIN "Bien" b ON b.id = v."bienId"
+      JOIN "TypeLogement" tl ON tl.id = b."typeLogementId"
+      GROUP BY tl.nom
+      ORDER BY count DESC
+    `,
+  ]);
+
+  return {
+    totalVuesPlateforme,
+    vuesAujourdhui,
+    vuesCetteSemaine,
+    topAnnonces,
+    vuesParVille: vuesParVilleRaw.map(r => ({ ville: r.ville, count: Number(r.count) })),
+    vuesParTypeLogement: vuesParTypeRaw.map(r => ({ typeLogement: r.typeLogement, count: Number(r.count) })),
   };
 };
