@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { CategorieMeubleModel as CategorieMeuble } from "../generated/prisma/index.js";
+import type { CategorieMeubleModel as CategorieMeuble } from "../generated/prisma/client.js";
 
 export const findAll = (): Promise<CategorieMeuble[]> =>
   prisma.categorieMeuble.findMany({ orderBy: [{ ordre: "asc" }, { nom: "asc" }] });

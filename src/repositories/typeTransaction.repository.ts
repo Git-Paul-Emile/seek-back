@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { TypeTransaction } from "../generated/prisma/index.js";
+import type { TypeTransaction } from "../generated/prisma/client.js";
 
 export const findAll = (): Promise<TypeTransaction[]> =>
   prisma.typeTransaction.findMany({

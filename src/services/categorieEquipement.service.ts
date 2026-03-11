@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as Repo from "../repositories/categorieEquipement.repository.js";
-import type { CategorieEquipementModel as CategorieEquipement } from "../generated/prisma/index.js";
+import type { CategorieEquipementModel as CategorieEquipement } from "../generated/prisma/client.js";
 
 function slugify(nom: string): string {
   return nom

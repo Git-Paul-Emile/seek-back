@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as Repo from "../repositories/typeLogement.repository.js";
-import type { TypeLogement } from "../generated/prisma/index.js";
+import type { TypeLogement } from "../generated/prisma/client.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

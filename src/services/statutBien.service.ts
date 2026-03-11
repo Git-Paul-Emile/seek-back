@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as Repo from "../repositories/statutBien.repository.js";
-import type { StatutBien } from "../generated/prisma/index.js";
+import type { StatutBien } from "../generated/prisma/client.js";
 
 const toSlug = (nom: string): string =>
   nom

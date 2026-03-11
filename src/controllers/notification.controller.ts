@@ -16,7 +16,8 @@ const getOwner = (req: Request) => {
 /** POST /api/biens/:id/bail/:bailId/echeancier/:echeanceId/rappel */
 export const envoyerRappel = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
-  const { id: bienId, bailId, echeanceId } = req.params;
+  // params are typed as `any` via global augmentation; cast to string to satisfy functions
+  const { id: bienId, bailId, echeanceId } = req.params as { id: string; bailId: string; echeanceId: string };
 
   // Vérifier que le bien appartient au propriétaire
   const bien = await prisma.bien.findUnique({ where: { id: bienId }, select: { proprietaireId: true } });
@@ -34,7 +35,7 @@ export const envoyerRappel = async (req: Request, res: Response): Promise<void> 
         },
       },
     },
-  });
+  }) as any; // cast to any so TypeScript knows bail property exists
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Données incohérentes", StatusCodes.BAD_REQUEST);
 

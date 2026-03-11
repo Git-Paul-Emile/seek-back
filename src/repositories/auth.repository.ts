@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { Admin, RefreshToken } from "../generated/prisma/index.js";
+import type { Admin, RefreshToken } from "../generated/prisma/client.js";
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 

@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as Repo from "../repositories/typeTransaction.repository.js";
-import type { TypeTransaction } from "../generated/prisma/index.js";
+import type { TypeTransaction } from "../generated/prisma/client.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
 import { prisma } from "../config/database.js";
-import type { StatutBien } from "../generated/prisma/index.js";
+import type { StatutBien } from "../generated/prisma/client.js";
 
 export const findAll = (): Promise<StatutBien[]> =>
   prisma.statutBien.findMany({
