@@ -1,11 +1,11 @@
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 
 /**
- * Rate limiter global - 100 requêtes par 15 minutes
+ * Rate limiter global - 500 requêtes par 15 minutes
  */
 export const limiteurGlobal = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 500,
   message: {
     success: false,
     message: "Trop de requêtes, veuillez réessayer plus tard",

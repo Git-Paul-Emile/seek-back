@@ -47,10 +47,12 @@ const app = express();
 
 const allowedOrigins = [
   process.env.FRONT_URL || 'http://localhost:8080',
+  process.env.FRONT_URL_PROD || 'https://seek-front-plum.vercel.app',
   'http://localhost:5173', // Vite default
   'http://localhost:8080',
   'http://localhost:3000', // React default
   'http://localhost:3001', // React alternative
+  'https://seek-front-plum.vercel.app', // Production Vercel
 ];
 
 // ============= SÉCURITÉ =============
