@@ -15,8 +15,8 @@ const getOwner = (req: Request) => {
 export const getContrat = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const contrat = await ContratService.getContrat(
-    req.params.id,
-    req.params.bailId,
+    req.params.id as string,
+    req.params.bailId as string,
     proprietaireId
   );
   res.status(StatusCodes.OK).json(
@@ -30,8 +30,8 @@ export const getContrat = async (req: Request, res: Response): Promise<void> => 
 export const genererContrat = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const contrat = await ContratService.genererContrat(
-    req.params.id,
-    req.params.bailId,
+    req.params.id as string,
+    req.params.bailId as string,
     proprietaireId
   );
   res.status(StatusCodes.CREATED).json(
@@ -51,9 +51,9 @@ export const updateContrat = async (req: Request, res: Response): Promise<void> 
     return;
   }
   const contrat = await ContratService.updateContrat(
-    req.params.id,
-    req.params.bailId,
-    req.params.contratId,
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.contratId as string,
     proprietaireId,
     contenu
   );
@@ -67,9 +67,9 @@ export const updateContrat = async (req: Request, res: Response): Promise<void> 
 export const activerContrat = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const contrat = await ContratService.activerContrat(
-    req.params.id,
-    req.params.bailId,
-    req.params.contratId,
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.contratId as string,
     proprietaireId
   );
   res.status(StatusCodes.OK).json(
@@ -82,9 +82,9 @@ export const activerContrat = async (req: Request, res: Response): Promise<void>
 export const envoyerContrat = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const result = await ContratService.envoyerContrat(
-    req.params.id,
-    req.params.bailId,
-    req.params.contratId,
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.contratId as string,
     proprietaireId
   );
   res.status(StatusCodes.OK).json(

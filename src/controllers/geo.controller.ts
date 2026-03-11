@@ -37,14 +37,14 @@ export const updatePays = async (req: Request, res: Response): Promise<void> => 
   const data: Record<string, string> = {};
   if (nom?.trim()) data.nom = nom.trim();
   if (code?.trim()) data.code = code.trim().toUpperCase();
-  const pays = await GeoRepository.updatePays(id, data);
+  const pays = await GeoRepository.updatePays(req.params.id as string, data);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Pays mis à jour", data: pays })
   );
 };
 
 export const deletePays = async (req: Request, res: Response): Promise<void> => {
-  await GeoRepository.deletePays(req.params.id);
+  await GeoRepository.deletePays(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Pays supprimé", data: null })
   );
@@ -84,14 +84,14 @@ export const updateVille = async (req: Request, res: Response): Promise<void> =>
   const data: Record<string, string> = {};
   if (nom?.trim()) data.nom = nom.trim();
   if (paysId) data.paysId = paysId;
-  const ville = await GeoRepository.updateVille(id, data);
+  const ville = await GeoRepository.updateVille(req.params.id as string, data);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Ville mise à jour", data: ville })
   );
 };
 
 export const deleteVille = async (req: Request, res: Response): Promise<void> => {
-  await GeoRepository.deleteVille(req.params.id);
+  await GeoRepository.deleteVille(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Ville supprimée", data: null })
   );
@@ -149,14 +149,14 @@ export const updateQuartier = async (req: Request, res: Response): Promise<void>
   if (villeId) data.villeId = villeId;
   if (latitude != null) data.latitude = Number(latitude);
   if (longitude != null) data.longitude = Number(longitude);
-  const quartier = await GeoRepository.updateQuartier(id, data);
+  const quartier = await GeoRepository.updateQuartier(req.params.id as string, data);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Quartier mis à jour", data: quartier })
   );
 };
 
 export const deleteQuartier = async (req: Request, res: Response): Promise<void> => {
-  await GeoRepository.deleteQuartier(req.params.id);
+  await GeoRepository.deleteQuartier(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Quartier supprimé", data: null })
   );
