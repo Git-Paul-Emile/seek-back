@@ -81,7 +81,7 @@ export const deleteImage = async (publicId: string): Promise<void> => {
  */
 export const extractPublicId = (url: string): string | null => {
   const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+$/);
-  return match ? match[1] : null;
+  return match?.[1] ?? null;
 };
 
 /**

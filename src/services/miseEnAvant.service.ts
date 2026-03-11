@@ -174,10 +174,13 @@ export const confirmerMiseEnAvant = async (promotionId: string) => {
     take: 1,
   });
   if (transactions.length > 0) {
-    await prisma.transaction.update({
-      where: { id: transactions[0].id },
-      data: { statut: "CONFIRME", dateConfirmation: now },
-    });
+    const transaction = transactions[0];
+    if (transaction) {
+      await prisma.transaction.update({
+        where: { id: transaction.id },
+        data: { statut: "CONFIRME", dateConfirmation: now },
+      });
+    }
   }
 
   return prisma.promotionHistory.findUnique({ where: { id: promotionId } });

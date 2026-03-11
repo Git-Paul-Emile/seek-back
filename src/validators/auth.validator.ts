@@ -2,11 +2,11 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z
-    .string({ required_error: "L'email est requis" })
+    .string({ error: "L'email est requis" })
     .email("Format d'email invalide")
     .toLowerCase(),
   password: z
-    .string({ required_error: "Le mot de passe est requis" })
+    .string({ error: "Le mot de passe est requis" })
     .min(1, "Le mot de passe est requis"),
 });
 
@@ -17,16 +17,16 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export const changePasswordSchema = z
   .object({
     currentPassword: z
-      .string({ required_error: "Le mot de passe actuel est requis" })
+      .string({ error: "Le mot de passe actuel est requis" })
       .min(1, "Le mot de passe actuel est requis"),
     newPassword: z
-      .string({ required_error: "Le nouveau mot de passe est requis" })
+      .string({ error: "Le nouveau mot de passe est requis" })
       .min(8, "Le mot de passe doit contenir au moins 8 caractères")
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
         message: "Le mot de passe doit contenir au moins une minuscule, une majuscule et un chiffre",
       }),
     confirmPassword: z
-      .string({ required_error: "La confirmation du mot de passe est requise" })
+      .string({ error: "La confirmation du mot de passe est requise" })
       .min(1, "La confirmation du mot de passe est requise"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {

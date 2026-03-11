@@ -4,7 +4,7 @@ import { z } from "zod";
 // Il provient de req.file (Multer) et est traité dans le contrôleur.
 
 export const createTypeLogementSchema = z.object({
-  nom:   z.string({ required_error: "Le nom est requis" }).min(2, "Minimum 2 caractères").max(50),
+  nom:   z.string({ error: "Le nom est requis" }).min(2, "Minimum 2 caractères").max(50),
   ordre: z.coerce.number().int().min(0).optional(), // coerce : supporte les strings FormData
 });
 

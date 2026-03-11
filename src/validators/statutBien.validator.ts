@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createStatutBienSchema = z.object({
-  nom:   z.string({ required_error: "Le nom est requis" }).min(2, "Minimum 2 caractères").max(50),
+  nom:   z.string({ error: "Le nom est requis" }).min(2, "Minimum 2 caractères").max(50),
   ordre: z.coerce.number().int().min(0).optional(),
 });
 

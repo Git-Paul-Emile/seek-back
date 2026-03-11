@@ -136,10 +136,13 @@ export const confirmerAbonnement = async (abonnementId: string) => {
     take: 1,
   });
   if (transactions.length > 0) {
-    await prisma.transaction.update({
-      where: { id: transactions[0].id },
-      data: { statut: "CONFIRME", dateConfirmation: new Date() },
-    });
+    const transaction = transactions[0];
+    if (transaction) {
+      await prisma.transaction.update({
+        where: { id: transaction.id },
+        data: { statut: "CONFIRME", dateConfirmation: new Date() },
+      });
+    }
   }
 
   return updated;
