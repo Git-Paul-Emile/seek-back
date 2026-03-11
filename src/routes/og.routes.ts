@@ -10,9 +10,16 @@ const router = Router();
  * Redirige ensuite l'utilisateur vers la page frontend correspondante.
  */
 router.get("/annonces/:id", async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const id = req.params.id;
+  if (!id || Array.isArray(id)) {
+    res.redirect("/");
+    return;
+  }
   const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
   const annonceUrl = `${frontendUrl}/annonces/${id}`;
+  // Image par défaut pour les OG tags (utilisée quand pas de photos)
+  // Utilise une image externe accessible publiquement
+  const defaultOgImage = "https://res.cloudinary.com/seek-immo/image/upload/v1/seek/og-default.jpg";
 
   try {
     const bien = await getAnnoncePublieById(id);
@@ -23,7 +30,9 @@ router.get("/annonces/:id", async (req: Request, res: Response): Promise<void> =
     }
 
     const titre = bien.titre ?? "Annonce immobilière - SEEK";
-    const image = (bien.photos ?? [])[0] ?? "";
+    const photos: string[] = bien.photos ?? [];
+    // Utiliser la première photo ou l'image par défaut
+    const image: string = photos.length > 0 && photos[0] ? photos[0] : defaultOgImage;
     const localisation = [bien.quartier, bien.ville, bien.pays].filter(Boolean).join(", ");
     const prixFormate = bien.prix
       ? new Intl.NumberFormat("fr-SN", { style: "currency", currency: "XOF" }).format(bien.prix)
