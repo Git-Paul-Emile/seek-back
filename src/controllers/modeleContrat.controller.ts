@@ -13,9 +13,10 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
   const actif = actifStr === "true" ? true : actifStr === "false" ? false : undefined;
 
   const result = await ModeleContratService.getAll({ page, limit, typeBail, actif });
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Modèles récupérés", data: result.items, meta: result.meta })
-  );
+  res.status(StatusCodes.OK).json({
+    ...jsonResponse({ status: "success", message: "Modèles récupérés", data: result.items }),
+    meta: result.meta
+  });
 };
 
 // ─── Liste publique (owner) ───────────────────────────────────────────────────
@@ -48,7 +49,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   const { titre, typeBail, contenu, actif, ordre } = req.body;
-  const modele = await ModeleContratService.update(req.params.id, {
+  const modele = await ModeleContratService.update(req.params.id as string, {
     titre,
     typeBail: typeBail !== undefined ? typeBail ?? null : undefined,
     contenu,
@@ -63,7 +64,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 // ─── Delete ──────────────────────────────────────────────────────────────────
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
-  await ModeleContratService.remove(req.params.id);
+  await ModeleContratService.remove(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Modèle supprimé" })
   );

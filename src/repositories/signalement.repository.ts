@@ -87,7 +87,7 @@ export const updateStatut = async (
   id: string,
   data: { statut: string; noteAdmin?: string; traitePar?: string; dateTraitement?: Date }
 ) => {
-  return prisma.signalement.update({ where: { id }, data });
+  return prisma.signalement.update({ where: { id }, data: data as any });
 };
 
 export const findHistoriqueByBien = async (bienId: string, excludeId?: string) => {

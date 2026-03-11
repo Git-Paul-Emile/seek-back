@@ -64,7 +64,7 @@ export const envoyerRappel = async (req: Request, res: Response): Promise<void> 
 /** GET /api/biens/:id/bail/:bailId/notifications */
 export const getNotificationsBail = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
-  const { id: bienId, bailId } = req.params;
+  const { id: bienId, bailId } = req.params as { id: string; bailId: string };
 
   const bien = await prisma.bien.findUnique({ where: { id: bienId }, select: { proprietaireId: true } });
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);

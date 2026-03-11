@@ -45,13 +45,13 @@ export const adminCreateFormule = async (req: Request, res: Response): Promise<v
 
 export const adminUpdateFormule = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const formule = await PremiumService.adminUpdateFormule(id, req.body);
+  const formule = await PremiumService.adminUpdateFormule(id as string, req.body);
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule mise à jour", data: formule }));
 };
 
 export const adminDeleteFormule = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  await PremiumService.adminDeleteFormule(id);
+  await PremiumService.adminDeleteFormule(id as string);
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule supprimée" }));
 };
 

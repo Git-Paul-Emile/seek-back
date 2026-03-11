@@ -55,14 +55,14 @@ export const createPlanHandler = async (req: Request, res: Response) => {
 export const updatePlanHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { nom, prix, maxAnnonces, actif, ordre, description } = req.body;
-  const plan = await PlanService.updatePlan(id, { nom, prix, maxAnnonces, actif, ordre, description });
+  const plan = await PlanService.updatePlan(id as string, { nom, prix, maxAnnonces, actif, ordre, description });
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Plan mis à jour", data: plan })
   );
 };
 
 export const deletePlanHandler = async (req: Request, res: Response) => {
-  await PlanService.deletePlan(req.params.id);
+  await PlanService.deletePlan(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Plan supprimé" })
   );
@@ -87,14 +87,14 @@ export const listAbonnementsAdminHandler = async (req: Request, res: Response) =
 };
 
 export const confirmerAbonnementHandler = async (req: Request, res: Response) => {
-  const abonnement = await AbonnementService.confirmerAbonnement(req.params.id);
+  const abonnement = await AbonnementService.confirmerAbonnement(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Abonnement confirmé", data: abonnement })
   );
 };
 
 export const resilierAbonnementHandler = async (req: Request, res: Response) => {
-  const abonnement = await AbonnementService.resilierAbonnement(req.params.id);
+  const abonnement = await AbonnementService.resilierAbonnement(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Abonnement résilié", data: abonnement })
   );
@@ -151,7 +151,7 @@ export const listMisesEnAvantAdminHandler = async (req: Request, res: Response) 
 };
 
 export const confirmerMiseEnAvantHandler = async (req: Request, res: Response) => {
-  const promotion = await MiseEnAvantService.confirmerMiseEnAvant(req.params.id);
+  const promotion = await MiseEnAvantService.confirmerMiseEnAvant(req.params.id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Mise en avant confirmée", data: promotion })
   );
@@ -169,7 +169,7 @@ export const getMisesEnAvantOwnerHandler = async (req: Request, res: Response) =
 
 export const demanderMiseEnAvantHandler = async (req: Request, res: Response) => {
   const proprietaireId = (req as any).proprietaire?.id;
-  const bienId = req.params.bienId;
+  const bienId = req.params.bienId as string;
   const { formuleId, modePaiement, reference, note } = req.body;
   const promotion = await MiseEnAvantService.demanderMiseEnAvant(bienId, proprietaireId, {
     formuleId,

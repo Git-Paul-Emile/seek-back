@@ -62,7 +62,7 @@ export const countEnAttente = async (_req: Request, res: Response): Promise<void
 // GET /api/signalements/admin/:id — détail
 export const getSignalementDetail = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const data = await SignalementService.getSignalementById(id);
+  const data = await SignalementService.getSignalementById(id as string);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Signalement récupéré", data })
   );
@@ -80,7 +80,7 @@ export const traiterSignalement = async (req: Request, res: Response): Promise<v
     return;
   }
 
-  const result = await SignalementService.traiterSignalement(id, action, noteAdmin, req.admin?.id);
+  const result = await SignalementService.traiterSignalement(id as string, action, noteAdmin, req.admin?.id);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Signalement traité", data: result })
   );

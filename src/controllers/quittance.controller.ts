@@ -13,9 +13,9 @@ const getOwner = (req: Request) => {
 export const getQuittance = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const quittance = await QuittanceService.getQuittance(
-    req.params.id,
-    req.params.bailId,
-    req.params.echeanceId,
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.echeanceId as string,
     proprietaireId
   );
   res.status(StatusCodes.OK).json(
@@ -27,9 +27,9 @@ export const getQuittance = async (req: Request, res: Response): Promise<void> =
 export const genererQuittance = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const quittance = await QuittanceService.genererQuittance(
-    req.params.id,
-    req.params.bailId,
-    req.params.echeanceId,
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.echeanceId as string,
     proprietaireId
   );
   res.status(StatusCodes.CREATED).json(
@@ -41,8 +41,8 @@ export const genererQuittance = async (req: Request, res: Response): Promise<voi
 export const getQuittancesBail = async (req: Request, res: Response): Promise<void> => {
   const proprietaireId = getOwner(req);
   const quittances = await QuittanceService.getQuittancesBail(
-    req.params.id,
-    req.params.bailId,
+    req.params.id as string,
+    req.params.bailId as string,
     proprietaireId
   );
   res.status(StatusCodes.OK).json(
