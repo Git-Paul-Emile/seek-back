@@ -17,7 +17,7 @@ const setTokenCookies = (
   res.cookie(ACCESS_COOKIE, accessToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "strict",
+    sameSite: isProduction ? "none" : "lax",
     path: "/",
     maxAge: 15 * 60 * 1000,
   });
@@ -25,7 +25,7 @@ const setTokenCookies = (
   res.cookie(REFRESH_COOKIE, refreshToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "strict",
+    sameSite: isProduction ? "none" : "lax",
     path: "/api/owner/auth/refresh",
     expires: refreshTokenExpiresAt,
   });
