@@ -21,6 +21,8 @@ const setAuthCookies = (
   refreshToken: string,
   refreshTokenExpiresAt: Date
 ) => {
+  const IS_PROD = process.env.NODE_ENV === "production";
+
   // Nettoyer d'anciens cookies potentiellement créés avec un path différent
   res.clearCookie("locataireAccessToken");
   res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
@@ -30,13 +32,15 @@ const setAuthCookies = (
   res.cookie("locataireAccessToken", accessToken, {
     httpOnly: true,
     secure: IS_PROD,
-    sameSite: "strict",
+    sameSite: IS_PROD ? "none" : "lax",
+    path: "/",
     maxAge: 15 * 60 * 1000, // 15 min
   });
   res.cookie("locataireRefreshToken", refreshToken, {
     httpOnly: true,
     secure: IS_PROD,
-    sameSite: "strict",
+    sameSite: IS_PROD ? "none" : "lax",
+    path: "/",
     expires: refreshTokenExpiresAt,
   });
 };
@@ -641,14 +645,14 @@ export const getDocumentsBien = async (req: Request, res: Response): Promise<voi
 // ─── POST /api/locataire/auth/forgot-password ────────────────────────────────
 
 const signerEtatDesLieuxLocataireSchema = z.object({
-  etatDesLieuxId: z.string().uuid("ID �tat des lieux invalide"),
+  etatDesLieuxId: z.string().uuid("ID �tat des lieux invalide"),
 });
 
 export const getEtatsDesLieux = async (req: Request, res: Response): Promise<void> => {
   if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
   const data = await EtatDesLieuxService.getEtatsDesLieuxLocataire(req.locataire.id);
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Etats des lieux r�cup�r�s", data })
+    jsonResponse({ status: "success", message: "Etats des lieux r�cup�r�s", data })
   );
 };
 
@@ -671,7 +675,7 @@ export const signerEtatDesLieux = async (req: Request, res: Response): Promise<v
     req.locataire.id
   );
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Etat des lieux sign�", data })
+    jsonResponse({ status: "success", message: "Etat des lieux sign�", data })
   );
 };
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {

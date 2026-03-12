@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response, CookieOptions } from "express";
 import { StatusCodes } from "http-status-codes";
 import { jsonResponse } from "../utils/responseApi.js";
 import * as AuthService from "../services/comptePublicAuth.service.js";
@@ -6,12 +6,17 @@ import * as AuthService from "../services/comptePublicAuth.service.js";
 const ACCESS_COOKIE = "comptePublicAccessToken";
 const REFRESH_COOKIE = "comptePublicRefreshToken";
 
-const cookieOpts = (maxAge: number) => ({
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
-  maxAge,
-});
+const cookieOpts = (maxAge: number): CookieOptions => {
+  const isProduction = process.env.NODE_ENV === "production";
+  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite,
+    path: "/",
+    maxAge,
+  };
+};
 
 // POST /api/public/auth/register
 export const register = async (req: Request, res: Response) => {
