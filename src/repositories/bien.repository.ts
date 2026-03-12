@@ -1,5 +1,11 @@
 import { prisma } from "../config/database.js";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
+import {
+  dernieresAnnoncesCache,
+  rechercheCache,
+  lieuxCache,
+  invalidateRechercheCache,
+} from "../services/cache.service.js";
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -389,7 +395,15 @@ export const getAnnonces = async (params: {
 
 // ─── Public — dernières annonces (pour page d'accueil) ────────────────────────
 
-export const getDernieresAnnonces = async (limit: number = 8) => {
+export const getDernieresAnnonces = async (limit: number = 10) => {
+  const cacheKey = `dernieres_${limit}`;
+  
+  // Vérifier le cache d'abord
+  const cached = dernieresAnnoncesCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -411,10 +425,15 @@ export const getDernieresAnnonces = async (limit: number = 8) => {
   });
 
   // Ajouter un flag "isNew" pour les annonces publiées il y a moins de 7 jours
-  return biens.map((bien) => ({
+  const result = biens.map((bien) => ({
     ...bien,
     isNew: bien.createdAt >= sevenDaysAgo,
   }));
+  
+  // Mettre en cache le résultat
+  dernieresAnnoncesCache.set(cacheKey, result);
+  
+  return result;
 };
 
 // ─── Public — annonce publiée par ID ─────────────────────────────────────────────
@@ -463,6 +482,12 @@ export const getAnnoncePublieById = async (id: string) => {
 // ─── Public — lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
 
 export const getDistinctLieux = async () => {
+  // Vérifier le cache d'abord
+  const cached = lieuxCache.get('lieux');
+  if (cached) {
+    return cached;
+  }
+  
   const [quartierRows, villeRows] = await prisma.$transaction([
     prisma.quartier.findMany({
       select: { nom: true },
@@ -473,10 +498,15 @@ export const getDistinctLieux = async () => {
       orderBy: { nom: "asc" },
     }),
   ]);
-  return {
+  const result = {
     quartiers: quartierRows.map((r) => r.nom),
     villes:    villeRows.map((r) => r.nom),
   };
+  
+  // Mettre en cache le résultat
+  lieuxCache.set('lieux', result);
+  
+  return result;
 };
 
 // ─── Public — recherche avec filtres combinés ─────────────────────────────────
@@ -523,8 +553,19 @@ export const searchAnnoncePubliques = async (params: {
   radius?: number; // km — défaut 5
 }) => {
   const page  = Math.max(params.page  ?? 1,  1);
-  const limit = Math.min(params.limit ?? 12, 50);
+  const limit = Math.min(params.limit ?? 10, 50); // Changé de 12 à 10
   const skip  = (page - 1) * limit;
+
+  // Créer une clé de cache basée sur les paramètres
+  const cacheKey = `recherche_${JSON.stringify(params)}`;
+  
+  // Vérifier le cache pour les requêtes sans proximité (les recherches géographiques ne sont pas mises en cache)
+  if (params.lat === undefined && params.lng === undefined) {
+    const cached = rechercheCache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+  }
 
   const where: any = { statutAnnonce: "PUBLIE", actif: true };
 
@@ -610,7 +651,14 @@ export const searchAnnoncePubliques = async (params: {
     prisma.bien.count({ where }),
   ]);
 
-  return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+  const result = { items, total, page, limit, totalPages: Math.ceil(total / limit) };
+  
+  // Mettre en cache le résultat (uniquement pour les requêtes sans proximité)
+  if (params.lat === undefined && params.lng === undefined) {
+    rechercheCache.set(cacheKey, result);
+  }
+  
+  return result;
 };
 
 // ─── Public — annonces similaires avec système de score ───────────────────────

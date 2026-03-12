@@ -590,7 +590,7 @@ export const adminDeleteBien = async (bienId: string) => {
 
 // ─── Public — dernières annonces (pour page d'accueil) ───────────────────────────
 
-export const getDernieresAnnonces = async (limit: number = 8) => {
+export const getDernieresAnnonces = async (limit: number = 10) => {
   return BienRepository.getDernieresAnnonces(limit);
 };
 

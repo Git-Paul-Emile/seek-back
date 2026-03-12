@@ -345,6 +345,17 @@ model Bien {
   @@index([typeTransactionId])
   @@index([statutBienId])
   @@index([statutAnnonce])
+  @@index([actif])
+  @@index([createdAt])
+  // Index composites pour les requêtes fréquentes
+  @@index([statutAnnonce, actif])
+  @@index([statutAnnonce, createdAt])
+  @@index([statutAnnonce, ville])
+  @@index([statutAnnonce, typeLogementId])
+  @@index([statutAnnonce, typeTransactionId])
+  @@index([statutAnnonce, prix])
+  @@index([ville, quartier])
+  @@index([latitude, longitude])
 }
 
 model ComptePublic {

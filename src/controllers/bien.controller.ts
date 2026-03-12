@@ -143,7 +143,7 @@ export const getBienById = async (req: Request, res: Response): Promise<void> =>
 // ─── Public — dernières annonces (pour page d'accueil) ─────────────────────────
 
 export const getDernieresAnnonces = async (req: Request, res: Response): Promise<void> => {
-  const limit = parseInt(req.query.limit as string) || 8;
+  const limit = parseInt(req.query.limit as string) || 10;
   
   // D'abord récupérer les annonces mises en avant (via rotation intelligente)
   const promotedResult = await PromotionService.getAnnoncesMiseEnAvant(4);
