@@ -1,4 +1,5 @@
 import { prisma } from "../config/database.js";
+import { emitNotification } from "./socket.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -70,6 +71,20 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
       envoyeAt: result.success ? new Date() : null,
     },
   });
+
+  // Émettre l'événement WebSocket si le propriétaire est concerné
+  if (payload.proprietaireId) {
+    emitNotification({
+      id: updated.id,
+      proprietaireId: payload.proprietaireId,
+      type: payload.type,
+      titre: payload.sujet || "Notification",
+      message: payload.contenu,
+      bailId: payload.bailId,
+      bienId: payload.bienId,
+      createdAt: updated.createdAt.toISOString(),
+    });
+  }
 
   return { notification: updated, stub: true, message: result.messageRetour };
 };
