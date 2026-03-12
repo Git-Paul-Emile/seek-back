@@ -83,8 +83,20 @@ export const logout = async (req: Request, res: Response) => {
 
   if (rawToken) await AuthService.logout(rawToken);
 
-  res.clearCookie(ACCESS_COOKIE);
-  res.clearCookie(REFRESH_COOKIE);
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieDomain = process.env.COOKIE_DOMAIN;
+  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
+  
+  const baseOptions: CookieOptions = {
+    path: "/",
+    httpOnly: true,
+    secure: isProduction,
+    sameSite,
+    ...(cookieDomain && { domain: cookieDomain }),
+  };
+
+  res.clearCookie(ACCESS_COOKIE, baseOptions);
+  res.clearCookie(REFRESH_COOKIE, baseOptions);
 
   res.json(jsonResponse({ status: "success", message: "Déconnexion réussie", data: null }));
 };

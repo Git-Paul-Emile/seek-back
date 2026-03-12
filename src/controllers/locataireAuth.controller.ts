@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response, CookieOptions } from "express";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 import * as LocataireAuthService from "../services/locataireAuth.service.js";
@@ -46,10 +46,20 @@ const setAuthCookies = (
 };
 
 const clearAuthCookies = (res: Response) => {
-  res.clearCookie("locataireAccessToken");
-  res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
-  res.clearCookie("locataireRefreshToken");
-  res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
+  const IS_PROD = process.env.NODE_ENV === "production";
+  const cookieDomain = process.env.COOKIE_DOMAIN;
+  const sameSite: CookieOptions["sameSite"] = IS_PROD ? "none" : "lax";
+  
+  const baseOptions: CookieOptions = {
+    path: "/",
+    httpOnly: true,
+    secure: IS_PROD,
+    sameSite,
+    ...(cookieDomain && { domain: cookieDomain }),
+  };
+  
+  res.clearCookie("locataireAccessToken", baseOptions);
+  res.clearCookie("locataireRefreshToken", baseOptions);
 };
 
 // ─── Activation ───────────────────────────────────────────────────────────────
