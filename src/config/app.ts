@@ -5,6 +5,7 @@ import helmet from "helmet";
 import path from "path";
 import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
+import swaggerUi from "swagger-ui-express";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 import authRouter from "../routes/auth.routes.js";
@@ -209,6 +210,37 @@ app.use('/api/monetisation', monetisationRouter);
 
 // Open Graph preview (WhatsApp / Facebook / SMS)
 app.use('/og', ogRouter);
+
+// ============= SWAGGER UI =============
+
+// Servir le fichier YAML OpenAPI
+app.get('/api-docs.yaml', (_req, res) => {
+  res.setHeader('Content-Type', 'application/yaml');
+  res.sendFile(path.join(__dirname, 'swagger.yaml'));
+});
+
+// Alias /api-docs.json vers le YAML
+app.get('/api-docs.json', (_req, res) => {
+  res.redirect('/api-docs.yaml');
+});
+
+// Interface Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(
+  undefined,
+  {
+    swaggerOptions: {
+      url: '/api-docs.yaml',
+    },
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info .title { font-size: 2.5em; }
+      .swagger-ui .info .description { font-size: 1.1em; line-height: 1.5; }
+      .swagger-ui .scheme-container { background: #f5f5f5; padding: 15px; border-radius: 8px; }
+    `,
+    customSiteTitle: "SEEK API - Documentation",
+    customfavIcon: "/favicon.ico",
+  }
+));
 
 // ============= GESTION DES ERREURS =============
 
