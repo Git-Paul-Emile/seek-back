@@ -19,6 +19,10 @@ export enum WebSocketEvents {
   
   // Alertes nouveaux biens
   NEW_PROPERTY_ALERT = "property:new",
+  
+  // Vérifications d'identité
+  VERIFICATION_SUBMITTED = "verification:submitted",
+  VERIFICATION_COUNT_UPDATE = "verification:count",
 }
 
 // Types de données pour les événements
@@ -65,6 +69,19 @@ export interface PropertyAlertPayload {
   typeTransaction: string;
   prix: number;
   localisation: string;
+}
+
+export interface VerificationSubmittedPayload {
+  proprietaireId: string;
+  prenom: string;
+  nom: string;
+  telephone: string;
+  typePiece: string;
+  createdAt: string;
+}
+
+export interface VerificationCountPayload {
+  count: number;
 }
 
 /**
@@ -255,4 +272,41 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
       io.to(`alerts:${alert.telephone}`).emit(WebSocketEvents.NEW_PROPERTY_ALERT, payload);
     }
   }
+};
+
+/**
+ * Émet une notification de nouvelle vérification aux administrateurs
+ */
+export const emitVerificationSubmitted = async (proprietaireId: string): Promise<void> => {
+  if (!io) return;
+  
+  const { prisma } = await import("../config/database.js");
+  
+  // Récupérer les infos du propriétaire
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    include: { verification: true },
+  });
+
+  if (!proprietaire) return;
+
+  // Compter le nombre de vérifications en attente
+  const pendingCount = await prisma.proprietaire.count({
+    where: { statutVerification: "PENDING" },
+  });
+
+  const payload: VerificationSubmittedPayload = {
+    proprietaireId: proprietaire.id,
+    prenom: proprietaire.prenom,
+    nom: proprietaire.nom,
+    telephone: proprietaire.telephone,
+    typePiece: proprietaire.verification?.typePiece || "CNI",
+    createdAt: new Date().toISOString(),
+  };
+
+  // Émettre aux admins
+  io.to("admin").emit(WebSocketEvents.VERIFICATION_SUBMITTED, payload);
+  
+  // Mettre à jour le compteur
+  io.to("admin").emit(WebSocketEvents.VERIFICATION_COUNT_UPDATE, { count: pendingCount });
 };
