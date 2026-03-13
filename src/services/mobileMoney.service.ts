@@ -12,7 +12,6 @@
 //   - Airtel Money                               → https://developer.airtel.africa
 
 import { prisma } from "../config/database.js";
-import { emitTransactionStatus, emitBadgeUpdate } from "./socket.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -116,20 +115,6 @@ export const initierPaiementMobileMoney = async (
       },
     },
   });
-
-  // Émettre l'événement WebSocket pour la nouvelle transaction
-  emitTransactionStatus({
-    transactionId: transaction.id,
-    proprietaireId: params.proprietaireId,
-    statut: "EN_ATTENTE",
-    montant: params.montant,
-    type: "PAIEMENT_LOYER",
-    bienId: params.bienId,
-    updatedAt: transaction.createdAt.toISOString(),
-  });
-
-  // Mettre à jour les badges
-  emitBadgeUpdate(params.proprietaireId);
 
   // Notifier le propriétaire
   await prisma.notification.create({
