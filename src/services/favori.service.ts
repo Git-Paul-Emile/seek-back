@@ -85,15 +85,21 @@ export const addFavori = async (comptePublicId: string, bienId: string) => {
 
   if (existing) return existing;
 
-  return prisma.favori.create({
-    data: {
-      comptePublicId,
-      bienId,
-      prixSnapshot: bien.prix ?? null,
-      statutSnapshot: bien.statutBien?.slug ?? null,
-      actifSnapshot: true,
-    },
-  });
+  await prisma.$transaction([
+    prisma.favori.create({
+      data: {
+        comptePublicId,
+        bienId,
+        prixSnapshot: bien.prix ?? null,
+        statutSnapshot: bien.statutBien?.slug ?? null,
+        actifSnapshot: true,
+      },
+    }),
+    prisma.bien.update({
+      where: { id: bienId },
+      data: { nbFavoris: { increment: 1 } },
+    }),
+  ]);
 };
 
 export const toggleFavori = async (comptePublicId: string, bienId: string) => {
@@ -102,9 +108,15 @@ export const toggleFavori = async (comptePublicId: string, bienId: string) => {
   });
 
   if (existing) {
-    await prisma.favori.delete({
-      where: { comptePublicId_bienId: { comptePublicId, bienId } },
-    });
+    await prisma.$transaction([
+      prisma.favori.delete({
+        where: { comptePublicId_bienId: { comptePublicId, bienId } },
+      }),
+      prisma.bien.update({
+        where: { id: bienId },
+        data: { nbFavoris: { decrement: 1 } },
+      }),
+    ]);
     return { action: "removed" as const };
   }
 
@@ -119,9 +131,15 @@ export const removeFavori = async (comptePublicId: string, bienId: string) => {
 
   if (!existing) throw new AppError("Favori introuvable", StatusCodes.NOT_FOUND);
 
-  await prisma.favori.delete({
-    where: { comptePublicId_bienId: { comptePublicId, bienId } },
-  });
+  await prisma.$transaction([
+    prisma.favori.delete({
+      where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    }),
+    prisma.bien.update({
+      where: { id: bienId },
+      data: { nbFavoris: { decrement: 1 } },
+    }),
+  ]);
 };
 
 export const updateSnapshot = async (comptePublicId: string, bienId: string) => {

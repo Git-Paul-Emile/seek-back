@@ -302,6 +302,7 @@ model Bien {
 
   // Statistiques
   nbVues            Int       @default(0)
+  nbFavoris        Int       @default(0)
 
   // État & Publication
   actif              Boolean       @default(true)

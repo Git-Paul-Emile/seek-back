@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as BienService from "../services/bien.service.js";
-import { getOwnerStats, getStatsVuesBien, getStatsVuesOwner, getAdminStatsVues } from "../repositories/bien.repository.js";
+import { getOwnerStats, getStatsVuesBien, getStatsVuesOwner, getAdminStatsVues, getStatsFavorisOwner, getStatsFavorisBien } from "../repositories/bien.repository.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { saveDraftSchema } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -306,6 +306,28 @@ export const getStatsVuesOwnerController = async (req: Request, res: Response): 
 export const getAdminStatsVuesController = async (_req: Request, res: Response): Promise<void> => {
   const stats = await getAdminStatsVues();
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats vues admin récupérées", data: stats }));
+};
+
+// ─── Stats favoris propriétaire (toutes ses annonces) ─────────────────────────
+
+export const getStatsFavorisOwnerController = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  const stats = await getStatsFavorisOwner(proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats favoris récupérées", data: stats }));
+};
+
+// ─── Stats favoris d'un bien (propriétaire) ─────────────────────────────────
+
+export const getStatsFavorisBienController = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  }
+  const stats = await getStatsFavorisBien(req.params.id as string, proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats favoris récupérées", data: stats }));
 };
 
 // ─── Public — annonces similaires ────────────────────────────────────────────

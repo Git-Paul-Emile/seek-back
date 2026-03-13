@@ -1141,3 +1141,49 @@ export const getAdminStatsVues = async (): Promise<AdminStatsVues> => {
     vuesParTypeLogement: vuesParTypeRaw.map(r => ({ typeLogement: r.typeLogement, count: Number(r.count) })),
   };
 };
+
+// ─── Stats favoris pour le propriétaire ────────────────────────────────────────
+
+export interface StatsFavorisOwner {
+  favorisTotaux: number;
+  topAnnonces: { id: string; titre: string | null; ville: string | null; nbFavoris: number }[];
+}
+
+export const getStatsFavorisOwner = async (proprietaireId: string): Promise<StatsFavorisOwner> => {
+  const biens = await prisma.bien.findMany({
+    where: { proprietaireId, statutAnnonce: "PUBLIE" },
+    select: { id: true, titre: true, ville: true, nbFavoris: true },
+  });
+
+  const topAnnonces = biens
+    .sort((a, b) => b.nbFavoris - a.nbFavoris)
+    .slice(0, 10)
+    .map(b => ({
+      id: b.id,
+      titre: b.titre,
+      ville: b.ville,
+      nbFavoris: b.nbFavoris,
+    }));
+
+  return {
+    favorisTotaux: biens.reduce((s, b) => s + b.nbFavoris, 0),
+    topAnnonces,
+  };
+};
+
+export interface StatsFavorisBien {
+  favorisTotaux: number;
+}
+
+export const getStatsFavorisBien = async (bienId: string, proprietaireId: string): Promise<StatsFavorisBien> => {
+  const bien = await prisma.bien.findFirst({
+    where: { id: bienId, proprietaireId },
+    select: { nbFavoris: true },
+  });
+
+  if (!bien) throw new Error("Bien introuvable");
+
+  return {
+    favorisTotaux: bien.nbFavoris,
+  };
+};

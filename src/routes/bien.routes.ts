@@ -21,6 +21,13 @@ router.get(
   controllerWrapper(BienController.getStatsVuesOwnerController)
 );
 
+/** GET /api/biens/stats/favoris — stats favoris globales (toutes annonces du propriétaire) */
+router.get(
+  "/stats/favoris",
+  authenticateOwner,
+  controllerWrapper(BienController.getStatsFavorisOwnerController)
+);
+
 /** GET /api/biens/stats/vues/admin — stats vues globales admin */
 router.get(
   "/stats/vues/admin",
@@ -96,6 +103,14 @@ router.get(
   authenticateOwner,
   validateId,
   controllerWrapper(BienController.getStatsVuesBienController)
+);
+
+/** GET /api/biens/:id/stats-favoris — stats favoris d'un bien (propriétaire) */
+router.get(
+  "/:id/stats-favoris",
+  authenticateOwner,
+  validateId,
+  controllerWrapper(BienController.getStatsFavorisBienController)
 );
 
 /** GET /api/biens/:id */
