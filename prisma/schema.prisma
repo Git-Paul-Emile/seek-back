@@ -645,6 +645,8 @@ model BailLocation {
   delaiGrace        Int        @default(5)
   frequencePaiement String?
   statut            StatutBail @default(EN_ATTENTE)
+  motifResiliation  String?
+  initiePar         String?    // "PROPRIETAIRE" | "LOCATAIRE"
 
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt

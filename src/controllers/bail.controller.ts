@@ -6,6 +6,7 @@ import { AppError } from "../utils/AppError.js";
 import {
   createBailSchema,
   prolongerBailSchema,
+  resilierBailSchema,
 } from "../validators/bail.validator.js";
 import { z } from "zod";
 
@@ -230,10 +231,13 @@ export const resilierBail = async (
   res: Response
 ): Promise<void> => {
   const proprietaireId = getOwner(req);
+  const parsed = resilierBailSchema.safeParse(req.body);
+  const motif = parsed.success ? parsed.data.motif : undefined;
   const bail = await BailService.resilierBail(
     req.params.id as string,
     req.params.bailId as string,
-    proprietaireId
+    proprietaireId,
+    motif
   );
   res.status(StatusCodes.OK).json(
     jsonResponse({
@@ -256,7 +260,7 @@ export const prolongerBail = async (
     res.status(StatusCodes.BAD_REQUEST).json(
       jsonResponse({
         status: "fail",
-        message: parsed.error.issues[0]?.message ?? "Données invalides",
+        message: parsed.error.issues[0]?.message ?? "Données invalides (duree doit être 6 ou 12)",
         data: parsed.error.flatten(),
       })
     );
@@ -267,7 +271,7 @@ export const prolongerBail = async (
     req.params.id as string,
     req.params.bailId as string,
     proprietaireId,
-    parsed.data.dateFinBail
+    parsed.data.duree
   );
   res.status(StatusCodes.OK).json(
     jsonResponse({

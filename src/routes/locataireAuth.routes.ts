@@ -31,6 +31,9 @@ router.get("/proprietaire", authenticateLocataire, controllerWrapper(LocataireAu
 router.get("/historique", authenticateLocataire, controllerWrapper(LocataireAuthController.getHistoriqueLogement));
 router.get("/documents", authenticateLocataire, controllerWrapper(LocataireAuthController.getDocumentsBien));
 
+router.patch("/bail/preavis", authenticateLocataire, controllerWrapper(LocataireAuthController.mettreEnPreavisLocataire));
+router.patch("/bail/resilier", authenticateLocataire, controllerWrapper(LocataireAuthController.resilierBailLocataire));
+
 router.get("/etat-des-lieux", authenticateLocataire, controllerWrapper(LocataireAuthController.getEtatsDesLieux));
 router.patch(
   "/etat-des-lieux/:etatDesLieuxId/signer",

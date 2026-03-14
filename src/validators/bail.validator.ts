@@ -15,5 +15,9 @@ export const createBailSchema = z.object({
 });
 
 export const prolongerBailSchema = z.object({
-  dateFinBail: z.coerce.date(),
+  duree: z.union([z.literal(6), z.literal(12)]),
+});
+
+export const resilierBailSchema = z.object({
+  motif: z.string().min(1).max(500).optional(),
 });

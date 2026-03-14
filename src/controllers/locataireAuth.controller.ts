@@ -751,3 +751,36 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   );
 };
 
+// ─── Mettre en préavis (côté locataire) ──────────────────────────────────────
+
+const preavisLocataireSchema = z.object({
+  motif: z.string().min(1).max(500).optional(),
+});
+
+export const mettreEnPreavisLocataire = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  const parsed = preavisLocataireSchema.safeParse(req.body);
+  const motif = parsed.success ? parsed.data.motif : undefined;
+  const bail = await BailService.mettreEnPreavisLocataire(req.locataire.id, motif);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Bail en préavis (3 mois)", data: bail })
+  );
+};
+
+// ─── Résilier (côté locataire) ────────────────────────────────────────────────
+
+const resilierLocataireSchema = z.object({
+  motif: z.string().min(1).max(500).optional(),
+});
+
+export const resilierBailLocataire = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  const parsed = resilierLocataireSchema.safeParse(req.body);
+  const motif = parsed.success ? parsed.data.motif : undefined;
+  const bail = await BailService.resilierBailLocataire(req.locataire.id, motif);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Bail résilié", data: bail })
+  );
+};
+
+

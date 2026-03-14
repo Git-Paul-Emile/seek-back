@@ -164,11 +164,53 @@ export const mettreEnPreavis = async (
     throw new AppError("Bail non associé à ce bien", StatusCodes.BAD_REQUEST);
   if (bail.statut !== "ACTIF")
     throw new AppError("Le bail doit être actif pour passer en préavis", StatusCodes.BAD_REQUEST);
-  if (!bail.dateFinBail)
-    throw new AppError("Impossible de mettre en préavis un bail sans date de fin", StatusCodes.BAD_REQUEST);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return BailRepo.updateStatut(bailId, "EN_PREAVIS" as any);
+  // Calcul de la date de fin de préavis : now + 3 mois (ou si dateFinBail déjà définie et > 3 mois, on la conserve)
+  const preavisDate = new Date();
+  preavisDate.setMonth(preavisDate.getMonth() + 3);
+  const dateFinBail = (!bail.dateFinBail || bail.dateFinBail < preavisDate)
+    ? preavisDate
+    : bail.dateFinBail;
+
+  return prisma.bailLocation.update({
+    where: { id: bailId },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: { statut: "EN_PREAVIS" as any, dateFinBail, initiePar: "PROPRIETAIRE" },
+    include: {
+      locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true } },
+      bien: { select: { id: true, titre: true, ville: true } },
+    },
+  });
+};
+
+// ─── Mettre un bail en préavis (côté locataire) ───────────────────────────────
+
+export const mettreEnPreavisLocataire = async (
+  locataireId: string,
+  motif?: string
+) => {
+  // Trouver le bail actif du locataire
+  const bail = await prisma.bailLocation.findFirst({
+    where: { locataireId, statut: "ACTIF" },
+  });
+  if (!bail) throw new AppError("Aucun bail actif trouvé", StatusCodes.NOT_FOUND);
+
+  // Calcul de la date de fin de préavis : now + 3 mois
+  const preavisDate = new Date();
+  preavisDate.setMonth(preavisDate.getMonth() + 3);
+  const dateFinBail = (!bail.dateFinBail || bail.dateFinBail < preavisDate)
+    ? preavisDate
+    : bail.dateFinBail;
+
+  return prisma.bailLocation.update({
+    where: { id: bail.id },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: { statut: "EN_PREAVIS" as any, dateFinBail, initiePar: "LOCATAIRE", motifResiliation: motif },
+    include: {
+      locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true } },
+      bien: { select: { id: true, titre: true, ville: true } },
+    },
+  });
 };
 
 // ─── Mettre un bail en renouvellement ────────────────────────────────────────
@@ -257,7 +299,8 @@ export const terminerBail = async (
 export const resilierBail = async (
   bienId: string,
   bailId: string,
-  proprietaireId: string
+  proprietaireId: string,
+  motif?: string
 ) => {
   await assertBienOwner(bienId, proprietaireId);
 
@@ -268,11 +311,45 @@ export const resilierBail = async (
   if (!["ACTIF", "EN_PREAVIS"].includes(bail.statut as string))
     throw new AppError("Ce bail ne peut pas être résilié dans son état actuel", StatusCodes.BAD_REQUEST);
 
-  const updated = await BailRepo.updateStatut(bailId, "RESILIE");
+  const updated = await prisma.bailLocation.update({
+    where: { id: bailId },
+    data: { statut: "RESILIE", motifResiliation: motif, initiePar: "PROPRIETAIRE" },
+    include: {
+      locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true } },
+      bien: { select: { id: true, titre: true, ville: true } },
+    },
+  });
 
   // Remettre le bien à "Libre"
   const statutLibreId = await getStatutId("libre");
   await BailRepo.updateBienStatut(bienId, statutLibreId);
+
+  return updated;
+};
+
+// ─── Résilier un bail (côté locataire) ───────────────────────────────────────
+
+export const resilierBailLocataire = async (
+  locataireId: string,
+  motif?: string
+) => {
+  const bail = await prisma.bailLocation.findFirst({
+    where: { locataireId, statut: { in: ["ACTIF", "EN_PREAVIS"] } },
+  });
+  if (!bail) throw new AppError("Aucun bail actif ou en préavis trouvé", StatusCodes.NOT_FOUND);
+
+  const updated = await prisma.bailLocation.update({
+    where: { id: bail.id },
+    data: { statut: "RESILIE", motifResiliation: motif, initiePar: "LOCATAIRE" },
+    include: {
+      locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true } },
+      bien: { select: { id: true, titre: true, ville: true } },
+    },
+  });
+
+  // Remettre le bien à "Libre"
+  const statutLibreId = await getStatutId("libre");
+  await BailRepo.updateBienStatut(bail.bienId, statutLibreId);
 
   return updated;
 };
@@ -305,7 +382,7 @@ export const prolongerBail = async (
   bienId: string,
   bailId: string,
   proprietaireId: string,
-  dateFinBail: Date
+  duree: 6 | 12
 ) => {
   await assertBienOwner(bienId, proprietaireId);
 
@@ -316,11 +393,16 @@ export const prolongerBail = async (
   if (!["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string))
     throw new AppError("Ce bail ne peut pas être prolongé dans son état actuel", StatusCodes.BAD_REQUEST);
 
+  // Calcul de la nouvelle date de fin : à partir de l'actuelle ou d'aujourd'hui
+  const baseDate = bail.dateFinBail ? new Date(bail.dateFinBail) : new Date();
+  const dateFinBail = new Date(baseDate);
+  dateFinBail.setMonth(dateFinBail.getMonth() + duree);
+
   // Si en préavis ou renouvellement, la prolongation remet le bail en ACTIF
   if ((bail.statut as string) === "EN_PREAVIS" || (bail.statut as string) === "EN_RENOUVELLEMENT") {
     return prisma.bailLocation.update({
       where: { id: bailId },
-      data: { dateFinBail, statut: "ACTIF", renouvellement: true },
+      data: { dateFinBail, statut: "ACTIF", renouvellement: true, initiePar: null },
       include: {
         locataire: { select: { id: true, nom: true, prenom: true, telephone: true, email: true, statut: true, nbOccupants: true, presenceEnfants: true } },
         bien: { select: { id: true, titre: true, ville: true, quartier: true, prix: true, caution: true, frequencePaiement: true, typeTransaction: { select: { slug: true } } } },
