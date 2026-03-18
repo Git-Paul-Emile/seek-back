@@ -478,14 +478,14 @@ export const submitVerification = async (req: Request, res: Response): Promise<v
       where: { id: req.locataire.id },
       select: { numPieceIdentite: true, typePiece: true },
     });
-    
+
     if (!locataire?.numPieceIdentite || !locataire?.typePiece) {
       throw new AppError(
         "Vous devez d'abord compléter vos informations d'identité dans votre profil",
         StatusCodes.BAD_REQUEST
       );
     }
-    
+
     // Créer ou mettre à jour la vérification
     const verification = await prisma.locataireVerification.upsert({
       where: { locataireId: req.locataire.id },
