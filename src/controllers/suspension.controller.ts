@@ -172,6 +172,20 @@ export const getLocataireById = async (req: Request, res: Response): Promise<voi
 
 // ─── Admin : locataire avec documents de vérification ────────────────────────
 
+function buildVerificationDocuments(v: NonNullable<Awaited<ReturnType<typeof SuspensionRepo.getLocataireAvecDocuments>>["verification"]>) {
+  const docs: { id: string; type: string; url: string; statut: string; createdAt: Date }[] = [];
+  if (v.pieceIdentiteRecto) {
+    docs.push({ id: `${v.id}-recto`, type: v.typePiece === "PASSEPORT" ? "PASSEPORT" : "CNI_RECTO", url: v.pieceIdentiteRecto, statut: v.statut, createdAt: v.createdAt });
+  }
+  if (v.pieceIdentiteVerso) {
+    docs.push({ id: `${v.id}-verso`, type: "CNI_VERSO", url: v.pieceIdentiteVerso, statut: v.statut, createdAt: v.createdAt });
+  }
+  if (v.selfie) {
+    docs.push({ id: `${v.id}-selfie`, type: "SELFIE", url: v.selfie, statut: v.statut, createdAt: v.createdAt });
+  }
+  return docs;
+}
+
 export const getLocataireAvecDocuments = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
   const locataire = await SuspensionRepo.getLocataireAvecDocuments(id);
@@ -179,7 +193,22 @@ export const getLocataireAvecDocuments = async (req: Request, res: Response): Pr
     res.status(StatusCodes.NOT_FOUND).json(jsonResponse({ status: "not_found", message: "Locataire introuvable" }));
     return;
   }
-  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Locataire récupéré", data: locataire }));
+
+  const data = {
+    ...locataire,
+    verification: locataire.verification
+      ? {
+          id: locataire.verification.id,
+          statut: locataire.verification.statut,
+          typePiece: locataire.verification.typePiece,
+          motifRejet: locataire.verification.motifRejet ?? null,
+          verifiedAt: locataire.verification.dateTraitement?.toISOString() ?? null,
+          documents: buildVerificationDocuments(locataire.verification),
+        }
+      : null,
+  };
+
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Locataire récupéré", data }));
 };
 
 // ─── Supprimer un propriétaire ───────────────────────────────────────────────
