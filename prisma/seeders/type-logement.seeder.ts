@@ -57,6 +57,12 @@ const TYPES_LOGEMENT: readonly TypeLogementData[] = [
     image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80&auto=format&fit=crop',
     ordre: 8,
   },
+  {
+    nom: 'Chambre',
+    slug: 'chambre',
+    image: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=80&auto=format&fit=crop',
+    ordre: 9,
+  },
 ];
 
 export class TypeLogementSeeder implements Seeder {

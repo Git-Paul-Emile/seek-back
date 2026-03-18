@@ -16,25 +16,29 @@ import { QuartierSeeder } from './seeders/quartier.seeder.js';
 import { ProprietaireSeeder } from './seeders/proprietaire.seeder.js';
 import { TemoignageSeeder } from './seeders/temoignage.seeder.js';
 import { FormulePremiumSeeder } from './seeders/formulePremium.seeder.js';
+import { DonneesTestSeeder } from './seeders/donnees-test.seeder.js';
 
 dotenv.config();
 
 /**
  * Ordre d'exécution — respecter les dépendances entre entités :
- *  1. Pays             (référencé par Ville)
- *  2. Ville            (dépend de Pays)
- *  3. Quartier         (dépend de Ville)
- *  4. Admin            (indépendant)
- *  5. TypeLogement     (indépendant)
- *  6. TypeTransaction  (indépendant)
- *  7. StatutBien       (indépendant)
- *  8. Categorie              (catégories pour Meuble et Equipement)
- *  9. Meuble                (dépend de Categorie)
- * 10. Equipement            (dépend de Categorie)
- * 11. Proprietaire          (indépendant — comptes de test)
+ *  1.  Pays             (référencé par Ville)
+ *  2.  Ville            (dépend de Pays)
+ *  3.  Quartier         (dépend de Ville)
+ *  4.  Admin            (indépendant)
+ *  5.  TypeLogement     (upsert — ajoute Chambre si absent)
+ *  6.  TypeTransaction  (upsert)
+ *  7.  StatutBien       (upsert)
+ *  8.  Categorie        (catégories Meuble et Équipement)
+ *  9.  Meuble           (dépend de Categorie)
+ * 10.  Equipement       (dépend de Categorie)
+ * 11.  ModeleContrat    (indépendant)
+ * 12.  Proprietaire     (upsert — définit statutVerification et suspension)
+ * 13.  Temoignage       (upsert)
+ * 14.  FormulePremium   (upsert)
+ * 15.  DonneesTest      (nettoie + recrée : biens, locataires, bails, signalements)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
- * Aucun fichier existant à modifier (Open/Closed Principle).
  */
 const SEEDERS: readonly Seeder[] = [
   new PaysSeeder(),
@@ -51,6 +55,7 @@ const SEEDERS: readonly Seeder[] = [
   new ProprietaireSeeder(),
   new TemoignageSeeder(),
   new FormulePremiumSeeder(),
+  new DonneesTestSeeder(),
 ];
 
 async function main(): Promise<void> {
@@ -65,6 +70,23 @@ async function main(): Promise<void> {
     }
 
     console.log('\n🎉 Seeding terminé avec succès !');
+    console.log('\n📋 Comptes de test créés :');
+    console.log('  Admin        → admin@seek.sn            / Admin@2024!');
+    console.log('  Propriétaire → moussa.diallo@seek.sn    / Proprietaire@2024!  (VERIFIED)');
+    console.log('  Propriétaire → fatou.ndiaye@seek.sn     / Proprietaire@2024!  (PENDING)');
+    console.log('  Propriétaire → ibrahima.sow@seek.sn     / Proprietaire@2024!  (NOT_VERIFIED)');
+    console.log('  Propriétaire → aminata.diop@seek.sn     / Proprietaire@2024!  (VERIFIED, suspendue)');
+    console.log('  Propriétaire → ousmane.sarr@seek.sn     / Proprietaire@2024!  (NOT_VERIFIED)');
+    console.log('  Locataire    → amadou.balde@email.com   / Locataire@2024!     (ACTIF, bail villa)');
+    console.log('  Locataire    → mariama.camara@email.com / Locataire@2024!     (ACTIF, bail chambre)');
+    console.log('  Locataire    → cheikh.tall@email.com    → INVITE (token: seed_tok_cheikh_tall_20260318)');
+    console.log('  Locataire    → rokhaya.fall@email.com   → INVITE (token: seed_tok_rokhaya_fall_20260318)');
+    console.log('  Locataire    → binta.diallo@email.com   / Locataire@2024!     (ANCIEN)');
+    console.log('  Locataire    → seydou.mbaye@email.com   / Locataire@2024!     (ANCIEN)');
+    console.log('\n🏠 Annonces créées : 30 biens');
+    console.log('  ⭐ À la une (estMisEnAvant) : 18');
+    console.log('  📋 Statuts : 22 PUBLIE / 2 EN_ATTENTE / 2 BROUILLON / 2 REJETE / 1 ANNULE / 1 PUBLIE inactif');
+    console.log('  📅 Dates : de 2024-01-15 (très ancienne) à 2026-03-15 (très récente)');
   } finally {
     await prisma.$disconnect();
   }

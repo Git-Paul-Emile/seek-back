@@ -25,14 +25,12 @@ export class VilleSeeder implements Seeder {
       paysId: pays.id,
     }));
 
-    // Supprimer les villes existantes pour garantir une idempotence propre
-    await prisma.ville.deleteMany({ where: { paysId: pays.id } });
-
     const { count } = await prisma.ville.createMany({
       data: villesUniques,
       skipDuplicates: true,
     });
 
-    console.log(`  ✔ ${count} villes insérées pour ${pays.nom}`);
+    const total = await prisma.ville.count({ where: { paysId: pays.id } });
+    console.log(`  ✔ ${count} nouvelles villes insérées / ${total} au total pour ${pays.nom}`);
   }
 }
