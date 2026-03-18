@@ -172,7 +172,7 @@ export const getLocataireById = async (req: Request, res: Response): Promise<voi
 
 // ─── Admin : locataire avec documents de vérification ────────────────────────
 
-function buildVerificationDocuments(v: NonNullable<Awaited<ReturnType<typeof SuspensionRepo.getLocataireAvecDocuments>>["verification"]>) {
+function buildVerificationDocuments(v: NonNullable<NonNullable<Awaited<ReturnType<typeof SuspensionRepo.getLocataireAvecDocuments>>>["verification"]>) {
   const docs: { id: string; type: string; url: string; statut: string; createdAt: Date }[] = [];
   if (v.pieceIdentiteRecto) {
     docs.push({ id: `${v.id}-recto`, type: v.typePiece === "PASSEPORT" ? "PASSEPORT" : "CNI_RECTO", url: v.pieceIdentiteRecto, statut: v.statut, createdAt: v.createdAt });
