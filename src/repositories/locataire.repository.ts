@@ -32,7 +32,7 @@ export interface UpdateLocataireIdentiteData {
   numPieceIdentite?: string | null;
   typePiece?: TypePieceIdentite | null;
   dateDelivrance?: Date | null;
-  dateExpiration?: Date | null;
+  dateExpirationPiece?: Date | null;
   autoriteDelivrance?: string | null;
   situationProfessionnelle?: string | null;
   password?: string;

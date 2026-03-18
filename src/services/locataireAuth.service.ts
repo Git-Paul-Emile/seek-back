@@ -99,7 +99,7 @@ export const activer = async (data: {
   numPieceIdentite?: string | null;
   typePiece?: TypePieceIdentite | null;
   dateDelivrance?: Date | null;
-  dateExpiration?: Date | null;
+  dateExpirationPiece?: Date | null;
   autoriteDelivrance?: string | null;
   situationProfessionnelle?: string | null;
 }): Promise<LocataireTokenPair & { locataire: { id: string; nom: string; prenom: string } }> => {
@@ -135,7 +135,7 @@ export const activer = async (data: {
     numPieceIdentite: data.numPieceIdentite,
     typePiece: data.typePiece,
     dateDelivrance: data.dateDelivrance,
-    dateExpiration: data.dateExpiration,
+    dateExpirationPiece: data.dateExpirationPiece,
     autoriteDelivrance: data.autoriteDelivrance,
     situationProfessionnelle: data.situationProfessionnelle,
   });
@@ -307,7 +307,7 @@ export const updateProfil = async (
     numPieceIdentite?: string | null;
     typePiece?: TypePieceIdentite | null;
     dateDelivrance?: Date | null;
-    dateExpiration?: Date | null;
+    dateExpirationPiece?: Date | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
   }

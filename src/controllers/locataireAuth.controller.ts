@@ -74,7 +74,7 @@ const activerSchema = z.object({
   numPieceIdentite: z.string().optional().nullable(),
   typePiece: z.enum(["CNI", "PASSEPORT", "CARTE_CONSULAIRE", "AUTRE"]).optional().nullable(),
   dateDelivrance: z.coerce.date().optional().nullable(),
-  dateExpiration: z.coerce.date().optional().nullable(),
+  dateExpirationPiece: z.coerce.date().optional().nullable(),
   autoriteDelivrance: z.string().optional().nullable(),
   situationProfessionnelle: z.string().optional().nullable(),
 });
@@ -209,7 +209,7 @@ const updateProfilSchema = z.object({
   numPieceIdentite: z.string().optional().nullable(),
   typePiece: z.enum(["CNI", "PASSEPORT", "CARTE_CONSULAIRE", "AUTRE"]).optional().nullable(),
   dateDelivrance: z.coerce.date().optional().nullable(),
-  dateExpiration: z.coerce.date().optional().nullable(),
+  dateExpirationPiece: z.coerce.date().optional().nullable(),
   autoriteDelivrance: z.string().optional().nullable(),
   situationProfessionnelle: z.string().optional().nullable(),
 });
