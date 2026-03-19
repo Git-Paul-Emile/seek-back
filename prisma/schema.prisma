@@ -190,6 +190,23 @@ enum StatutAnnonce {
   PUBLIE
   REJETE
   ANNULE
+  SUSPENDU_SIGNALEMENT
+  EN_REVISION
+}
+
+enum MotifSignalement {
+  ARNAQUE_SUSPECTEE
+  PHOTOS_NON_CONFORMES
+  LOGEMENT_INSALUBRE
+  INFORMATIONS_ERRONEES
+  PRIX_INCORRECT
+  DOUBLON
+  AUTRE
+}
+
+enum StatutSignalement {
+  ACTIF
+  TRAITE
 }
 
 model Bien {
@@ -251,6 +268,7 @@ model Bien {
   // Statistiques
   nbVues            Int       @default(0)
   nbFavoris        Int       @default(0)
+  reportCount      Int       @default(0)
 
   // État & Publication
   actif              Boolean       @default(true)
@@ -283,6 +301,8 @@ model Bien {
   documents           DocumentBien[]
   favoris            Favori[]
   vues               VueBien[]
+  signalements        Signalement[]
+  adminAvertissements AdminAvertissement[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -963,6 +983,7 @@ model Proprietaire {
   documentsBien       DocumentBien[]
   abonnements         AbonnementProprietaire[]
   messagesInternes    MessageInterne[]
+  adminAvertissements AdminAvertissement[]
 }
 
 model MessageInterne {
@@ -1273,4 +1294,39 @@ model AbonnementProprietaire {
   @@index([proprietaireId])
   @@index([statut])
   @@index([planId])
+}
+
+// ============================================================
+// SIGNALEMENTS
+// ============================================================
+
+model Signalement {
+  id             String            @id @default(uuid())
+  bienId         String
+  signaleParTel  String
+  motif          MotifSignalement
+  justification  String?
+  preuve         String?
+  statut         StatutSignalement @default(ACTIF)
+  createdAt      DateTime          @default(now())
+
+  bien Bien @relation(fields: [bienId], references: [id], onDelete: Cascade)
+
+  @@unique([bienId, signaleParTel])
+  @@index([bienId])
+  @@index([statut])
+}
+
+model AdminAvertissement {
+  id             String   @id @default(uuid())
+  proprietaireId String
+  bienId         String
+  message        String
+  createdAt      DateTime @default(now())
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+
+  @@index([proprietaireId])
+  @@index([bienId])
 }

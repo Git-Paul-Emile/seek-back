@@ -406,18 +406,19 @@ export const getAnnonces = async (params: {
 
 export const validerAnnonce = async (
   bienId: string,
-  action: "APPROUVER" | "REJETER",
+  action: "APPROUVER" | "REJETER" | "REVISION",
   note?: string
 ) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
 
-  // Cas normal : annonce EN_ATTENTE (nouvelle soumission)
   if (bien.statutAnnonce !== "EN_ATTENTE") {
     throw new AppError("Cette annonce n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
   }
 
-  const newStatut: StatutAnnonce = action === "APPROUVER" ? "PUBLIE" : "REJETE";
+  const newStatut: StatutAnnonce =
+    action === "APPROUVER" ? "PUBLIE" :
+    action === "REVISION"  ? "EN_REVISION" : "REJETE";
   return BienRepository.updateStatutAnnonce(bienId, newStatut, note);
 };
 
