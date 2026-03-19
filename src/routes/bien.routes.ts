@@ -73,15 +73,6 @@ router.patch(
   controllerWrapper(BienController.annulerAnnonce)
 );
 
-/** PATCH /api/biens/:id/soumettre-revision — soumettre une modification d'une annonce publiée */
-router.patch(
-  "/:id/soumettre-revision",
-  authenticateOwner,
-  validateId,
-  uploadPhotosMiddleware,
-  controllerWrapper(BienController.soumettreRevision)
-);
-
 /** GET /api/biens — liste des biens du propriétaire */
 router.get(
   "/",
@@ -143,13 +134,6 @@ router.get(
   "/public/:id",
   validateId,
   controllerWrapper(BienController.getAnnoncePublie)
-);
-
-/** POST /api/biens/public/:id/signaler — signaler une annonce */
-router.post(
-  "/public/:id/signaler",
-  validateId,
-  controllerWrapper(BienController.signalerAnnonce)
 );
 
 /** GET /api/biens/public/:id/similaires — annonces similaires */

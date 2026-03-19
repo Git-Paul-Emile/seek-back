@@ -181,67 +181,6 @@ model FormulePremium {
 }
 
 // ============================================================
-// SIGNALEMENTS
-// ============================================================
-
-enum MotifSignalement {
-  ARNAQUE_SUSPECTEE
-  PHOTOS_NON_CONFORMES
-  LOGEMENT_INSALUBRE
-  INFORMATIONS_ERRONEES
-  PRIX_INCORRECT
-  DOUBLON
-  AUTRE
-}
-
-enum StatutSignalement {
-  ACTIF
-  TRAITE
-}
-
-model Signalement {
-  id             String            @id @default(uuid())
-  bienId         String
-  bien           Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
-
-  signaleParNom  String?
-  signaleParTel  String            // requis pour anti-spam (1 signalement par tel par annonce)
-  signaleParEmail String?
-
-  motif          MotifSignalement
-  justification  String?           @db.Text
-  preuve         String?           // URL Cloudinary (optionnel)
-
-  statut         StatutSignalement @default(ACTIF)
-
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-
-  @@unique([bienId, signaleParTel])
-  @@index([bienId])
-  @@index([statut])
-  @@index([createdAt])
-}
-
-// ============================================================
-// AVERTISSEMENTS ADMIN → PROPRIÉTAIRE
-// ============================================================
-
-model AdminAvertissement {
-  id             String       @id @default(uuid())
-  proprietaireId String
-  proprietaire   Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  bienId         String?
-  bien           Bien?        @relation(fields: [bienId], references: [id], onDelete: SetNull)
-  message        String       @db.Text
-  lu             Boolean      @default(false)
-  createdAt      DateTime     @default(now())
-
-  @@index([proprietaireId])
-  @@index([bienId])
-}
-
-// ============================================================
 // BIENS
 // ============================================================
 
@@ -251,8 +190,6 @@ enum StatutAnnonce {
   PUBLIE
   REJETE
   ANNULE
-  SUSPENDU_SIGNALEMENT
-  EN_REVISION
 }
 
 model Bien {
@@ -315,9 +252,6 @@ model Bien {
   nbVues            Int       @default(0)
   nbFavoris        Int       @default(0)
 
-  // Signalements actifs (dénormalisé pour perf)
-  reportCount       Int       @default(0)  // nb signalements actifs
-
   // État & Publication
   actif              Boolean       @default(true)
   statutAnnonce      StatutAnnonce @default(BROUILLON)
@@ -330,10 +264,6 @@ model Bien {
   dateFinPromotion     DateTime?
   positionRotation     Int      @default(0) // Position dans la rotation
   dernierAffichage    DateTime? // Dernière fois où l'annonce a été affichée en page d'accueil
-
-  // Révision d'une annonce publiée (modification en attente de validation admin)
-  hasPendingRevision Boolean   @default(false)
-  pendingRevision    Json?
 
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -350,8 +280,6 @@ model Bien {
   bails              BailLocation[]
   transactions       Transaction[]
   promotionHistories PromotionHistory[]
-  signalements        Signalement[]
-  adminAvertissements AdminAvertissement[]
   documents           DocumentBien[]
   favoris            Favori[]
   vues               VueBien[]
@@ -1034,7 +962,6 @@ model Proprietaire {
   promotionHistories  PromotionHistory[]
   documentsBien       DocumentBien[]
   abonnements         AbonnementProprietaire[]
-  adminAvertissements AdminAvertissement[]
   messagesInternes    MessageInterne[]
 }
 

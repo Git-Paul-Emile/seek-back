@@ -103,33 +103,6 @@ export const annulerAnnonce = async (req: Request, res: Response): Promise<void>
   res.status(StatusCodes.NO_CONTENT).send();
 };
 
-export const soumettreRevision = async (req: Request, res: Response): Promise<void> => {
-  const proprietaireId = req.owner?.id;
-  if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
-
-  const files = (req.files as Express.Multer.File[]) ?? [];
-  let body: Record<string, unknown> = {};
-  try {
-    body = req.body.data ? JSON.parse(req.body.data as string) : req.body;
-  } catch {
-    body = req.body;
-  }
-
-  const { saveDraftSchema } = await import("../validators/bien.validator.js");
-  const parsed = saveDraftSchema.safeParse(body);
-  if (!parsed.success) {
-    res.status(StatusCodes.BAD_REQUEST).json(
-      jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: parsed.error.flatten() })
-    );
-    return;
-  }
-
-  const bien = await BienService.soumettreRevision(req.params.id as string, proprietaireId, parsed.data, files);
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Révision soumise pour validation", data: bien })
-  );
-};
-
 export const getBienById = async (req: Request, res: Response): Promise<void> => {
   const bien = await BienService.getBienById(req.params.id as string);
   if (!bien) {
@@ -189,7 +162,7 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
     ville, quartier, typeLogement, typeTransaction,
     prixMin, prixMax,
     chambres, surfaceMin, surfaceMax,
-    meuble, parking, ascenseur,
+    meuble, parking, ascenseur, fumeurs, animaux, equipementIds,
     sortBy, sortOrder,
     page, limit,
     lat, lng, radius,
@@ -208,6 +181,9 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
     meuble:        meuble    === "1" ? true : undefined,
     parking:       parking   === "1" ? true : undefined,
     ascenseur:     ascenseur === "1" ? true : undefined,
+    fumeurs:       fumeurs   === "1" ? true : undefined,
+    animaux:       animaux   === "1" ? true : undefined,
+    equipementIds: equipementIds ? equipementIds.split(",").filter(Boolean) : undefined,
     sortBy:    (sortBy === "prix" || sortBy === "createdAt") ? sortBy : undefined,
     sortOrder: (sortOrder === "asc" || sortOrder === "desc") ? sortOrder : undefined,
     page:      page   ? parseInt(page)     : undefined,
@@ -254,18 +230,6 @@ export const getAnnoncePublie = async (req: Request, res: Response): Promise<voi
   })();
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Annonce récupérée", data: bien })
-  );
-};
-
-// ─── Signalement d'annonce ──────────────────────────────────────────────────────
-
-export const signalerAnnonce = async (req: Request, res: Response): Promise<void> => {
-  const { motif, justification, nom, telephone, email } = req.body;
-  if (!motif) throw new AppError("Le motif du signalement est requis", StatusCodes.BAD_REQUEST);
-  if (!telephone) throw new AppError("Le numéro de téléphone est requis", StatusCodes.BAD_REQUEST);
-  const result = await BienService.signalerAnnonce(req.params.id as string, motif, justification, nom, telephone, email);
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: result.message, data: result })
   );
 };
 

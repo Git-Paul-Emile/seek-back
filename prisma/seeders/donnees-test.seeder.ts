@@ -998,10 +998,7 @@ export class DonneesTestSeeder implements Seeder {
     // 6. Créer les bails + échéanciers + dépôts caution + transactions
     await this.createBails(prisma, bienIds, locIds, propIds, refs);
 
-    // 7. Créer les signalements
-    await this.createSignalements(prisma, bienIds, propIds, locIds);
-
-    // 8. Upsert ConfigMonetisation
+    // 7. Upsert ConfigMonetisation
     await prisma.configMonetisation.upsert({
       where:  { id: 'config' },
       update: { miseEnAvantActive: true },
@@ -1015,7 +1012,6 @@ export class DonneesTestSeeder implements Seeder {
   private async cleanup(prisma: PrismaClient): Promise<void> {
     console.log('  🧹 Nettoyage des données dynamiques...');
     await prisma.transaction.deleteMany({});
-    await prisma.signalement.deleteMany({});
     await prisma.locataire.deleteMany({});
     await prisma.bien.deleteMany({});
     await prisma.passwordResetToken.deleteMany({});
@@ -1319,69 +1315,4 @@ export class DonneesTestSeeder implements Seeder {
     }
   }
 
-  // ── Signalements ───────────────────────────────────────────────────────────
-
-  private async createSignalements(
-    prisma: PrismaClient,
-    bienIds: Record<string, string>,
-    propIds: Record<string, string>,
-    locIds:  Record<string, string>,
-  ): Promise<void> {
-    const admin = await prisma.admin.findFirst({ select: { id: true } });
-    const adminId = admin?.id ?? 'admin';
-
-    const signalements = [
-      {
-        type:           'ANNONCE',
-        statut:         'EN_ATTENTE',
-        bienId:         bienIds['local_sandaga'],
-        motif:          'Prix anormalement bas',
-        description:    "Le prix affiché pour ce local commercial semble anormalement bas par rapport au marché. Possible erreur ou tentative d'arnaque.",
-        signaleParType: 'PUBLIC',
-        signaleParNom:  'Visiteur anonyme',
-        signaleParEmail: 'visiteur@exemple.com',
-      },
-      {
-        type:                    'PROPRIETAIRE',
-        statut:                  'EN_COURS',
-        proprietaireSignaleId:   propIds['aminata.diop@seek.sn'],
-        motif:                   'Comportement frauduleux',
-        description:             "Cette propriétaire a demandé un dépôt de garantie sans contrat et n'a pas donné suite. Plusieurs victimes signalées.",
-        signaleParType:          'OWNER',
-        signaleParId:            propIds['ibrahima.sow@seek.sn'],
-        signaleParEmail:         'ibrahima.sow@seek.sn',
-        noteAdmin:               'En cours de vérification — compte suspendu par précaution le 10/03/2026.',
-      },
-      {
-        type:           'ANNONCE',
-        statut:         'TRAITE',
-        bienId:         bienIds['chambre_yoff'],
-        motif:          'Description mensongère',
-        description:    "La chambre est nettement plus petite que décrite et ne possède pas de fenêtre contrairement aux photos.",
-        signaleParType: 'LOCATAIRE',
-        signaleParId:   locIds['mariama_camara'],
-        signaleParNom:  'Mariama Camara',
-        signaleParEmail: 'mariama.camara@email.com',
-        noteAdmin:      'Signalement traité. Propriétaire contacté, description et photos mises à jour.',
-        traitePar:      adminId,
-        dateTraitement: new Date('2026-02-20'),
-      },
-      {
-        type:                 'LOCATAIRE',
-        statut:               'EN_ATTENTE',
-        locataireSignaleId:   locIds['mariama_camara'],
-        motif:                'Dégradations du bien',
-        description:          "Dégradations importantes constatées : mur abîmé, robinet de douche cassé. La locataire refuse de reconnaître sa responsabilité.",
-        signaleParType:       'OWNER',
-        signaleParId:         propIds['moussa.diallo@seek.sn'],
-        signaleParEmail:      'moussa.diallo@seek.sn',
-        signaleParNom:        'Moussa Diallo',
-      },
-    ];
-
-    for (const s of signalements) {
-      await prisma.signalement.create({ data: s as any });
-      console.log(`  ✔ Signalement [${s.type}/${s.statut}] : ${s.motif}`);
-    }
-  }
 }
