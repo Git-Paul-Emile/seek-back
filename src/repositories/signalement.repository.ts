@@ -1,128 +1,173 @@
 import { prisma } from "../config/database.js";
 
 export interface CreateSignalementData {
-  type: "ANNONCE" | "PROPRIETAIRE" | "LOCATAIRE";
-  motif: string;
-  description?: string;
-  signaleParType?: string;
-  signaleParId?: string;
+  bienId: string;
   signaleParNom?: string;
+  signaleParTel: string;
   signaleParEmail?: string;
-  signaleParTel?: string;
-  bienId?: string;
-  proprietaireSignaleId?: string;
-  locataireSignaleId?: string;
+  motif: string; // MotifSignalement enum value
+  justification?: string;
+  preuve?: string;
 }
 
-export interface SignalementListParams {
-  page?: number;
-  limit?: number;
-  statut?: string;
-  type?: string;
-  search?: string;
-}
+// ─── Créer un signalement ──────────────────────────────────────────────────────
 
 export const create = async (data: CreateSignalementData) => {
-  return prisma.signalement.create({ data });
-};
-
-export const findAll = async (params: SignalementListParams = {}) => {
-  const page = params.page ?? 1;
-  const limit = params.limit ?? 20;
-  const skip = (page - 1) * limit;
-
-  const where: any = {};
-  if (params.statut) where.statut = params.statut;
-  if (params.type) where.type = params.type;
-  if (params.search) {
-    where.OR = [
-      { motif: { contains: params.search, mode: "insensitive" } },
-      { signaleParNom: { contains: params.search, mode: "insensitive" } },
-      { signaleParEmail: { contains: params.search, mode: "insensitive" } },
-    ];
-  }
-
-  const [total, items] = await Promise.all([
-    prisma.signalement.count({ where }),
-    prisma.signalement.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        bien: {
-          select: { id: true, titre: true, ville: true, photos: true },
-        },
-      },
-    }),
-  ]);
-
-  return {
-    items,
-    meta: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+  return prisma.signalement.create({
+    data: {
+      bienId:          data.bienId,
+      signaleParNom:   data.signaleParNom,
+      signaleParTel:   data.signaleParTel,
+      signaleParEmail: data.signaleParEmail,
+      motif:           data.motif as any,
+      justification:   data.justification,
+      preuve:          data.preuve,
     },
-  };
+  });
 };
 
-export const findById = async (id: string) => {
-  return prisma.signalement.findUnique({
-    where: { id },
-    include: {
-      bien: {
+// ─── Vérifier si ce téléphone a déjà signalé ce bien ────────────────────────
+
+export const existsByTel = async (bienId: string, signaleParTel: string) => {
+  const count = await prisma.signalement.count({
+    where: { bienId, signaleParTel },
+  });
+  return count > 0;
+};
+
+// ─── Compter les signalements ACTIFS d'un bien ──────────────────────────────
+
+export const countActifsByBien = async (bienId: string) => {
+  return prisma.signalement.count({ where: { bienId, statut: "ACTIF" } });
+};
+
+// ─── Lister les biens signalés (agrégé) — admin ─────────────────────────────
+
+export const findBiensSignales = async (params: {
+  page?: number;
+  limit?: number;
+  priorite?: "HAUTE" | "BASSE";
+}) => {
+  const page  = params.page  ?? 1;
+  const limit = params.limit ?? 20;
+  const skip  = (page - 1) * limit;
+
+  const biensAvecSignalements = await prisma.bien.findMany({
+    where: {
+      signalements: { some: { statut: "ACTIF" } },
+    },
+    select: {
+      id: true,
+      titre: true,
+      ville: true,
+      quartier: true,
+      reportCount: true,
+      statutAnnonce: true,
+      actif: true,
+      proprietaire: {
         select: {
           id: true,
-          titre: true,
-          description: true,
-          photos: true,
-          pays: true,
-          ville: true,
-          quartier: true,
-          adresse: true,
-          pointRepere: true,
-          prix: true,
-          frequencePaiement: true,
-          surface: true,
-          nbChambres: true,
-          nbSdb: true,
-          nbPieces: true,
-          meuble: true,
-          actif: true,
-          statutAnnonce: true,
-          nbVues: true,
-          createdAt: true,
-          proprietaireId: true,
-          typeLogement: { select: { nom: true } },
-          typeTransaction: { select: { nom: true } },
-          statutBien: { select: { nom: true } },
-          proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true, email: true } },
+          prenom: true,
+          nom: true,
+          telephone: true,
+          email: true,
+          nbAvertissements: true,
         },
+      },
+      signalements: {
+        where: { statut: "ACTIF" },
+        select: { motif: true, createdAt: true },
+        orderBy: { createdAt: "desc" },
+      },
+    },
+    orderBy: { reportCount: "desc" },
+    skip,
+    take: limit,
+  });
+
+  const total = await prisma.bien.count({
+    where: { signalements: { some: { statut: "ACTIF" } } },
+  });
+
+  const items = biensAvecSignalements.map((b) => {
+    const motifs = b.signalements.map((s) => s.motif as string);
+    const estUrgent = motifs.includes("ARNAQUE_SUSPECTEE");
+    const priorite: "HAUTE" | "BASSE" =
+      b.reportCount >= 3 || estUrgent ? "HAUTE" : "BASSE";
+    return {
+      id:                  b.id,
+      titre:               b.titre,
+      ville:               b.ville,
+      quartier:            b.quartier,
+      reportCount:         b.reportCount,
+      statutAnnonce:       b.statutAnnonce,
+      actif:               b.actif,
+      proprietaire:        b.proprietaire,
+      dernierMotif:        b.signalements[0]?.motif ?? null,
+      dernierSignalementAt: b.signalements[0]?.createdAt ?? null,
+      priorite,
+    };
+  });
+
+  const filtered = params.priorite
+    ? items.filter((i) => i.priorite === params.priorite)
+    : items;
+
+  return { data: filtered, total, page, limit };
+};
+
+// ─── Détail d'un bien signalé — admin ───────────────────────────────────────
+
+export const findDetailByBien = async (bienId: string) => {
+  return prisma.bien.findUnique({
+    where: { id: bienId },
+    select: {
+      id: true,
+      titre: true,
+      ville: true,
+      quartier: true,
+      photos: true,
+      reportCount: true,
+      statutAnnonce: true,
+      actif: true,
+      proprietaire: {
+        select: {
+          id: true,
+          prenom: true,
+          nom: true,
+          telephone: true,
+          email: true,
+          nbAvertissements: true,
+          estRestreint: true,
+          estSuspendu: true,
+        },
+      },
+      signalements: {
+        where: { statut: "ACTIF" },
+        orderBy: { createdAt: "desc" },
+      },
+      adminAvertissements: {
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        select: { message: true, createdAt: true },
       },
     },
   });
 };
 
-export const countEnAttente = async () => {
-  return prisma.signalement.count({ where: { statut: "EN_ATTENTE" } });
+// ─── Marquer tous les signalements ACTIFS d'un bien comme TRAITÉS ────────────
+
+export const traiterAllByBien = async (bienId: string) => {
+  return prisma.signalement.updateMany({
+    where: { bienId, statut: "ACTIF" },
+    data:  { statut: "TRAITE" as any },
+  });
 };
 
-export const updateStatut = async (
-  id: string,
-  data: { statut: string; noteAdmin?: string; traitePar?: string; dateTraitement?: Date }
-) => {
-  return prisma.signalement.update({ where: { id }, data: data as any });
-};
+// ─── Compter les biens avec signalements ACTIFS (badge admin) ────────────────
 
-export const findHistoriqueByBien = async (bienId: string, excludeId?: string) => {
-  return prisma.signalement.findMany({
-    where: {
-      bienId,
-      ...(excludeId ? { id: { not: excludeId } } : {}),
-    },
-    orderBy: { createdAt: "desc" },
-    take: 10,
+export const countBiensSignales = async () => {
+  return prisma.bien.count({
+    where: { signalements: { some: { statut: "ACTIF" } } },
   });
 };

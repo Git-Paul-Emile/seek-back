@@ -64,12 +64,11 @@ export const computeScoreForProprietaire = async (
     },
   });
 
-  // ── Signalements négatifs traités (AVERTIR / DESACTIVER_ANNONCE) ──────────
+  // ── Signalements négatifs traités ────────────────────────────────────────
   const nbSignalementsNegatifs = await prisma.signalement.count({
     where: {
-      proprietaireSignaleId: proprietaireId,
-      statut: { in: ["TRAITE"] },
-      // Les actions négatives laissent le signalement en TRAITE
+      bien: { proprietaireId },
+      statut: "TRAITE",
     },
   });
 

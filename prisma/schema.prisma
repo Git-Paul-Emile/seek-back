@@ -184,52 +184,61 @@ model FormulePremium {
 // SIGNALEMENTS
 // ============================================================
 
-enum TypeSignalement {
-  ANNONCE
-  PROPRIETAIRE
-  LOCATAIRE
+enum MotifSignalement {
+  ARNAQUE_SUSPECTEE
+  PHOTOS_NON_CONFORMES
+  LOGEMENT_INSALUBRE
+  INFORMATIONS_ERRONEES
+  PRIX_INCORRECT
+  DOUBLON
+  AUTRE
 }
 
 enum StatutSignalement {
-  EN_ATTENTE
-  EN_COURS
+  ACTIF
   TRAITE
-  REJETE
 }
 
 model Signalement {
-  id              String            @id @default(uuid())
-  type            TypeSignalement
-  motif           String
-  description     String?
-  statut          StatutSignalement @default(EN_ATTENTE)
+  id             String            @id @default(uuid())
+  bienId         String
+  bien           Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
 
-  // Qui signale
-  signaleParType  String?   // "PUBLIC" | "OWNER" | "LOCATAIRE"
-  signaleParId    String?
-  signaleParNom   String?
+  signaleParNom  String?
+  signaleParTel  String            // requis pour anti-spam (1 signalement par tel par annonce)
   signaleParEmail String?
-  signaleParTel   String?
 
-  // Ce qui est signalé
-  bienId                String?
-  proprietaireSignaleId String?
-  locataireSignaleId    String?
+  motif          MotifSignalement
+  justification  String?           @db.Text
+  preuve         String?           // URL Cloudinary (optionnel)
 
-  // Traitement admin
-  traitePar      String?
-  noteAdmin      String?
-  dateTraitement DateTime?
+  statut         StatutSignalement @default(ACTIF)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
 
-  bien Bien? @relation(fields: [bienId], references: [id], onDelete: SetNull)
-
-  @@index([statut])
-  @@index([type])
+  @@unique([bienId, signaleParTel])
   @@index([bienId])
+  @@index([statut])
   @@index([createdAt])
+}
+
+// ============================================================
+// AVERTISSEMENTS ADMIN → PROPRIÉTAIRE
+// ============================================================
+
+model AdminAvertissement {
+  id             String       @id @default(uuid())
+  proprietaireId String
+  proprietaire   Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bienId         String?
+  bien           Bien?        @relation(fields: [bienId], references: [id], onDelete: SetNull)
+  message        String       @db.Text
+  lu             Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  @@index([proprietaireId])
+  @@index([bienId])
 }
 
 // ============================================================
@@ -242,6 +251,8 @@ enum StatutAnnonce {
   PUBLIE
   REJETE
   ANNULE
+  SUSPENDU_SIGNALEMENT
+  EN_REVISION
 }
 
 model Bien {
@@ -304,6 +315,9 @@ model Bien {
   nbVues            Int       @default(0)
   nbFavoris        Int       @default(0)
 
+  // Signalements actifs (dénormalisé pour perf)
+  reportCount       Int       @default(0)  // nb signalements actifs
+
   // État & Publication
   actif              Boolean       @default(true)
   statutAnnonce      StatutAnnonce @default(BROUILLON)
@@ -336,8 +350,9 @@ model Bien {
   bails              BailLocation[]
   transactions       Transaction[]
   promotionHistories PromotionHistory[]
-  signalements       Signalement[]
-  documents          DocumentBien[]
+  signalements        Signalement[]
+  adminAvertissements AdminAvertissement[]
+  documents           DocumentBien[]
   favoris            Favori[]
   vues               VueBien[]
 
@@ -815,7 +830,7 @@ enum TypeNotification {
   ALERTE_RETARD
   INITIATION_PAIEMENT
   VERIFICATION_LOCATAIRE
-  PAIEMENT_LOCATAIRE       // Propriétaire notifié quand le locataire enregistre un paiement
+  PAIEMENT_LOCATAIRE            // Propriétaire notifié quand le locataire enregistre un paiement
 }
 
 model Notification {
@@ -998,6 +1013,14 @@ model Proprietaire {
   dateSuspension     DateTime?
   suspenduPar        String?
 
+  // Avertissements & escalade
+  nbAvertissements   Int               @default(0)
+  estRestreint       Boolean           @default(false)  // 3 avert : restriction temporaire
+  dateFinRestriction DateTime?                          // fin de la restriction (3 jours)
+  dateFinSuspension  DateTime?                          // fin de suspension (1 mois) — remplace estSuspendu booléen
+  estBanni           Boolean           @default(false)  // 5 avert : bannissement permanent
+  dateBannissement   DateTime?
+
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 
@@ -1011,6 +1034,23 @@ model Proprietaire {
   promotionHistories  PromotionHistory[]
   documentsBien       DocumentBien[]
   abonnements         AbonnementProprietaire[]
+  adminAvertissements AdminAvertissement[]
+  messagesInternes    MessageInterne[]
+}
+
+model MessageInterne {
+  id             String   @id @default(uuid())
+  proprietaireId String
+  titre          String
+  corps          String
+  type           String   @default("INFO") // INFO | AVERTISSEMENT | SANCTION | LEVEE
+  lu             Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([proprietaireId])
+  @@index([createdAt])
 }
 
 model ProprietaireRefreshToken {

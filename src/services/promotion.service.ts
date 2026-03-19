@@ -38,6 +38,21 @@ export const activatePromotion = async (
     );
   }
 
+  // Bloquer si le compte est restreint (3 avertissements)
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { estRestreint: true, dateFinRestriction: true } as any,
+  }) as any;
+  if (proprietaire?.estRestreint) {
+    const dateFin = proprietaire.dateFinRestriction
+      ? new Date(proprietaire.dateFinRestriction).toLocaleDateString("fr-FR")
+      : "sous peu";
+    throw new AppError(
+      `Votre compte est restreint. Mise en avant désactivée jusqu'au ${dateFin}.`,
+      StatusCodes.FORBIDDEN
+    );
+  }
+
   const now = new Date();
   const dateFin = new Date(now);
   dateFin.setDate(dateFin.getDate() + dureeJours);

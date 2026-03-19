@@ -2,6 +2,7 @@ import type { Request, Response, CookieOptions } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as OwnerService from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
+import { prisma } from "../config/database.js";
 
 const REFRESH_COOKIE = "ownerRefreshToken";
 const ACCESS_COOKIE = "ownerAccessToken";
@@ -212,4 +213,29 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   }
   await OwnerService.resetPassword(token, password);
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Mot de passe réinitialisé avec succès" }));
+};
+
+// ─── GET /api/owner/messages ──────────────────────────────────────────────────
+
+export const getMessagesInternes = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) { res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" })); return; }
+  const data = await prisma.messageInterne.findMany({
+    where:   { proprietaireId },
+    orderBy: { createdAt: "desc" },
+    take:    50,
+  });
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages récupérés", data }));
+};
+
+// ─── POST /api/owner/messages/lus ────────────────────────────────────────────
+
+export const marquerMessagesLus = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) { res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" })); return; }
+  await prisma.messageInterne.updateMany({
+    where: { proprietaireId, lu: false },
+    data:  { lu: true },
+  });
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
 };

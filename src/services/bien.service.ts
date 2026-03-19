@@ -241,6 +241,21 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
     throw new AppError("Cette annonce ne peut pas être soumise dans son état actuel", StatusCodes.BAD_REQUEST);
   }
 
+  // Vérifier si le compte est restreint (3 avertissements)
+  const proprietaire = await (prisma as any).proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { estRestreint: true, dateFinRestriction: true },
+  });
+  if (proprietaire?.estRestreint) {
+    const dateFin = proprietaire.dateFinRestriction
+      ? new Date(proprietaire.dateFinRestriction).toLocaleDateString("fr-FR")
+      : "sous peu";
+    throw new AppError(
+      `Votre compte est restreint suite à des avertissements. Publication désactivée jusqu'au ${dateFin}.`,
+      StatusCodes.FORBIDDEN
+    );
+  }
+
   // Vérifier la limite d'annonces selon le plan d'abonnement
   await verifierLimiteAnnonces(proprietaireId);
 
@@ -645,38 +660,14 @@ export const getAnnoncePublieById = async (id: string) => {
 export const signalerAnnonce = async (
   bienId: string,
   motif: string,
-  description?: string,
+  justification?: string,
   signaleParNom?: string,
   signaleParTel?: string,
   signaleParEmail?: string
 ) => {
-  const bien = await BienRepository.getBienById(bienId);
-  if (!bien) {
-    throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
-  }
-
-  const signalement = await prisma.signalement.create({
-    data: {
-      type: "ANNONCE",
-      motif,
-      description,
-      signaleParType: "PUBLIC",
-      signaleParNom,
-      signaleParTel,
-      signaleParEmail,
-      bienId,
-    },
-  });
-
-  // Règle auto : 5+ signalements EN_ATTENTE ou EN_COURS → bien.actif = false
-  const count = await prisma.signalement.count({
-    where: { bienId, statut: { in: ["EN_ATTENTE", "EN_COURS"] } },
-  });
-  if (count >= 5) {
-    await prisma.bien.update({ where: { id: bienId }, data: { actif: false } });
-  }
-
-  return { success: true, message: "Signalement enregistré. Merci de votre vigilance.", id: signalement.id };
+  const { createSignalement } = await import("./signalement.service.js");
+  await createSignalement({ bienId, motif, justification, signaleParNom, signaleParTel: signaleParTel ?? "", signaleParEmail });
+  return { success: true, message: "Signalement enregistré. Merci pour votre vigilance." };
 };
 
 // ─── Public — annonces similaires avec système de score ─────────────────────

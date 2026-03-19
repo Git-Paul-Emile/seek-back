@@ -2,23 +2,59 @@ import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as SignalementController from "../controllers/signalement.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
-import { optionalAuthOwner } from "../middlewares/ownerAuth.middleware.js";
 
 const router = Router();
 
-// POST /api/signalements — public (avec ou sans auth owner)
-router.post("/", optionalAuthOwner, controllerWrapper(SignalementController.createSignalement));
+// ─── Public ───────────────────────────────────────────────────────────────────
 
-// GET /api/signalements/admin/count — badge EN_ATTENTE (admin)
-router.get("/admin/count", authenticate, controllerWrapper(SignalementController.countEnAttente));
+// POST /api/signalements/annonce/:bienId — signaler une annonce
+router.post(
+  "/annonce/:bienId",
+  controllerWrapper(SignalementController.createSignalement)
+);
 
-// GET /api/signalements/admin — liste paginée (admin)
-router.get("/admin", authenticate, controllerWrapper(SignalementController.listSignalements));
+// ─── Admin ────────────────────────────────────────────────────────────────────
 
-// GET /api/signalements/admin/:id — détail (admin)
-router.get("/admin/:id", authenticate, controllerWrapper(SignalementController.getSignalementDetail));
+// GET /api/signalements/admin/count — badge sidebar
+router.get(
+  "/admin/count",
+  authenticate,
+  controllerWrapper(SignalementController.countBiensSignales)
+);
 
-// PATCH /api/signalements/admin/:id/traiter — traitement (admin)
-router.patch("/admin/:id/traiter", authenticate, controllerWrapper(SignalementController.traiterSignalement));
+// GET /api/signalements/admin — liste des biens signalés
+router.get(
+  "/admin",
+  authenticate,
+  controllerWrapper(SignalementController.listBiensSignales)
+);
+
+// GET /api/signalements/admin/:bienId — détail d'un bien signalé
+router.get(
+  "/admin/:bienId",
+  authenticate,
+  controllerWrapper(SignalementController.getSignalementDetail)
+);
+
+// POST /api/signalements/admin/:bienId/rejeter — rejeter (abusif, reset compteur)
+router.post(
+  "/admin/:bienId/rejeter",
+  authenticate,
+  controllerWrapper(SignalementController.rejeterSignalements)
+);
+
+// POST /api/signalements/admin/:bienId/avertir — avertir le propriétaire
+router.post(
+  "/admin/:bienId/avertir",
+  authenticate,
+  controllerWrapper(SignalementController.avertirProprietaire)
+);
+
+// POST /api/signalements/admin/:bienId/sanctionner — suppression définitive
+router.post(
+  "/admin/:bienId/sanctionner",
+  authenticate,
+  controllerWrapper(SignalementController.sanctionnerAnnonce)
+);
 
 export default router;

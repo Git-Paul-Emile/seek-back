@@ -1,4 +1,5 @@
 import { prisma } from "../config/database.js";
+import { sendMail } from "../utils/mailer.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -260,6 +261,7 @@ export const envoyerPaiementLocataire = async (params: {
     locataireId: params.locataireId,
   });
 };
+
 
 // ─── Lister les notifications d'un bail ───────────────────────────────────────
 

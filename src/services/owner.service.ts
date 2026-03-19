@@ -307,7 +307,16 @@ export const logout = async (refreshToken: string): Promise<void> => {
 // ─── Me ───────────────────────────────────────────────────────────────────────
 
 export const me = async (id: string) => {
-  const p = await OwnerRepo.findById(id);
+  const p = await (prisma as any).proprietaire.findUnique({
+    where: { id },
+    select: {
+      id: true, prenom: true, nom: true, telephone: true, email: true,
+      sexe: true, statutVerification: true, verifiedAt: true,
+      nbAvertissements: true, estRestreint: true, estSuspendu: true,
+      estBanni: true, dateFinRestriction: true, dateFinSuspension: true, dateBannissement: true,
+      _count: { select: { avertissements: { where: { lu: false } } } },
+    },
+  });
   if (!p) throw new AppError("Compte introuvable", StatusCodes.UNAUTHORIZED);
   return {
     id: p.id,
@@ -318,6 +327,14 @@ export const me = async (id: string) => {
     sexe: p.sexe ?? undefined,
     statutVerification: p.statutVerification,
     verifiedAt: p.verifiedAt,
+    nbAvertissements: p.nbAvertissements,
+    estRestreint: p.estRestreint,
+    estSuspendu: p.estSuspendu,
+    estBanni: p.estBanni,
+    dateFinRestriction: p.dateFinRestriction,
+    dateFinSuspension: p.dateFinSuspension,
+    dateBannissement: p.dateBannissement,
+    nbAvertissementsNonLus: p._count.avertissements,
   };
 };
 
