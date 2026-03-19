@@ -46,6 +46,10 @@ export const uploadDocument = async (req: Request, res: Response): Promise<void>
     res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Type de document invalide" }));
     return;
   }
+  if (file.mimetype !== "application/pdf") {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Seuls les fichiers PDF sont acceptés" }));
+    return;
+  }
   if (file.size > MAX_SIZE) {
     res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Fichier trop volumineux (max 10 Mo)" }));
     return;
