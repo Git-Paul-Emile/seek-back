@@ -260,11 +260,17 @@ export const getAnnoncePublie = async (req: Request, res: Response): Promise<voi
 // ─── Signalement d'annonce ──────────────────────────────────────────────────────
 
 export const signalerAnnonce = async (req: Request, res: Response): Promise<void> => {
-  const { motif, description } = req.body;
+  const { motif, description, nom, telephone, email } = req.body;
   if (!motif) {
     throw new AppError("Le motif du signalement est requis", StatusCodes.BAD_REQUEST);
   }
-  const result = await BienService.signalerAnnonce(req.params.id as string, motif, description);
+  if (!telephone) {
+    throw new AppError("Le numéro de téléphone du signaleur est requis", StatusCodes.BAD_REQUEST);
+  }
+  if (!nom) {
+    throw new AppError("Le nom du signaleur est requis", StatusCodes.BAD_REQUEST);
+  }
+  const result = await BienService.signalerAnnonce(req.params.id as string, motif, description, nom, telephone, email);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: result.message, data: result })
   );

@@ -645,15 +645,38 @@ export const getAnnoncePublieById = async (id: string) => {
 export const signalerAnnonce = async (
   bienId: string,
   motif: string,
-  description?: string
+  description?: string,
+  signaleParNom?: string,
+  signaleParTel?: string,
+  signaleParEmail?: string
 ) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) {
     throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
   }
-  // Log the report - in production you would create a Signalement model
-  console.log(`Signalement d'annonce ${bienId}: ${motif} - ${description || "sans description"}`);
-  return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
+
+  const signalement = await prisma.signalement.create({
+    data: {
+      type: "ANNONCE",
+      motif,
+      description,
+      signaleParType: "PUBLIC",
+      signaleParNom,
+      signaleParTel,
+      signaleParEmail,
+      bienId,
+    },
+  });
+
+  // Règle auto : 5+ signalements EN_ATTENTE ou EN_COURS → bien.actif = false
+  const count = await prisma.signalement.count({
+    where: { bienId, statut: { in: ["EN_ATTENTE", "EN_COURS"] } },
+  });
+  if (count >= 5) {
+    await prisma.bien.update({ where: { id: bienId }, data: { actif: false } });
+  }
+
+  return { success: true, message: "Signalement enregistré. Merci de votre vigilance.", id: signalement.id };
 };
 
 // ─── Public — annonces similaires avec système de score ─────────────────────
