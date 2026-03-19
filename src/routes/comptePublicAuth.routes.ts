@@ -20,4 +20,13 @@ router.post("/logout", controllerWrapper(Ctrl.logout));
 /** GET /api/public/auth/me */
 router.get("/me", authenticateComptePublic, controllerWrapper(Ctrl.me));
 
+/** PUT /api/public/auth/profile */
+router.put("/profile", authenticateComptePublic, controllerWrapper(Ctrl.updateProfile));
+
+/** PUT /api/public/auth/change-password */
+router.put("/change-password", authenticateComptePublic, controllerWrapper(Ctrl.changePassword));
+
+/** DELETE /api/public/auth/account */
+router.delete("/account", authenticateComptePublic, controllerWrapper(Ctrl.deleteAccount));
+
 export default router;

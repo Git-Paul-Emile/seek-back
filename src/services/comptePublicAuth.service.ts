@@ -178,6 +178,62 @@ export const getMe = async (id: string) => {
   return compte;
 };
 
+// ─── Update Profile ───────────────────────────────────────────────────────────
+
+export const updateProfile = async (
+  id: string,
+  data: { nom?: string; prenom?: string; email?: string | null }
+) => {
+  if (data.email) {
+    const conflict = await prisma.comptePublic.findFirst({
+      where: { email: data.email, NOT: { id } },
+    });
+    if (conflict) throw new AppError("Cet email est déjà utilisé", StatusCodes.CONFLICT);
+  }
+
+  const compte = await prisma.comptePublic.update({
+    where: { id },
+    data: {
+      ...(data.nom !== undefined && { nom: data.nom }),
+      ...(data.prenom !== undefined && { prenom: data.prenom }),
+      ...(data.email !== undefined && { email: data.email }),
+    },
+    select: { id: true, nom: true, prenom: true, telephone: true, email: true, createdAt: true },
+  });
+  return compte;
+};
+
+// ─── Change Password ───────────────────────────────────────────────────────────
+
+export const changePassword = async (
+  id: string,
+  data: { currentPassword: string; newPassword: string }
+) => {
+  const compte = await prisma.comptePublic.findUnique({ where: { id } });
+  if (!compte) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+
+  const valid = await bcrypt.compare(data.currentPassword, compte.password);
+  if (!valid) throw new AppError("Mot de passe actuel incorrect", StatusCodes.UNAUTHORIZED);
+
+  const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+  const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
+
+  await prisma.comptePublic.update({ where: { id }, data: { password: hashedPassword } });
+};
+
+// ─── Delete Account ────────────────────────────────────────────────────────────
+
+export const deleteAccount = async (id: string, password: string) => {
+  const compte = await prisma.comptePublic.findUnique({ where: { id } });
+  if (!compte) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+
+  const valid = await bcrypt.compare(password, compte.password);
+  if (!valid) throw new AppError("Mot de passe incorrect", StatusCodes.UNAUTHORIZED);
+
+  // Cascade: refreshTokens + favoris supprimés automatiquement (onDelete: Cascade)
+  await prisma.comptePublic.delete({ where: { id } });
+};
+
 // ─── Helpers internes ─────────────────────────────────────────────────────────
 
 async function saveRefreshToken(comptePublicId: string, rawToken: string, expiresAt: Date) {

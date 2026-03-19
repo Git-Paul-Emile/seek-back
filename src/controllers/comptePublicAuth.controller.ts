@@ -106,3 +106,63 @@ export const me = async (req: Request, res: Response) => {
   const compte = await AuthService.getMe(req.comptePublic!.id);
   res.json(jsonResponse({ status: "success", message: "Profil", data: compte }));
 };
+
+// PUT /api/public/auth/profile
+export const updateProfile = async (req: Request, res: Response) => {
+  const { nom, prenom, email } = req.body;
+
+  if (!nom && !prenom && email === undefined) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Aucun champ à mettre à jour" })
+    );
+    return;
+  }
+
+  const compte = await AuthService.updateProfile(req.comptePublic!.id, { nom, prenom, email });
+  res.json(jsonResponse({ status: "success", message: "Profil mis à jour", data: compte }));
+};
+
+// PUT /api/public/auth/change-password
+export const changePassword = async (req: Request, res: Response) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "currentPassword et newPassword sont requis" })
+    );
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Le nouveau mot de passe doit faire au moins 6 caractères" })
+    );
+    return;
+  }
+
+  await AuthService.changePassword(req.comptePublic!.id, { currentPassword, newPassword });
+  res.json(jsonResponse({ status: "success", message: "Mot de passe modifié avec succès", data: null }));
+};
+
+// DELETE /api/public/auth/account
+export const deleteAccount = async (req: Request, res: Response) => {
+  const { password } = req.body;
+
+  if (!password) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Mot de passe requis pour confirmer la suppression" })
+    );
+    return;
+  }
+
+  await AuthService.deleteAccount(req.comptePublic!.id, password);
+
+  const isProduction = process.env.NODE_ENV === "production";
+  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
+  const baseOptions: CookieOptions = { path: "/", httpOnly: true, secure: isProduction, sameSite };
+
+  res.clearCookie(ACCESS_COOKIE, baseOptions);
+  res.clearCookie(REFRESH_COOKIE, baseOptions);
+
+  res.json(jsonResponse({ status: "success", message: "Compte supprimé avec succès", data: null }));
+};
