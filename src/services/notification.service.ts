@@ -19,7 +19,9 @@ export type TypeNotif =
   | "RESET_PASSWORD"
   | "ALERTE"
   | "INVITATION_BAIL"
-  | "VERIFICATION_TELEPHONE";
+  | "VERIFICATION_TELEPHONE"
+  | "PAIEMENT_ESPECES_LOCATAIRE"
+  | "CONFIRMATION_ESPECES_PROPRIETAIRE";
 
 export interface NotificationPayload {
   type: TypeNotif;
