@@ -66,7 +66,7 @@ export const getInvitations = async (req: Request, res: Response): Promise<void>
 
 export const accepterInvitation = async (req: Request, res: Response): Promise<void> => {
   const locataireId = getLocataire(req);
-  const { token } = req.params;
+  const token = req.params.token as string;
   if (!token) throw new AppError("Token manquant", StatusCodes.BAD_REQUEST);
 
   const bail = await BailInvitationService.accepterInvitation(token, locataireId);
@@ -79,7 +79,7 @@ export const accepterInvitation = async (req: Request, res: Response): Promise<v
 
 export const refuserInvitation = async (req: Request, res: Response): Promise<void> => {
   const locataireId = getLocataire(req);
-  const { token } = req.params;
+  const token = req.params.token as string;
   if (!token) throw new AppError("Token manquant", StatusCodes.BAD_REQUEST);
 
   const result = await BailInvitationService.refuserInvitation(token, locataireId);

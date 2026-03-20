@@ -18,6 +18,7 @@ export type TypeNotif =
   | "CONTRAT"
   | "RESET_PASSWORD"
   | "ALERTE"
+  | "INVITATION_BAIL"
   | "VERIFICATION_TELEPHONE";
 
 export interface NotificationPayload {
