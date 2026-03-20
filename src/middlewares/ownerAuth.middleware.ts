@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-// Middleware optionnel — ne rejette pas si pas de token
+// Middleware optionnel - ne rejette pas si pas de token
 export const optionalAuthOwner = async (
   req: Request,
   _res: Response,

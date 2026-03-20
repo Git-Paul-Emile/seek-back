@@ -16,7 +16,7 @@ const setTokenCookies = (
 ) => {
   const isProduction = process.env.NODE_ENV === "production";
 
-  // Access token — HttpOnly, courte durée, toutes les routes
+  // Access token - HttpOnly, courte durée, toutes les routes
   res.cookie(ACCESS_COOKIE, accessToken, {
     httpOnly: true,
     secure: isProduction,
@@ -25,7 +25,7 @@ const setTokenCookies = (
     maxAge: 15 * 60 * 1000, // 15 min
   });
 
-  // Refresh token — HttpOnly, path restreint à /api/auth/refresh uniquement
+  // Refresh token - HttpOnly, path restreint à /api/auth/refresh uniquement
   res.cookie(REFRESH_COOKIE, refreshToken, {
     httpOnly: true,
     secure: isProduction,

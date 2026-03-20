@@ -10,13 +10,13 @@ import {
 
 const router = Router();
 
-/** GET /api/statuts-bien — public : statuts actifs */
+/** GET /api/statuts-bien - public : statuts actifs */
 router.get("/", controllerWrapper(StatutBienController.getAll));
 
-/** GET /api/statuts-bien/admin — admin : tous les statuts */
+/** GET /api/statuts-bien/admin - admin : tous les statuts */
 router.get("/admin", authenticate, controllerWrapper(StatutBienController.getAllAdmin));
 
-/** POST /api/statuts-bien — admin */
+/** POST /api/statuts-bien - admin */
 router.post(
   "/",
   authenticate,
@@ -24,7 +24,7 @@ router.post(
   controllerWrapper(StatutBienController.create)
 );
 
-/** PUT /api/statuts-bien/:id — admin */
+/** PUT /api/statuts-bien/:id - admin */
 router.put(
   "/:id",
   authenticate,
@@ -32,7 +32,7 @@ router.put(
   controllerWrapper(StatutBienController.update)
 );
 
-/** DELETE /api/statuts-bien/:id — admin */
+/** DELETE /api/statuts-bien/:id - admin */
 router.delete("/:id", authenticate, controllerWrapper(StatutBienController.remove));
 
 export default router;

@@ -11,7 +11,7 @@ router.use(authenticateOwner);
 
 // ⚠️ Routes spécifiques AVANT les routes paramétrées
 
-/** GET /api/owner/locataires/verifications/pending/count — Nombre de demandes de vérification en attente */
+/** GET /api/owner/locataires/verifications/pending/count - Nombre de demandes de vérification en attente */
 router.get(
   "/verifications/pending/count",
   controllerWrapper(LocataireController.getPendingVerificationsCount)
@@ -51,14 +51,14 @@ router.delete(
   controllerWrapper(LocataireController.deleteLocataire)
 );
 
-/** POST /api/owner/locataires/:id/verification/approve — Approuver la vérification du locataire */
+/** POST /api/owner/locataires/:id/verification/approve - Approuver la vérification du locataire */
 router.post(
   "/:id/verification/approve",
   validateId,
   controllerWrapper(LocataireController.approveLocataireVerification)
 );
 
-/** POST /api/owner/locataires/:id/verification/reject — Rejeter la vérification du locataire */
+/** POST /api/owner/locataires/:id/verification/reject - Rejeter la vérification du locataire */
 router.post(
   "/:id/verification/reject",
   validateId,

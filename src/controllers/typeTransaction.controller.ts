@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import * as TypeTransactionService from "../services/typeTransaction.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 
-// GET /api/types-transaction — public
+// GET /api/types-transaction - public
 export const getAll = async (_req: Request, res: Response): Promise<void> => {
   const types = await TypeTransactionService.getAll();
   res.status(StatusCodes.OK).json(
@@ -11,7 +11,7 @@ export const getAll = async (_req: Request, res: Response): Promise<void> => {
   );
 };
 
-// GET /api/types-transaction/admin — admin (inclut inactifs)
+// GET /api/types-transaction/admin - admin (inclut inactifs)
 export const getAllAdmin = async (_req: Request, res: Response): Promise<void> => {
   const types = await TypeTransactionService.getAllAdmin();
   res.status(StatusCodes.OK).json(
@@ -19,7 +19,7 @@ export const getAllAdmin = async (_req: Request, res: Response): Promise<void> =
   );
 };
 
-// POST /api/types-transaction — admin
+// POST /api/types-transaction - admin
 export const create = async (req: Request, res: Response): Promise<void> => {
   const type = await TypeTransactionService.create({
     nom:   req.body.nom,
@@ -30,7 +30,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// PUT /api/types-transaction/:id — admin
+// PUT /api/types-transaction/:id - admin
 export const update = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
 
@@ -47,7 +47,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// DELETE /api/types-transaction/:id — admin
+// DELETE /api/types-transaction/:id - admin
 export const remove = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
   await TypeTransactionService.remove(id);

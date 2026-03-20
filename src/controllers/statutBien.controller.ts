@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import * as StatutBienService from "../services/statutBien.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 
-// GET /api/statuts-bien — public
+// GET /api/statuts-bien - public
 export const getAll = async (_req: Request, res: Response): Promise<void> => {
   const statuts = await StatutBienService.getAll();
   res.status(StatusCodes.OK).json(
@@ -11,7 +11,7 @@ export const getAll = async (_req: Request, res: Response): Promise<void> => {
   );
 };
 
-// GET /api/statuts-bien/admin — admin
+// GET /api/statuts-bien/admin - admin
 export const getAllAdmin = async (_req: Request, res: Response): Promise<void> => {
   const statuts = await StatutBienService.getAllAdmin();
   res.status(StatusCodes.OK).json(
@@ -19,7 +19,7 @@ export const getAllAdmin = async (_req: Request, res: Response): Promise<void> =
   );
 };
 
-// POST /api/statuts-bien — admin
+// POST /api/statuts-bien - admin
 export const create = async (req: Request, res: Response): Promise<void> => {
   const statut = await StatutBienService.create({
     nom:   req.body.nom,
@@ -30,7 +30,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// PUT /api/statuts-bien/:id — admin
+// PUT /api/statuts-bien/:id - admin
 export const update = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
 
@@ -47,7 +47,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// DELETE /api/statuts-bien/:id — admin
+// DELETE /api/statuts-bien/:id - admin
 export const remove = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
   await StatutBienService.remove(id);

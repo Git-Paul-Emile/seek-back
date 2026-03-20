@@ -260,12 +260,12 @@ export const refresh = async (
 
   if (!stored) {
     await OwnerRepo.revokeAllRefreshTokens(payload.sub);
-    throw new AppError("Token révoqué ou inconnu — session terminée", StatusCodes.UNAUTHORIZED);
+    throw new AppError("Token révoqué ou inconnu - session terminée", StatusCodes.UNAUTHORIZED);
   }
 
   if (stored.revokedAt !== null) {
     await OwnerRepo.revokeAllRefreshTokens(payload.sub);
-    throw new AppError("Token déjà utilisé — compromission détectée", StatusCodes.UNAUTHORIZED);
+    throw new AppError("Token déjà utilisé - compromission détectée", StatusCodes.UNAUTHORIZED);
   }
 
   if (stored.expiresAt < new Date()) {

@@ -15,7 +15,7 @@ declare global {
 /**
  * Middleware d'authentification admin.
  * Lit le JWT access token depuis :
- *  1. Le cookie `accessToken` (HttpOnly — prioritaire)
+ *  1. Le cookie `accessToken` (HttpOnly - prioritaire)
  *  2. Le header Authorization: Bearer <token> (fallback pour les clients API)
  */
 export const authenticate = (

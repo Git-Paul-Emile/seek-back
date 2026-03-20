@@ -105,7 +105,7 @@ export const creerBail = async (
   res.status(StatusCodes.CREATED).json(
     jsonResponse({
       status: "success",
-      message: "Bail créé — le bien est maintenant Loué",
+      message: "Bail créé - le bien est maintenant Loué",
       data: bail,
     })
   );
@@ -126,7 +126,7 @@ export const annulerBail = async (
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
-      message: "Bail annulé — le bien est maintenant Libre",
+      message: "Bail annulé - le bien est maintenant Libre",
       data: null,
     })
   );
@@ -179,7 +179,7 @@ export const archiverBail = async (
     proprietaireId
   );
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Bail archivé — locataire passé en ancien locataire", data: bail })
+    jsonResponse({ status: "success", message: "Bail archivé - locataire passé en ancien locataire", data: bail })
   );
 };
 
@@ -218,7 +218,7 @@ export const terminerBail = async (
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
-      message: "Bail terminé — le bien est maintenant Libre",
+      message: "Bail terminé - le bien est maintenant Libre",
       data: bail,
     })
   );
@@ -242,7 +242,7 @@ export const resilierBail = async (
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
-      message: "Bail résilié — le bien est maintenant Libre",
+      message: "Bail résilié - le bien est maintenant Libre",
       data: bail,
     })
   );

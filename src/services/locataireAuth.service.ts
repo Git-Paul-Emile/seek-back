@@ -251,7 +251,7 @@ export const refresh = async (
   if (stored.revokedAt !== null) {
     await LocataireRepo.revokeAllRefreshTokens(payload.sub);
     throw new AppError(
-      "Token déjà utilisé — compromission détectée",
+      "Token déjà utilisé - compromission détectée",
       StatusCodes.UNAUTHORIZED
     );
   }

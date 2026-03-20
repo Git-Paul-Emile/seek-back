@@ -386,7 +386,7 @@ export const annulerAnnonce = async (bienId: string, proprietaireId: string) => 
   return BienRepository.deleteBienById(bienId);
 };
 
-// ─── Admin — annonces ─────────────────────────────────────────────────────────
+// ─── Admin - annonces ─────────────────────────────────────────────────────────
 
 export const countAnnoncesPending = async () => {
   return BienRepository.countAnnoncesPending();
@@ -429,19 +429,19 @@ export const adminDeleteBien = async (bienId: string) => {
   return BienRepository.deleteBienById(bienId);
 };
 
-// ─── Public — dernières annonces (pour page d'accueil) ───────────────────────────
+// ─── Public - dernières annonces (pour page d'accueil) ───────────────────────────
 
 export const getDernieresAnnonces = async (limit: number = 10) => {
   return BienRepository.getDernieresAnnonces(limit);
 };
 
-// ─── Public — lieux distincts ────────────────────────────────────────────────
+// ─── Public - lieux distincts ────────────────────────────────────────────────
 
 export const getDistinctLieux = async () => {
   return BienRepository.getDistinctLieux();
 };
 
-// ─── Public — recherche avec filtres ──────────────────────────────────────────
+// ─── Public - recherche avec filtres ──────────────────────────────────────────
 
 export const searchAnnoncePubliques = async (params: {
   ville?: string;
@@ -470,7 +470,7 @@ export const searchAnnoncePubliques = async (params: {
   return BienRepository.searchAnnoncePubliques(params);
 };
 
-// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+// ─── Public - annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublieById = async (id: string) => {
   const bien = await BienRepository.getAnnoncePublieById(id);
@@ -485,7 +485,7 @@ export const getAnnoncePublieById = async (id: string) => {
   };
 };
 
-// ─── Public — annonces similaires avec système de score ─────────────────────
+// ─── Public - annonces similaires avec système de score ─────────────────────
 
 export const getAnnoncesSimilaires = async (
   bienId: string,

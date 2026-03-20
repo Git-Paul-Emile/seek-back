@@ -112,7 +112,7 @@ export const getQuittancesBail = async (
 
 /**
  * Génère (ou récupère si déjà existante) la quittance d'une échéance payée.
- * Usage interne uniquement — ne vérifie pas les droits propriétaire.
+ * Usage interne uniquement - ne vérifie pas les droits propriétaire.
  */
 export const genererQuittanceInterne = async (echeanceId: string): Promise<void> => {
   const echeance = await prisma.echeancierLoyer.findUnique({

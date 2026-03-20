@@ -33,7 +33,7 @@ async function envoyerViaApi(
   // TODO: Intégrer l'API WhatsApp Business
   return {
     success: false,
-    messageRetour: `[STUB ${canal}] Notification programmée pour ${destinataire} — API non configurée. Message : ${contenu.slice(0, 80)}...`,
+    messageRetour: `[STUB ${canal}] Notification programmée pour ${destinataire} - API non configurée. Message : ${contenu.slice(0, 80)}...`,
   };
 }
 
@@ -94,7 +94,7 @@ export const envoyerRappelLoyer = async (params: {
     `Bonjour ${params.locataireNom}, votre loyer de ${params.montant.toLocaleString("fr-FR")} FCFA` +
     ` est dû le ${new Date(params.dateEcheance).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}` +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Merci de procéder au paiement. — SEEK Immobilier`;
+    `. Merci de procéder au paiement. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "RAPPEL_LOYER",
@@ -130,7 +130,7 @@ export const envoyerConfirmationPaiement = async (params: {
     ` du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")} a bien été enregistré` +
     (params.reference ? ` (réf: ${params.reference})` : "") +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Merci. — SEEK Immobilier`;
+    `. Merci. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "CONFIRMATION_PAIEMENT",
@@ -165,7 +165,7 @@ export const envoyerAlerteRetard = async (params: {
     `⚠️ Bonjour ${params.locataireNom}, votre loyer de ${params.montant.toLocaleString("fr-FR")} FCFA` +
     ` est en retard de ${params.joursRetard} jour(s)` +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Veuillez régulariser au plus vite. — SEEK Immobilier`;
+    `. Veuillez régulariser au plus vite. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "ALERTE_RETARD",
@@ -200,7 +200,7 @@ export const envoyerInitiationPaiement = async (params: {
     `Votre locataire ${params.locataireNom} indique avoir initié le paiement de ` +
     `${params.montant.toLocaleString("fr-FR")} FCFA via ${params.provider}` +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Veuillez confirmer la réception. — SEEK Immobilier`;
+    `. Veuillez confirmer la réception. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "INITIATION_PAIEMENT",
@@ -238,7 +238,7 @@ export const envoyerPaiementLocataire = async (params: {
   const dateStr = new Date(params.datePaiement).toLocaleDateString("fr-FR");
   const nbMois = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
   const partiel = params.montantPaye < params.montant
-    ? ` — paiement partiel, reste ${(params.montant - params.montantPaye).toLocaleString("fr-FR")} FCFA`
+    ? ` - paiement partiel, reste ${(params.montant - params.montantPaye).toLocaleString("fr-FR")} FCFA`
     : "";
 
   const contenu =
@@ -246,7 +246,7 @@ export const envoyerPaiementLocataire = async (params: {
     `${montantPayeStr} FCFA${nbMois} le ${dateStr}` +
     (params.reference ? ` (réf: ${params.reference})` : "") +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `${partiel}. Merci de confirmer la réception. — SEEK Immobilier`;
+    `${partiel}. Merci de confirmer la réception. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "PAIEMENT_LOCATAIRE",

@@ -130,7 +130,7 @@ export const initierPaiementMobileMoney = async (
       bienId: params.bienId,
       proprietaireId: params.proprietaireId,
       locataireId: params.locataireId,
-      messageRetour: `[STUB] Intégration ${params.provider} non configurée — paiement manuel requis`,
+      messageRetour: `[STUB] Intégration ${params.provider} non configurée - paiement manuel requis`,
     },
   });
 

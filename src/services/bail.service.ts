@@ -421,18 +421,15 @@ export const getEcheancier = async (bienId: string, bailId: string, proprietaire
   if (!bail) throw new AppError("Bail introuvable", StatusCodes.NOT_FOUND);
 
   const now = new Date();
-  const graceDays = (bail as unknown as { delaiGrace?: number }).delaiGrace ?? 5;
-  const graceLimit = new Date(now.getTime() - graceDays * 24 * 60 * 60 * 1000);
-
   // A_VENIR → EN_ATTENTE quand la date est arrivée
   await prisma.echeancierLoyer.updateMany({
     where: { bailId, statut: "A_VENIR", dateEcheance: { lte: now } },
     data: { statut: "EN_ATTENTE" },
   });
 
-  // EN_ATTENTE → EN_RETARD après le délai de grâce configuré par le propriétaire
+  // EN_ATTENTE → EN_RETARD immédiatement après l'échéance (aucun délai de grâce)
   await prisma.echeancierLoyer.updateMany({
-    where: { bailId, statut: "EN_ATTENTE", dateEcheance: { lt: graceLimit } },
+    where: { bailId, statut: "EN_ATTENTE", dateEcheance: { lt: now } },
     data: { statut: "EN_RETARD" },
   });
 
@@ -1028,15 +1025,12 @@ export const getEcheancierForLocataire = async (locataireId: string) => {
   if (!bail) return [];
 
   const now = new Date();
-  const graceDays = (bail as unknown as { delaiGrace?: number }).delaiGrace ?? 5;
-  const graceLimit = new Date(now.getTime() - graceDays * 24 * 60 * 60 * 1000);
-
   await prisma.echeancierLoyer.updateMany({
     where: { bailId: bail.id, statut: "A_VENIR", dateEcheance: { lte: now } },
     data: { statut: "EN_ATTENTE" },
   });
   await prisma.echeancierLoyer.updateMany({
-    where: { bailId: bail.id, statut: "EN_ATTENTE", dateEcheance: { lt: graceLimit } },
+    where: { bailId: bail.id, statut: "EN_ATTENTE", dateEcheance: { lt: now } },
     data: { statut: "EN_RETARD" },
   });
 

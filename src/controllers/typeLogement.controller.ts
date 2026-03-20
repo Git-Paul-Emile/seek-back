@@ -4,7 +4,7 @@ import * as TypeLogementService from "../services/typeLogement.service.js";
 import * as CloudinaryService from "../services/cloudinary.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 
-// GET /api/types-logement — public
+// GET /api/types-logement - public
 export const getAll = async (_req: Request, res: Response): Promise<void> => {
   const types = await TypeLogementService.getAll();
   res.status(StatusCodes.OK).json(
@@ -12,7 +12,7 @@ export const getAll = async (_req: Request, res: Response): Promise<void> => {
   );
 };
 
-// GET /api/types-logement/admin — admin (inclut inactifs)
+// GET /api/types-logement/admin - admin (inclut inactifs)
 export const getAllAdmin = async (_req: Request, res: Response): Promise<void> => {
   const types = await TypeLogementService.getAllAdmin();
   res.status(StatusCodes.OK).json(
@@ -20,7 +20,7 @@ export const getAllAdmin = async (_req: Request, res: Response): Promise<void> =
   );
 };
 
-// POST /api/types-logement — admin
+// POST /api/types-logement - admin
 export const create = async (req: Request, res: Response): Promise<void> => {
   let imageUrl: string | undefined;
 
@@ -40,7 +40,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// PUT /api/types-logement/:id — admin
+// PUT /api/types-logement/:id - admin
 export const update = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
   let imageUrl: string | undefined;
@@ -76,7 +76,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   );
 };
 
-// DELETE /api/types-logement/:id — admin
+// DELETE /api/types-logement/:id - admin
 export const remove = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id as string;
 

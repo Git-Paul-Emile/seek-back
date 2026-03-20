@@ -7,41 +7,41 @@ import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
 
-/** GET /api/biens/stats — statistiques du propriétaire connecté */
+/** GET /api/biens/stats - statistiques du propriétaire connecté */
 router.get(
   "/stats",
   authenticateOwner,
   controllerWrapper(BienController.getOwnerStatsController)
 );
 
-/** GET /api/biens/stats/vues — stats vues globales (toutes annonces du propriétaire) */
+/** GET /api/biens/stats/vues - stats vues globales (toutes annonces du propriétaire) */
 router.get(
   "/stats/vues",
   authenticateOwner,
   controllerWrapper(BienController.getStatsVuesOwnerController)
 );
 
-/** GET /api/biens/stats/favoris — stats favoris globales (toutes annonces du propriétaire) */
+/** GET /api/biens/stats/favoris - stats favoris globales (toutes annonces du propriétaire) */
 router.get(
   "/stats/favoris",
   authenticateOwner,
   controllerWrapper(BienController.getStatsFavorisOwnerController)
 );
 
-/** GET /api/biens/stats/vues/admin — stats vues globales admin */
+/** GET /api/biens/stats/vues/admin - stats vues globales admin */
 router.get(
   "/stats/vues/admin",
   controllerWrapper(BienController.getAdminStatsVuesController)
 );
 
-/** GET /api/biens/draft — récupérer le brouillon du propriétaire */
+/** GET /api/biens/draft - récupérer le brouillon du propriétaire */
 router.get(
   "/draft",
   authenticateOwner,
   controllerWrapper(BienController.getDraft)
 );
 
-/** POST /api/biens/draft — enregistrer / mettre à jour le brouillon */
+/** POST /api/biens/draft - enregistrer / mettre à jour le brouillon */
 router.post(
   "/draft",
   authenticateOwner,
@@ -49,7 +49,7 @@ router.post(
   controllerWrapper(BienController.saveDraft)
 );
 
-/** PATCH /api/biens/:id/soumettre — soumettre pour publication */
+/** PATCH /api/biens/:id/soumettre - soumettre pour publication */
 router.patch(
   "/:id/soumettre",
   authenticateOwner,
@@ -57,7 +57,7 @@ router.patch(
   controllerWrapper(BienController.soumettreAnnonce)
 );
 
-/** PATCH /api/biens/:id/retour-brouillon — annuler/dépublier vers brouillon */
+/** PATCH /api/biens/:id/retour-brouillon - annuler/dépublier vers brouillon */
 router.patch(
   "/:id/retour-brouillon",
   authenticateOwner,
@@ -65,7 +65,7 @@ router.patch(
   controllerWrapper(BienController.retourBrouillon)
 );
 
-/** PATCH /api/biens/:id/annuler — annuler définitivement une annonce */
+/** PATCH /api/biens/:id/annuler - annuler définitivement une annonce */
 router.patch(
   "/:id/annuler",
   authenticateOwner,
@@ -73,14 +73,14 @@ router.patch(
   controllerWrapper(BienController.annulerAnnonce)
 );
 
-/** GET /api/biens — liste des biens du propriétaire */
+/** GET /api/biens - liste des biens du propriétaire */
 router.get(
   "/",
   authenticateOwner,
   controllerWrapper(BienController.getBiens)
 );
 
-/** DELETE /api/biens/:id — supprimer un brouillon */
+/** DELETE /api/biens/:id - supprimer un brouillon */
 router.delete(
   "/:id",
   authenticateOwner,
@@ -88,7 +88,7 @@ router.delete(
   controllerWrapper(BienController.deleteBien)
 );
 
-/** GET /api/biens/:id/stats-vues — stats vues d'un bien (propriétaire) */
+/** GET /api/biens/:id/stats-vues - stats vues d'un bien (propriétaire) */
 router.get(
   "/:id/stats-vues",
   authenticateOwner,
@@ -96,7 +96,7 @@ router.get(
   controllerWrapper(BienController.getStatsVuesBienController)
 );
 
-/** GET /api/biens/:id/stats-favoris — stats favoris d'un bien (propriétaire) */
+/** GET /api/biens/:id/stats-favoris - stats favoris d'un bien (propriétaire) */
 router.get(
   "/:id/stats-favoris",
   authenticateOwner,
@@ -111,32 +111,32 @@ router.get(
   controllerWrapper(BienController.getBienById)
 );
 
-/** GET /api/biens/public/dernieres — dernières annonces publiées (pour page d'accueil) */
+/** GET /api/biens/public/dernieres - dernières annonces publiées (pour page d'accueil) */
 router.get(
   "/public/dernieres",
   controllerWrapper(BienController.getDernieresAnnonces)
 );
 
-/** GET /api/biens/public/lieux — quartiers + villes distincts des annonces publiées */
+/** GET /api/biens/public/lieux - quartiers + villes distincts des annonces publiées */
 router.get(
   "/public/lieux",
   controllerWrapper(BienController.getDistinctLieux)
 );
 
-/** GET /api/biens/public/recherche — recherche publique avec filtres */
+/** GET /api/biens/public/recherche - recherche publique avec filtres */
 router.get(
   "/public/recherche",
   controllerWrapper(BienController.searchAnnoncesPubliques)
 );
 
-/** GET /api/biens/public/:id — une annonce publiée (accessible publiquement) */
+/** GET /api/biens/public/:id - une annonce publiée (accessible publiquement) */
 router.get(
   "/public/:id",
   validateId,
   controllerWrapper(BienController.getAnnoncePublie)
 );
 
-/** GET /api/biens/public/:id/similaires — annonces similaires */
+/** GET /api/biens/public/:id/similaires - annonces similaires */
 router.get(
   "/public/:id/similaires",
   validateId,

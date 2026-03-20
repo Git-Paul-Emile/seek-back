@@ -19,7 +19,7 @@ const router = Router({ mergeParams: true });
 // GET /api/biens/:bienId/documents
 router.get("/", authenticateOwner, controllerWrapper(DocumentBienController.listDocuments));
 
-// POST /api/biens/:bienId/documents — upload fichier
+// POST /api/biens/:bienId/documents - upload fichier
 router.post("/", authenticateOwner, docUpload.single("fichier"), controllerWrapper(DocumentBienController.uploadDocument));
 
 // DELETE /api/biens/:bienId/documents/:docId

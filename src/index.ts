@@ -1,4 +1,4 @@
-import "dotenv/config"; // Doit être le 1er import — charge .env avant tous les autres modules
+import "dotenv/config"; // Doit être le 1er import - charge .env avant tous les autres modules
 import { createServer } from "http";
 import { connectToDatabase } from "./config/database.js";
 import app from "./config/app.js";

@@ -11,13 +11,13 @@ import {
 
 const router = Router();
 
-/** GET /api/types-logement — public : types actifs */
+/** GET /api/types-logement - public : types actifs */
 router.get("/", controllerWrapper(TypeLogementController.getAll));
 
-/** GET /api/types-logement/admin — admin : tous les types (actifs + inactifs) */
+/** GET /api/types-logement/admin - admin : tous les types (actifs + inactifs) */
 router.get("/admin", authenticate, controllerWrapper(TypeLogementController.getAllAdmin));
 
-/** POST /api/types-logement — admin
+/** POST /api/types-logement - admin
  *  Accepte multipart/form-data avec champ optionnel "image" (fichier)
  */
 router.post(
@@ -28,7 +28,7 @@ router.post(
   controllerWrapper(TypeLogementController.create)
 );
 
-/** PUT /api/types-logement/:id — admin
+/** PUT /api/types-logement/:id - admin
  *  Accepte multipart/form-data (avec fichier) ou JSON (toggle actif, etc.)
  */
 router.put(
@@ -39,7 +39,7 @@ router.put(
   controllerWrapper(TypeLogementController.update)
 );
 
-/** DELETE /api/types-logement/:id — admin */
+/** DELETE /api/types-logement/:id - admin */
 router.delete("/:id", authenticate, controllerWrapper(TypeLogementController.remove));
 
 

@@ -9,12 +9,12 @@ import * as BailService from "./bail.service.js";
 // ─── Substitution de variables ────────────────────────────────────────────────
 
 const formatDate = (d: Date | null | undefined) => {
-  if (!d) return "—";
+  if (!d) return "";
   return new Intl.DateTimeFormat("fr-SN", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(d));
 };
 
 const formatMontant = (n: number | null | undefined) => {
-  if (n == null) return "—";
+  if (n == null) return "";
   return new Intl.NumberFormat("fr-SN").format(n) + " FCFA";
 };
 
@@ -24,7 +24,7 @@ const formatDuree = (debut: Date, fin: Date | null | undefined): string => {
   const f = new Date(fin);
   const totalMonths =
     (f.getFullYear() - d.getFullYear()) * 12 + (f.getMonth() - d.getMonth());
-  if (totalMonths <= 0) return "—";
+  if (totalMonths <= 0) return "";
   if (totalMonths < 12) return `${totalMonths} mois`;
   const years = Math.floor(totalMonths / 12);
   const rem = totalMonths % 12;
@@ -40,6 +40,7 @@ interface ContratData {
     montantLoyer: number;
     montantCaution?: number | null;
     frequencePaiement?: string | null;
+    jourLimitePaiement?: number | null;
   };
   locataire: {
     nom: string;
@@ -61,26 +62,27 @@ interface ContratData {
 
 export const substituerVariables = (contenu: string, data: ContratData): string => {
   const { bail, locataire, proprietaire, bien } = data;
-  const adresseBien = [bien.adresse, bien.quartier, bien.ville].filter(Boolean).join(", ") || "—";
+  const adresseBien = [bien.adresse, bien.quartier, bien.ville].filter(Boolean).join(", ") || "";
 
   const vars: Record<string, string> = {
     nom_bailleur:          proprietaire.nom,
     prenom_bailleur:       proprietaire.prenom,
     nom_locataire:         locataire.nom,
     prenom_locataire:      locataire.prenom,
-    profession_locataire:  locataire.situationProfessionnelle || "—",
-    adresse_bien:          adresseBien,
-    ville:                 bien.ville || "—",
-    region:                bien.region || bien.ville || "—",
-    quartier:              bien.quartier || "—",
-    loyer:                 formatMontant(bail.montantLoyer),
-    caution:               formatMontant(bail.montantCaution),
-    date_debut:            formatDate(bail.dateDebutBail),
-    date_fin:              formatDate(bail.dateFinBail),
-    duree:                 formatDuree(bail.dateDebutBail, bail.dateFinBail),
-    type_bail:             bail.typeBail || "—",
-    frequence_paiement:    bail.frequencePaiement || "mensuel",
-    date_signature:        formatDate(new Date()),
+    profession_locataire:    locataire.situationProfessionnelle || "",
+    adresse_bien:            adresseBien,
+    ville:                   bien.ville || "",
+    region:                  bien.region || bien.ville || "",
+    quartier:                bien.quartier || "",
+    loyer:                   formatMontant(bail.montantLoyer),
+    caution:                 formatMontant(bail.montantCaution),
+    date_debut:              formatDate(bail.dateDebutBail),
+    date_fin:                formatDate(bail.dateFinBail),
+    duree:                   formatDuree(bail.dateDebutBail, bail.dateFinBail),
+    type_bail:               bail.typeBail || "",
+    frequence_paiement:      bail.frequencePaiement || "mensuel",
+    jour_limite_paiement:    bail.jourLimitePaiement != null ? `le ${bail.jourLimitePaiement} de chaque mois` : "",
+    date_signature:          formatDate(new Date()),
   };
 
   return contenu.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? `{{${key}}}`);
@@ -110,6 +112,7 @@ const getBailWithRelations = async (bailId: string, bienId: string) => {
       montantLoyer: true,
       montantCaution: true,
       frequencePaiement: true,
+      jourLimitePaiement: true,
       locataire: {
         select: {
           id: true,
@@ -189,12 +192,13 @@ export const genererContrat = async (
 
   const contenu = substituerVariables(modele.contenu, {
     bail: {
-      typeBail:          bail.typeBail,
-      dateDebutBail:     bail.dateDebutBail,
-      dateFinBail:       bail.dateFinBail,
-      montantLoyer:      bail.montantLoyer,
-      montantCaution:    bail.montantCaution,
-      frequencePaiement: bail.frequencePaiement,
+      typeBail:             bail.typeBail,
+      dateDebutBail:        bail.dateDebutBail,
+      dateFinBail:          bail.dateFinBail,
+      montantLoyer:         bail.montantLoyer,
+      montantCaution:       bail.montantCaution,
+      frequencePaiement:    bail.frequencePaiement,
+      jourLimitePaiement:   bail.jourLimitePaiement,
     },
     locataire: bail.locataire,
     proprietaire,
@@ -319,7 +323,7 @@ export const envoyerContrat = async (
 
       await sendMail({
         to: bail.locataire.email,
-        subject: `Votre contrat de bail — ${contrat.titre}`,
+        subject: `Votre contrat de bail - ${contrat.titre}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;">
             <div style="background:#0C1A35; padding: 24px; border-radius: 8px 8px 0 0;">

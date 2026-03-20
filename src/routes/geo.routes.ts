@@ -7,18 +7,18 @@ const router = Router();
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 
-/** GET /api/geo/pays — liste des pays (public) */
+/** GET /api/geo/pays - liste des pays (public) */
 router.get("/pays", controllerWrapper(GeoController.getPays));
 
-/** GET /api/geo/pays/:paysId/villes — villes d'un pays (public) */
+/** GET /api/geo/pays/:paysId/villes - villes d'un pays (public) */
 router.get("/pays/:paysId/villes", controllerWrapper(GeoController.getVilles));
 
-/** GET /api/geo/villes/:villeId/quartiers — quartiers d'une ville (public) */
+/** GET /api/geo/villes/:villeId/quartiers - quartiers d'une ville (public) */
 router.get("/villes/:villeId/quartiers", controllerWrapper(GeoController.getQuartiersByVille));
 
-// ─── Admin — Pays ─────────────────────────────────────────────────────────────
+// ─── Admin - Pays ─────────────────────────────────────────────────────────────
 
-/** GET /api/geo/admin/pays — tous les pays avec compteurs (admin) */
+/** GET /api/geo/admin/pays - tous les pays avec compteurs (admin) */
 router.get("/admin/pays", authenticate, controllerWrapper(GeoController.getAllPaysAdmin));
 
 /** POST /api/geo/pays */
@@ -30,9 +30,9 @@ router.put("/pays/:id", authenticate, controllerWrapper(GeoController.updatePays
 /** DELETE /api/geo/pays/:id */
 router.delete("/pays/:id", authenticate, controllerWrapper(GeoController.deletePays));
 
-// ─── Admin — Villes ───────────────────────────────────────────────────────────
+// ─── Admin - Villes ───────────────────────────────────────────────────────────
 
-/** GET /api/geo/admin/villes — toutes les villes avec infos pays (admin) */
+/** GET /api/geo/admin/villes - toutes les villes avec infos pays (admin) */
 router.get("/admin/villes", authenticate, controllerWrapper(GeoController.getAllVillesAdmin));
 
 /** POST /api/geo/villes */
@@ -44,9 +44,9 @@ router.put("/villes/:id", authenticate, controllerWrapper(GeoController.updateVi
 /** DELETE /api/geo/villes/:id */
 router.delete("/villes/:id", authenticate, controllerWrapper(GeoController.deleteVille));
 
-// ─── Admin — Quartiers ────────────────────────────────────────────────────────
+// ─── Admin - Quartiers ────────────────────────────────────────────────────────
 
-/** GET /api/geo/admin/quartiers — tous (filtrable par ?villeId=) (admin) */
+/** GET /api/geo/admin/quartiers - tous (filtrable par ?villeId=) (admin) */
 router.get("/admin/quartiers", authenticate, controllerWrapper(GeoController.getAllQuartiersAdmin));
 
 /** POST /api/geo/quartiers */

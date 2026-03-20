@@ -194,7 +194,7 @@ export const getBienById = async (id: string) => {
   });
 };
 
-// ─── Admin — annonces ─────────────────────────────────────────────────────────
+// ─── Admin - annonces ─────────────────────────────────────────────────────────
 
 export const countAnnoncesPending = async () => {
   return prisma.bien.count({
@@ -259,7 +259,7 @@ export const getAnnonces = async (params: {
   return { items, total, page, limit, totalPages: Math.ceil(total / limit) };
 };
 
-// ─── Public — dernières annonces (pour page d'accueil) ────────────────────────
+// ─── Public - dernières annonces (pour page d'accueil) ────────────────────────
 
 export const getDernieresAnnonces = async (limit: number = 10) => {
   const cacheKey = `dernieres_${limit}`;
@@ -302,7 +302,7 @@ export const getDernieresAnnonces = async (limit: number = 10) => {
   return result;
 };
 
-// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+// ─── Public - annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublieById = async (id: string) => {
   const bien = await prisma.bien.findFirst({
@@ -345,7 +345,7 @@ export const getAnnoncePublieById = async (id: string) => {
   };
 };
 
-// ─── Public — lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
+// ─── Public - lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
 
 export const getDistinctLieux = async () => {
   // Vérifier le cache d'abord
@@ -375,7 +375,7 @@ export const getDistinctLieux = async () => {
   return result;
 };
 
-// ─── Public — recherche avec filtres combinés ─────────────────────────────────
+// ─── Public - recherche avec filtres combinés ─────────────────────────────────
 
 function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371;
@@ -419,7 +419,7 @@ export const searchAnnoncePubliques = async (params: {
   // Recherche par proximité
   lat?: number;
   lng?: number;
-  radius?: number; // km — défaut 5
+  radius?: number; // km - défaut 5
 }) => {
   const page  = Math.max(params.page  ?? 1,  1);
   const limit = Math.min(params.limit ?? 10, 50); // Changé de 12 à 10
@@ -538,7 +538,7 @@ export const searchAnnoncePubliques = async (params: {
   return result;
 };
 
-// ─── Public — annonces similaires avec système de score ───────────────────────
+// ─── Public - annonces similaires avec système de score ───────────────────────
 
 // Type pour un bien avec les relations de base
 export interface BienWithRelations {
@@ -575,19 +575,19 @@ interface SimilarityScore {
 }
 
 /**
- * Score de similarité — adapté aux marchés immobiliers type Seek
+ * Score de similarité - adapté aux marchés immobiliers type Seek
  *
  * Critères (score max ≈ 135) :
- *   +35  même type de transaction (vente / location)  — fondamental
- *   +30  même type de logement                        — très important
- *   +20  même quartier                                — fort signal géographique
- *   +10  même ville (si quartier différent)           — signal géographique modéré
- *   +20  prix ±15 %                                   — très proche
- *   +12  prix ±30 %                                   — proche
- *    +5  prix ±50 %                                   — acceptable
- *   +10  surface ±30 %                                — physiquement comparable
- *   +10  nb chambres identique                        — même configuration
- *    +5  nb chambres ±1                               — configuration proche
+ *   +35  même type de transaction (vente / location)  - fondamental
+ *   +30  même type de logement                        - très important
+ *   +20  même quartier                                - fort signal géographique
+ *   +10  même ville (si quartier différent)           - signal géographique modéré
+ *   +20  prix ±15 %                                   - très proche
+ *   +12  prix ±30 %                                   - proche
+ *    +5  prix ±50 %                                   - acceptable
+ *   +10  surface ±30 %                                - physiquement comparable
+ *   +10  nb chambres identique                        - même configuration
+ *    +5  nb chambres ±1                               - configuration proche
  *
  * Seuil de pertinence : >= 65 (au moins même type de transaction + même type de logement)
  */
@@ -599,7 +599,7 @@ function calculateSimilarityScore(
 
   let score = 0;
 
-  // 1. Même type de transaction — FONDAMENTAL
+  // 1. Même type de transaction - FONDAMENTAL
   if (bien.typeTransactionId && referenceBien.typeTransactionId &&
       bien.typeTransactionId === referenceBien.typeTransactionId) {
     score += 35;
@@ -618,7 +618,7 @@ function calculateSimilarityScore(
     bien.quartier.toLowerCase().trim() === referenceBien.quartier.toLowerCase().trim();
 
   if (sameQuartier) {
-    score += 20; // quartier identique — très fort signal
+    score += 20; // quartier identique - très fort signal
   } else if (sameVille) {
     score += 10; // même ville, quartiers différents
   }

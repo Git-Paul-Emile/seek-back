@@ -113,7 +113,7 @@ export const getBienById = async (req: Request, res: Response): Promise<void> =>
   );
 };
 
-// ─── Public — dernières annonces (pour page d'accueil) ─────────────────────────
+// ─── Public - dernières annonces (pour page d'accueil) ─────────────────────────
 
 export const getDernieresAnnonces = async (req: Request, res: Response): Promise<void> => {
   const limit = parseInt(req.query.limit as string) || 10;
@@ -146,7 +146,7 @@ export const getDernieresAnnonces = async (req: Request, res: Response): Promise
   );
 };
 
-// ─── Public — lieux distincts ─────────────────────────────────────────────────
+// ─── Public - lieux distincts ─────────────────────────────────────────────────
 
 export const getDistinctLieux = async (_req: Request, res: Response): Promise<void> => {
   const lieux = await BienService.getDistinctLieux();
@@ -155,7 +155,7 @@ export const getDistinctLieux = async (_req: Request, res: Response): Promise<vo
   );
 };
 
-// ─── Public — recherche avec filtres ──────────────────────────────────────────
+// ─── Public - recherche avec filtres ──────────────────────────────────────────
 
 export const searchAnnoncesPubliques = async (req: Request, res: Response): Promise<void> => {
   const {
@@ -197,7 +197,7 @@ export const searchAnnoncesPubliques = async (req: Request, res: Response): Prom
   );
 };
 
-// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+// ─── Public - annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublie = async (req: Request, res: Response): Promise<void> => {
   const bien = await BienService.getAnnoncePublieById(req.params.id as string);
@@ -293,7 +293,7 @@ export const getStatsFavorisBienController = async (req: Request, res: Response)
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Stats favoris récupérées", data: stats }));
 };
 
-// ─── Public — annonces similaires ────────────────────────────────────────────
+// ─── Public - annonces similaires ────────────────────────────────────────────
 
 export const getAnnoncesSimilaires = async (req: Request, res: Response): Promise<void> => {
   const bienId = req.params.id as string;

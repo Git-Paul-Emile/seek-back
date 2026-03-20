@@ -6,7 +6,7 @@ import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
 
-/** GET /api/proprietaires/:id/score — public */
+/** GET /api/proprietaires/:id/score - public */
 router.get(
   "/:id/score",
   validateId,

@@ -117,13 +117,13 @@ export const refresh = async (
   if (!storedToken) {
     // Token inconnu → possible replay attack après révocation → révoquer tout
     await AuthRepository.revokeAllRefreshTokens(payload.sub);
-    throw new AppError("Token révoqué ou inconnu — session terminée", StatusCodes.UNAUTHORIZED);
+    throw new AppError("Token révoqué ou inconnu - session terminée", StatusCodes.UNAUTHORIZED);
   }
 
   if (storedToken.revokedAt !== null) {
     // Token déjà révoqué → signal de compromission → révoquer tous les tokens
     await AuthRepository.revokeAllRefreshTokens(payload.sub);
-    throw new AppError("Token déjà utilisé — compromission détectée", StatusCodes.UNAUTHORIZED);
+    throw new AppError("Token déjà utilisé - compromission détectée", StatusCodes.UNAUTHORIZED);
   }
 
   if (storedToken.expiresAt < new Date()) {

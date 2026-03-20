@@ -5,19 +5,19 @@ import { authenticate } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-/** GET /api/stats — public */
+/** GET /api/stats - public */
 router.get("/", controllerWrapper(getStats));
 
-/** GET /api/stats/admin — admin auth */
+/** GET /api/stats/admin - admin auth */
 router.get("/admin", authenticate, controllerWrapper(getAdminStatsController));
 
-/** GET /api/stats/proprietaires — admin auth */
+/** GET /api/stats/proprietaires - admin auth */
 router.get("/proprietaires", authenticate, controllerWrapper(getProprietairesStatsController));
 
-/** GET /api/stats/revenus — admin auth */
+/** GET /api/stats/revenus - admin auth */
 router.get("/revenus", authenticate, controllerWrapper(getRevenusStatsController));
 
-/** GET /api/stats/proprietaires/:id — admin auth */
+/** GET /api/stats/proprietaires/:id - admin auth */
 router.get("/proprietaires/:id", authenticate, controllerWrapper(getProprietaireDetailController));
 
 export default router;
