@@ -709,6 +709,8 @@ enum TypeNotification {
   RESET_PASSWORD                // Réinitialisation mot de passe
   ALERTE                        // Alerte nouvelle annonce (grand public)
   VERIFICATION_TELEPHONE        // Vérification téléphone lors de l'inscription
+  PAIEMENT_ESPECES_LOCATAIRE    // Locataire notifié quand le propriétaire enregistre un paiement espèces
+  CONFIRMATION_ESPECES_PROPRIETAIRE // Propriétaire notifié quand le locataire confirme un paiement espèces
 }
 
 model Notification {

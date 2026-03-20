@@ -458,6 +458,18 @@ export const payerMoisMultiples = async (req: Request, res: Response): Promise<v
   }));
 };
 
+// ─── Biens avec bail actif ────────────────────────────────────────────────────
+
+export const getBiensAvecBailActif = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const data = await BailService.getBiensAvecBailActif(proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({
+    status: "success",
+    message: `${data.length} bien(s) avec bail actif`,
+    data,
+  }));
+};
+
 // ─── Biens avec loyers en retard ──────────────────────────────────────────────
 
 export const getBiensEnRetard = async (req: Request, res: Response): Promise<void> => {

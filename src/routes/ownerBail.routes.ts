@@ -10,4 +10,7 @@ router.use(authenticateOwner);
 /** GET /api/owner/biens/loyers-retard */
 router.get("/loyers-retard", controllerWrapper(BailController.getBiensEnRetard));
 
+/** GET /api/owner/biens/avec-bail-actif */
+router.get("/avec-bail-actif", controllerWrapper(BailController.getBiensAvecBailActif));
+
 export default router;

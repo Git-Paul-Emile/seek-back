@@ -1453,6 +1453,41 @@ export const getProprietaireForLocataire = async (locataireId: string) => {
   };
 };
 
+// ─── Biens avec bail actif (owner) ───────────────────────────────────────────
+
+export const getBiensAvecBailActif = async (proprietaireId: string) => {
+  const bails = await prisma.bailLocation.findMany({
+    where: {
+      proprietaireId,
+      statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"] },
+    },
+    include: {
+      bien: {
+        select: {
+          id: true, titre: true, adresse: true, ville: true, pays: true,
+          typeTransaction: { select: { slug: true, nom: true } },
+        },
+      },
+      locataire: {
+        select: { id: true, nom: true, prenom: true, telephone: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return bails.map(b => ({
+    bailId: b.id,
+    bienId: b.bienId,
+    bienTitre: b.bien?.titre ?? null,
+    bienVille: b.bien?.ville ?? null,
+    locataireId: b.locataireId,
+    locataireNom: b.locataire ? `${b.locataire.prenom} ${b.locataire.nom}` : null,
+    locataireTelephone: b.locataire?.telephone ?? null,
+    montantLoyer: b.montantLoyer,
+    statutBail: b.statut,
+  }));
+};
+
 // ─── Biens avec loyers en retard (owner) ─────────────────────────────────────
 
 export const getBiensEnRetard = async (proprietaireId: string) => {
