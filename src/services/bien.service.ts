@@ -7,7 +7,6 @@ import { StatusCodes } from "http-status-codes";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
 import { prisma } from "../config/database.js";
 import { computeScoreForProprietaire } from "./trustScore.service.js";
-import { verifierLimiteAnnonces } from "./abonnement.service.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -255,9 +254,6 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
       StatusCodes.FORBIDDEN
     );
   }
-
-  // Vérifier la limite d'annonces selon le plan d'abonnement
-  await verifierLimiteAnnonces(proprietaireId);
 
   // Validate required fields
   const missing: string[] = [];
