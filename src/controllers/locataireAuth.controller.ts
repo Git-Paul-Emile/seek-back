@@ -771,4 +771,14 @@ export const marquerMessagesLusLocataire = async (req: Request, res: Response): 
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
 };
 
+// ─── Suppression du compte ────────────────────────────────────────────────────
+
+export const supprimerCompte = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+  await LocataireAuthService.supprimerCompte(req.locataire.id);
+  // Invalider le cookie de session
+  res.clearCookie("refreshToken");
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Compte supprimé avec succès" }));
+};
+
 

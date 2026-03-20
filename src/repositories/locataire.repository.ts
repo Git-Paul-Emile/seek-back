@@ -141,7 +141,6 @@ export const findByProprietaire = async (proprietaireId: string) => {
     select: {
       ...LOCATAIRE_SELECT,
       bails: {
-        where: { statut: "ACTIF" },
         select: {
           id: true,
           statut: true,
@@ -153,6 +152,7 @@ export const findByProprietaire = async (proprietaireId: string) => {
             select: { id: true, statut: true },
           },
         },
+        orderBy: { createdAt: "desc" },
       },
     },
     orderBy: { createdAt: "desc" },

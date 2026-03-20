@@ -121,10 +121,12 @@ export const remove = async (id: string, proprietaireId: string) => {
     throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
   }
 
-  const bailActif = locataire.bails?.find((b) => b.statut === "ACTIF");
+  const bailActif = locataire.bails?.find((b) =>
+    ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"].includes(b.statut as string)
+  );
   if (bailActif) {
     throw new AppError(
-      "Ce locataire a un bail actif. Terminez ou résiliez le bail avant de supprimer.",
+      "Ce locataire a un bail actif ou en cours. Terminez ou résiliez le bail avant de supprimer.",
       StatusCodes.CONFLICT
     );
   }

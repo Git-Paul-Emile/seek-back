@@ -37,6 +37,8 @@ router.patch("/bail/resilier", authenticateLocataire, controllerWrapper(Locatair
 router.get("/messages-bail", authenticateLocataire, controllerWrapper(LocataireAuthController.getMessagesBailLocataire));
 router.post("/messages-bail/lus", authenticateLocataire, controllerWrapper(LocataireAuthController.marquerMessagesLusLocataire));
 
+router.delete("/compte", authenticateLocataire, controllerWrapper(LocataireAuthController.supprimerCompte));
+
 router.post(
   "/verification/upload",
   authenticateLocataire,

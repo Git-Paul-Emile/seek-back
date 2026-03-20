@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
 import type { TypePieceIdentite } from "../generated/prisma/enums.js";
+import { prisma } from "../config/database.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -361,4 +362,38 @@ export const resetPassword = async (rawToken: string, newPassword: string): Prom
 
   await LocataireRepo.update(stored.locataireId, { password: hashedPassword });
   await LocataireRepo.markPasswordResetTokenUsed(tokenHash);
+};
+
+// ─── Suppression du compte (self-delete) ─────────────────────────────────────
+
+export const supprimerCompte = async (locataireId: string): Promise<void> => {
+  // Vérifier qu'il n'y a pas de bail actif
+  const bailActif = await prisma.bailLocation.findFirst({
+    where: {
+      locataireId,
+      statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"] as any[] },
+    },
+  });
+  if (bailActif) {
+    throw new AppError(
+      "Vous ne pouvez pas supprimer votre compte tant qu'un bail est actif ou en cours.",
+      StatusCodes.CONFLICT
+    );
+  }
+
+  // Vérifier qu'il n'y a pas de paiement en attente
+  const paiementEnAttente = await prisma.echeancierLoyer.findFirst({
+    where: {
+      locataireId,
+      statut: { in: ["EN_ATTENTE", "EN_RETARD"] },
+    },
+  });
+  if (paiementEnAttente) {
+    throw new AppError(
+      "Vous ne pouvez pas supprimer votre compte avec des paiements en attente.",
+      StatusCodes.CONFLICT
+    );
+  }
+
+  await LocataireRepo.remove(locataireId);
 };
