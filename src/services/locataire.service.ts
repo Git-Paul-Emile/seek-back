@@ -4,6 +4,7 @@ import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
 import { prisma } from "../config/database.js";
 import * as CloudinaryService from "./cloudinary.service.js";
+import { envoyerLienActivationLocataire } from "./notification.service.js";
 
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
 const TOKEN_EXPIRY_HOURS = 72;
@@ -47,7 +48,7 @@ export const create = async (
     Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000
   );
 
-  return LocataireRepo.create({
+  const locataire = await LocataireRepo.create({
     proprietaireId,
     nom: data.nom.trim(),
     prenom: data.prenom.trim(),
@@ -58,6 +59,19 @@ export const create = async (
     activationToken,
     tokenExpiresAt,
   });
+
+  // Envoi automatique du lien d'activation par SMS (+ email si fourni)
+  const lien = `${FRONTEND_URL}/locataire/activer?token=${activationToken}`;
+  envoyerLienActivationLocataire({
+    locataireTelephone: telephone,
+    locataireEmail:     data.email?.trim() || null,
+    locataireNom:       `${data.prenom.trim()} ${data.nom.trim()}`,
+    lien,
+    locataireId:        locataire.id,
+    proprietaireId,
+  }).catch((err) => console.error("[Locataire] Erreur envoi lien activation :", err));
+
+  return locataire;
 };
 
 // ─── Modification (partie owner) ──────────────────────────────────────────────
@@ -160,15 +174,22 @@ export const getLien = async (id: string, proprietaireId: string) => {
 
   const lien = `${FRONTEND_URL}/locataire/activer?token=${token}`;
 
+  // Renvoi du lien par SMS (+ email si disponible) en arrière-plan
+  envoyerLienActivationLocataire({
+    locataireTelephone: locataire.telephone,
+    locataireEmail:     locataire.email,
+    locataireNom:       `${locataire.prenom} ${locataire.nom}`,
+    lien,
+    locataireId:        locataire.id,
+    proprietaireId,
+  }).catch((err) => console.error("[Locataire] Erreur renvoi lien activation :", err));
+
   return {
+    // Le lien est retourné pour usage interne (ex: email contrat via contrat.service.ts)
+    // mais n'est PAS exposé dans la réponse API du contrôleur locataire.
     lien,
     statut: locataire.statut,
-    // Placeholders pour les services d'envoi
-    services: {
-      email: null,   // TODO: intégrer service email
-      whatsapp: null, // TODO: intégrer service WhatsApp
-      sms: null,      // TODO: intégrer service SMS
-    },
+    envoye: true,
   };
 };
 

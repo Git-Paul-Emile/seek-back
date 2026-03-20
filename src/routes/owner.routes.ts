@@ -30,6 +30,20 @@ router.post("/forgot-password", controllerWrapper(OwnerController.forgotPassword
 /** POST /api/owner/auth/reset-password */
 router.post("/reset-password", controllerWrapper(OwnerController.resetPassword));
 
+/** POST /api/owner/auth/verifier-telephone - protégé */
+router.post(
+  "/verifier-telephone",
+  authenticateOwner,
+  controllerWrapper(OwnerController.verifierTelephone)
+);
+
+/** POST /api/owner/auth/renvoyer-otp - protégé */
+router.post(
+  "/renvoyer-otp",
+  authenticateOwner,
+  controllerWrapper(OwnerController.renvoyerOtp)
+);
+
 /** POST /api/owner/auth/logout - protégé */
 router.post(
   "/logout",

@@ -55,7 +55,7 @@ export const envoyerRappel = async (req: Request, res: Response): Promise<void> 
   });
 
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: result.message, data: result })
+    jsonResponse({ status: "success", message: "Rappel envoyé", data: result })
   );
 };
 

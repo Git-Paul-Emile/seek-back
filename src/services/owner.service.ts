@@ -452,7 +452,7 @@ export const deleteProfile = async (id: string): Promise<void> => {
 
 // ─── Mot de passe oublié ──────────────────────────────────────────────────────
 
-export const requestPasswordReset = async (identifiant: string): Promise<{ token: string; email: string | null; prenom: string }> => {
+export const requestPasswordReset = async (identifiant: string): Promise<{ token: string; email: string | null; telephone: string; prenom: string; proprietaireId: string }> => {
   const cryptoLib = await import("crypto");
   const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
   let proprietaire = await OwnerRepo.findByTelephone(stripped);
@@ -474,7 +474,7 @@ export const requestPasswordReset = async (identifiant: string): Promise<{ token
 
   await OwnerRepo.createPasswordResetToken({ proprietaireId: proprietaire.id, tokenHash, expiresAt });
 
-  return { token: rawToken, email: proprietaire.email, prenom: proprietaire.prenom };
+  return { token: rawToken, email: proprietaire.email, telephone: proprietaire.telephone, prenom: proprietaire.prenom, proprietaireId: proprietaire.id };
 };
 
 export const resetPassword = async (rawToken: string, newPassword: string): Promise<void> => {
@@ -491,4 +491,41 @@ export const resetPassword = async (rawToken: string, newPassword: string): Prom
 
   await OwnerRepo.update(stored.proprietaireId, { password: hashedPassword });
   await OwnerRepo.markPasswordResetTokenUsed(tokenHash);
+};
+
+// ─── OTP vérification téléphone ───────────────────────────────────────────────
+
+function generateOtp(): string {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+export const sendOtpTelephone = async (proprietaireId: string): Promise<string> => {
+  const otp = generateOtp();
+  const otpExpiresAt = new Date(
+    Date.now() + parseInt(process.env.OTP_EXPIRES_IN_MINUTES ?? "10", 10) * 60 * 1000
+  );
+
+  await OwnerRepo.update(proprietaireId, {
+    telephoneOtp: otp,
+    telephoneOtpExpiresAt: otpExpiresAt,
+  } as any);
+
+  return otp;
+};
+
+export const verifyOtpTelephone = async (proprietaireId: string, otp: string): Promise<void> => {
+  const proprietaire = await OwnerRepo.findById(proprietaireId);
+  if (!proprietaire) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+
+  const p = proprietaire as any;
+  if (!p.telephoneOtp || p.telephoneOtp !== otp)
+    throw new AppError("Code OTP invalide", StatusCodes.BAD_REQUEST);
+  if (!p.telephoneOtpExpiresAt || p.telephoneOtpExpiresAt < new Date())
+    throw new AppError("Code OTP expiré", StatusCodes.BAD_REQUEST);
+
+  await OwnerRepo.update(proprietaireId, {
+    telephoneVerifie: true,
+    telephoneOtp: null,
+    telephoneOtpExpiresAt: null,
+  } as any);
 };

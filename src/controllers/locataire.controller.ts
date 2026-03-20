@@ -132,14 +132,15 @@ export const getLienActivation = async (
   res: Response
 ): Promise<void> => {
   const proprietaireId = getOwner(req);
-  const result = await LocataireService.getLien(
+  const { lien: _hidden, ...result } = await LocataireService.getLien(
     req.params.id as string,
     proprietaireId
   );
+  // lien masqué intentionnellement : envoyé automatiquement au locataire par SMS/email
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
-      message: "Lien d'activation récupéré",
+      message: "Lien d'activation envoyé au locataire par SMS",
       data: result,
     })
   );

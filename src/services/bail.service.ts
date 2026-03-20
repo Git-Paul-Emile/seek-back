@@ -4,7 +4,15 @@ import * as BailRepo from "../repositories/bail.repository.js";
 import { prisma } from "../config/database.js";
 import type { EcheancierLoyerCreateManyInput } from "../generated/prisma/models/EcheancierLoyer.js";
 import { genererQuittanceInterne } from "./quittance.service.js";
-import { envoyerConfirmationPaiement, envoyerPaiementLocataire } from "./notification.service.js";
+import {
+  envoyerConfirmationPaiement,
+  envoyerPaiementLocataire,
+  envoyerPreavisLocataire,
+  envoyerPreavisProprietaire,
+  envoyerResiliationLocataire,
+  envoyerResiliationProprietaire,
+  envoyerFinBailLocataire,
+} from "./notification.service.js";
 import { getConfig } from "./configMonetisation.service.js";
 
 // ─── Génération de l'échéancier ───────────────────────────────────────────────
@@ -202,6 +210,19 @@ export const mettreEnPreavis = async (
     `Votre bailleur a déclenché un préavis pour ${bienLabel}. La date de fin de bail est fixée au ${finStr}.`
   );
 
+  // Notification SMS + email au locataire
+  envoyerPreavisLocataire({
+    locataireTelephone: updated.locataire.telephone,
+    locataireEmail:     updated.locataire.email,
+    locataireNom:       `${updated.locataire.prenom} ${updated.locataire.nom}`,
+    bienTitre:          updated.bien?.titre,
+    dateFinBail:        dateFinBail.toISOString(),
+    bailId,
+    bienId,
+    proprietaireId:     updated.proprietaireId,
+    locataireId:        updated.locataireId,
+  }).catch((err) => console.error("[Bail] Erreur notif préavis locataire :", err));
+
   return updated;
 };
 
@@ -242,6 +263,24 @@ export const mettreEnPreavisLocataire = async (
     "Préavis donné par votre locataire",
     `${locNom} a donné son préavis pour ${bienLabelLoc}. La date de fin de bail est fixée au ${finStrLoc}.`
   );
+
+  // Notification SMS + email au propriétaire
+  prisma.proprietaire.findUnique({ where: { id: updatedLoc.proprietaireId }, select: { telephone: true, email: true } })
+    .then((prop) => {
+      if (!prop) return;
+      return envoyerPreavisProprietaire({
+        proprietaireTelephone: prop.telephone,
+        proprietaireEmail:     prop.email,
+        locataireNom:          locNom,
+        bienTitre:             updatedLoc.bien?.titre,
+        dateFinBail:           dateFinBail.toISOString(),
+        bailId:                updatedLoc.id,
+        bienId:                updatedLoc.bienId,
+        proprietaireId:        updatedLoc.proprietaireId,
+        locataireId,
+      });
+    })
+    .catch((err) => console.error("[Bail] Erreur notif préavis propriétaire :", err));
 
   return updatedLoc;
 };
@@ -324,12 +363,30 @@ export const terminerBail = async (
   const statutLibreId = await getStatutId("libre");
   await BailRepo.updateBienStatut(bienId, statutLibreId);
 
-  // Notifier le locataire
+  // Notifier le locataire (message interne)
   await msgLocataire(
     bail.locataireId, bailId, bienId, "FIN_BAIL",
     "Fin de votre bail",
     `Votre bail a été clôturé par votre bailleur. Merci pour votre séjour.`
   );
+
+  // Notification SMS + email au locataire
+  prisma.locataire.findUnique({ where: { id: bail.locataireId }, select: { telephone: true, email: true, prenom: true, nom: true } })
+    .then(async (loc) => {
+      if (!loc) return;
+      const bien = await prisma.bien.findUnique({ where: { id: bienId }, select: { titre: true } });
+      return envoyerFinBailLocataire({
+        locataireTelephone: loc.telephone,
+        locataireEmail:     loc.email,
+        locataireNom:       `${loc.prenom} ${loc.nom}`,
+        bienTitre:          bien?.titre,
+        bailId,
+        bienId,
+        proprietaireId,
+        locataireId:        bail.locataireId,
+      });
+    })
+    .catch((err) => console.error("[Bail] Erreur notif fin bail locataire :", err));
 
   return updatedTerm;
 };
@@ -372,6 +429,19 @@ export const resilierBail = async (
     `Votre bailleur a résilié le bail pour ${bienLabelRes}.${motifMsg}`
   );
 
+  // Notification SMS + email au locataire
+  envoyerResiliationLocataire({
+    locataireTelephone: updatedRes.locataire.telephone,
+    locataireEmail:     updatedRes.locataire.email,
+    locataireNom:       `${updatedRes.locataire.prenom} ${updatedRes.locataire.nom}`,
+    bienTitre:          updatedRes.bien?.titre,
+    motif,
+    bailId,
+    bienId,
+    proprietaireId,
+    locataireId:        updatedRes.locataireId,
+  }).catch((err) => console.error("[Bail] Erreur notif résiliation locataire :", err));
+
   return updatedRes;
 };
 
@@ -407,6 +477,24 @@ export const resilierBailLocataire = async (
     "Résiliation par votre locataire",
     `${locNomRes} a résilié le bail pour ${bienLabelResLoc}.${motifMsgLoc}`
   );
+
+  // Notification SMS + email au propriétaire
+  prisma.proprietaire.findUnique({ where: { id: updatedResLoc.proprietaireId }, select: { telephone: true, email: true } })
+    .then((prop) => {
+      if (!prop) return;
+      return envoyerResiliationProprietaire({
+        proprietaireTelephone: prop.telephone,
+        proprietaireEmail:     prop.email,
+        locataireNom:          locNomRes,
+        bienTitre:             updatedResLoc.bien?.titre,
+        motif,
+        bailId:                updatedResLoc.id,
+        bienId:                updatedResLoc.bienId,
+        proprietaireId:        updatedResLoc.proprietaireId,
+        locataireId,
+      });
+    })
+    .catch((err) => console.error("[Bail] Erreur notif résiliation propriétaire :", err));
 
   return updatedResLoc;
 };

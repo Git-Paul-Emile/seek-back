@@ -697,6 +697,13 @@ enum TypeNotification {
   INITIATION_PAIEMENT
   VERIFICATION_LOCATAIRE
   PAIEMENT_LOCATAIRE            // Propriétaire notifié quand le locataire enregistre un paiement
+  PREAVIS                       // Préavis de fin de bail
+  RESILIATION                   // Résiliation du bail
+  FIN_BAIL                      // Clôture du bail
+  CONTRAT                       // Transmission du contrat de bail
+  RESET_PASSWORD                // Réinitialisation mot de passe
+  ALERTE                        // Alerte nouvelle annonce (grand public)
+  VERIFICATION_TELEPHONE        // Vérification téléphone lors de l'inscription
 }
 
 model Notification {
@@ -872,6 +879,11 @@ model Proprietaire {
   password           String
   statutVerification StatutVerification @default(NOT_VERIFIED)
   verifiedAt         DateTime?
+
+  // Vérification téléphone (OTP inscription)
+  telephoneVerifie       Boolean           @default(false)
+  telephoneOtp           String?
+  telephoneOtpExpiresAt  DateTime?
 
   // Suspension
   estSuspendu        Boolean           @default(false)

@@ -3,6 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import * as OwnerService from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { prisma } from "../config/database.js";
+import {
+  envoyerResetPasswordProprietaire,
+  envoyerOtpTelephone,
+} from "../services/notification.service.js";
 
 const REFRESH_COOKIE = "ownerRefreshToken";
 const ACCESS_COOKIE = "ownerAccessToken";
@@ -57,11 +61,24 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
   setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
 
+  // Envoi de l'OTP de vérification téléphone en arrière-plan
+  try {
+    const otp = await OwnerService.sendOtpTelephone(proprietaire.id);
+    envoyerOtpTelephone({
+      telephone:      req.body.telephone as string,
+      prenom:         proprietaire.prenom,
+      otp,
+      proprietaireId: proprietaire.id,
+    }).catch((err) => console.error("[Owner] Erreur envoi OTP inscription :", err));
+  } catch (err) {
+    console.error("[Owner] Impossible de générer l'OTP :", err);
+  }
+
   res.status(StatusCodes.CREATED).json(
     jsonResponse({
       status: "success",
-      message: "Compte créé avec succès. Bienvenue sur SEEK !",
-      data: proprietaire,
+      message: "Compte créé avec succès. Vérifiez votre téléphone pour confirmer votre numéro.",
+      data: { ...proprietaire, telephoneVerifie: false },
     })
   );
 };
@@ -167,25 +184,20 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   }
 
   try {
-    const { token, email, prenom } = await OwnerService.requestPasswordReset(identifiant);
+    const { token, email, telephone, prenom, proprietaireId } =
+      await OwnerService.requestPasswordReset(identifiant);
 
-    // Envoyer l'email si disponible
-    if (email) {
-      try {
-        const { sendMail } = await import("../utils/mailer.js");
-        const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
-        await sendMail({
-          to: email,
-          subject: "Réinitialisation de votre mot de passe SEEK",
-          html: `<p>Bonjour ${prenom},</p>
-<p>Cliquez sur ce lien pour réinitialiser votre mot de passe (valable 1 heure) :</p>
-<p><a href="${frontUrl}/owner/reset-password?token=${token}">${frontUrl}/owner/reset-password?token=${token}</a></p>
-<p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>`,
-        });
-      } catch (e) {
-        console.error("[OWNER] Erreur envoi email reset:", e);
-      }
-    }
+    const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+    const lien = `${frontUrl}/owner/reset-password?token=${token}`;
+
+    // Envoi SMS + email (email si disponible) en arrière-plan
+    envoyerResetPasswordProprietaire({
+      telephone,
+      email,
+      prenom,
+      lien,
+      proprietaireId,
+    }).catch((err) => console.error("[Owner] Erreur envoi reset password :", err));
   } catch (e: any) {
     if (e.statusCode === StatusCodes.OK) {
       // Compte non trouvé, on répond OK quand même (ne pas révéler)
@@ -239,3 +251,54 @@ export const marquerMessagesLus = async (req: Request, res: Response): Promise<v
   });
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
 };
+
+// ─── POST /api/owner/auth/verifier-telephone ─────────────────────────────────
+
+export const verifierTelephone = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" }));
+    return;
+  }
+  const { otp } = req.body;
+  if (!otp) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Code OTP requis" }));
+    return;
+  }
+  await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès." })
+  );
+};
+
+// ─── POST /api/owner/auth/renvoyer-otp ───────────────────────────────────────
+
+export const renvoyerOtp = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" }));
+    return;
+  }
+  // Récupérer les infos du propriétaire
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { prenom: true, telephone: true },
+  });
+  if (!proprietaire) {
+    res.status(StatusCodes.NOT_FOUND).json(jsonResponse({ status: "fail", message: "Compte introuvable" }));
+    return;
+  }
+
+  const otp = await OwnerService.sendOtpTelephone(proprietaireId);
+  envoyerOtpTelephone({
+    telephone:      proprietaire.telephone,
+    prenom:         proprietaire.prenom,
+    otp,
+    proprietaireId,
+  }).catch((err) => console.error("[Owner] Erreur renvoi OTP :", err));
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Code OTP renvoyé sur votre téléphone." })
+  );
+};
+
