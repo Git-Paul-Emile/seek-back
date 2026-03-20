@@ -18,12 +18,10 @@ export const getByProprietaire = async (proprietaireId: string) => {
 // ─── Détail ───────────────────────────────────────────────────────────────────
 
 export const getById = async (id: string, proprietaireId: string) => {
-  const locataire = await LocataireRepo.findById(id);
+  // Accès autorisé si créateur OU si bail lié (locataire d'un autre proprio avec bail actif/passé)
+  const locataire = await LocataireRepo.findById(id, proprietaireId);
   if (!locataire) {
-    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-  }
-  if (locataire.proprietaireId !== proprietaireId) {
-    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
   }
   return locataire;
 };
@@ -88,12 +86,9 @@ export const updateOwner = async (
     presenceEnfants?: boolean;
   }
 ) => {
-  const existing = await LocataireRepo.findById(id);
+  const existing = await LocataireRepo.findById(id, proprietaireId);
   if (!existing) {
-    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-  }
-  if (existing.proprietaireId !== proprietaireId) {
-    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
   }
 
   const updateData: import("../repositories/locataire.repository.js").UpdateLocataireOwnerData = {};
@@ -113,12 +108,9 @@ export const updateOwner = async (
 // ─── Suppression ──────────────────────────────────────────────────────────────
 
 export const remove = async (id: string, proprietaireId: string) => {
-  const locataire = await LocataireRepo.findById(id);
+  const locataire = await LocataireRepo.findById(id, proprietaireId);
   if (!locataire) {
-    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-  }
-  if (locataire.proprietaireId !== proprietaireId) {
-    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
   }
 
   const bailActif = locataire.bails?.find((b) =>
@@ -156,12 +148,9 @@ export const remove = async (id: string, proprietaireId: string) => {
 // ─── Lien d'activation ────────────────────────────────────────────────────────
 
 export const getLien = async (id: string, proprietaireId: string) => {
-  const locataire = await LocataireRepo.findById(id);
+  const locataire = await LocataireRepo.findById(id, proprietaireId);
   if (!locataire) {
-    throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-  }
-  if (locataire.proprietaireId !== proprietaireId) {
-    throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
   }
 
   // Regénérer le token si expiré ou absent
@@ -274,6 +263,37 @@ export const rejectLocataireVerification = async (
   }
 
   return updated;
+};
+
+// ─── Recherche globale par téléphone/email ────────────────────────────────────
+
+export const searchByContact = async (
+  proprietaireId: string,
+  params: { telephone?: string; email?: string }
+) => {
+  const locataire = await LocataireRepo.searchByContact(params);
+  if (!locataire) return { found: false, locataire: null };
+
+  // Vérifier si ce locataire est déjà dans la liste de CE propriétaire
+  let estDansMaListe = locataire.proprietaireId === proprietaireId;
+  if (!estDansMaListe) {
+    const bailCommun = await prisma.bailLocation.findFirst({
+      where: { locataireId: locataire.id, proprietaireId },
+    });
+    estDansMaListe = !!bailCommun;
+  }
+
+  return {
+    found: true,
+    locataire: {
+      id: locataire.id,
+      nom: locataire.nom,
+      prenom: locataire.prenom,
+      telephone: locataire.telephone,
+      statut: locataire.statut,
+      estDansMaListe,
+    },
+  };
 };
 
 // ─── Nombre de vérifications en attente ─────────────────────────────────────

@@ -303,6 +303,7 @@ model Bien {
   vues               VueBien[]
   signalements        Signalement[]
   adminAvertissements AdminAvertissement[]
+  bailInvitations     BailInvitation[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -524,6 +525,7 @@ model Locataire {
   passwordResetTokens  LocatairePasswordResetToken[]
   transactions         Transaction[]
   messagesInternes     MessageInterneLocataire[]
+  bailInvitations      BailInvitation[]
 
   @@index([proprietaireId])
   @@index([activationToken])
@@ -913,6 +915,7 @@ model Proprietaire {
   documentsBien       DocumentBien[]
   messagesInternes    MessageInterne[]
   adminAvertissements AdminAvertissement[]
+  bailInvitations     BailInvitation[]
 }
 
 model MessageInterne {
@@ -1229,4 +1232,50 @@ model AdminAvertissement {
 
   @@index([proprietaireId])
   @@index([bienId])
+}
+
+// ============================================================
+// INVITATIONS BAIL (locataire existant chez un autre propriétaire)
+// ============================================================
+
+enum StatutBailInvitation {
+  PENDING
+  ACCEPTEE
+  REFUSEE
+  EXPIREE
+}
+
+model BailInvitation {
+  id                  String               @id @default(uuid())
+  bienId              String
+  locataireId         String
+  proprietaireId      String
+
+  // Données du bail proposé
+  typeBail            String?
+  dateDebutBail       DateTime
+  dateFinBail         DateTime?
+  montantLoyer        Float
+  montantCaution      Float?
+  cautionVersee       Boolean              @default(false)
+  jourLimitePaiement  Int?
+  renouvellement      Boolean              @default(true)
+  frequencePaiement   String?
+
+  // Invitation
+  token               String               @unique @default(uuid())
+  statut              StatutBailInvitation @default(PENDING)
+  expiresAt           DateTime
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  locataire    Locataire    @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+
+  @@index([locataireId])
+  @@index([proprietaireId])
+  @@index([token])
+  @@index([statut])
 }

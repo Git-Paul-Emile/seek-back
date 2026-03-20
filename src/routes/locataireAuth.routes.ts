@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as LocataireAuthController from "../controllers/locataireAuth.controller.js";
+import * as BailInvitationController from "../controllers/bailInvitation.controller.js";
 import { authenticateLocataire } from "../middlewares/locataireAuth.middleware.js";
 import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 import { uploadImage } from "../services/cloudinary.service.js";
@@ -38,6 +39,15 @@ router.get("/messages-bail", authenticateLocataire, controllerWrapper(LocataireA
 router.post("/messages-bail/lus", authenticateLocataire, controllerWrapper(LocataireAuthController.marquerMessagesLusLocataire));
 
 router.delete("/compte", authenticateLocataire, controllerWrapper(LocataireAuthController.supprimerCompte));
+
+/** GET /api/locataire/auth/invitations - Liste des invitations en attente */
+router.get("/invitations", authenticateLocataire, controllerWrapper(BailInvitationController.getInvitations));
+
+/** POST /api/locataire/auth/invitations/:token/accepter */
+router.post("/invitations/:token/accepter", authenticateLocataire, controllerWrapper(BailInvitationController.accepterInvitation));
+
+/** POST /api/locataire/auth/invitations/:token/refuser */
+router.post("/invitations/:token/refuser", authenticateLocataire, controllerWrapper(BailInvitationController.refuserInvitation));
 
 router.post(
   "/verification/upload",

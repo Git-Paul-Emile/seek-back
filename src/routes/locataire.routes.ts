@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as LocataireController from "../controllers/locataire.controller.js";
+import * as BailInvitationController from "../controllers/bailInvitation.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
@@ -15,6 +16,18 @@ router.use(authenticateOwner);
 router.get(
   "/verifications/pending/count",
   controllerWrapper(LocataireController.getPendingVerificationsCount)
+);
+
+/** GET /api/owner/locataires/search?telephone=xxx&email=xxx - Recherche globale */
+router.get(
+  "/search",
+  controllerWrapper(LocataireController.searchLocataireByContact)
+);
+
+/** POST /api/owner/locataires/inviter - Inviter un locataire existant (autre propriétaire) */
+router.post(
+  "/inviter",
+  controllerWrapper(BailInvitationController.creerInvitation)
 );
 
 /** GET /api/owner/locataires */

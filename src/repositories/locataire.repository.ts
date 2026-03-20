@@ -98,13 +98,24 @@ export const create = async (data: CreateLocataireData) => {
   });
 };
 
-export const findById = async (id: string) => {
-  return prisma.locataire.findUnique({
-    where: { id },
+export const findById = async (id: string, proprietaireId?: string) => {
+  const whereClause = proprietaireId
+    ? {
+        id,
+        OR: [
+          { proprietaireId },
+          { bails: { some: { proprietaireId } } },
+        ],
+      }
+    : { id };
+
+  return prisma.locataire.findFirst({
+    where: whereClause,
     select: {
       ...LOCATAIRE_SELECT,
       password: true,
       bails: {
+        where: proprietaireId ? { proprietaireId } : undefined,
         include: {
           bien: {
             select: { id: true, titre: true, ville: true, quartier: true, actif: true },
@@ -135,12 +146,40 @@ export const findByEmail = async (email: string) => {
   return prisma.locataire.findFirst({ where: { email } });
 };
 
+/** Recherche globale par téléphone ou email (pour détecter un compte existant) */
+export const searchByContact = async (params: { telephone?: string; email?: string }) => {
+  if (!params.telephone && !params.email) return null;
+  return prisma.locataire.findFirst({
+    where: {
+      OR: [
+        params.telephone ? { telephone: params.telephone } : undefined,
+        params.email ? { email: params.email } : undefined,
+      ].filter(Boolean) as object[],
+    },
+    select: {
+      id: true,
+      proprietaireId: true,
+      nom: true,
+      prenom: true,
+      telephone: true,
+      email: true,
+      statut: true,
+    },
+  });
+};
+
 export const findByProprietaire = async (proprietaireId: string) => {
   return prisma.locataire.findMany({
-    where: { proprietaireId },
+    where: {
+      OR: [
+        { proprietaireId },
+        { bails: { some: { proprietaireId } } },
+      ],
+    },
     select: {
       ...LOCATAIRE_SELECT,
       bails: {
+        where: { proprietaireId },
         select: {
           id: true,
           statut: true,
@@ -284,9 +323,15 @@ export const approveVerification = async (
   locataireId: string,
   proprietaireId: string
 ) => {
-  // Vérifier que le locataire appartient bien au propriétaire
+  // Vérifier que le propriétaire a accès au locataire (créateur ou via bail)
   const locataire = await prisma.locataire.findFirst({
-    where: { id: locataireId, proprietaireId },
+    where: {
+      id: locataireId,
+      OR: [
+        { proprietaireId },
+        { bails: { some: { proprietaireId } } },
+      ],
+    },
   });
   
   if (!locataire) {
@@ -308,9 +353,15 @@ export const rejectVerification = async (
   proprietaireId: string,
   motifRejet: string
 ) => {
-  // Vérifier que le locataire appartient bien au propriétaire
+  // Vérifier que le propriétaire a accès au locataire (créateur ou via bail)
   const locataire = await prisma.locataire.findFirst({
-    where: { id: locataireId, proprietaireId },
+    where: {
+      id: locataireId,
+      OR: [
+        { proprietaireId },
+        { bails: { some: { proprietaireId } } },
+      ],
+    },
   });
   
   if (!locataire) {
@@ -358,7 +409,12 @@ export const getPendingVerificationsCount = async (proprietaireId: string) => {
   return prisma.locataireVerification.count({
     where: {
       statut: StatutVerificationLocataire.PENDING,
-      locataire: { proprietaireId },
+      locataire: {
+        OR: [
+          { proprietaireId },
+          { bails: { some: { proprietaireId } } },
+        ],
+      },
     },
   });
 };

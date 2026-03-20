@@ -209,6 +209,28 @@ export const rejectLocataireVerification = async (
   );
 };
 
+// ─── Recherche globale par téléphone/email ────────────────────────────────────
+
+export const searchLocataireByContact = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const { telephone, email } = req.query as { telephone?: string; email?: string };
+
+  if (!telephone && !email) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "Fournissez un téléphone ou un email", data: null })
+    );
+    return;
+  }
+
+  const result = await LocataireService.searchByContact(proprietaireId, { telephone, email });
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Recherche effectuée", data: result })
+  );
+};
+
 // ─── Nombre de vérifications en attente ───────────────────────────────────
 
 export const getPendingVerificationsCount = async (
