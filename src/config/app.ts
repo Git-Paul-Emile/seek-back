@@ -38,6 +38,7 @@ import favoriRouter from "../routes/favori.routes.js";
 import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
 import proprietairesRouter, { ownerScoreRouter } from "../routes/trustScore.routes.js";
 import monetisationRouter from "../routes/monetisation.routes.js";
+import ownerBailRouter from "../routes/ownerBail.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -157,6 +158,9 @@ app.use('/api/geo', geoRouter);
 
 // Locataires (owner CRUD)
 app.use('/api/owner/locataires', locataireRouter);
+
+// Bails owner (routes globales sans bienId)
+app.use('/api/owner/biens', ownerBailRouter);
 
 // Bails (sous /api/biens/:id/bail)
 app.use('/api/biens/:id/bail', bailRouter);

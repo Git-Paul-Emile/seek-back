@@ -15,7 +15,6 @@ export const getConfig = async () => {
 export const updateConfig = async (data: {
   miseEnAvantActive?: boolean;
   commissionActive?: boolean;
-  abonnementActive?: boolean;
   tauxCommission?: number;
 }) => {
   return prisma.configMonetisation.upsert({

@@ -432,3 +432,15 @@ export const payerMoisMultiples = async (req: Request, res: Response): Promise<v
     data: result,
   }));
 };
+
+// ─── Biens avec loyers en retard ──────────────────────────────────────────────
+
+export const getBiensEnRetard = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const data = await BailService.getBiensEnRetard(proprietaireId);
+  res.status(StatusCodes.OK).json(jsonResponse({
+    status: "success",
+    message: `${data.length} bien(s) avec loyers en retard`,
+    data,
+  }));
+};

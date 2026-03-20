@@ -1200,3 +1200,62 @@ export const getProprietaireForLocataire = async (locataireId: string) => {
     proprietaire: bail.proprietaire,
   };
 };
+
+// ─── Biens avec loyers en retard (owner) ─────────────────────────────────────
+
+export const getBiensEnRetard = async (proprietaireId: string) => {
+  const now = new Date();
+
+  // Mettre à jour les statuts EN_ATTENTE → EN_RETARD pour tous les baux de ce proprio
+  await prisma.echeancierLoyer.updateMany({
+    where: {
+      proprietaireId,
+      statut: "EN_ATTENTE",
+      dateEcheance: { lt: now },
+    },
+    data: { statut: "EN_RETARD" },
+  });
+
+  // Récupérer les baux actifs avec au moins une échéance EN_RETARD
+  const bails = await prisma.bailLocation.findMany({
+    where: {
+      proprietaireId,
+      statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"] },
+      echeancier: { some: { statut: "EN_RETARD" } },
+    },
+    include: {
+      bien: {
+        select: {
+          id: true, titre: true, adresse: true, ville: true, pays: true,
+          typeTransaction: { select: { slug: true, nom: true } },
+        },
+      },
+      locataire: {
+        select: { id: true, prenom: true, nom: true, telephone: true, email: true },
+      },
+      echeancier: {
+        where: { statut: "EN_RETARD" },
+        orderBy: { dateEcheance: "asc" },
+        select: { id: true, dateEcheance: true, montant: true, statut: true },
+      },
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return bails.map(bail => {
+    const totalRetard = bail.echeancier.reduce((s, e) => s + e.montant, 0);
+    const plusAncienne = bail.echeancier[0];
+    const joursRetard = plusAncienne
+      ? Math.max(0, Math.floor((now.getTime() - new Date(plusAncienne.dateEcheance).getTime()) / 86400000))
+      : 0;
+    return {
+      bailId: bail.id,
+      bien: bail.bien,
+      locataire: bail.locataire,
+      nbEcheancesEnRetard: bail.echeancier.length,
+      totalRetard,
+      joursRetardMax: joursRetard,
+      echeancesEnRetard: bail.echeancier,
+    };
+  });
+};

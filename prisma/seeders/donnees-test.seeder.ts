@@ -1002,7 +1002,7 @@ export class DonneesTestSeeder implements Seeder {
     await prisma.configMonetisation.upsert({
       where:  { id: 'config' },
       update: { miseEnAvantActive: true },
-      create: { id: 'config', miseEnAvantActive: true, commissionActive: false, abonnementActive: false, tauxCommission: 0 },
+      create: { id: 'config', miseEnAvantActive: true, commissionActive: false, tauxCommission: 0 },
     });
     console.log('  ✔ ConfigMonetisation mise à jour');
   }
@@ -1017,7 +1017,6 @@ export class DonneesTestSeeder implements Seeder {
     await prisma.passwordResetToken.deleteMany({});
     await prisma.proprietaireRefreshToken.deleteMany({});
     await prisma.verificationDocuments.deleteMany({});
-    await prisma.abonnementProprietaire.deleteMany({});
     await prisma.comptePublicRefreshToken.deleteMany({});
     await prisma.comptePublic.deleteMany({});
     console.log('  ✔ Nettoyage terminé');

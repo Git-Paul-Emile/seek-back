@@ -899,7 +899,6 @@ model Proprietaire {
   transactions        Transaction[]
   promotionHistories  PromotionHistory[]
   documentsBien       DocumentBien[]
-  abonnements         AbonnementProprietaire[]
   messagesInternes    MessageInterne[]
   adminAvertissements AdminAvertissement[]
 }
@@ -1038,7 +1037,6 @@ enum TypePaiement {
   PAIEMENT_PROMOTION    // Paiement pour promotion d'annonce
   REMBOURSEMENT         // Remboursement au propriétaire
   RESTITUTION_CAUTION   // Restitution de caution au locataire
-  ABONNEMENT            // Paiement d'abonnement propriétaire
   COMMISSION_LOYER      // Commission prélevée sur loyer
   MISE_EN_AVANT         // Paiement de mise en avant (nouveau flux)
 }
@@ -1128,13 +1126,6 @@ enum StatutPromotion {
   EXPIREE     // Promotion expirée (non utilisée)
 }
 
-enum StatutAbonnement {
-  EN_ATTENTE
-  ACTIF
-  EXPIRE
-  RESILIE
-}
-
 model PromotionHistory {
   id              String           @id @default(uuid())
   bienId          String
@@ -1187,51 +1178,11 @@ model ConfigMonetisation {
   id                String   @id @default("config")
   miseEnAvantActive Boolean  @default(false)
   commissionActive  Boolean  @default(false)
-  abonnementActive  Boolean  @default(false)
   tauxCommission    Float    @default(0)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
 
-// ============================================================
-// ABONNEMENTS
-// ============================================================
-
-model PlanAbonnement {
-  id          String   @id @default(uuid())
-  nom         String
-  prix        Float    @default(0)
-  maxAnnonces Int?
-  actif       Boolean  @default(true)
-  ordre       Int      @default(0)
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  abonnements AbonnementProprietaire[]
-}
-
-model AbonnementProprietaire {
-  id             String           @id @default(uuid())
-  proprietaireId String
-  planId         String
-  statut         StatutAbonnement @default(EN_ATTENTE)
-  dateDebut      DateTime
-  dateFin        DateTime
-  montant        Float
-  modePaiement   String?
-  reference      String?
-  note           String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-
-  proprietaire Proprietaire   @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  plan         PlanAbonnement @relation(fields: [planId], references: [id])
-
-  @@index([proprietaireId])
-  @@index([statut])
-  @@index([planId])
-}
 
 // ============================================================
 // SIGNALEMENTS
