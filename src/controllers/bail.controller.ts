@@ -359,6 +359,31 @@ export const confirmerReception = async (req: Request, res: Response): Promise<v
   );
 };
 
+// ─── Paiement espèces (propriétaire → EN_ATTENTE_CONFIRMATION) ───────────────
+
+const enregistrerEspecesSchema = z.object({
+  datePaiement: z.coerce.date(),
+  montant: z.number().positive().optional(),
+  note: z.string().optional(),
+});
+
+export const enregistrerPaiementEspeces = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const parsed = enregistrerEspecesSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: parsed.error.issues[0]?.message ?? "Données invalides", data: null }));
+    return;
+  }
+  const echeance = await BailService.enregistrerPaiementEspeces(
+    req.params.id as string,
+    req.params.bailId as string,
+    req.params.echeanceId as string,
+    proprietaireId,
+    parsed.data
+  );
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Paiement espèces enregistré, en attente de confirmation du locataire", data: echeance }));
+};
+
 // ─── Caution ──────────────────────────────────────────────────────────────────
 
 export const getCaution = async (req: Request, res: Response): Promise<void> => {

@@ -612,12 +612,13 @@ model BailLocation {
 // ============================================================
 
 enum StatutPaiement {
-  A_VENIR    // Échéance future — pas encore due
-  EN_ATTENTE // Due ce mois-ci (dans la période de grâce)
-  EN_RETARD  // Non payée après la période de grâce
-  PAYE       // Intégralement payée
-  PARTIEL    // Partiellement payée
-  ANNULE     // Annulée
+  A_VENIR                 // Échéance future — pas encore due
+  EN_ATTENTE              // Due ce mois-ci (dans la période de grâce)
+  EN_RETARD               // Non payée après la période de grâce
+  EN_ATTENTE_CONFIRMATION // Paiement espèces enregistré par le propriétaire, en attente confirmation locataire
+  PAYE                    // Intégralement payée
+  PARTIEL                 // Partiellement payée
+  ANNULE                  // Annulée
 }
 
 model EcheancierLoyer {
@@ -644,6 +645,8 @@ model EcheancierLoyer {
 
   confirmeParProprietaire Boolean   @default(false)
   dateConfirmation        DateTime?
+  confirmeParLocataire    Boolean   @default(false)
+  dateConfirmationLocataire DateTime?
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt

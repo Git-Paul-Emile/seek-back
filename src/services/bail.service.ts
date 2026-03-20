@@ -12,6 +12,8 @@ import {
   envoyerResiliationLocataire,
   envoyerResiliationProprietaire,
   envoyerFinBailLocataire,
+  envoyerPaiementEspecesLocataire,
+  envoyerConfirmationEspecesProprietaire,
 } from "./notification.service.js";
 import { getConfig } from "./configMonetisation.service.js";
 
@@ -913,6 +915,168 @@ export const confirmerReceptionPaiement = async (
       dateConfirmation: new Date(),
     },
   });
+};
+
+// ─── Paiement espèces (propriétaire enregistre, locataire confirme) ───────────
+
+/**
+ * Le propriétaire enregistre un paiement reçu en espèces hors plateforme.
+ * L'échéance passe en EN_ATTENTE_CONFIRMATION, le locataire reçoit une notification.
+ */
+export const enregistrerPaiementEspeces = async (
+  bienId: string,
+  bailId: string,
+  echeanceId: string,
+  proprietaireId: string,
+  data: { datePaiement: Date; montant?: number; note?: string }
+) => {
+  await assertBienOwner(bienId, proprietaireId);
+
+  const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
+  if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
+  if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((["PAYE", "PARTIEL", "ANNULE", "EN_ATTENTE_CONFIRMATION"] as any[]).includes(echeance.statut))
+    throw new AppError("Cette échéance n'est pas éligible à un enregistrement espèces", StatusCodes.BAD_REQUEST);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updated = await (prisma.echeancierLoyer.update as any)({
+    where: { id: echeanceId },
+    data: {
+      statut: "EN_ATTENTE_CONFIRMATION",
+      datePaiement: data.datePaiement,
+      modePaiement: "Espèces",
+      note: data.note ?? null,
+      montantPaye: data.montant ?? echeance.montant,
+      sourceEnregistrement: "PROPRIETAIRE",
+    },
+  });
+
+  // Notification locataire (fire-and-forget)
+  prisma.bailLocation.findUnique({
+    where: { id: bailId },
+    include: {
+      locataire: { select: { telephone: true, email: true, nom: true, prenom: true } },
+      bien: { select: { titre: true } },
+    },
+  }).then(bailFull => {
+    if (!bailFull?.locataire?.telephone) return;
+    envoyerPaiementEspecesLocataire({
+      locataireTelephone: bailFull.locataire.telephone,
+      locataireEmail: bailFull.locataire.email,
+      locataireNom: `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`,
+      montant: data.montant ?? echeance.montant,
+      datePaiement: data.datePaiement.toISOString(),
+      bienTitre: bailFull.bien?.titre,
+      echeanceId,
+      bailId,
+      bienId,
+      proprietaireId,
+      locataireId: echeance.locataireId,
+    }).catch(() => null);
+
+    // Message interne au locataire
+    msgLocataire(
+      echeance.locataireId, bailId, bienId,
+      "PAIEMENT_ESPECES",
+      "Paiement espèces à confirmer",
+      `Votre propriétaire a enregistré un paiement en espèces de ${(data.montant ?? echeance.montant).toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`
+    ).catch(() => null);
+  }).catch(() => null);
+
+  return updated;
+};
+
+/**
+ * Le locataire confirme le paiement espèces enregistré par le propriétaire.
+ * L'échéance passe en PAYE, quittance générée, notifications envoyées.
+ */
+export const confirmerPaiementEspacesLocataire = async (
+  locataireId: string,
+  echeanceId: string
+) => {
+  const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
+  if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
+  if (echeance.locataireId !== locataireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((echeance.statut as any) !== "EN_ATTENTE_CONFIRMATION")
+    throw new AppError("Ce paiement n'est pas en attente de confirmation", StatusCodes.BAD_REQUEST);
+  if (echeance.confirmeParLocataire)
+    throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
+
+  const montantPaye = echeance.montantPaye ?? echeance.montant;
+  const statut = montantPaye >= echeance.montant ? "PAYE" : "PARTIEL";
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updated = await (prisma.echeancierLoyer.update as any)({
+    where: { id: echeanceId },
+    data: {
+      statut,
+      confirmeParLocataire: true,
+      dateConfirmationLocataire: new Date(),
+    },
+  });
+
+  // Quittance (fire-and-forget)
+  genererQuittanceInterne(echeanceId).catch(() => null);
+
+  // Notifications (fire-and-forget)
+  prisma.bailLocation.findUnique({
+    where: { id: echeance.bailId },
+    include: {
+      locataire: { select: { telephone: true, email: true, nom: true, prenom: true } },
+      proprietaire: { select: { telephone: true, email: true } },
+      bien: { select: { titre: true } },
+    },
+  }).then(bailFull => {
+    if (!bailFull) return;
+    const locataireNom = `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`;
+    const datePaiement = (echeance.datePaiement ?? new Date()).toISOString();
+
+    // Notif propriétaire
+    if (bailFull.proprietaire?.telephone) {
+      envoyerConfirmationEspecesProprietaire({
+        proprietaireTelephone: bailFull.proprietaire.telephone,
+        proprietaireEmail: bailFull.proprietaire.email,
+        locataireNom,
+        montant: montantPaye,
+        datePaiement,
+        bienTitre: bailFull.bien?.titre,
+        echeanceId,
+        bailId: echeance.bailId,
+        bienId: echeance.bienId,
+        proprietaireId: echeance.proprietaireId,
+        locataireId,
+      }).catch(() => null);
+
+      // Message interne au propriétaire
+      msgProprietaire(
+        echeance.proprietaireId, echeance.bailId, echeance.bienId,
+        "CONFIRMATION_ESPECES",
+        "Paiement espèces confirmé",
+        `${locataireNom} a confirmé son paiement en espèces de ${montantPaye.toLocaleString("fr-FR")} FCFA.`
+      ).catch(() => null);
+    }
+
+    // Notif locataire (confirmation)
+    if (bailFull.locataire?.telephone) {
+      envoyerConfirmationPaiement({
+        locataireTelephone: bailFull.locataire.telephone,
+        locataireEmail: bailFull.locataire.email,
+        locataireNom,
+        montant: montantPaye,
+        datePaiement,
+        bienTitre: bailFull.bien?.titre,
+        echeanceId,
+        bailId: echeance.bailId,
+        bienId: echeance.bienId,
+        proprietaireId: echeance.proprietaireId,
+        locataireId,
+      }).catch(() => null);
+    }
+  }).catch(() => null);
+
+  return updated;
 };
 
 // ─── Caution ──────────────────────────────────────────────────────────────────

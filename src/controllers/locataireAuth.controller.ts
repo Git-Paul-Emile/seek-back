@@ -308,6 +308,25 @@ export const payerEcheances = async (req: Request, res: Response): Promise<void>
   );
 };
 
+// ─── Confirmation paiement espèces (locataire) ───────────────────────────────
+
+export const confirmerPaiementEspeces = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+
+  const { echeanceId } = req.params as { echeanceId: string };
+  if (!echeanceId) {
+    res.status(StatusCodes.BAD_REQUEST).json(
+      jsonResponse({ status: "fail", message: "echeanceId requis", data: null })
+    );
+    return;
+  }
+
+  const echeance = await BailService.confirmerPaiementEspacesLocataire(req.locataire.id, echeanceId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Paiement confirmé avec succès", data: echeance })
+  );
+};
+
 // ─── Initier un paiement Mobile Money (locataire) ─────────────────────────────
 
 const initierPaiementSchema = z.object({

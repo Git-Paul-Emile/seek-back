@@ -31,6 +31,7 @@ router.post("/:bailId/echeancier/prolonger-annee", validateId, controllerWrapper
 router.patch("/:bailId/echeancier/payer-multiple", validateId, controllerWrapper(BailController.payerMoisMultiples));
 router.patch("/:bailId/echeancier/:echeanceId/payer", validateId, controllerWrapper(BailController.payerEcheance));
 router.patch("/:bailId/echeancier/:echeanceId/confirmer", validateId, controllerWrapper(BailController.confirmerReception));
+router.patch("/:bailId/echeancier/:echeanceId/especes", validateId, controllerWrapper(BailController.enregistrerPaiementEspeces));
 
 router.get("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.getQuittance));
 router.post("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.genererQuittance));

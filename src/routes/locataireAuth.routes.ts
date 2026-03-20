@@ -22,6 +22,7 @@ router.get("/echeancier", authenticateLocataire, controllerWrapper(LocataireAuth
 router.get("/contrat", authenticateLocataire, controllerWrapper(LocataireAuthController.getContrat));
 router.post("/paiement/payer", authenticateLocataire, controllerWrapper(LocataireAuthController.payerEcheances));
 router.post("/paiement/initier", authenticateLocataire, controllerWrapper(LocataireAuthController.initierPaiement));
+router.patch("/paiement/:echeanceId/confirmer-especes", authenticateLocataire, controllerWrapper(LocataireAuthController.confirmerPaiementEspeces));
 router.get("/quittances", authenticateLocataire, controllerWrapper(LocataireAuthController.getQuittances));
 
 router.get("/verification", authenticateLocataire, controllerWrapper(LocataireAuthController.getVerification));

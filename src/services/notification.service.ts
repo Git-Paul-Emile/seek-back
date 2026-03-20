@@ -314,6 +314,78 @@ export const envoyerPaiementLocataire = async (params: {
   });
 };
 
+// ─── Paiement espèces enregistré par le propriétaire (notifier le locataire) ──
+
+export const envoyerPaiementEspecesLocataire = async (params: {
+  locataireTelephone: string;
+  locataireEmail?: string | null;
+  locataireNom: string;
+  montant: number;
+  datePaiement: string;
+  bienTitre?: string | null;
+  echeanceId: string;
+  bailId: string;
+  bienId: string;
+  proprietaireId: string;
+  locataireId: string;
+}) => {
+  const contenu =
+    `Bonjour ${params.locataireNom}, votre propriétaire a enregistré un paiement en espèces` +
+    ` de ${params.montant.toLocaleString("fr-FR")} FCFA` +
+    ` en date du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
+    (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+    `. Veuillez confirmer ce paiement depuis votre espace SEEK. - SEEK Immobilier`;
+
+  return envoyerNotification({
+    type: "PAIEMENT_ESPECES_LOCATAIRE",
+    telephone: params.locataireTelephone,
+    email: params.locataireEmail,
+    sujet: "Paiement en espèces à confirmer",
+    contenu,
+    echeanceId: params.echeanceId,
+    bailId: params.bailId,
+    bienId: params.bienId,
+    proprietaireId: params.proprietaireId,
+    locataireId: params.locataireId,
+  });
+};
+
+// ─── Confirmation espèces par le locataire (notifier le propriétaire) ─────────
+
+export const envoyerConfirmationEspecesProprietaire = async (params: {
+  proprietaireTelephone: string;
+  proprietaireEmail?: string | null;
+  locataireNom: string;
+  montant: number;
+  datePaiement: string;
+  bienTitre?: string | null;
+  echeanceId: string;
+  bailId: string;
+  bienId: string;
+  proprietaireId: string;
+  locataireId: string;
+}) => {
+  const contenu =
+    `Votre locataire ${params.locataireNom} a confirmé son paiement en espèces` +
+    ` de ${params.montant.toLocaleString("fr-FR")} FCFA` +
+    ` du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
+    (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+    `. Le paiement est maintenant validé. - SEEK Immobilier`;
+
+  return envoyerNotification({
+    type: "CONFIRMATION_ESPECES_PROPRIETAIRE",
+    telephone: params.proprietaireTelephone,
+    email: params.proprietaireEmail,
+    sujet: "Paiement en espèces confirmé par votre locataire",
+    contenu,
+    echeanceId: params.echeanceId,
+    bailId: params.bailId,
+    bienId: params.bienId,
+    proprietaireId: params.proprietaireId,
+    locataireId: params.locataireId,
+  });
+};
+
 // ─── Préavis (locataire notifié) ───────────────────────────────────────────────
 
 export const envoyerPreavisLocataire = async (params: {
