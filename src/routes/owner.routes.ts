@@ -58,4 +58,18 @@ router.delete(
   controllerWrapper(OwnerController.deleteProfile)
 );
 
+/** GET /api/owner/messages-bail - messages bail non lus */
+router.get(
+  "/messages-bail",
+  authenticateOwner,
+  controllerWrapper(OwnerController.getMessagesInternes)
+);
+
+/** POST /api/owner/messages-bail/lus - marquer tous comme lus */
+router.post(
+  "/messages-bail/lus",
+  authenticateOwner,
+  controllerWrapper(OwnerController.marquerMessagesLus)
+);
+
 export default router;

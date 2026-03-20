@@ -52,6 +52,18 @@ function genererEcheances(
   return echeances;
 }
 
+// ─── Helpers messages bail ────────────────────────────────────────────────────
+
+const msgProprietaire = (
+  proprietaireId: string, bailId: string, bienId: string,
+  type: string, titre: string, corps: string
+) => prisma.messageInterne.create({ data: { proprietaireId, bailId, bienId, titre, corps, type } });
+
+const msgLocataire = (
+  locataireId: string, bailId: string, bienId: string,
+  type: string, titre: string, corps: string
+) => prisma.messageInterneLocataire.create({ data: { locataireId, bailId, bienId, titre, corps, type } });
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Récupère l'ID du statut bien par son slug */
@@ -172,7 +184,7 @@ export const mettreEnPreavis = async (
     ? preavisDate
     : bail.dateFinBail;
 
-  return prisma.bailLocation.update({
+  const updated = await prisma.bailLocation.update({
     where: { id: bailId },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: { statut: "EN_PREAVIS" as any, dateFinBail, initiePar: "PROPRIETAIRE" },
@@ -181,6 +193,16 @@ export const mettreEnPreavis = async (
       bien: { select: { id: true, titre: true, ville: true } },
     },
   });
+
+  const bienLabel = updated.bien?.titre || updated.bien?.ville || "votre logement";
+  const finStr = dateFinBail.toLocaleDateString("fr-FR");
+  await msgLocataire(
+    updated.locataireId, bailId, bienId, "PREAVIS",
+    "Préavis de fin de bail",
+    `Votre bailleur a déclenché un préavis pour ${bienLabel}. La date de fin de bail est fixée au ${finStr}.`
+  );
+
+  return updated;
 };
 
 // ─── Mettre un bail en préavis (côté locataire) ───────────────────────────────
@@ -202,7 +224,7 @@ export const mettreEnPreavisLocataire = async (
     ? preavisDate
     : bail.dateFinBail;
 
-  return prisma.bailLocation.update({
+  const updatedLoc = await prisma.bailLocation.update({
     where: { id: bail.id },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: { statut: "EN_PREAVIS" as any, dateFinBail, initiePar: "LOCATAIRE", motifResiliation: motif },
@@ -211,6 +233,17 @@ export const mettreEnPreavisLocataire = async (
       bien: { select: { id: true, titre: true, ville: true } },
     },
   });
+
+  const locNom = `${updatedLoc.locataire.prenom} ${updatedLoc.locataire.nom}`;
+  const bienLabelLoc = updatedLoc.bien?.titre || updatedLoc.bien?.ville || "votre bien";
+  const finStrLoc = dateFinBail.toLocaleDateString("fr-FR");
+  await msgProprietaire(
+    updatedLoc.proprietaireId, updatedLoc.id, updatedLoc.bienId, "PREAVIS",
+    "Préavis donné par votre locataire",
+    `${locNom} a donné son préavis pour ${bienLabelLoc}. La date de fin de bail est fixée au ${finStrLoc}.`
+  );
+
+  return updatedLoc;
 };
 
 // ─── Mettre un bail en renouvellement ────────────────────────────────────────
@@ -285,13 +318,20 @@ export const terminerBail = async (
   if (!["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT"].includes(bail.statut as string))
     throw new AppError("Ce bail ne peut pas être terminé dans son état actuel", StatusCodes.BAD_REQUEST);
 
-  const updated = await BailRepo.updateStatut(bailId, "TERMINE");
+  const updatedTerm = await BailRepo.updateStatut(bailId, "TERMINE");
 
   // Remettre le bien à "Libre"
   const statutLibreId = await getStatutId("libre");
   await BailRepo.updateBienStatut(bienId, statutLibreId);
 
-  return updated;
+  // Notifier le locataire
+  await msgLocataire(
+    bail.locataireId, bailId, bienId, "FIN_BAIL",
+    "Fin de votre bail",
+    `Votre bail a été clôturé par votre bailleur. Merci pour votre séjour.`
+  );
+
+  return updatedTerm;
 };
 
 // ─── Résilier un bail ─────────────────────────────────────────────────────────
@@ -311,7 +351,7 @@ export const resilierBail = async (
   if (!["ACTIF", "EN_PREAVIS"].includes(bail.statut as string))
     throw new AppError("Ce bail ne peut pas être résilié dans son état actuel", StatusCodes.BAD_REQUEST);
 
-  const updated = await prisma.bailLocation.update({
+  const updatedRes = await prisma.bailLocation.update({
     where: { id: bailId },
     data: { statut: "RESILIE", motifResiliation: motif, initiePar: "PROPRIETAIRE" },
     include: {
@@ -324,7 +364,15 @@ export const resilierBail = async (
   const statutLibreId = await getStatutId("libre");
   await BailRepo.updateBienStatut(bienId, statutLibreId);
 
-  return updated;
+  const bienLabelRes = updatedRes.bien?.titre || updatedRes.bien?.ville || "votre logement";
+  const motifMsg = motif ? ` Motif : ${motif}.` : "";
+  await msgLocataire(
+    updatedRes.locataireId, bailId, bienId, "RESILIATION",
+    "Résiliation de votre bail",
+    `Votre bailleur a résilié le bail pour ${bienLabelRes}.${motifMsg}`
+  );
+
+  return updatedRes;
 };
 
 // ─── Résilier un bail (côté locataire) ───────────────────────────────────────
@@ -338,7 +386,7 @@ export const resilierBailLocataire = async (
   });
   if (!bail) throw new AppError("Aucun bail actif ou en préavis trouvé", StatusCodes.NOT_FOUND);
 
-  const updated = await prisma.bailLocation.update({
+  const updatedResLoc = await prisma.bailLocation.update({
     where: { id: bail.id },
     data: { statut: "RESILIE", motifResiliation: motif, initiePar: "LOCATAIRE" },
     include: {
@@ -351,7 +399,16 @@ export const resilierBailLocataire = async (
   const statutLibreId = await getStatutId("libre");
   await BailRepo.updateBienStatut(bail.bienId, statutLibreId);
 
-  return updated;
+  const locNomRes = `${updatedResLoc.locataire.prenom} ${updatedResLoc.locataire.nom}`;
+  const bienLabelResLoc = updatedResLoc.bien?.titre || updatedResLoc.bien?.ville || "votre bien";
+  const motifMsgLoc = motif ? ` Motif : ${motif}.` : "";
+  await msgProprietaire(
+    updatedResLoc.proprietaireId, updatedResLoc.id, updatedResLoc.bienId, "RESILIATION",
+    "Résiliation par votre locataire",
+    `${locNomRes} a résilié le bail pour ${bienLabelResLoc}.${motifMsgLoc}`
+  );
+
+  return updatedResLoc;
 };
 
 // ─── Annuler un bail (suppression + retour bien à "Libre") ───────────────────

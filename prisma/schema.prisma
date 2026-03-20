@@ -469,29 +469,6 @@ enum StatutBail {
   ARCHIVE
 }
 
-enum TypeEtatDesLieux {
-  ENTREE
-  SORTIE
-}
-
-enum StatutEtatDesLieux {
-  BROUILLON
-  VALIDE
-}
-
-enum EtatElement {
-  NEUF
-  BON
-  MOYEN
-  MAUVAIS
-  HS
-}
-
-enum SignataireEtatDesLieux {
-  PROPRIETAIRE
-  LOCATAIRE
-}
-
 enum TypePieceIdentite {
   CNI
   PASSEPORT
@@ -546,6 +523,7 @@ model Locataire {
   refreshTokens        LocataireRefreshToken[]
   passwordResetTokens  LocatairePasswordResetToken[]
   transactions         Transaction[]
+  messagesInternes     MessageInterneLocataire[]
 
   @@index([proprietaireId])
   @@index([activationToken])
@@ -621,70 +599,10 @@ model BailLocation {
   echeancier    EcheancierLoyer[]
   depotCaution  DepotCaution?
   transactions  Transaction[]
-  etatsDesLieux EtatDesLieux[]
-
   @@index([bienId])
   @@index([locataireId])
   @@index([proprietaireId])
   @@index([statut])
-}
-
-model EtatDesLieux {
-  id                String               @id @default(uuid())
-  bailId            String
-  bienId            String
-  proprietaireId    String
-  locataireId       String
-  type              TypeEtatDesLieux
-  statut            StatutEtatDesLieux  @default(BROUILLON)
-  dateEtat          DateTime             @default(now())
-  commentaireGlobal String?
-
-  signeParProprioAt DateTime?
-  signeParLocataireAt DateTime?
-
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-
-  bail              BailLocation         @relation(fields: [bailId], references: [id], onDelete: Cascade)
-  items             EtatDesLieuxItem[]
-
-  @@unique([bailId, type])
-  @@index([bailId])
-  @@index([locataireId])
-  @@index([proprietaireId])
-}
-
-model EtatDesLieuxItem {
-  id                String          @id @default(uuid())
-  etatDesLieuxId    String
-  piece             String
-  element           String
-  etat              EtatElement
-  commentaire       String?
-  ordre             Int             @default(0)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-
-  etatDesLieux      EtatDesLieux    @relation(fields: [etatDesLieuxId], references: [id], onDelete: Cascade)
-  photos            EtatDesLieuxPhoto[]
-
-  @@index([etatDesLieuxId])
-  @@index([piece])
-}
-
-model EtatDesLieuxPhoto {
-  id                String            @id @default(uuid())
-  itemId            String
-  url               String
-  nom               String?
-  taille            Int?
-  uploadedBy        SignataireEtatDesLieux
-  createdAt         DateTime          @default(now())
-
-  item              EtatDesLieuxItem  @relation(fields: [itemId], references: [id], onDelete: Cascade)
-
-  @@index([itemId])
 }
 
 // ============================================================
@@ -989,15 +907,34 @@ model Proprietaire {
 model MessageInterne {
   id             String   @id @default(uuid())
   proprietaireId String
+  bailId         String?
+  bienId         String?
   titre          String
   corps          String
-  type           String   @default("INFO") // INFO | AVERTISSEMENT | SANCTION | LEVEE
+  type           String   @default("INFO") // INFO | AVERTISSEMENT | SANCTION | LEVEE | PREAVIS | RESILIATION | FIN_BAIL
   lu             Boolean  @default(false)
   createdAt      DateTime @default(now())
 
   proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
 
   @@index([proprietaireId])
+  @@index([createdAt])
+}
+
+model MessageInterneLocataire {
+  id          String   @id @default(uuid())
+  locataireId String
+  bailId      String?
+  bienId      String?
+  titre       String
+  corps       String
+  type        String   @default("INFO") // INFO | PREAVIS | RESILIATION | FIN_BAIL
+  lu          Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  locataire Locataire @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+
+  @@index([locataireId])
   @@index([createdAt])
 }
 

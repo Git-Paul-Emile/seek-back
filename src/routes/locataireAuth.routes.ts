@@ -34,12 +34,8 @@ router.get("/documents", authenticateLocataire, controllerWrapper(LocataireAuthC
 router.patch("/bail/preavis", authenticateLocataire, controllerWrapper(LocataireAuthController.mettreEnPreavisLocataire));
 router.patch("/bail/resilier", authenticateLocataire, controllerWrapper(LocataireAuthController.resilierBailLocataire));
 
-router.get("/etat-des-lieux", authenticateLocataire, controllerWrapper(LocataireAuthController.getEtatsDesLieux));
-router.patch(
-  "/etat-des-lieux/:etatDesLieuxId/signer",
-  authenticateLocataire,
-  controllerWrapper(LocataireAuthController.signerEtatDesLieux)
-);
+router.get("/messages-bail", authenticateLocataire, controllerWrapper(LocataireAuthController.getMessagesBailLocataire));
+router.post("/messages-bail/lus", authenticateLocataire, controllerWrapper(LocataireAuthController.marquerMessagesLusLocataire));
 
 router.post(
   "/verification/upload",

@@ -308,18 +308,13 @@ export const getBienById = async (id: string) => {
 // ─── Nettoyage Cloudinary d'un bien (photos + documents + photos état des lieux) ──
 
 const deleteCloudinaryForBien = async (bienId: string): Promise<void> => {
-  const [bien, docs, etatPhotos] = await Promise.all([
+  const [bien, docs] = await Promise.all([
     prisma.bien.findUnique({ where: { id: bienId }, select: { photos: true } }),
     prisma.documentBien.findMany({ where: { bienId }, select: { url: true } }),
-    prisma.etatDesLieuxPhoto.findMany({
-      where: { item: { etatDesLieux: { bienId } } },
-      select: { url: true },
-    }),
   ]);
   const urls: (string | null | undefined)[] = [
     ...(bien?.photos ?? []),
     ...docs.map((d) => d.url),
-    ...etatPhotos.map((p) => p.url),
   ];
   await CloudinaryService.deleteUrls(urls);
 };

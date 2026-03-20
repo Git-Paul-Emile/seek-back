@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 import * as LocataireAuthService from "../services/locataireAuth.service.js";
 import * as BailService from "../services/bail.service.js";
-import * as EtatDesLieuxService from "../services/etatDesLieux.service.js";
 import * as MobileMoneyService from "../services/mobileMoney.service.js";
 import * as QuittanceService from "../services/quittance.service.js";
 import * as NotificationService from "../services/notification.service.js";
@@ -654,40 +653,6 @@ export const getDocumentsBien = async (req: Request, res: Response): Promise<voi
 
 // ─── POST /api/locataire/auth/forgot-password ────────────────────────────────
 
-const signerEtatDesLieuxLocataireSchema = z.object({
-  etatDesLieuxId: z.string().uuid("ID �tat des lieux invalide"),
-});
-
-export const getEtatsDesLieux = async (req: Request, res: Response): Promise<void> => {
-  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
-  const data = await EtatDesLieuxService.getEtatsDesLieuxLocataire(req.locataire.id);
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Etats des lieux r�cup�r�s", data })
-  );
-};
-
-export const signerEtatDesLieux = async (req: Request, res: Response): Promise<void> => {
-  if (!req.locataire?.id) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
-  const parsed = signerEtatDesLieuxLocataireSchema.safeParse({ etatDesLieuxId: req.params.etatDesLieuxId });
-  if (!parsed.success) {
-    res.status(StatusCodes.BAD_REQUEST).json(
-      jsonResponse({
-        status: "fail",
-        message: parsed.error.issues[0]?.message ?? "ID invalide",
-        data: parsed.error.flatten(),
-      })
-    );
-    return;
-  }
-
-  const data = await EtatDesLieuxService.signerEtatDesLieuxLocataire(
-    parsed.data.etatDesLieuxId,
-    req.locataire.id
-  );
-  res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Etat des lieux sign�", data })
-  );
-};
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   const { identifiant } = req.body;
   if (!identifiant) {
@@ -781,6 +746,29 @@ export const resilierBailLocataire = async (req: Request, res: Response): Promis
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Bail résilié", data: bail })
   );
+};
+
+// ─── GET /api/locataire/messages-bail ─────────────────────────────────────────
+
+export const getMessagesBailLocataire = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire) { res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" })); return; }
+  const data = await prisma.messageInterneLocataire.findMany({
+    where: { locataireId: req.locataire.id },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  });
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages récupérés", data }));
+};
+
+// ─── POST /api/locataire/messages-bail/lus ────────────────────────────────────
+
+export const marquerMessagesLusLocataire = async (req: Request, res: Response): Promise<void> => {
+  if (!req.locataire) { res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" })); return; }
+  await prisma.messageInterneLocataire.updateMany({
+    where: { locataireId: req.locataire.id, lu: false },
+    data: { lu: true },
+  });
+  res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
 };
 
 

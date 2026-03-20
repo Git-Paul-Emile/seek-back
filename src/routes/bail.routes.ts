@@ -1,22 +1,13 @@
 import { Router } from "express";
-import multer from "multer";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as BailController from "../controllers/bail.controller.js";
 import * as ContratController from "../controllers/contrat.controller.js";
 import * as QuittanceController from "../controllers/quittance.controller.js";
 import * as NotificationController from "../controllers/notification.controller.js";
-import * as EtatDesLieuxController from "../controllers/etatDesLieux.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
 const router = Router({ mergeParams: true });
-const etatDesLieuxPhotoUpload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    cb(null, ["image/jpeg", "image/png", "image/webp"].includes(file.mimetype));
-  },
-});
 
 router.use(authenticateOwner);
 
@@ -51,23 +42,6 @@ router.get("/:bailId/notifications", validateId, controllerWrapper(NotificationC
 router.get("/:bailId/solde", validateId, controllerWrapper(BailController.getSolde));
 router.get("/:bailId/caution", validateId, controllerWrapper(BailController.getCaution));
 router.patch("/:bailId/caution/restituer", validateId, controllerWrapper(BailController.restituerCaution));
-
-router.get("/:bailId/etat-des-lieux", controllerWrapper(EtatDesLieuxController.getEtatsDesLieux));
-router.post("/:bailId/etat-des-lieux", controllerWrapper(EtatDesLieuxController.createEtatDesLieux));
-router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId", controllerWrapper(EtatDesLieuxController.updateEtatDesLieux));
-router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId/signer", controllerWrapper(EtatDesLieuxController.signerEtatDesLieuxOwner));
-router.post("/:bailId/etat-des-lieux/:etatDesLieuxId/items", controllerWrapper(EtatDesLieuxController.addItem));
-router.patch("/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId", controllerWrapper(EtatDesLieuxController.updateItem));
-router.delete("/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId", controllerWrapper(EtatDesLieuxController.deleteItem));
-router.post(
-  "/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId/photos",
-  etatDesLieuxPhotoUpload.single("photo"),
-  controllerWrapper(EtatDesLieuxController.addPhoto)
-);
-router.delete(
-  "/:bailId/etat-des-lieux/:etatDesLieuxId/items/:itemId/photos/:photoId",
-  controllerWrapper(EtatDesLieuxController.deletePhoto)
-);
 
 router.get("/:bailId/contrat", validateId, controllerWrapper(ContratController.getContrat));
 router.post("/:bailId/contrat", validateId, controllerWrapper(ContratController.genererContrat));

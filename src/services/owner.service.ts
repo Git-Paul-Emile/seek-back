@@ -420,7 +420,7 @@ export const deleteProfile = async (id: string): Promise<void> => {
     throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
   }
 
-  const [verifOwner, biens, docs, locataires, etatPhotos] = await Promise.all([
+  const [verifOwner, biens, docs, locataires] = await Promise.all([
     prisma.verificationDocuments.findUnique({
       where: { proprietaireId: id },
       select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true },
@@ -430,10 +430,6 @@ export const deleteProfile = async (id: string): Promise<void> => {
     prisma.locataire.findMany({
       where: { proprietaireId: id },
       select: { verification: { select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true } } },
-    }),
-    prisma.etatDesLieuxPhoto.findMany({
-      where: { item: { etatDesLieux: { proprietaireId: id } } },
-      select: { url: true },
     }),
   ]);
 
@@ -448,7 +444,6 @@ export const deleteProfile = async (id: string): Promise<void> => {
         ? [l.verification.pieceIdentiteRecto, l.verification.pieceIdentiteVerso, l.verification.selfie]
         : []
     ),
-    ...etatPhotos.map((p) => p.url),
   ];
 
   await CloudinaryService.deleteUrls(urls);
