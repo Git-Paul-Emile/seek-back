@@ -36,6 +36,7 @@ router.patch("/:bailId/echeancier/:echeanceId/especes", validateId, controllerWr
 router.get("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.getQuittance));
 router.post("/:bailId/echeancier/:echeanceId/quittance", validateId, controllerWrapper(QuittanceController.genererQuittance));
 router.post("/:bailId/echeancier/:echeanceId/rappel", validateId, controllerWrapper(NotificationController.envoyerRappel));
+router.get("/:bailId/echeancier/:echeanceId/rappels", validateId, controllerWrapper(NotificationController.getRappelsEcheance));
 
 router.get("/:bailId/quittances", validateId, controllerWrapper(QuittanceController.getQuittancesBail));
 router.get("/:bailId/notifications", validateId, controllerWrapper(NotificationController.getNotificationsBail));

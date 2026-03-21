@@ -59,6 +59,23 @@ export const envoyerRappel = async (req: Request, res: Response): Promise<void> 
   );
 };
 
+// ─── Lister l'historique des rappels d'une échéance ──────────────────────────
+
+/** GET /api/biens/:id/bail/:bailId/echeancier/:echeanceId/rappels */
+export const getRappelsEcheance = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = getOwner(req);
+  const { id: bienId, echeanceId } = req.params as { id: string; bailId: string; echeanceId: string };
+
+  const bien = await prisma.bien.findUnique({ where: { id: bienId }, select: { proprietaireId: true } });
+  if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+  if (bien.proprietaireId !== proprietaireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+
+  const rappels = await NotificationService.getNotificationsEcheance(echeanceId);
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Historique des relances récupéré", data: rappels })
+  );
+};
+
 // ─── Lister les notifications d'un bail ───────────────────────────────────────
 
 /** GET /api/biens/:id/bail/:bailId/notifications */
