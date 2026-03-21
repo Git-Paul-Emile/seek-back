@@ -4,7 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "dev": "tsx watch src/index.ts",
     "dev:local": "PORT=3003 DATABASE_URL=\"mysql://app_user:app_pass@127.0.0.1:3306/esca_odc\" node --loader ts-node/esm src/index.ts",
     "dev:watch": "node --loader ts-node/esm --watch src/index.ts",
@@ -29,10 +32,13 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^25.2.3",
     "@types/nodemailer": "^7.0.9",
+    "@types/supertest": "^7.2.0",
     "nodemon": "^3.1.11",
     "prisma": "^6.19.2",
+    "supertest": "^7.2.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",
@@ -49,10 +55,10 @@
     "multer": "^2.0.2",
     "nodemailer": "^8.0.1",
     "sharp": "^0.34.5",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "swagger-ui-express": "^5.0.1",
     "twilio": "^5.12.1",
-    "zod": "^4.3.6",
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+    "zod": "^4.3.6"
   }
 }
