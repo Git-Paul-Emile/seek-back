@@ -65,7 +65,7 @@ export const getSignalementByIdAdmin = async (req: Request, res: Response, next:
 
 export const validerSignalementAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const adminId = req.admin?.id ?? "admin_system";
 
     const signalement = await SignalementService.validerSignalement(id, adminId);
@@ -82,7 +82,7 @@ export const validerSignalementAdmin = async (req: Request, res: Response, next:
 
 export const rejeterSignalementAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const adminId = req.admin?.id ?? "admin_system";
 
     const signalement = await SignalementService.rejeterSignalement(id, adminId);
