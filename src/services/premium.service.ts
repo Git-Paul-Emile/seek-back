@@ -166,14 +166,14 @@ export const simulerPaiementEtActiverPromotion = async (
 
   // 6. Enregistrer dans l'historique des promotions
   // Note: Cette fonctionnalité sera activée après la génération du client Prisma
-  // await savePromotionToHistory(
+  // await savePromotionToHistory({
   //   bienId,
   //   proprietaireId,
-  //   paiementResult.transactionId,
+  //   transactionId: paiementResult.transactionId,
   //   formule,
-  //   now,
-  //   dateFin
-  // );
+  //   dateDebut: now,
+  //   dateFin,
+  // });
 
   console.log(`[PROMOTION] Transaction ${paiementResult.transactionId} - Bien ${bienId} - Formule: ${formule.nom} - Montant: ${formule.prix} - Mode: ${modePaiement}`);
 
@@ -281,14 +281,17 @@ export const getDetailsTransaction = async (
  * Enregistre la mise en avant dans l'historique
  * NOTE: À activer après génération du client Prisma
  */
-const savePromotionToHistory = async (
-  bienId: string,
-  proprietaireId: string,
-  transactionId: string,
-  formule: FormulePremium,
-  dateDebut: Date,
-  dateFin: Date
-): Promise<any> => {
+interface SavePromotionParams {
+  bienId: string;
+  proprietaireId: string;
+  transactionId: string;
+  formule: FormulePremium;
+  dateDebut: Date;
+  dateFin: Date;
+}
+
+const savePromotionToHistory = async (params: SavePromotionParams): Promise<unknown> => {
+  const { bienId, proprietaireId, transactionId, formule, dateDebut, dateFin } = params;
   try {
     return await prisma.promotionHistory.create({
       data: {

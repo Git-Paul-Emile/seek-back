@@ -43,14 +43,17 @@ export interface NotificationPayload {
 
 // ─── Envoi réel SMS + email en arrière-plan ────────────────────────────────────
 
-async function dispatchSmsEtEmail(
-  notifId: string,
-  telephone: string,
-  email: string | null | undefined,
-  contenu: string,
-  sujet: string | undefined,
-  htmlEmail: string | undefined
-): Promise<void> {
+interface DispatchSmsEtEmailParams {
+  notifId: string;
+  telephone: string;
+  email: string | null | undefined;
+  contenu: string;
+  sujet: string | undefined;
+  htmlEmail: string | undefined;
+}
+
+async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<void> {
+  const { notifId, telephone, email, contenu, sujet, htmlEmail } = params;
   // ── 1. SMS (obligatoire et prioritaire) ──────────────────────────────────
   const smsResult = await sendSms(telephone, contenu);
 
@@ -113,14 +116,14 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
 
   // Envoi en arrière-plan (non-bloquant)
   enqueueNotif(() =>
-    dispatchSmsEtEmail(
-      notification.id,
-      payload.telephone,
-      payload.email,
-      payload.contenu,
-      payload.sujet,
-      payload.htmlEmail
-    )
+    dispatchSmsEtEmail({
+      notifId: notification.id,
+      telephone: payload.telephone,
+      email: payload.email,
+      contenu: payload.contenu,
+      sujet: payload.sujet,
+      htmlEmail: payload.htmlEmail,
+    })
   );
 
   // Push temps réel si le destinataire est un propriétaire connecté

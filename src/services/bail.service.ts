@@ -33,13 +33,20 @@ function advanceByFrequence(date: Date, frequence: string): Date {
   return next;
 }
 
-function genererEcheances(
-  bailId: string, bienId: string,
-  proprietaireId: string, locataireId: string,
-  dateDebut: Date, dateFin: Date | null,
-  frequence: string, montant: number,
-  dateMax?: Date // arrêt au 31/12 de l'année cible
-): EcheancierLoyerCreateManyInput[] {
+interface GenererEcheancesParams {
+  bailId: string;
+  bienId: string;
+  proprietaireId: string;
+  locataireId: string;
+  dateDebut: Date;
+  dateFin: Date | null;
+  frequence: string;
+  montant: number;
+  dateMax?: Date;
+}
+
+function genererEcheances(params: GenererEcheancesParams): EcheancierLoyerCreateManyInput[] {
+  const { bailId, bienId, proprietaireId, locataireId, dateDebut, dateFin, frequence, montant, dateMax } = params;
   const MAX = 36;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -51,7 +58,6 @@ function genererEcheances(
     if (dateMax && current > dateMax) break;
     const due = new Date(current);
     due.setHours(0, 0, 0, 0);
-    // Statut initial : EN_ATTENTE si déjà due, A_VENIR sinon
     const statut = due <= today ? "EN_ATTENTE" as const : "A_VENIR" as const;
     echeances.push({
       bailId, bienId, proprietaireId, locataireId,
@@ -65,15 +71,20 @@ function genererEcheances(
 
 // ─── Helpers messages bail ────────────────────────────────────────────────────
 
-const msgProprietaire = (
-  proprietaireId: string, bailId: string, bienId: string,
-  type: string, titre: string, corps: string
-) => prisma.messageInterne.create({ data: { proprietaireId, bailId, bienId, titre, corps, type } });
+interface MsgInterneParams {
+  userId: string;
+  bailId: string;
+  bienId: string;
+  type: string;
+  titre: string;
+  corps: string;
+}
 
-const msgLocataire = (
-  locataireId: string, bailId: string, bienId: string,
-  type: string, titre: string, corps: string
-) => prisma.messageInterneLocataire.create({ data: { locataireId, bailId, bienId, titre, corps, type } });
+const msgProprietaire = (p: MsgInterneParams) =>
+  prisma.messageInterne.create({ data: { proprietaireId: p.userId, bailId: p.bailId, bienId: p.bienId, titre: p.titre, corps: p.corps, type: p.type } });
+
+const msgLocataire = (p: MsgInterneParams) =>
+  prisma.messageInterneLocataire.create({ data: { locataireId: p.userId, bailId: p.bailId, bienId: p.bienId, titre: p.titre, corps: p.corps, type: p.type } });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -207,11 +218,11 @@ export const mettreEnPreavis = async (
 
   const bienLabel = updated.bien?.titre || updated.bien?.ville || "votre logement";
   const finStr = dateFinBail.toLocaleDateString("fr-FR");
-  await msgLocataire(
-    updated.locataireId, bailId, bienId, "PREAVIS",
-    "Préavis de fin de bail",
-    `Votre bailleur a déclenché un préavis pour ${bienLabel}. La date de fin de bail est fixée au ${finStr}.`
-  );
+  await msgLocataire({
+    userId: updated.locataireId, bailId, bienId, type: "PREAVIS",
+    titre: "Préavis de fin de bail",
+    corps: `Votre bailleur a déclenché un préavis pour ${bienLabel}. La date de fin de bail est fixée au ${finStr}.`,
+  });
 
   // Notification SMS + email au locataire
   envoyerPreavisLocataire({
@@ -261,11 +272,11 @@ export const mettreEnPreavisLocataire = async (
   const locNom = `${updatedLoc.locataire.prenom} ${updatedLoc.locataire.nom}`;
   const bienLabelLoc = updatedLoc.bien?.titre || updatedLoc.bien?.ville || "votre bien";
   const finStrLoc = dateFinBail.toLocaleDateString("fr-FR");
-  await msgProprietaire(
-    updatedLoc.proprietaireId, updatedLoc.id, updatedLoc.bienId, "PREAVIS",
-    "Préavis donné par votre locataire",
-    `${locNom} a donné son préavis pour ${bienLabelLoc}. La date de fin de bail est fixée au ${finStrLoc}.`
-  );
+  await msgProprietaire({
+    userId: updatedLoc.proprietaireId, bailId: updatedLoc.id, bienId: updatedLoc.bienId, type: "PREAVIS",
+    titre: "Préavis donné par votre locataire",
+    corps: `${locNom} a donné son préavis pour ${bienLabelLoc}. La date de fin de bail est fixée au ${finStrLoc}.`,
+  });
 
   // Notification SMS + email au propriétaire
   prisma.proprietaire.findUnique({ where: { id: updatedLoc.proprietaireId }, select: { telephone: true, email: true } })
@@ -367,11 +378,11 @@ export const terminerBail = async (
   await BailRepo.updateBienStatut(bienId, statutLibreId);
 
   // Notifier le locataire (message interne)
-  await msgLocataire(
-    bail.locataireId, bailId, bienId, "FIN_BAIL",
-    "Fin de votre bail",
-    `Votre bail a été clôturé par votre bailleur. Merci pour votre séjour.`
-  );
+  await msgLocataire({
+    userId: bail.locataireId, bailId, bienId, type: "FIN_BAIL",
+    titre: "Fin de votre bail",
+    corps: `Votre bail a été clôturé par votre bailleur. Merci pour votre séjour.`,
+  });
 
   // Notification SMS + email au locataire
   prisma.locataire.findUnique({ where: { id: bail.locataireId }, select: { telephone: true, email: true, prenom: true, nom: true } })
@@ -426,11 +437,11 @@ export const resilierBail = async (
 
   const bienLabelRes = updatedRes.bien?.titre || updatedRes.bien?.ville || "votre logement";
   const motifMsg = motif ? ` Motif : ${motif}.` : "";
-  await msgLocataire(
-    updatedRes.locataireId, bailId, bienId, "RESILIATION",
-    "Résiliation de votre bail",
-    `Votre bailleur a résilié le bail pour ${bienLabelRes}.${motifMsg}`
-  );
+  await msgLocataire({
+    userId: updatedRes.locataireId, bailId, bienId, type: "RESILIATION",
+    titre: "Résiliation de votre bail",
+    corps: `Votre bailleur a résilié le bail pour ${bienLabelRes}.${motifMsg}`,
+  });
 
   // Notification SMS + email au locataire
   envoyerResiliationLocataire({
@@ -475,11 +486,11 @@ export const resilierBailLocataire = async (
   const locNomRes = `${updatedResLoc.locataire.prenom} ${updatedResLoc.locataire.nom}`;
   const bienLabelResLoc = updatedResLoc.bien?.titre || updatedResLoc.bien?.ville || "votre bien";
   const motifMsgLoc = motif ? ` Motif : ${motif}.` : "";
-  await msgProprietaire(
-    updatedResLoc.proprietaireId, updatedResLoc.id, updatedResLoc.bienId, "RESILIATION",
-    "Résiliation par votre locataire",
-    `${locNomRes} a résilié le bail pour ${bienLabelResLoc}.${motifMsgLoc}`
-  );
+  await msgProprietaire({
+    userId: updatedResLoc.proprietaireId, bailId: updatedResLoc.id, bienId: updatedResLoc.bienId, type: "RESILIATION",
+    titre: "Résiliation par votre locataire",
+    corps: `${locNomRes} a résilié le bail pour ${bienLabelResLoc}.${motifMsgLoc}`,
+  });
 
   // Notification SMS + email au propriétaire
   prisma.proprietaire.findUnique({ where: { id: updatedResLoc.proprietaireId }, select: { telephone: true, email: true } })
@@ -612,13 +623,13 @@ export const getEcheancier = async (bienId: string, bailId: string, proprietaire
           bail.dateFinBail && new Date(bail.dateFinBail) < prochaineAnneeFin
             ? new Date(bail.dateFinBail)
             : null;
-        const echeances = genererEcheances(
-          bailId, bienId, proprietaireId, bail.locataireId,
-          nextStart, stopDate,
-          bail.frequencePaiement ?? "mensuel",
-          bail.montantLoyer,
-          stopDate ? undefined : prochaineAnneeFin
-        );
+        const echeances = genererEcheances({
+          bailId, bienId, proprietaireId, locataireId: bail.locataireId,
+          dateDebut: nextStart, dateFin: stopDate,
+          frequence: bail.frequencePaiement ?? "mensuel",
+          montant: bail.montantLoyer,
+          dateMax: stopDate ? undefined : prochaineAnneeFin,
+        });
         if (echeances.length > 0) {
           await prisma.echeancierLoyer.createMany({ data: echeances });
         }
@@ -981,12 +992,12 @@ export const enregistrerPaiementEspeces = async (
     }).catch(() => null);
 
     // Message interne au locataire
-    msgLocataire(
-      echeance.locataireId, bailId, bienId,
-      "PAIEMENT_ESPECES",
-      "Paiement espèces à confirmer",
-      `Votre propriétaire a enregistré un paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`
-    ).catch(() => null);
+    msgLocataire({
+      userId: echeance.locataireId, bailId, bienId,
+      type: "PAIEMENT_ESPECES",
+      titre: "Paiement espèces à confirmer",
+      corps: `Votre propriétaire a enregistré un paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`,
+    }).catch(() => null);
   }).catch(() => null);
 
   return updated;
@@ -1052,12 +1063,12 @@ export const confirmerPaiementEspacesLocataire = async (
       }).catch(() => null);
 
       // Message interne au propriétaire
-      msgProprietaire(
-        echeance.proprietaireId, echeance.bailId, echeance.bienId,
-        "CONFIRMATION_ESPECES",
-        "Paiement espèces confirmé",
-        `${locataireNom} a confirmé son paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA.`
-      ).catch(() => null);
+      msgProprietaire({
+        userId: echeance.proprietaireId, bailId: echeance.bailId, bienId: echeance.bienId,
+        type: "CONFIRMATION_ESPECES",
+        titre: "Paiement espèces confirmé",
+        corps: `${locataireNom} a confirmé son paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA.`,
+      }).catch(() => null);
     }
 
     // Notif locataire (confirmation)
@@ -1255,13 +1266,13 @@ export const prolongerEcheancesAnnee = async (
       ? new Date(bail.dateFinBail)
       : null;
 
-  const echeances = genererEcheances(
-    bailId, bienId, proprietaireId, bail.locataireId,
-    nextStart, stopDate,
-    bail.frequencePaiement ?? "mensuel",
-    bail.montantLoyer,
-    stopDate ? undefined : prochaineAnneeFin
-  );
+  const echeances = genererEcheances({
+    bailId, bienId, proprietaireId, locataireId: bail.locataireId,
+    dateDebut: nextStart, dateFin: stopDate,
+    frequence: bail.frequencePaiement ?? "mensuel",
+    montant: bail.montantLoyer,
+    dateMax: stopDate ? undefined : prochaineAnneeFin,
+  });
 
   if (echeances.length === 0)
     throw new AppError("Aucune nouvelle échéance à générer pour cette période", StatusCodes.BAD_REQUEST);
@@ -1300,13 +1311,13 @@ export const activerBail = async (
   // 3. Génération de l'échéancier de loyers (limité au 31/12 de l'année en cours)
   const now = new Date();
   const dateMax = new Date(now.getFullYear(), 11, 31);
-  const echeances = genererEcheances(
-    bailId, bienId, proprietaireId, bail.locataireId,
-    bail.dateDebutBail, bail.dateFinBail ?? null,
-    bail.frequencePaiement ?? "mensuel",
-    bail.montantLoyer,
-    dateMax
-  );
+  const echeances = genererEcheances({
+    bailId, bienId, proprietaireId, locataireId: bail.locataireId,
+    dateDebut: bail.dateDebutBail, dateFin: bail.dateFinBail ?? null,
+    frequence: bail.frequencePaiement ?? "mensuel",
+    montant: bail.montantLoyer,
+    dateMax,
+  });
   if (echeances.length > 0) {
     await prisma.echeancierLoyer.createMany({ data: echeances });
   }
