@@ -11,7 +11,7 @@ export interface TrustScoreBreakdown {
     anciennete: number;
     bailsActifs: number;
   };
-  badges: ("identite_verifiee" | "hote_actif" | "anciennete_1an")[];
+  badges: ("identite_verifiee" | "anciennete_1an")[];
   nbAnnonces: number;
   nbBailsActifs: number;
   moisAnciennete: number;
@@ -74,7 +74,6 @@ export const computeScoreForProprietaire = async (
   // ── Badges ────────────────────────────────────────────────────────────────
   const badges: TrustScoreBreakdown["badges"] = [];
   if (proprietaire.statutVerification === "VERIFIED") badges.push("identite_verifiee");
-  if (nbAnnonces >= 2) badges.push("hote_actif");
   if (moisAnciennete >= 12) badges.push("anciennete_1an");
 
   return {
