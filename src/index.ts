@@ -2,6 +2,7 @@ import "dotenv/config"; // Doit être le 1er import - charge .env avant tous les
 import { createServer } from "http";
 import { connectToDatabase } from "./config/database.js";
 import { initializeWebSocket } from "./services/socket.service.js";
+import { initCronJobs } from "./services/cron.service.js";
 import app from "./config/app.js";
 
 // Lancement
@@ -14,6 +15,9 @@ const initializeApp = async () => {
     
     // Initialiser WebSocket (Socket.IO)
     initializeWebSocket(httpServer);
+    
+    // Initialiser les tâches CRON
+    initCronJobs();
     
     // Démarrer le serveur
     httpServer.listen(PORT, () => {

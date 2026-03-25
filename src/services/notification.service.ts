@@ -39,6 +39,7 @@ export interface NotificationPayload {
   bienId?: string;
   proprietaireId?: string;
   locataireId?: string;
+  noSmsEmail?: boolean;
 }
 
 // ─── Envoi réel SMS + email en arrière-plan ────────────────────────────────────
@@ -115,16 +116,18 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
   });
 
   // Envoi en arrière-plan (non-bloquant)
-  enqueueNotif(() =>
-    dispatchSmsEtEmail({
-      notifId: notification.id,
-      telephone: payload.telephone,
-      email: payload.email,
-      contenu: payload.contenu,
-      sujet: payload.sujet,
-      htmlEmail: payload.htmlEmail,
-    })
-  );
+  if (!payload.noSmsEmail) {
+    enqueueNotif(() =>
+      dispatchSmsEtEmail({
+        notifId: notification.id,
+        telephone: payload.telephone,
+        email: payload.email,
+        contenu: payload.contenu,
+        sujet: payload.sujet,
+        htmlEmail: payload.htmlEmail,
+      })
+    );
+  }
 
   // Push temps réel si le destinataire est un propriétaire connecté
   if (payload.proprietaireId) {
@@ -285,6 +288,7 @@ export const envoyerInitiationPaiement = async (params: {
     bienId: params.bienId,
     proprietaireId: params.proprietaireId,
     locataireId: params.locataireId,
+    noSmsEmail: true,
   });
 };
 

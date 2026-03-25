@@ -1,8 +1,21 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as EtatDesLieuxService from "../services/etat-des-lieux.service.js";
+import * as CloudinaryService from "../services/cloudinary.service.js";
 
 // -- Propriétaire --
+
+export const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.file) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Aucune image fournie" });
+    }
+    const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/etats-des-lieux");
+    res.status(StatusCodes.OK).json({ success: true, url: result.url });
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {

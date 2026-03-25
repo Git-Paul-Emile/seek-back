@@ -2,12 +2,20 @@ import { Router } from "express";
 import * as EtatDesLieuxController from "../controllers/etat-des-lieux.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { authenticateLocataire } from "../middlewares/locataireAuth.middleware.js";
+import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
 // ========================
 // Routes Propriétaire
 // ========================
+router.post(
+  "/upload",
+  authenticateOwner,
+  uploadImageMiddleware,
+  EtatDesLieuxController.uploadImage
+);
+
 router.post(
   "/",
   authenticateOwner,
