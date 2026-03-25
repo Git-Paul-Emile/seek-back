@@ -3,7 +3,21 @@ declare global {
     interface Request {
       user?: {
         id: string;
-        [key: string]: any;
+        [key: string]: unknown;
+      };
+      owner?: {
+        id: string;
+        prenom: string;
+        nom: string;
+      };
+      locataire?: {
+        id: string;
+        nom: string;
+        prenom: string;
+      };
+      admin?: {
+        id: string;
+        email: string;
       };
     }
   }
