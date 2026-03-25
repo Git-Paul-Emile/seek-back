@@ -85,7 +85,11 @@ export const submitForValidation = async (id: string, proprietaireId: string) =>
   return updated;
 };
 
-export const addCommentLocataire = async (id: string, locataireId: string, _commentaire: string) => {
+export const contesterElementsLocataire = async (
+  id: string,
+  locataireId: string,
+  elements: { elementId: string; motifContestation: string; photoContestation: string }[]
+) => {
   const edl = await EtatDesLieuxRepo.findById(id);
   if (!edl) throw new AppError("État des lieux introuvable", StatusCodes.NOT_FOUND);
   if (edl.locataireId !== locataireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
@@ -94,12 +98,45 @@ export const addCommentLocataire = async (id: string, locataireId: string, _comm
     throw new AppError("L'état des lieux n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
   }
 
-  const updated = await EtatDesLieuxRepo.updateStatus(id, "CONTESTE");
+  const updated = await EtatDesLieuxRepo.contesterElements(id, elements);
 
-  // Notifier le propriétaire
   if (edl.proprietaire?.telephone) {
-    const msg = `Bonjour ${edl.proprietaire.prenom}, votre locataire a ajouté un commentaire sur l'état des lieux d'${edl.type.toLowerCase()}. Veuillez le modifier sur Seek.`;
-    await SmsService.sendSms(edl.proprietaire.telephone, msg).catch(e => console.error("Erreur SMS", e));
+    const msg = `Bonjour ${edl.proprietaire.prenom}, votre locataire a contesté certains éléments de l'état des lieux d'${edl.type.toLowerCase()}. Veuillez vous connecter sur Seek pour les résoudre.`;
+    await SmsService.sendSms(edl.proprietaire.telephone, msg).catch((e) => console.error("Erreur SMS", e));
+  }
+
+  return updated;
+};
+
+export const resoudreContestationsProprietaire = async (
+  id: string,
+  proprietaireId: string,
+  resolutions: {
+    elementId: string;
+    decision: "RECTIFIER" | "ACCEPTER_RESERVE" | "REFUSER";
+    etat?: "NEUF" | "BON" | "USAGE" | "MAUVAIS" | "DEGRADE";
+    commentaire?: string;
+    photos?: string[];
+  }[]
+) => {
+  const edl = await EtatDesLieuxRepo.findById(id);
+  if (!edl) throw new AppError("État des lieux introuvable", StatusCodes.NOT_FOUND);
+  if (edl.proprietaireId !== proprietaireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+
+  if (edl.statut !== "CONTESTE") {
+    throw new AppError("L'état des lieux n'est pas en cours de contestation", StatusCodes.BAD_REQUEST);
+  }
+
+  const updated = await EtatDesLieuxRepo.resoudreContestations(id, resolutions);
+
+  if (edl.locataire?.telephone) {
+    let msg = "";
+    if ((updated.statut as string) === "EN_LITIGE") {
+      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a refusé certaines contestations. L'état des lieux est en litige.`;
+    } else {
+      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a répondu à vos contestations. Vous pouvez valider l'état des lieux.`;
+    }
+    await SmsService.sendSms(edl.locataire.telephone, msg).catch((e) => console.error("Erreur SMS", e));
   }
 
   return updated;

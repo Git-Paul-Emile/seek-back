@@ -65,7 +65,7 @@ model TypeLogement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  biens  Bien[]
+  biens Bien[]
 
   @@index([slug])
 }
@@ -193,7 +193,7 @@ enum StatutAnnonce {
 }
 
 model Bien {
-  id                String    @id @default(uuid())
+  id                String  @id @default(uuid())
   titre             String?
   description       String?
   typeLogementId    String?
@@ -202,71 +202,71 @@ model Bien {
   proprietaireId    String
 
   // Localisation
-  pays              String?
-  region            String?
-  ville             String?
-  quartier          String?
-  quartierId        String?
-  adresse           String?
-  pointRepere       String?
-  latitude          Float?
-  longitude         Float?
+  pays        String?
+  region      String?
+  ville       String?
+  quartier    String?
+  quartierId  String?
+  adresse     String?
+  pointRepere String?
+  latitude    Float?
+  longitude   Float?
 
   // Caractéristiques
-  surface           Float?
-  surfaceParcelle   Float?
-  nbChambres        Int?
-  nbSdb             Int?
-  nbSalons          Int?
-  nbCuisines        Int?
-  etage             Int?
-  nbEtages          Int?
-  nbAppartements    Int?
-  nbPieces          Int?
-  nbWc              Int?
-  typeTerrain       String?
-  cloture           Boolean   @default(false)
-  typeBureau        String?
-  rideauMetallique  Boolean   @default(false)
+  surface          Float?
+  surfaceParcelle  Float?
+  nbChambres       Int?
+  nbSdb            Int?
+  nbSalons         Int?
+  nbCuisines       Int?
+  etage            Int?
+  nbEtages         Int?
+  nbAppartements   Int?
+  nbPieces         Int?
+  nbWc             Int?
+  typeTerrain      String?
+  cloture          Boolean @default(false)
+  typeBureau       String?
+  rideauMetallique Boolean @default(false)
 
   // Options
-  meuble            Boolean   @default(false)
-  fumeurs           Boolean   @default(false)
-  animaux           Boolean   @default(false)
-  parking           Boolean   @default(false)
-  ascenseur         Boolean   @default(false)
+  meuble    Boolean @default(false)
+  fumeurs   Boolean @default(false)
+  animaux   Boolean @default(false)
+  parking   Boolean @default(false)
+  ascenseur Boolean @default(false)
 
   // Prix
-  prix              Float?
-  prixAncien        Float?      // Prix précédent (pour calculer la baisse)
+  prix                         Float?
+  prixAncien                   Float? // Prix précédent (pour calculer la baisse)
   dateDerniereModificationPrix DateTime? // Date de la dernière modification de prix
-  frequencePaiement String?
-  chargesIncluses   Boolean   @default(false)
-  caution           Int?
-  disponibleLe      DateTime?
+  frequencePaiement            String?
+  chargesIncluses              Boolean   @default(false)
+  caution                      Int?
+  disponibleLe                 DateTime?
 
   // Médias
-  photos            String[]
+  photos String[]
 
   // Statistiques
-  nbVues            Int       @default(0)
-  nbFavoris        Int       @default(0)
+  nbVues    Int @default(0)
+  nbFavoris Int @default(0)
 
   // État & Publication
-  actif              Boolean       @default(true)
-  statutAnnonce      StatutAnnonce @default(BROUILLON)
-  noteAdmin          String?
+  actif         Boolean       @default(true)
+  statutAnnonce StatutAnnonce @default(BROUILLON)
+  noteAdmin     String?
 
   // Promotion / Mise en avant
-  estPremium           Boolean  @default(false)
-  estMisEnAvant        Boolean  @default(false)
-  dateDebutPromotion   DateTime?
-  dateFinPromotion     DateTime?
-  positionRotation     Int      @default(0) // Position dans la rotation
-  dernierAffichage    DateTime? // Dernière fois où l'annonce a été affichée en page d'accueil
+  estPremium         Boolean   @default(false)
+  estMisEnAvant      Boolean   @default(false)
+  dateDebutPromotion DateTime?
+  dateFinPromotion   DateTime?
+  positionRotation   Int       @default(0) // Position dans la rotation
+  dernierAffichage   DateTime? // Dernière fois où l'annonce a été affichée en page d'accueil
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   typeLogement    TypeLogement?    @relation(fields: [typeLogementId], references: [id])
   typeTransaction TypeTransaction? @relation(fields: [typeTransactionId], references: [id])
@@ -280,10 +280,10 @@ model Bien {
   bails              BailLocation[]
   transactions       Transaction[]
   promotionHistories PromotionHistory[]
-  documents           DocumentBien[]
+  documents          DocumentBien[]
   favoris            Favori[]
   vues               VueBien[]
-  bailInvitations     BailInvitation[]
+  bailInvitations    BailInvitation[]
   signalements       Signalement[]
   etatsDesLieux      EtatDesLieux[]
 
@@ -321,12 +321,12 @@ model ComptePublic {
 }
 
 model ComptePublicRefreshToken {
-  id             String       @id @default(uuid())
+  id             String    @id @default(uuid())
   comptePublicId String
-  tokenHash      String       @unique
+  tokenHash      String    @unique
   expiresAt      DateTime
   revokedAt      DateTime?
-  createdAt      DateTime     @default(now())
+  createdAt      DateTime  @default(now())
 
   comptePublic ComptePublic @relation(fields: [comptePublicId], references: [id], onDelete: Cascade)
 
@@ -335,14 +335,14 @@ model ComptePublicRefreshToken {
 }
 
 model Favori {
-  id             String   @id @default(uuid())
+  id             String @id @default(uuid())
   comptePublicId String
   bienId         String
 
   // Snapshot pour détecter les changements (suivi prix/statut)
   prixSnapshot   Float?
-  statutSnapshot String?  // slug du statut
-  actifSnapshot  Boolean  @default(true)
+  statutSnapshot String? // slug du statut
+  actifSnapshot  Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -355,9 +355,9 @@ model Favori {
 }
 
 model VueBien {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   bienId    String
-  userId    String?  // ComptePublic id (nullable — visiteur anonyme)
+  userId    String? // ComptePublic id (nullable — visiteur anonyme)
   ipAddress String
 
   createdAt DateTime @default(now())
@@ -399,9 +399,9 @@ model DocumentBien {
   bienId         String
   proprietaireId String
   nom            String
-  type           String   // "ACTE_PROPRIETE" | "PLAN_CADASTRAL" | "PERMIS_CONSTRUIRE" | "AUTRE"
+  type           String // "ACTE_PROPRIETE" | "PLAN_CADASTRAL" | "PERMIS_CONSTRUIRE" | "AUTRE"
   url            String
-  taille         Int?     // en octets
+  taille         Int? // en octets
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -444,7 +444,7 @@ enum StatutLocataire {
 }
 
 enum StatutBail {
-  EN_ATTENTE    // En attente de validation du contrat
+  EN_ATTENTE // En attente de validation du contrat
   ACTIF
   EN_PREAVIS
   EN_RENOUVELLEMENT
@@ -461,55 +461,55 @@ enum TypePieceIdentite {
 }
 
 model Locataire {
-  id               String            @id @default(uuid())
-  proprietaireId   String
+  id             String @id @default(uuid())
+  proprietaireId String
 
   // Rempli par le propriétaire
-  nom              String
-  prenom           String
-  telephone        String
-  email            String?
-  nbOccupants      Int               @default(1)
-  presenceEnfants  Boolean           @default(false)
+  nom             String
+  prenom          String
+  telephone       String
+  email           String?
+  nbOccupants     Int     @default(1)
+  presenceEnfants Boolean @default(false)
 
   // Rempli par le locataire après activation
-  dateNaissance    DateTime?
-  lieuNaissance    String?
-  nationalite      String?
-  sexe             String?
-  numPieceIdentite String?
-  typePiece        TypePieceIdentite?
-  dateDelivrance   DateTime?
-  dateExpirationPiece DateTime?
-  autoriteDelivrance String?
+  dateNaissance            DateTime?
+  lieuNaissance            String?
+  nationalite              String?
+  sexe                     String?
+  numPieceIdentite         String?
+  typePiece                TypePieceIdentite?
+  dateDelivrance           DateTime?
+  dateExpirationPiece      DateTime?
+  autoriteDelivrance       String?
   situationProfessionnelle String?
 
   // Activation
-  activationToken  String?           @unique
-  tokenExpiresAt   DateTime?
-  statut           StatutLocataire   @default(INVITE)
-  password         String?
+  activationToken String?         @unique
+  tokenExpiresAt  DateTime?
+  statut          StatutLocataire @default(INVITE)
+  password        String?
 
   // Suspension
-  estSuspendu      Boolean           @default(false)
-  motifSuspension  String?
-  dateSuspension   DateTime?
-  suspenduPar      String?
+  estSuspendu     Boolean   @default(false)
+  motifSuspension String?
+  dateSuspension  DateTime?
+  suspenduPar     String?
 
   // Vérification
-  verification     LocataireVerification?
+  verification LocataireVerification?
 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  proprietaire  Proprietaire          @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  bails         BailLocation[]
-  refreshTokens        LocataireRefreshToken[]
-  passwordResetTokens  LocatairePasswordResetToken[]
-  transactions         Transaction[]
-  messagesInternes     MessageInterneLocataire[]
-  bailInvitations      BailInvitation[]
-  etatsDesLieux        EtatDesLieux[]
+  proprietaire        Proprietaire                  @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bails               BailLocation[]
+  refreshTokens       LocataireRefreshToken[]
+  passwordResetTokens LocatairePasswordResetToken[]
+  transactions        Transaction[]
+  messagesInternes    MessageInterneLocataire[]
+  bailInvitations     BailInvitation[]
+  etatsDesLieux       EtatDesLieux[]
 
   @@index([proprietaireId])
   @@index([activationToken])
@@ -527,56 +527,56 @@ enum StatutVerificationLocataire {
 }
 
 model LocataireVerification {
-  id             String                      @id @default(uuid())
-  locataireId    String                      @unique
+  id          String @id @default(uuid())
+  locataireId String @unique
 
   // Type de pièce d'identité
-  typePiece       String                      @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
+  typePiece String @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
 
   // Documents
-  pieceIdentiteRecto  String?  // URL Cloudinary - recto
-  pieceIdentiteVerso  String?  // URL Cloudinary - verso (pour CNI)
-  selfie             String?  // URL Cloudinary
+  pieceIdentiteRecto String? // URL Cloudinary - recto
+  pieceIdentiteVerso String? // URL Cloudinary - verso (pour CNI)
+  selfie             String? // URL Cloudinary
 
   // Statut
-  statut         StatutVerificationLocataire @default(NOT_VERIFIED)
+  statut StatutVerificationLocataire @default(NOT_VERIFIED)
 
   // Consentement
-  conditionsAcceptees Boolean   @default(false)
+  conditionsAcceptees Boolean @default(false)
 
   // Traitement propriétaire
-  motifRejet        String?   // Motif de rejet (si rejeté)
-  traitePar         String?   // ID du propriétaire qui a traité
-  dateTraitement    DateTime?
+  motifRejet     String? // Motif de rejet (si rejeté)
+  traitePar      String? // ID du propriétaire qui a traité
+  dateTraitement DateTime?
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   locataire Locataire @relation(fields: [locataireId], references: [id], onDelete: Cascade)
 }
 
 model BailLocation {
-  id                String     @id @default(uuid())
-  bienId            String
-  locataireId       String
-  proprietaireId    String
+  id             String @id @default(uuid())
+  bienId         String
+  locataireId    String
+  proprietaireId String
 
-  typeBail          String?
-  dateDebutBail     DateTime
-  dateFinBail       DateTime?
-  renouvellement    Boolean    @default(false)
-  montantLoyer      Float
-  montantCaution    Float?
-  cautionVersee     Boolean    @default(false)
+  typeBail           String?
+  dateDebutBail      DateTime
+  dateFinBail        DateTime?
+  renouvellement     Boolean    @default(false)
+  montantLoyer       Float
+  montantCaution     Float?
+  cautionVersee      Boolean    @default(false)
   jourLimitePaiement Int?
-  delaiGrace        Int        @default(5)
-  frequencePaiement String?
-  statut            StatutBail @default(EN_ATTENTE)
-  motifResiliation  String?
-  initiePar         String?    // "PROPRIETAIRE" | "LOCATAIRE"
+  delaiGrace         Int        @default(5)
+  frequencePaiement  String?
+  statut             StatutBail @default(EN_ATTENTE)
+  motifResiliation   String?
+  initiePar          String? // "PROPRIETAIRE" | "LOCATAIRE"
 
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   bien          Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
   locataire     Locataire         @relation(fields: [locataireId], references: [id], onDelete: Cascade)
@@ -586,6 +586,7 @@ model BailLocation {
   depotCaution  DepotCaution?
   transactions  Transaction[]
   etatsDesLieux EtatDesLieux[]
+
   @@index([bienId])
   @@index([locataireId])
   @@index([proprietaireId])
@@ -597,45 +598,45 @@ model BailLocation {
 // ============================================================
 
 enum StatutPaiement {
-  A_VENIR                 // Échéance future — pas encore due
-  EN_ATTENTE              // Due ce mois-ci (dans la période de grâce)
-  EN_RETARD               // Non payée après la période de grâce
+  A_VENIR // Échéance future — pas encore due
+  EN_ATTENTE // Due ce mois-ci (dans la période de grâce)
+  EN_RETARD // Non payée après la période de grâce
   EN_ATTENTE_CONFIRMATION // Paiement espèces enregistré par le propriétaire, en attente confirmation locataire
-  PAYE                    // Intégralement payée
-  ANNULE                  // Annulée
+  PAYE // Intégralement payée
+  ANNULE // Annulée
 }
 
 model EcheancierLoyer {
-  id              String         @id @default(uuid())
-  bailId          String
-  bienId          String
-  proprietaireId  String
-  locataireId     String
+  id             String @id @default(uuid())
+  bailId         String
+  bienId         String
+  proprietaireId String
+  locataireId    String
 
-  dateEcheance    DateTime
-  montant         Float          // Loyer seul
-  statut          StatutPaiement @default(A_VENIR)
+  dateEcheance DateTime
+  montant      Float // Loyer seul
+  statut       StatutPaiement @default(A_VENIR)
 
   datePaiement         DateTime?
   modePaiement         String?
   reference            String?
   note                 String?
-  sourceEnregistrement String?   // "LOCATAIRE" | "PROPRIETAIRE"
+  sourceEnregistrement String? // "LOCATAIRE" | "PROPRIETAIRE"
 
-  commissionTaux    Float?    // Taux commission au moment du paiement
-  commissionMontant Float?    // Montant commission prélevé
-  montantNet        Float?    // Montant reçu par le propriétaire (montant - commissionMontant)
+  commissionTaux    Float? // Taux commission au moment du paiement
+  commissionMontant Float? // Montant commission prélevé
+  montantNet        Float? // Montant reçu par le propriétaire (montant - commissionMontant)
 
-  confirmeParProprietaire Boolean   @default(false)
-  dateConfirmation        DateTime?
-  confirmeParLocataire    Boolean   @default(false)
+  confirmeParProprietaire   Boolean   @default(false)
+  dateConfirmation          DateTime?
+  confirmeParLocataire      Boolean   @default(false)
   dateConfirmationLocataire DateTime?
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  bail      BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
-  quittance Quittance?
+  bail         BailLocation  @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  quittance    Quittance?
   transactions Transaction[]
 
   @@index([bailId])
@@ -649,8 +650,8 @@ model EcheancierLoyer {
 // ============================================================
 
 model Quittance {
-  id             String   @id @default(uuid())
-  echeanceId     String   @unique
+  id             String @id @default(uuid())
+  echeanceId     String @unique
   bailId         String
   bienId         String
   proprietaireId String
@@ -684,15 +685,15 @@ enum TypeNotification {
   ALERTE_RETARD
   INITIATION_PAIEMENT
   VERIFICATION_LOCATAIRE
-  PAIEMENT_LOCATAIRE            // Propriétaire notifié quand le locataire enregistre un paiement
-  PREAVIS                       // Préavis de fin de bail
-  RESILIATION                   // Résiliation du bail
-  FIN_BAIL                      // Clôture du bail
-  CONTRAT                       // Transmission du contrat de bail
-  RESET_PASSWORD                // Réinitialisation mot de passe
-  ALERTE                        // Alerte nouvelle annonce (grand public)
-  VERIFICATION_TELEPHONE        // Vérification téléphone lors de l'inscription
-  PAIEMENT_ESPECES_LOCATAIRE    // Locataire notifié quand le propriétaire enregistre un paiement espèces
+  PAIEMENT_LOCATAIRE // Propriétaire notifié quand le locataire enregistre un paiement
+  PREAVIS // Préavis de fin de bail
+  RESILIATION // Résiliation du bail
+  FIN_BAIL // Clôture du bail
+  CONTRAT // Transmission du contrat de bail
+  RESET_PASSWORD // Réinitialisation mot de passe
+  ALERTE // Alerte nouvelle annonce (grand public)
+  VERIFICATION_TELEPHONE // Vérification téléphone lors de l'inscription
+  PAIEMENT_ESPECES_LOCATAIRE // Locataire notifié quand le propriétaire enregistre un paiement espèces
   CONFIRMATION_ESPECES_PROPRIETAIRE // Propriétaire notifié quand le locataire confirme un paiement espèces
   ETAT_DES_LIEUX_DISPONIBLE
   ETAT_DES_LIEUX_VALIDE
@@ -700,14 +701,14 @@ enum TypeNotification {
 }
 
 model Notification {
-  id             String             @id @default(uuid())
-  type           TypeNotification
-  canal          String             @default("SMS") // SMS | EMAIL | WHATSAPP
-  destinataire   String             // numéro ou email
-  sujet          String?
-  contenu        String
-  statut         StatutNotification @default(EN_ATTENTE)
-  messageRetour  String?            // réponse de l'API externe (stub: message)
+  id            String             @id @default(uuid())
+  type          TypeNotification
+  canal         String             @default("SMS") // SMS | EMAIL | WHATSAPP
+  destinataire  String // numéro ou email
+  sujet         String?
+  contenu       String
+  statut        StatutNotification @default(EN_ATTENTE)
+  messageRetour String? // réponse de l'API externe (stub: message)
 
   echeanceId     String?
   bailId         String?
@@ -715,9 +716,9 @@ model Notification {
   proprietaireId String?
   locataireId    String?
 
-  envoyeAt       DateTime?
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  envoyeAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([bailId])
   @@index([echeanceId])
@@ -734,22 +735,22 @@ enum StatutDepot {
 }
 
 model DepotCaution {
-  id              String      @id @default(uuid())
-  bailId          String      @unique
-  bienId          String
-  proprietaireId  String
-  locataireId     String
+  id             String @id @default(uuid())
+  bailId         String @unique
+  bienId         String
+  proprietaireId String
+  locataireId    String
 
-  montant         Float
-  statut          StatutDepot @default(RECU)
-  dateReception   DateTime    @default(now())
+  montant       Float
+  statut        StatutDepot @default(RECU)
+  dateReception DateTime    @default(now())
 
   dateRestitution DateTime?
   montantRestitue Float?
   motifRetenue    String?
 
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   bail BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
 
@@ -768,16 +769,16 @@ enum StatutContrat {
 }
 
 model ModeleContrat {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   titre     String
   typeBail  String?
-  contenu   String    @db.Text
-  actif     Boolean   @default(true)
-  ordre     Int       @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  contenu   String   @db.Text
+  actif     Boolean  @default(true)
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  contrats  Contrat[]
+  contrats Contrat[]
 }
 
 model Contrat {
@@ -790,8 +791,8 @@ model Contrat {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
-  bail      BailLocation   @relation(fields: [bailId], references: [id], onDelete: Cascade)
-  modele    ModeleContrat? @relation(fields: [modeleId], references: [id], onDelete: SetNull)
+  bail   BailLocation   @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  modele ModeleContrat? @relation(fields: [modeleId], references: [id], onDelete: SetNull)
 
   @@index([bailId])
   @@index([modeleId])
@@ -837,64 +838,64 @@ enum StatutVerification {
 }
 
 model VerificationDocuments {
-  id             String    @id @default(uuid())
-  proprietaireId String    @unique
-  
+  id             String @id @default(uuid())
+  proprietaireId String @unique
+
   // Type de pièce d'identité
-  typePiece       String    @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
-  
+  typePiece String @default("CNI") // CNI | PASSEPORT | CARTE_CONSULAIRE | AUTRE
+
   // Documents
-  pieceIdentiteRecto  String?  // URL Cloudinary - recto
-  pieceIdentiteVerso  String?  // URL Cloudinary - verso (pour CNI)
-  selfie             String?  // URL Cloudinary
-  
+  pieceIdentiteRecto String? // URL Cloudinary - recto
+  pieceIdentiteVerso String? // URL Cloudinary - verso (pour CNI)
+  selfie             String? // URL Cloudinary
+
   // Consentement
-  conditionsAcceptees Boolean   @default(false)
-  
+  conditionsAcceptees Boolean @default(false)
+
   // Traitement admin
-  motifRejet        String?   // Motif de rejet (si rejeté)
-  traitePar         String?   // ID de l'admin qui a traité
-  dateTraitement    DateTime?
-  
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  motifRejet     String? // Motif de rejet (si rejeté)
+  traitePar      String? // ID de l'admin qui a traité
+  dateTraitement DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
 }
 
 model Proprietaire {
-  id                 String            @id @default(uuid())
+  id                 String             @id @default(uuid())
   prenom             String
   nom                String
   sexe               String?
-  telephone          String            @unique
-  email              String?           @unique
+  telephone          String             @unique
+  email              String?            @unique
   password           String
   statutVerification StatutVerification @default(NOT_VERIFIED)
   verifiedAt         DateTime?
 
   // Vérification téléphone (OTP inscription)
-  telephoneVerifie       Boolean           @default(false)
-  telephoneOtp           String?
-  telephoneOtpExpiresAt  DateTime?
+  telephoneVerifie      Boolean   @default(false)
+  telephoneOtp          String?
+  telephoneOtpExpiresAt DateTime?
 
   // Suspension
-  estSuspendu        Boolean           @default(false)
-  motifSuspension    String?
-  dateSuspension     DateTime?
-  suspenduPar        String?
+  estSuspendu     Boolean   @default(false)
+  motifSuspension String?
+  dateSuspension  DateTime?
+  suspenduPar     String?
 
   // Avertissements & escalade
-  nbAvertissements   Int               @default(0)
-  nbSignalementsValides Int            @default(0)
-  estRestreint       Boolean           @default(false)  // 3 avert : restriction temporaire
-  dateFinRestriction DateTime?                          // fin de la restriction (3 jours)
-  dateFinSuspension  DateTime?                          // fin de suspension (1 mois) — remplace estSuspendu booléen
-  estBanni           Boolean           @default(false)  // 5 avert : bannissement permanent
-  dateBannissement   DateTime?
+  nbAvertissements      Int       @default(0)
+  nbSignalementsValides Int       @default(0)
+  estRestreint          Boolean   @default(false) // 3 avert : restriction temporaire
+  dateFinRestriction    DateTime? // fin de la restriction (3 jours)
+  dateFinSuspension     DateTime? // fin de suspension (1 mois) — remplace estSuspendu booléen
+  estBanni              Boolean   @default(false) // 5 avert : bannissement permanent
+  dateBannissement      DateTime?
 
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   refreshTokens       ProprietaireRefreshToken[]
   passwordResetTokens PasswordResetToken[]
@@ -1010,8 +1011,8 @@ enum StatutAlerte {
 }
 
 model Alerte {
-  id        String      @id @default(uuid())
-  telephone String
+  id              String  @id @default(uuid())
+  telephone       String
   // Critères de recherche
   ville           String?
   quartier        String?
@@ -1020,7 +1021,7 @@ model Alerte {
   prixMin         Int?
   prixMax         Int?
 
-  canalPrefere String @default("SMS") // SMS | WHATSAPP
+  canalPrefere String       @default("SMS") // SMS | WHATSAPP
   statut       StatutAlerte @default(ACTIVE)
 
   createdAt DateTime @default(now())
@@ -1039,66 +1040,66 @@ model Alerte {
 // ============================================================
 
 enum TypePaiement {
-  PAIEMENT_LOYER        // Paiement de loyer par un locataire
-  PAIEMENT_PREMIUM      // Paiement pour mise en avant d'annonce
-  PAIEMENT_PROMOTION    // Paiement pour promotion d'annonce
-  REMBOURSEMENT         // Remboursement au propriétaire
-  RESTITUTION_CAUTION   // Restitution de caution au locataire
-  COMMISSION_LOYER      // Commission prélevée sur loyer
-  MISE_EN_AVANT         // Paiement de mise en avant (nouveau flux)
+  PAIEMENT_LOYER // Paiement de loyer par un locataire
+  PAIEMENT_PREMIUM // Paiement pour mise en avant d'annonce
+  PAIEMENT_PROMOTION // Paiement pour promotion d'annonce
+  REMBOURSEMENT // Remboursement au propriétaire
+  RESTITUTION_CAUTION // Restitution de caution au locataire
+  COMMISSION_LOYER // Commission prélevée sur loyer
+  MISE_EN_AVANT // Paiement de mise en avant (nouveau flux)
 }
 
 enum StatutTransaction {
-  EN_ATTENTE   // Initiation du paiement en cours
-  CONFIRME     // Paiement confirmé
-  ECHEC        // Paiement échoué
-  ANNULE       // Transaction annulée
-  REMBOURSE    // Montant remboursé
+  EN_ATTENTE // Initiation du paiement en cours
+  CONFIRME // Paiement confirmé
+  ECHEC // Paiement échoué
+  ANNULE // Transaction annulée
+  REMBOURSE // Montant remboursé
 }
 
 model Transaction {
-  id              String            @id @default(uuid())
-  proprietaireId  String
+  id             String @id @default(uuid())
+  proprietaireId String
 
   // Type et statut
-  type            TypePaiement
-  statut          StatutTransaction @default(EN_ATTENTE)
+  type   TypePaiement
+  statut StatutTransaction @default(EN_ATTENTE)
 
   // Montant et devise
-  montant         Float
-  devise          String            @default("XOF") // Franc CFA
+  montant Float
+  devise  String @default("XOF") // Franc CFA
 
   // Informations du paiement
-  modePaiement    String            // "Orange Money", "MTN", "Wave", "Moov", etc.
-  provider        String?          // Provider spécifique (optionnel)
-  reference       String?          // Référence de la transaction externe
-  transactionId   String?           // ID de transaction du provider
+  modePaiement  String // "Orange Money", "MTN", "Wave", "Moov", etc.
+  provider      String? // Provider spécifique (optionnel)
+  reference     String? // Référence de la transaction externe
+  transactionId String? // ID de transaction du provider
 
   // Dates
-  dateInitiation  DateTime          @default(now())
+  dateInitiation   DateTime  @default(now())
   dateConfirmation DateTime?
-  dateEcheance    DateTime?         // Pour les paiements de loyer
+  dateEcheance     DateTime? // Pour les paiements de loyer
 
   // Lien avec les entités
-  bienId          String?
-  bailId          String?
-  echeanceId      String?
-  locataireId     String?
+  bienId      String?
+  bailId      String?
+  echeanceId  String?
+  locataireId String?
 
   // Informations supplémentaires
-  note            String?
-  instructions    String?           // Instructions de paiement (pour les stubs)
-  metadata        Json?             // Données supplémentaires
+  note         String?
+  instructions String? // Instructions de paiement (pour les stubs)
+  metadata     Json? // Données supplémentaires
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  bien            Bien?             @relation(fields: [bienId], references: [id], onDelete: SetNull)
-  bail            BailLocation?    @relation(fields: [bailId], references: [id], onDelete: SetNull)
-  echeance        EcheancierLoyer? @relation(fields: [echeanceId], references: [id], onDelete: SetNull)
-  locataire        Locataire?       @relation(fields: [locataireId], references: [id], onDelete: SetNull)
+  proprietaire Proprietaire     @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bien         Bien?            @relation(fields: [bienId], references: [id], onDelete: SetNull)
+  bail         BailLocation?    @relation(fields: [bailId], references: [id], onDelete: SetNull)
+  echeance     EcheancierLoyer? @relation(fields: [echeanceId], references: [id], onDelete: SetNull)
+  locataire    Locataire?       @relation(fields: [locataireId], references: [id], onDelete: SetNull)
 
   @@index([proprietaireId])
   @@index([type])
@@ -1110,13 +1111,13 @@ model Transaction {
 }
 
 model Temoignage {
-  id        String   @id @default(uuid())
-  nom       String
-  temoignage String  @db.Text
-  actif     Boolean  @default(true)
-  ordre     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  nom        String
+  temoignage String   @db.Text
+  actif      Boolean  @default(true)
+  ordre      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([actif])
 }
@@ -1126,50 +1127,50 @@ model Temoignage {
 // ============================================================
 
 enum StatutPromotion {
-  EN_ATTENTE  // En attente de confirmation admin
-  ACTIVE      // Promotion en cours
-  TERMINEE    // Promotion terminée naturellement
-  ARRETEE     // Promotion arrêtée manuellement par le propriétaire
-  EXPIREE     // Promotion expirée (non utilisée)
+  EN_ATTENTE // En attente de confirmation admin
+  ACTIVE // Promotion en cours
+  TERMINEE // Promotion terminée naturellement
+  ARRETEE // Promotion arrêtée manuellement par le propriétaire
+  EXPIREE // Promotion expirée (non utilisée)
 }
 
 model PromotionHistory {
-  id              String           @id @default(uuid())
-  bienId          String
-  proprietaireId  String
-  transactionId   String?          // Lien vers la transaction de paiement
+  id             String  @id @default(uuid())
+  bienId         String
+  proprietaireId String
+  transactionId  String? // Lien vers la transaction de paiement
 
   // Informations de la formule
-  formuleId       String
-  formuleNom      String
-  dureeJours      Int
-  montant         Float
+  formuleId  String
+  formuleNom String
+  dureeJours Int
+  montant    Float
 
   // Dates
-  dateDebut       DateTime
-  dateFin         DateTime         // Date de fin prévue
-  dateFinReelle   DateTime?        // Date de fin réelle (si arrêté avant)
+  dateDebut     DateTime
+  dateFin       DateTime // Date de fin prévue
+  dateFinReelle DateTime? // Date de fin réelle (si arrêté avant)
 
   // Paiement
-  modePaiement      String?
-  reference         String?
-  note              String?
-  confirmeParAdmin  Boolean  @default(false)
-  dateConfirmation  DateTime?
+  modePaiement     String?
+  reference        String?
+  note             String?
+  confirmeParAdmin Boolean   @default(false)
+  dateConfirmation DateTime?
 
   // Statut
-  statut          StatutPromotion  @default(ACTIVE)
-  motifArret      String?          // Motif de l'arrêt (si arrêté manuellement)
+  statut     StatutPromotion @default(ACTIVE)
+  motifArret String? // Motif de l'arrêt (si arrêté manuellement)
 
   // Jours restants au moment de l'arrêt
-  joursRestants   Int?
+  joursRestants Int?
 
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  bien            Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
-  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
 
   @@index([bienId])
   @@index([proprietaireId])
@@ -1190,7 +1191,6 @@ model ConfigMonetisation {
   updatedAt         DateTime @updatedAt
 }
 
-
 // ============================================================
 // INVITATIONS BAIL (locataire existant chez un autre propriétaire)
 // ============================================================
@@ -1203,29 +1203,29 @@ enum StatutBailInvitation {
 }
 
 model BailInvitation {
-  id                  String               @id @default(uuid())
-  bienId              String
-  locataireId         String
-  proprietaireId      String
+  id             String @id @default(uuid())
+  bienId         String
+  locataireId    String
+  proprietaireId String
 
   // Données du bail proposé
-  typeBail            String?
-  dateDebutBail       DateTime
-  dateFinBail         DateTime?
-  montantLoyer        Float
-  montantCaution      Float?
-  cautionVersee       Boolean              @default(false)
-  jourLimitePaiement  Int?
-  renouvellement      Boolean              @default(true)
-  frequencePaiement   String?
+  typeBail           String?
+  dateDebutBail      DateTime
+  dateFinBail        DateTime?
+  montantLoyer       Float
+  montantCaution     Float?
+  cautionVersee      Boolean   @default(false)
+  jourLimitePaiement Int?
+  renouvellement     Boolean   @default(true)
+  frequencePaiement  String?
 
   // Invitation
-  token               String               @unique @default(uuid())
-  statut              StatutBailInvitation @default(PENDING)
-  expiresAt           DateTime
+  token     String               @unique @default(uuid())
+  statut    StatutBailInvitation @default(PENDING)
+  expiresAt DateTime
 
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
   locataire    Locataire    @relation(fields: [locataireId], references: [id], onDelete: Cascade)
@@ -1257,24 +1257,24 @@ enum StatutSignalement {
 }
 
 model Signalement {
-  id             String            @id @default(uuid())
+  id             String  @id @default(uuid())
   bienId         String
   comptePublicId String?
 
-  nom            String
-  telephone      String
-  motif          MotifSignalement
-  commentaire    String?           @db.Text
-  
+  nom         String
+  telephone   String
+  motif       MotifSignalement
+  commentaire String?          @db.Text
+
   statut         StatutSignalement @default(EN_ATTENTE)
-  traitePar      String?           // ID de l'admin qui a traité
+  traitePar      String? // ID de l'admin qui a traité
   dateTraitement DateTime?
 
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  bien           Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
-  comptePublic   ComptePublic?     @relation(fields: [comptePublicId], references: [id], onDelete: SetNull)
+  bien         Bien          @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  comptePublic ComptePublic? @relation(fields: [comptePublicId], references: [id], onDelete: SetNull)
 
   @@index([bienId])
   @@index([comptePublicId])
@@ -1296,6 +1296,14 @@ enum StatutEtatDesLieux {
   EN_ATTENTE_VALIDATION
   VALIDE
   CONTESTE
+  EN_LITIGE
+}
+
+enum StatutContestationElement {
+  EN_ATTENTE
+  RECTIFIE
+  RESERVE
+  REFUSE
 }
 
 enum EtatElement {
@@ -1307,32 +1315,32 @@ enum EtatElement {
 }
 
 model EtatDesLieux {
-  id              String            @id @default(uuid())
-  bailId          String            
-  bienId          String
-  proprietaireId  String
-  locataireId     String
+  id             String @id @default(uuid())
+  bailId         String
+  bienId         String
+  proprietaireId String
+  locataireId    String
 
   type            TypeEtatDesLieux
   statut          StatutEtatDesLieux @default(BROUILLON)
-  dateRealisation DateTime          @default(now())
+  dateRealisation DateTime           @default(now())
   dateValidation  DateTime?
 
-  documentPdf     String?           
+  documentPdf String?
 
-  nbCles          Int?
+  nbCles Int?
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  bail            BailLocation      @relation(fields: [bailId], references: [id], onDelete: Cascade)
-  bien            Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
-  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  locataire       Locataire         @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+  bail         BailLocation @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  locataire    Locataire    @relation(fields: [locataireId], references: [id], onDelete: Cascade)
 
-  pieces          PieceEtatDesLieux[]
+  pieces PieceEtatDesLieux[]
 
-  @@unique([bailId, type]) 
+  @@unique([bailId, type])
   @@index([bienId])
   @@index([proprietaireId])
   @@index([locataireId])
@@ -1340,31 +1348,37 @@ model EtatDesLieux {
 }
 
 model PieceEtatDesLieux {
-  id             String         @id @default(uuid())
+  id             String @id @default(uuid())
   etatDesLieuxId String
-  nom            String         
+  nom            String
 
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  etatDesLieux   EtatDesLieux   @relation(fields: [etatDesLieuxId], references: [id], onDelete: Cascade)
-  elements       ElementEtatDesLieux[]
+  etatDesLieux EtatDesLieux          @relation(fields: [etatDesLieuxId], references: [id], onDelete: Cascade)
+  elements     ElementEtatDesLieux[]
 
   @@index([etatDesLieuxId])
 }
 
 model ElementEtatDesLieux {
-  id              String         @id @default(uuid())
-  pieceId         String
-  nom             String         
-  etat            EtatElement
-  commentaire     String?        @db.Text
-  photos          String[]       
+  id          String      @id @default(uuid())
+  pieceId     String
+  nom         String
+  etat        EtatElement
+  commentaire String?     @db.Text
+  photos      String[]
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  // Contestation
+  estConteste        Boolean                    @default(false)
+  motifContestation  String?                    @db.Text
+  photoContestation  String?
+  statutContestation StatutContestationElement?
 
-  piece           PieceEtatDesLieux @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  piece PieceEtatDesLieux @relation(fields: [pieceId], references: [id], onDelete: Cascade)
 
   @@index([pieceId])
 }

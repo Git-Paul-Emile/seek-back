@@ -81,12 +81,24 @@ export const compareOwner = async (req: Request, res: Response, next: NextFuncti
 
 // -- Locataire --
 
-export const comment = async (req: Request, res: Response, next: NextFunction) => {
+export const contester = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const locataireId = req.locataire!.id;
     const id = req.params.id as string;
-    const { commentaire } = req.body;
-    const result = await EtatDesLieuxService.addCommentLocataire(id, locataireId, commentaire);
+    const { elements } = req.body;
+    const result = await EtatDesLieuxService.contesterElementsLocataire(id, locataireId, elements);
+    res.status(StatusCodes.OK).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const resoudreContestations = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const proprietaireId = req.owner!.id;
+    const id = req.params.id as string;
+    const { resolutions } = req.body;
+    const result = await EtatDesLieuxService.resoudreContestationsProprietaire(id, proprietaireId, resolutions);
     res.status(StatusCodes.OK).json({ success: true, data: result });
   } catch (err) {
     next(err);

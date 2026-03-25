@@ -34,6 +34,12 @@ router.post(
   EtatDesLieuxController.submit
 );
 
+router.post(
+  "/:id/resoudre-contestation",
+  authenticateOwner,
+  EtatDesLieuxController.resoudreContestations
+);
+
 router.get(
   "/owner/:id",
   authenticateOwner,
@@ -56,9 +62,16 @@ router.get(
 // Routes Locataire
 // ========================
 router.post(
-  "/:id/comment",
+  "/locataire/upload",
   authenticateLocataire,
-  EtatDesLieuxController.comment
+  uploadImageMiddleware,
+  EtatDesLieuxController.uploadImage
+);
+
+router.post(
+  "/:id/contester",
+  authenticateLocataire,
+  EtatDesLieuxController.contester
 );
 
 router.post(

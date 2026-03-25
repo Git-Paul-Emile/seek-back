@@ -104,13 +104,13 @@ export const findAllByBail = async (bailId: string) => {
 
 export const updateStatus = async (
   id: string,
-  statut: "BROUILLON" | "EN_ATTENTE_VALIDATION" | "VALIDE" | "CONTESTE",
+  statut: "BROUILLON" | "EN_ATTENTE_VALIDATION" | "VALIDE" | "CONTESTE" | "EN_LITIGE",
   documentPdf?: string
 ) => {
   return prisma.etatDesLieux.update({
     where: { id },
     data: {
-      statut,
+      statut: statut as any,
       ...(statut === "VALIDE" ? { dateValidation: new Date() } : {}),
       ...(documentPdf ? { documentPdf } : {}),
     },
@@ -153,5 +153,113 @@ export const updateBrouillon = async (id: string, data: Partial<EtatDesLieuxCrea
         },
       },
     });
+  });
+};
+
+export const contesterElements = async (id: string, elements: { elementId: string; motifContestation: string; photoContestation: string }[]) => {
+  return prisma.$transaction(async (tx) => {
+    // Put EDL in CONTESTE
+    await tx.etatDesLieux.update({
+      where: { id },
+      data: { statut: "CONTESTE" as any }
+    });
+
+    // Update each element
+    for (const el of elements) {
+      await tx.elementEtatDesLieux.update({
+        where: { id: el.elementId },
+        data: {
+          estConteste: true,
+          motifContestation: el.motifContestation,
+          photoContestation: el.photoContestation,
+          statutContestation: "EN_ATTENTE" as any
+        } as any
+      });
+    }
+
+    return tx.etatDesLieux.findUnique({
+      where: { id },
+      include: {
+        pieces: { include: { elements: true } },
+        bail: true,
+        bien: true,
+        proprietaire: true,
+        locataire: true,
+      }
+    });
+  });
+};
+
+export const resoudreContestations = async (id: string, resolutions: {
+  elementId: string;
+  decision: "RECTIFIER" | "ACCEPTER_RESERVE" | "REFUSER";
+  etat?: "NEUF" | "BON" | "USAGE" | "MAUVAIS" | "DEGRADE";
+  commentaire?: string;
+  photos?: string[];
+}[]) => {
+  return prisma.$transaction(async (tx) => {
+    let hasRefus = false;
+
+    for (const res of resolutions) {
+      if (res.decision === "REFUSER") {
+        hasRefus = true;
+        await tx.elementEtatDesLieux.update({
+          where: { id: res.elementId },
+          data: { statutContestation: "REFUSE" as any } as any
+        });
+      } else if (res.decision === "ACCEPTER_RESERVE") {
+        await tx.elementEtatDesLieux.update({
+          where: { id: res.elementId },
+          data: { statutContestation: "RESERVE" as any } as any
+        });
+      } else if (res.decision === "RECTIFIER") {
+        await tx.elementEtatDesLieux.update({
+          where: { id: res.elementId },
+          data: {
+            statutContestation: "RECTIFIE" as any,
+            etat: res.etat as any,
+            commentaire: res.commentaire,
+            photos: res.photos
+          } as any
+        });
+      }
+    }
+
+    // Determine the new status
+    const allPieces = await tx.pieceEtatDesLieux.findMany({
+      where: { etatDesLieuxId: id },
+      include: { elements: true }
+    });
+    
+    let allElements: any[] = [];
+    allPieces.forEach(p => allElements = allElements.concat(p.elements));
+    
+    // Check if any element is still EN_ATTENTE
+    const pendingContestations = allElements.filter(e => e.estConteste && e.statutContestation === "EN_ATTENTE");
+    
+    if (!hasRefus && allElements.some(e => e.statutContestation === "REFUSE")) {
+      hasRefus = true;
+    }
+
+    let finalStatus: any = "CONTESTE";
+    if (hasRefus) {
+      finalStatus = "EN_LITIGE";
+    } else if (pendingContestations.length === 0) {
+      finalStatus = "EN_ATTENTE_VALIDATION";
+    }
+
+    const updatedEdl = await tx.etatDesLieux.update({
+      where: { id },
+      data: { statut: finalStatus },
+      include: {
+        pieces: { include: { elements: true } },
+        bail: true,
+        bien: true,
+        proprietaire: true,
+        locataire: true,
+      }
+    });
+
+    return updatedEdl;
   });
 };
