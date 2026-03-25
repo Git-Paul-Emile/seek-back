@@ -1,5 +1,6 @@
 import { prisma } from "../config/database.js";
 import { AppError } from "../utils/AppError.js";
+import { emitVerificationSubmitted } from "./socket.service.js";
 
 export interface VerificationStatus {
   proprietaireId: string;
@@ -172,6 +173,9 @@ export const verificationService = {
         statutVerification: "PENDING",
       },
     });
+
+    // Notifier les admins en temps réel
+    emitVerificationSubmitted(proprietaireId).catch(() => null);
 
     return this.getStatus(proprietaireId);
   },

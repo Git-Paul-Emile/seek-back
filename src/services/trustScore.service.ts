@@ -10,13 +10,11 @@ export interface TrustScoreBreakdown {
     annoncesPubliees: number;
     anciennete: number;
     bailsActifs: number;
-    penalitesSignalements: number;
   };
   badges: ("identite_verifiee" | "hote_actif" | "anciennete_1an")[];
   nbAnnonces: number;
   nbBailsActifs: number;
   moisAnciennete: number;
-  nbSignalementsNegatifs: number;
 }
 
 // ─── Calcul ───────────────────────────────────────────────────────────────────
@@ -36,12 +34,11 @@ export const computeScoreForProprietaire = async (
   if (!proprietaire) {
     return {
       total: 0,
-      details: { base: 0, identiteVerifiee: 0, annoncesPubliees: 0, anciennete: 0, bailsActifs: 0, penalitesSignalements: 0 },
+      details: { base: 0, identiteVerifiee: 0, annoncesPubliees: 0, anciennete: 0, bailsActifs: 0 },
       badges: [],
       nbAnnonces: 0,
       nbBailsActifs: 0,
       moisAnciennete: 0,
-      nbSignalementsNegatifs: 0,
     };
   }
 
@@ -64,23 +61,14 @@ export const computeScoreForProprietaire = async (
     },
   });
 
-  // ── Signalements négatifs traités ────────────────────────────────────────
-  const nbSignalementsNegatifs = await prisma.signalement.count({
-    where: {
-      bien: { proprietaireId },
-      statut: "TRAITE",
-    },
-  });
-
   // ── Calcul ────────────────────────────────────────────────────────────────
   const base = 15;
   const identiteVerifiee = proprietaire.statutVerification === "VERIFIED" ? 40 : 0;
   const annoncesPubliees = Math.min(nbAnnonces, 4) * 5; // max 20
   const anciennete = Math.min(moisAnciennete, 15);       // max 15
   const bailsActifs = Math.min(nbBailsActifs, 2) * 5;   // max 10
-  const penalitesSignalements = Math.min(nbSignalementsNegatifs, 3) * 20; // max -60
 
-  const raw = base + identiteVerifiee + annoncesPubliees + anciennete + bailsActifs - penalitesSignalements;
+  const raw = base + identiteVerifiee + annoncesPubliees + anciennete + bailsActifs;
   const total = Math.min(100, Math.max(0, raw));
 
   // ── Badges ────────────────────────────────────────────────────────────────
@@ -97,12 +85,10 @@ export const computeScoreForProprietaire = async (
       annoncesPubliees,
       anciennete,
       bailsActifs,
-      penalitesSignalements: -penalitesSignalements,
     },
     badges,
     nbAnnonces,
     nbBailsActifs,
     moisAnciennete,
-    nbSignalementsNegatifs,
   };
 };

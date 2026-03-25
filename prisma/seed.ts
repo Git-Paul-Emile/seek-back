@@ -36,7 +36,7 @@ dotenv.config();
  * 12.  Proprietaire     (upsert — définit statutVerification et suspension)
  * 13.  Temoignage       (upsert)
  * 14.  FormulePremium   (upsert)
- * 15.  DonneesTest      (nettoie + recrée : biens, locataires, bails, signalements)
+ * 15.  DonneesTest      (nettoie + recrée : biens, locataires, bails)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  */

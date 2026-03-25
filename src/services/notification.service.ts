@@ -2,6 +2,7 @@ import { prisma } from "../config/database.js";
 import { sendMail } from "../utils/mailer.js";
 import { sendSms } from "./sms.service.js";
 import { enqueueNotif } from "./notifQueue.service.js";
+import { emitNotification, emitBadgeUpdate } from "./socket.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -121,6 +122,21 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
       payload.htmlEmail
     )
   );
+
+  // Push temps réel si le destinataire est un propriétaire connecté
+  if (payload.proprietaireId) {
+    emitNotification({
+      id: notification.id,
+      proprietaireId: payload.proprietaireId,
+      type: payload.type,
+      titre: payload.sujet ?? payload.type,
+      message: payload.contenu,
+      bailId: payload.bailId,
+      bienId: payload.bienId,
+      createdAt: notification.createdAt.toISOString(),
+    });
+    emitBadgeUpdate(payload.proprietaireId).catch(() => null);
+  }
 
   return notification;
 };
@@ -276,7 +292,6 @@ export const envoyerPaiementLocataire = async (params: {
   proprietaireEmail?: string | null;
   locataireNom: string;
   montant: number;
-  montantPaye: number;
   datePaiement: string;
   reference?: string | null;
   bienTitre?: string | null;
@@ -287,20 +302,16 @@ export const envoyerPaiementLocataire = async (params: {
   proprietaireId: string;
   locataireId: string;
 }) => {
-  const montantStr    = params.montant.toLocaleString("fr-FR");
-  const montantPayeStr = params.montantPaye.toLocaleString("fr-FR");
-  const dateStr       = new Date(params.datePaiement).toLocaleDateString("fr-FR");
-  const nbMois        = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
-  const partiel       = params.montantPaye < params.montant
-    ? ` - paiement partiel, reste ${(params.montant - params.montantPaye).toLocaleString("fr-FR")} FCFA`
-    : "";
+  const montantStr = params.montant.toLocaleString("fr-FR");
+  const dateStr    = new Date(params.datePaiement).toLocaleDateString("fr-FR");
+  const nbMois     = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
 
   const contenu =
     `Votre locataire ${params.locataireNom} a enregistré un paiement de loyer de ` +
-    `${montantPayeStr} FCFA${nbMois} le ${dateStr}` +
+    `${montantStr} FCFA${nbMois} le ${dateStr}` +
     (params.reference ? ` (réf: ${params.reference})` : "") +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `${partiel}. Merci de confirmer la réception. - SEEK Immobilier`;
+    `. Merci de confirmer la réception. - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "PAIEMENT_LOCATAIRE",
@@ -550,7 +561,6 @@ export const envoyerFinBailLocataire = async (params: {
 
 export const envoyerLienActivationLocataire = async (params: {
   locataireTelephone: string;
-  locataireEmail?: string | null;
   locataireNom: string;
   lien: string;
   locataireId: string;
@@ -560,21 +570,10 @@ export const envoyerLienActivationLocataire = async (params: {
     `Bonjour ${params.locataireNom}, votre propriétaire vous invite à activer votre compte locataire SEEK. ` +
     `Cliquez sur ce lien : ${params.lien} (valable 72h). - SEEK Immobilier`;
 
-  const htmlEmail = `
-    <p>Bonjour ${params.locataireNom},</p>
-    <p>Votre propriétaire vous invite à activer votre compte locataire sur <strong>SEEK Immobilier</strong>.</p>
-    <p><a href="${params.lien}" style="background:#2563eb;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none">Activer mon compte</a></p>
-    <p>Ou copiez ce lien : ${params.lien}</p>
-    <p><small>Ce lien est valable 72 heures.</small></p>
-  `;
-
   return envoyerNotification({
     type: "VERIFICATION_LOCATAIRE",
     telephone: params.locataireTelephone,
-    email: params.locataireEmail,
-    sujet: "Activez votre compte locataire SEEK",
     contenu,
-    htmlEmail,
     locataireId: params.locataireId,
     proprietaireId: params.proprietaireId,
   });

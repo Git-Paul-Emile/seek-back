@@ -342,6 +342,7 @@ export const approveVerification = async (
     where: { locataireId },
     data: {
       statut: StatutVerificationLocataire.VERIFIED,
+      traitePar: proprietaireId,
       dateTraitement: new Date(),
       motifRejet: null,
     },
@@ -372,6 +373,7 @@ export const rejectVerification = async (
     where: { locataireId },
     data: {
       statut: StatutVerificationLocataire.REJECTED,
+      traitePar: proprietaireId,
       dateTraitement: new Date(),
       motifRejet,
     },

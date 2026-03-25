@@ -37,8 +37,8 @@ export const getRevenusStats = async (): Promise<RevenusStats> => {
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const [totalLoyer, loyerMois, totalPremium] = await Promise.all([
-    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] } }, _sum: { montant: true } }),
-    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] }, datePaiement: { gte: debutMois } }, _sum: { montant: true } }),
+    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] } }, _sum: { montant: true } }),
+    prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] }, datePaiement: { gte: debutMois } }, _sum: { montant: true } }),
     prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME" }, _sum: { montant: true } }),
   ]);
 
@@ -50,7 +50,7 @@ export const getRevenusStats = async (): Promise<RevenusStats> => {
     const dFin = new Date(d.getFullYear(), d.getMonth() + 1, 1);
     const label = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     const [agg, aggPremium] = await Promise.all([
-      prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE", "PARTIEL"] }, datePaiement: { gte: d, lt: dFin } }, _sum: { montant: true } }),
+      prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] }, datePaiement: { gte: d, lt: dFin } }, _sum: { montant: true } }),
       prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME", dateConfirmation: { gte: d, lt: dFin } }, _sum: { montant: true } }),
     ]);
     revenus12Mois.push({ mois: label, montant: agg._sum.montant ?? 0 });
@@ -59,7 +59,7 @@ export const getRevenusStats = async (): Promise<RevenusStats> => {
 
   const topLoc = await prisma.echeancierLoyer.groupBy({
     by: ["proprietaireId"],
-    where: { statut: { in: ["PAYE", "PARTIEL"] } },
+    where: { statut: { in: ["PAYE"] } },
     _sum: { montant: true },
     orderBy: { _sum: { montant: "desc" } },
     take: 5,
@@ -97,7 +97,6 @@ export interface AdminStats {
     ville: string | null;
     proprietaire: { prenom: string | null; nom: string | null } | null;
     createdAt: Date;
-    hasPendingRevision: boolean;
   }[];
 }
 
@@ -297,26 +296,10 @@ export const getAdminStats = async (): Promise<AdminStats> => {
     totalBiens,
     recentEnAttente,
   ] = await Promise.all([
-    // Counts par statut (EN_ATTENTE include hasPendingRevision publiés)
+    // Counts par statut
     Promise.all(
       statuts.map(async (s) => {
-        let count: number;
-        if (s === "EN_ATTENTE") {
-          count = await prisma.bien.count({
-            where: {
-              OR: [
-                { statutAnnonce: "EN_ATTENTE" },
-                { statutAnnonce: "PUBLIE", hasPendingRevision: true },
-              ],
-            },
-          });
-        } else if (s === "PUBLIE") {
-          count = await prisma.bien.count({
-            where: { statutAnnonce: "PUBLIE", hasPendingRevision: false },
-          });
-        } else {
-          count = await prisma.bien.count({ where: { statutAnnonce: s } });
-        }
+        const count = await prisma.bien.count({ where: { statutAnnonce: s } });
         return { statut: s, count };
       })
     ),
@@ -366,14 +349,9 @@ export const getAdminStats = async (): Promise<AdminStats> => {
     prisma.proprietaire.count(),
     // Total biens hors brouillons
     prisma.bien.count({ where: { statutAnnonce: { not: "BROUILLON" } } }),
-    // 5 dernières annonces EN_ATTENTE ou révision en attente
+    // 5 dernières annonces EN_ATTENTE
     prisma.bien.findMany({
-      where: {
-        OR: [
-          { statutAnnonce: "EN_ATTENTE" },
-          { statutAnnonce: "PUBLIE", hasPendingRevision: true },
-        ],
-      },
+      where: { statutAnnonce: "EN_ATTENTE" },
       orderBy: { updatedAt: "desc" },
       take: 5,
       select: {
@@ -381,7 +359,6 @@ export const getAdminStats = async (): Promise<AdminStats> => {
         titre: true,
         ville: true,
         createdAt: true,
-        hasPendingRevision: true,
         proprietaire: { select: { prenom: true, nom: true } },
       },
     }),

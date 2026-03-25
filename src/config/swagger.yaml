@@ -70,11 +70,9 @@ tags:
   - name: Premium
     description: Mise en avant payante
   - name: Monetisation
-    description: Abonnements et paiements
+    description: Configuration de la monétisation
   - name: Stats
     description: Statistiques
-  - name: Signalements
-    description: Signalements de contenu
 paths:
   /api/health:
     get:
@@ -371,20 +369,6 @@ paths:
       responses:
         "200":
           description: Annonce trouvée
-  /api/biens/public/{id}/signaler:
-    post:
-      tags:
-        - Biems
-      summary: Signaler une annonce
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "201":
-          description: Signalement créé
   /api/biens/public/{id}/similaires:
     get:
       tags:
@@ -1259,65 +1243,6 @@ paths:
       responses:
         "200":
           description: Configuration modifiée
-  /api/monetisation/admin/plans:
-    get:
-      tags:
-        - Monetisation
-      summary: Liste des plans (admin)
-      security:
-        - cookieAuth: []
-      responses:
-        "200":
-          description: Liste des plans
-    post:
-      tags:
-        - Monetisation
-      summary: Créer un plan (admin)
-      security:
-        - cookieAuth: []
-      responses:
-        "201":
-          description: Plan créé
-  /api/monetisation/owner/plans:
-    get:
-      tags:
-        - Monetisation
-      summary: Plans disponibles
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Plans disponibles
-  /api/monetisation/owner/abonnement:
-    get:
-      tags:
-        - Monetisation
-      summary: Abonnement actif
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Abonnement actif
-  /api/monetisation/owner/abonnement/souscrire:
-    post:
-      tags:
-        - Monetisation
-      summary: Souscrire à un abonnement
-      security:
-        - bearerAuth: []
-      responses:
-        "201":
-          description: Abonnement souscrit
-  /api/monetisation/owner/mises-en-avant:
-    get:
-      tags:
-        - Monetisation
-      summary: Mes mises en avant
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Mises en avant
   /api/stats:
     get:
       tags:
@@ -1346,24 +1271,6 @@ paths:
       responses:
         "200":
           description: Statistiques
-  /api/signalements:
-    post:
-      tags:
-        - Signalements
-      summary: Signaler une annonce (public)
-      responses:
-        "201":
-          description: Signalement créé
-  /api/signalements/admin:
-    get:
-      tags:
-        - Signalements
-      summary: Liste des signalements (admin)
-      security:
-        - cookieAuth: []
-      responses:
-        "200":
-          description: Liste des signalements
   /api/proprietaires:
     get:
       tags:
@@ -1395,7 +1302,7 @@ paths:
   /api/admin/verification:
     get:
       tags:
-        - Signalements
+        - Auth
       summary: Liste vérifications (admin)
       security:
         - cookieAuth: []

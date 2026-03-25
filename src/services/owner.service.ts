@@ -6,6 +6,7 @@ import { AppError } from "../utils/AppError.js";
 import * as OwnerRepo from "../repositories/owner.repository.js";
 import { prisma } from "../config/database.js";
 import * as CloudinaryService from "./cloudinary.service.js";
+import { fetchAndEmitStatsGlobales } from "./socket.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -133,6 +134,9 @@ export const register = async (data: {
     email,
     password: hashedPassword,
   });
+
+  // Stats admin temps réel
+  fetchAndEmitStatsGlobales().catch(() => null);
 
   // Génération des tokens et persistance du refresh token
   const tokens = generateTokenPair(

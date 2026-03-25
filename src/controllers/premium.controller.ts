@@ -58,51 +58,28 @@ export const adminDeleteFormule = async (req: Request, res: Response): Promise<v
 // ─── Initier le paiement et activer la mise en avant (simulation) ─────────────
 
 export const payerEtActiverPremium = async (req: Request, res: Response): Promise<void> => {
-  // Pour l'instant, on utilise un owner ID de test ou depuis le header
-  // TODO: Remettre authenticateOwner et utiliser req.owner?.id en production
-  let proprietaireId = req.owner?.id;
-  
-  // Pour les tests sans auth, on peut passer ownerId dans le header
-  if (!proprietaireId) {
-    proprietaireId = req.headers['x-owner-id'] as string;
-  }
-  
-  if (!proprietaireId) {
-    throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
-  }
-
+  const proprietaireId = req.owner!.id;
   const bienId = req.params.id as string;
   const { formuleId, modePaiement } = req.body;
 
-  // Validation des champs obligatoires
   if (!formuleId) {
     res.status(StatusCodes.BAD_REQUEST).json(
-      jsonResponse({
-        status: "fail",
-        message: "L'ID de la formule est requis",
-      })
+      jsonResponse({ status: "fail", message: "L'ID de la formule est requis" })
     );
     return;
   }
 
   if (!modePaiement) {
     res.status(StatusCodes.BAD_REQUEST).json(
-      jsonResponse({
-        status: "fail",
-        message: "Le mode de paiement est requis",
-      })
+      jsonResponse({ status: "fail", message: "Le mode de paiement est requis" })
     );
     return;
   }
 
-  // Validation du mode de paiement
   const modesValides = Object.values(ModePaiement);
   if (!modesValides.includes(modePaiement)) {
     res.status(StatusCodes.BAD_REQUEST).json(
-      jsonResponse({
-        status: "fail",
-        message: `Mode de paiement invalide. Modes disponibles: ${modesValides.join(", ")}`,
-      })
+      jsonResponse({ status: "fail", message: `Mode de paiement invalide. Modes disponibles: ${modesValides.join(", ")}` })
     );
     return;
   }
@@ -131,31 +108,20 @@ export const payerEtActiverPremium = async (req: Request, res: Response): Promis
       })
     );
   } catch (error) {
-    // Gestion des erreurs du service
     if (error instanceof AppError) {
-      res.status(error.statusCode).json(
-        jsonResponse({
-          status: "fail",
-          message: error.message,
-        })
-      );
+      res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
       return;
     }
-
-    // Erreur inattendue
     console.error("[PREMIUM] Erreur lors du paiement:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };
 
 // ─── Récupérer les moyens de paiement disponibles ───────────────────────────────
 
-export const getMoyensPaiement = async (req: Request, res: Response): Promise<void> => {
+export const getMoyensPaiement = async (_req: Request, res: Response): Promise<void> => {
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
@@ -168,54 +134,23 @@ export const getMoyensPaiement = async (req: Request, res: Response): Promise<vo
 // ─── Arrêter la mise en avant d'un bien ─────────────────────────────────────────
 
 export const arreterPremium = async (req: Request, res: Response): Promise<void> => {
-  let proprietaireId = req.owner?.id;
-  
-  if (!proprietaireId) {
-    proprietaireId = req.headers['x-owner-id'] as string;
-  }
-  
-  if (!proprietaireId) {
-    res.status(StatusCodes.UNAUTHORIZED).json(
-      jsonResponse({
-        status: "fail",
-        message: "Authentification requise",
-      })
-    );
-    return;
-  }
-
+  const proprietaireId = req.owner!.id;
   const bienId = req.params.id as string;
 
   try {
-    const result = await PremiumService.arreterMiseEnAvant(
-      bienId,
-      proprietaireId
-    );
+    const result = await PremiumService.arreterMiseEnAvant(bienId, proprietaireId);
 
     res.status(StatusCodes.OK).json(
-      jsonResponse({
-        status: "success",
-        message: result.message,
-        data: result,
-      })
+      jsonResponse({ status: "success", message: result.message, data: result })
     );
   } catch (error) {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json(
-        jsonResponse({
-          status: "fail",
-          message: error.message,
-        })
-      );
+      res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
       return;
     }
-
     console.error("[PREMIUM] Erreur lors de l'arrêt de la mise en avant:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };
@@ -223,54 +158,23 @@ export const arreterPremium = async (req: Request, res: Response): Promise<void>
 // ─── Récupérer l'historique des mises en avant d'un bien ───────────────────────
 
 export const getHistoriqueBien = async (req: Request, res: Response): Promise<void> => {
-  let proprietaireId = req.owner?.id;
-  
-  if (!proprietaireId) {
-    proprietaireId = req.headers['x-owner-id'] as string;
-  }
-  
-  if (!proprietaireId) {
-    res.status(StatusCodes.UNAUTHORIZED).json(
-      jsonResponse({
-        status: "fail",
-        message: "Authentification requise",
-      })
-    );
-    return;
-  }
-
+  const proprietaireId = req.owner!.id;
   const bienId = req.params.id as string;
 
   try {
-    const historique = await PremiumService.getHistoriqueMisesEnAvant(
-      bienId,
-      proprietaireId
-    );
+    const historique = await PremiumService.getHistoriqueMisesEnAvant(bienId, proprietaireId);
 
     res.status(StatusCodes.OK).json(
-      jsonResponse({
-        status: "success",
-        message: "Historique des mises en avant récupéré",
-        data: historique,
-      })
+      jsonResponse({ status: "success", message: "Historique des mises en avant récupéré", data: historique })
     );
   } catch (error) {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json(
-        jsonResponse({
-          status: "fail",
-          message: error.message,
-        })
-      );
+      res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
       return;
     }
-
     console.error("[PREMIUM] Erreur lors de la récupération de l'historique:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };
@@ -278,22 +182,7 @@ export const getHistoriqueBien = async (req: Request, res: Response): Promise<vo
 // ─── Récupérer l'historique de tous les paiements premium du propriétaire ────────
 
 export const getHistoriquePaiements = async (req: Request, res: Response): Promise<void> => {
-  let proprietaireId = req.owner?.id;
-  
-  if (!proprietaireId) {
-    proprietaireId = req.headers['x-owner-id'] as string;
-  }
-  
-  if (!proprietaireId) {
-    res.status(StatusCodes.UNAUTHORIZED).json(
-      jsonResponse({
-        status: "fail",
-        message: "Authentification requise",
-      })
-    );
-    return;
-  }
-
+  const proprietaireId = req.owner!.id;
   const { page, limit } = req.query;
 
   try {
@@ -306,29 +195,16 @@ export const getHistoriquePaiements = async (req: Request, res: Response): Promi
     );
 
     res.status(StatusCodes.OK).json(
-      jsonResponse({
-        status: "success",
-        message: "Historique des paiements premium récupéré",
-        data: result,
-      })
+      jsonResponse({ status: "success", message: "Historique des paiements premium récupéré", data: result })
     );
   } catch (error) {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json(
-        jsonResponse({
-          status: "fail",
-          message: error.message,
-        })
-      );
+      res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
       return;
     }
-
     console.error("[PREMIUM] Erreur lors de la récupération de l'historique:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };

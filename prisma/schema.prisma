@@ -190,23 +190,6 @@ enum StatutAnnonce {
   PUBLIE
   REJETE
   ANNULE
-  SUSPENDU_SIGNALEMENT
-  EN_REVISION
-}
-
-enum MotifSignalement {
-  ARNAQUE_SUSPECTEE
-  PHOTOS_NON_CONFORMES
-  LOGEMENT_INSALUBRE
-  INFORMATIONS_ERRONEES
-  PRIX_INCORRECT
-  DOUBLON
-  AUTRE
-}
-
-enum StatutSignalement {
-  ACTIF
-  TRAITE
 }
 
 model Bien {
@@ -268,7 +251,6 @@ model Bien {
   // Statistiques
   nbVues            Int       @default(0)
   nbFavoris        Int       @default(0)
-  reportCount      Int       @default(0)
 
   // État & Publication
   actif              Boolean       @default(true)
@@ -301,9 +283,9 @@ model Bien {
   documents           DocumentBien[]
   favoris            Favori[]
   vues               VueBien[]
-  signalements        Signalement[]
-  adminAvertissements AdminAvertissement[]
   bailInvitations     BailInvitation[]
+  signalements       Signalement[]
+  etatsDesLieux      EtatDesLieux[]
 
   @@index([proprietaireId])
   @@index([typeLogementId])
@@ -335,6 +317,7 @@ model ComptePublic {
 
   favoris       Favori[]
   refreshTokens ComptePublicRefreshToken[]
+  signalements  Signalement[]
 }
 
 model ComptePublicRefreshToken {
@@ -526,6 +509,7 @@ model Locataire {
   transactions         Transaction[]
   messagesInternes     MessageInterneLocataire[]
   bailInvitations      BailInvitation[]
+  etatsDesLieux        EtatDesLieux[]
 
   @@index([proprietaireId])
   @@index([activationToken])
@@ -560,9 +544,9 @@ model LocataireVerification {
   // Consentement
   conditionsAcceptees Boolean   @default(false)
 
-  // Traitement admin
+  // Traitement propriétaire
   motifRejet        String?   // Motif de rejet (si rejeté)
-  traitePar         String?   // ID de l'admin qui a traité
+  traitePar         String?   // ID du propriétaire qui a traité
   dateTraitement    DateTime?
 
   createdAt         DateTime  @default(now())
@@ -601,6 +585,7 @@ model BailLocation {
   echeancier    EcheancierLoyer[]
   depotCaution  DepotCaution?
   transactions  Transaction[]
+  etatsDesLieux EtatDesLieux[]
   @@index([bienId])
   @@index([locataireId])
   @@index([proprietaireId])
@@ -617,7 +602,6 @@ enum StatutPaiement {
   EN_RETARD               // Non payée après la période de grâce
   EN_ATTENTE_CONFIRMATION // Paiement espèces enregistré par le propriétaire, en attente confirmation locataire
   PAYE                    // Intégralement payée
-  PARTIEL                 // Partiellement payée
   ANNULE                  // Annulée
 }
 
@@ -637,11 +621,10 @@ model EcheancierLoyer {
   reference            String?
   note                 String?
   sourceEnregistrement String?   // "LOCATAIRE" | "PROPRIETAIRE"
-  montantPaye          Float?    // Montant réellement payé (null si non payé, < montant si partiel)
 
   commissionTaux    Float?    // Taux commission au moment du paiement
   commissionMontant Float?    // Montant commission prélevé
-  montantNet        Float?    // Montant reçu par le propriétaire (montantPaye - commissionMontant)
+  montantNet        Float?    // Montant reçu par le propriétaire (montant - commissionMontant)
 
   confirmeParProprietaire Boolean   @default(false)
   dateConfirmation        DateTime?
@@ -711,6 +694,9 @@ enum TypeNotification {
   VERIFICATION_TELEPHONE        // Vérification téléphone lors de l'inscription
   PAIEMENT_ESPECES_LOCATAIRE    // Locataire notifié quand le propriétaire enregistre un paiement espèces
   CONFIRMATION_ESPECES_PROPRIETAIRE // Propriétaire notifié quand le locataire confirme un paiement espèces
+  ETAT_DES_LIEUX_DISPONIBLE
+  ETAT_DES_LIEUX_VALIDE
+  ETAT_DES_LIEUX_MODIFIE
 }
 
 model Notification {
@@ -900,6 +886,7 @@ model Proprietaire {
 
   // Avertissements & escalade
   nbAvertissements   Int               @default(0)
+  nbSignalementsValides Int            @default(0)
   estRestreint       Boolean           @default(false)  // 3 avert : restriction temporaire
   dateFinRestriction DateTime?                          // fin de la restriction (3 jours)
   dateFinSuspension  DateTime?                          // fin de suspension (1 mois) — remplace estSuspendu booléen
@@ -919,8 +906,8 @@ model Proprietaire {
   promotionHistories  PromotionHistory[]
   documentsBien       DocumentBien[]
   messagesInternes    MessageInterne[]
-  adminAvertissements AdminAvertissement[]
   bailInvitations     BailInvitation[]
+  etatsDesLieux       EtatDesLieux[]
 }
 
 model MessageInterne {
@@ -1205,41 +1192,6 @@ model ConfigMonetisation {
 
 
 // ============================================================
-// SIGNALEMENTS
-// ============================================================
-
-model Signalement {
-  id             String            @id @default(uuid())
-  bienId         String
-  signaleParTel  String
-  motif          MotifSignalement
-  justification  String?
-  preuve         String?
-  statut         StatutSignalement @default(ACTIF)
-  createdAt      DateTime          @default(now())
-
-  bien Bien @relation(fields: [bienId], references: [id], onDelete: Cascade)
-
-  @@unique([bienId, signaleParTel])
-  @@index([bienId])
-  @@index([statut])
-}
-
-model AdminAvertissement {
-  id             String   @id @default(uuid())
-  proprietaireId String
-  bienId         String
-  message        String
-  createdAt      DateTime @default(now())
-
-  proprietaire Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
-  bien         Bien         @relation(fields: [bienId], references: [id], onDelete: Cascade)
-
-  @@index([proprietaireId])
-  @@index([bienId])
-}
-
-// ============================================================
 // INVITATIONS BAIL (locataire existant chez un autre propriétaire)
 // ============================================================
 
@@ -1283,4 +1235,136 @@ model BailInvitation {
   @@index([proprietaireId])
   @@index([token])
   @@index([statut])
+}
+
+// ============================================================
+// SIGNALEMENTS
+// ============================================================
+
+enum MotifSignalement {
+  ARNAQUE
+  INAPPROPRIE
+  INDISPONIBLE
+  FAUSSES_INFOS
+  DOUBLON
+  AUTRE
+}
+
+enum StatutSignalement {
+  EN_ATTENTE
+  VALIDE
+  REJETE
+}
+
+model Signalement {
+  id             String            @id @default(uuid())
+  bienId         String
+  comptePublicId String?
+
+  nom            String
+  telephone      String
+  motif          MotifSignalement
+  commentaire    String?           @db.Text
+  
+  statut         StatutSignalement @default(EN_ATTENTE)
+  traitePar      String?           // ID de l'admin qui a traité
+  dateTraitement DateTime?
+
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  bien           Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  comptePublic   ComptePublic?     @relation(fields: [comptePublicId], references: [id], onDelete: SetNull)
+
+  @@index([bienId])
+  @@index([comptePublicId])
+  @@index([statut])
+  @@index([telephone])
+}
+
+// ============================================================
+// ETATS DES LIEUX
+// ============================================================
+
+enum TypeEtatDesLieux {
+  ENTREE
+  SORTIE
+}
+
+enum StatutEtatDesLieux {
+  BROUILLON
+  EN_ATTENTE_VALIDATION
+  VALIDE
+  CONTESTE
+}
+
+enum EtatElement {
+  NEUF
+  BON
+  USAGE
+  MAUVAIS
+  DEGRADE
+}
+
+model EtatDesLieux {
+  id              String            @id @default(uuid())
+  bailId          String            
+  bienId          String
+  proprietaireId  String
+  locataireId     String
+
+  type            TypeEtatDesLieux
+  statut          StatutEtatDesLieux @default(BROUILLON)
+  dateRealisation DateTime          @default(now())
+  dateValidation  DateTime?
+
+  documentPdf     String?           
+
+  nbCles          Int?
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  bail            BailLocation      @relation(fields: [bailId], references: [id], onDelete: Cascade)
+  bien            Bien              @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  proprietaire    Proprietaire      @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
+  locataire       Locataire         @relation(fields: [locataireId], references: [id], onDelete: Cascade)
+
+  pieces          PieceEtatDesLieux[]
+
+  @@unique([bailId, type]) 
+  @@index([bienId])
+  @@index([proprietaireId])
+  @@index([locataireId])
+  @@index([statut])
+}
+
+model PieceEtatDesLieux {
+  id             String         @id @default(uuid())
+  etatDesLieuxId String
+  nom            String         
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  etatDesLieux   EtatDesLieux   @relation(fields: [etatDesLieuxId], references: [id], onDelete: Cascade)
+  elements       ElementEtatDesLieux[]
+
+  @@index([etatDesLieuxId])
+}
+
+model ElementEtatDesLieux {
+  id              String         @id @default(uuid())
+  pieceId         String
+  nom             String         
+  etat            EtatElement
+  commentaire     String?        @db.Text
+  photos          String[]       
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  piece           PieceEtatDesLieux @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+
+  @@index([pieceId])
 }

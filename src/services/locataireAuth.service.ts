@@ -322,7 +322,7 @@ export const updateProfil = async (
 
 export const requestPasswordReset = async (
   identifiant: string
-): Promise<{ token: string; email: string | null; prenom: string }> => {
+): Promise<{ token: string; email: string | null; telephone: string; prenom: string }> => {
   const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
   let locataire = await LocataireRepo.findByTelephone(stripped);
   if (!locataire && !stripped.startsWith("+")) {
@@ -346,7 +346,7 @@ export const requestPasswordReset = async (
 
   await LocataireRepo.createPasswordResetToken({ locataireId: locataire.id, tokenHash, expiresAt });
 
-  return { token: rawToken, email: locataire.email ?? null, prenom: locataire.prenom };
+  return { token: rawToken, email: locataire.email ?? null, telephone: locataire.telephone, prenom: locataire.prenom };
 };
 
 export const resetPassword = async (rawToken: string, newPassword: string): Promise<void> => {

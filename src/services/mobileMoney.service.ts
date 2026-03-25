@@ -12,6 +12,7 @@
 //   - Airtel Money                               → https://developer.airtel.africa
 
 import { prisma } from "../config/database.js";
+import { emitTransactionStatus, emitBadgeUpdate } from "./socket.service.js";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -115,6 +116,18 @@ export const initierPaiementMobileMoney = async (
       },
     },
   });
+
+  // Push temps réel : transaction EN_ATTENTE visible dans le dashboard owner
+  emitTransactionStatus({
+    transactionId: transaction.id,
+    proprietaireId: params.proprietaireId,
+    statut: "EN_ATTENTE",
+    montant: params.montant,
+    type: "PAIEMENT_LOYER",
+    bienId: params.bienId,
+    updatedAt: new Date().toISOString(),
+  });
+  emitBadgeUpdate(params.proprietaireId).catch(() => null);
 
   // Notifier le propriétaire
   await prisma.notification.create({

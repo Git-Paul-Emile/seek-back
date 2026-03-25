@@ -9,6 +9,7 @@ import {
   type ActivationPromotionResult,
 } from "../types/premium.types.js";
 import { activatePromotion } from "./promotion.service.js";
+import { emitTransactionStatus, fetchAndEmitStatsGlobales } from "./socket.service.js";
 
 /**
  * Génère un ID de transaction simulé
@@ -89,7 +90,7 @@ export const simulerPaiementEtActiverPromotion = async (
   };
 
   // 4b. Enregistrer la transaction dans l'historique
-  await prisma.transaction.create({
+  const transaction = await prisma.transaction.create({
     data: {
       proprietaireId,
       type: "PAIEMENT_PREMIUM",
@@ -109,6 +110,17 @@ export const simulerPaiementEtActiverPromotion = async (
       },
     },
   });
+
+  emitTransactionStatus({
+    transactionId: transaction.id,
+    proprietaireId,
+    statut: "CONFIRME",
+    montant: formule.prix,
+    type: "PAIEMENT_PREMIUM",
+    bienId,
+    updatedAt: new Date().toISOString(),
+  });
+  fetchAndEmitStatsGlobales().catch(() => null);
 
   // 5. Activer directement la mise en avant (sans passer par le service de promotion existant)
   const now = new Date();

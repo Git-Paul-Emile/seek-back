@@ -111,7 +111,7 @@ export type CreateBienInput = z.infer<typeof createBienSchema>;
 // ─── Schema pour valider une annonce (admin) ──────────────────────────────────
 
 export const validerAnnonceSchema = z.object({
-  action: z.enum(["APPROUVER", "REJETER", "REVISION"]),
+  action: z.enum(["APPROUVER", "REJETER"]),
   note: z.string().max(1000).optional(),
 });
 

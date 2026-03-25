@@ -58,11 +58,10 @@ export const create = async (
     tokenExpiresAt,
   });
 
-  // Envoi automatique du lien d'activation par SMS (+ email si fourni)
+  // Envoi automatique du lien d'activation par SMS uniquement
   const lien = `${FRONTEND_URL}/locataire/activer?token=${activationToken}`;
   envoyerLienActivationLocataire({
     locataireTelephone: telephone,
-    locataireEmail:     data.email?.trim() || null,
     locataireNom:       `${data.prenom.trim()} ${data.nom.trim()}`,
     lien,
     locataireId:        locataire.id,
@@ -165,10 +164,9 @@ export const getLien = async (id: string, proprietaireId: string) => {
 
   const lien = `${FRONTEND_URL}/locataire/activer?token=${token}`;
 
-  // Renvoi du lien par SMS (+ email si disponible) en arrière-plan
+  // Renvoi du lien par SMS uniquement en arrière-plan
   envoyerLienActivationLocataire({
     locataireTelephone: locataire.telephone,
-    locataireEmail:     locataire.email,
     locataireNom:       `${locataire.prenom} ${locataire.nom}`,
     lien,
     locataireId:        locataire.id,

@@ -16,6 +16,7 @@ import {
   envoyerConfirmationEspecesProprietaire,
 } from "./notification.service.js";
 import { getConfig } from "./configMonetisation.service.js";
+import { emitTransactionStatus, emitBadgeUpdate, fetchAndEmitStatsGlobales } from "./socket.service.js";
 
 // ─── Génération de l'échéancier ───────────────────────────────────────────────
 
@@ -636,13 +637,13 @@ export const payerEcheance = async (
   bailId: string,
   echeanceId: string,
   proprietaireId: string,
-  data: { datePaiement: Date; modePaiement?: string; reference?: string; note?: string; montant?: number }
+  data: { datePaiement: Date; modePaiement?: string; reference?: string; note?: string }
 ) => {
   await assertBienOwner(bienId, proprietaireId);
   const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
-  if (echeance.statut === "PAYE" || echeance.statut === "ANNULE")
+  if (echeance.statut === "PAYE" || echeance.statut === "ANNULE" || echeance.statut === "EN_ATTENTE_CONFIRMATION")
     throw new AppError("Cette échéance est déjà soldée ou annulée", StatusCodes.BAD_REQUEST);
 
   // Vérifier la séquentialité : aucune échéance antérieure ne doit être impayée
@@ -665,9 +666,6 @@ export const payerEcheance = async (
     );
   }
 
-  const montantPaye = data.montant ?? echeance.montant;
-  const statut = montantPaye >= echeance.montant ? "PAYE" : "PARTIEL";
-
   // Commission
   const config = await getConfig();
   let commissionTaux: number | null = null;
@@ -675,21 +673,19 @@ export const payerEcheance = async (
   let montantNet: number | null = null;
   if (config.commissionActive && config.tauxCommission > 0) {
     commissionTaux = config.tauxCommission;
-    commissionMontant = Math.round(montantPaye * commissionTaux / 100);
-    montantNet = montantPaye - commissionMontant;
+    commissionMontant = Math.round(echeance.montant * commissionTaux / 100);
+    montantNet = echeance.montant - commissionMontant;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updated = await (prisma.echeancierLoyer.update as any)({
     where: { id: echeanceId },
     data: {
-      statut,
+      statut: "PAYE",
       datePaiement: data.datePaiement,
       modePaiement: data.modePaiement,
       reference: data.reference,
       note: data.note,
-      montant: echeance.montant,
-      montantPaye,
       sourceEnregistrement: "PROPRIETAIRE",
       ...(commissionTaux !== null && {
         commissionTaux,
@@ -721,13 +717,26 @@ export const payerEcheance = async (
           metadata: {
             echeanceId,
             tauxCommission: commissionTaux,
-            montantLoyer: montantPaye,
+            montantLoyer: echeance.montant,
             montantNet,
           },
         },
       });
     }
   }
+
+  // Push temps réel : statut de paiement + badge owner
+  emitTransactionStatus({
+    transactionId: echeanceId,
+    proprietaireId,
+    statut: "CONFIRME",
+    montant: echeance.montant,
+    type: "PAIEMENT_LOYER",
+    bienId,
+    updatedAt: new Date().toISOString(),
+  });
+  emitBadgeUpdate(proprietaireId).catch(() => null);
+  fetchAndEmitStatsGlobales().catch(() => null);
 
   // Auto-génération quittance
   genererQuittanceInterne(echeanceId).catch(() => null);
@@ -744,7 +753,7 @@ export const payerEcheance = async (
     envoyerConfirmationPaiement({
       locataireTelephone: bail.locataire.telephone,
       locataireNom: `${bail.locataire.prenom} ${bail.locataire.nom}`,
-      montant: montantPaye,
+      montant: echeance.montant,
       datePaiement: data.datePaiement.toISOString(),
       reference: data.reference,
       bienTitre: bail.bien?.titre,
@@ -790,7 +799,6 @@ export const payerMoisMultiples = async (
       reference: data.reference,
       note: data.note,
       sourceEnregistrement: "PROPRIETAIRE",
-      // montantPaye = montant (paiement intégral pour chaque mois)
     },
   });
 
@@ -843,7 +851,6 @@ export const payerEcheancesLocataire = async (
       reference: data.reference ?? null,
       note: data.note ?? null,
       sourceEnregistrement: "LOCATAIRE",
-      // montantPaye = montant de chaque échéance (intégral)
     },
   });
 
@@ -868,8 +875,7 @@ export const payerEcheancesLocataire = async (
     envoyerPaiementLocataire({
       proprietaireTelephone: bailFull.proprietaire.telephone,
       locataireNom,
-      montant: unpaid[0]?.montant ?? 0,
-      montantPaye: montantTotal,
+      montant: montantTotal,
       datePaiement: data.datePaiement.toISOString(),
       reference: data.reference,
       bienTitre: bailFull.bien?.titre,
@@ -902,7 +908,7 @@ export const confirmerReceptionPaiement = async (
   const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
-  if (echeance.statut !== "PAYE" && echeance.statut !== "PARTIEL")
+  if (echeance.statut !== "PAYE")
     throw new AppError("Impossible de confirmer une échéance non payée", StatusCodes.BAD_REQUEST);
   if (echeance.confirmeParProprietaire)
     throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
@@ -928,7 +934,7 @@ export const enregistrerPaiementEspeces = async (
   bailId: string,
   echeanceId: string,
   proprietaireId: string,
-  data: { datePaiement: Date; montant?: number; note?: string }
+  data: { datePaiement: Date; note?: string }
 ) => {
   await assertBienOwner(bienId, proprietaireId);
 
@@ -936,7 +942,7 @@ export const enregistrerPaiementEspeces = async (
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((["PAYE", "PARTIEL", "ANNULE", "EN_ATTENTE_CONFIRMATION"] as any[]).includes(echeance.statut))
+  if ((["PAYE", "ANNULE", "EN_ATTENTE_CONFIRMATION"] as any[]).includes(echeance.statut))
     throw new AppError("Cette échéance n'est pas éligible à un enregistrement espèces", StatusCodes.BAD_REQUEST);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -947,7 +953,6 @@ export const enregistrerPaiementEspeces = async (
       datePaiement: data.datePaiement,
       modePaiement: "Espèces",
       note: data.note ?? null,
-      montantPaye: data.montant ?? echeance.montant,
       sourceEnregistrement: "PROPRIETAIRE",
     },
   });
@@ -965,7 +970,7 @@ export const enregistrerPaiementEspeces = async (
       locataireTelephone: bailFull.locataire.telephone,
       locataireEmail: bailFull.locataire.email,
       locataireNom: `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`,
-      montant: data.montant ?? echeance.montant,
+      montant: echeance.montant,
       datePaiement: data.datePaiement.toISOString(),
       bienTitre: bailFull.bien?.titre,
       echeanceId,
@@ -980,7 +985,7 @@ export const enregistrerPaiementEspeces = async (
       echeance.locataireId, bailId, bienId,
       "PAIEMENT_ESPECES",
       "Paiement espèces à confirmer",
-      `Votre propriétaire a enregistré un paiement en espèces de ${(data.montant ?? echeance.montant).toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`
+      `Votre propriétaire a enregistré un paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`
     ).catch(() => null);
   }).catch(() => null);
 
@@ -1004,14 +1009,11 @@ export const confirmerPaiementEspacesLocataire = async (
   if (echeance.confirmeParLocataire)
     throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
 
-  const montantPaye = echeance.montantPaye ?? echeance.montant;
-  const statut = montantPaye >= echeance.montant ? "PAYE" : "PARTIEL";
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updated = await (prisma.echeancierLoyer.update as any)({
     where: { id: echeanceId },
     data: {
-      statut,
+      statut: "PAYE",
       confirmeParLocataire: true,
       dateConfirmationLocataire: new Date(),
     },
@@ -1039,7 +1041,7 @@ export const confirmerPaiementEspacesLocataire = async (
         proprietaireTelephone: bailFull.proprietaire.telephone,
         proprietaireEmail: bailFull.proprietaire.email,
         locataireNom,
-        montant: montantPaye,
+        montant: echeance.montant,
         datePaiement,
         bienTitre: bailFull.bien?.titre,
         echeanceId,
@@ -1054,7 +1056,7 @@ export const confirmerPaiementEspacesLocataire = async (
         echeance.proprietaireId, echeance.bailId, echeance.bienId,
         "CONFIRMATION_ESPECES",
         "Paiement espèces confirmé",
-        `${locataireNom} a confirmé son paiement en espèces de ${montantPaye.toLocaleString("fr-FR")} FCFA.`
+        `${locataireNom} a confirmé son paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA.`
       ).catch(() => null);
     }
 
@@ -1064,7 +1066,7 @@ export const confirmerPaiementEspacesLocataire = async (
         locataireTelephone: bailFull.locataire.telephone,
         locataireEmail: bailFull.locataire.email,
         locataireNom,
-        montant: montantPaye,
+        montant: echeance.montant,
         datePaiement,
         bienTitre: bailFull.bien?.titre,
         echeanceId,
@@ -1172,7 +1174,7 @@ export const getSolde = async (
 
   for (const e of echeances) {
     montantTotalDu += e.montant;
-    if (e.statut === "PAYE" || e.statut === "PARTIEL") {
+    if (e.statut === "PAYE") {
       montantPaye += e.montant;
       nbPaye++;
     } else if (e.statut === "EN_RETARD") {

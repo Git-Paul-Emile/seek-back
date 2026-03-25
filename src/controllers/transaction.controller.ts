@@ -8,28 +8,12 @@ import { AppError } from "../utils/AppError.js";
  * Récupère l'historique des transactions du propriétaire connecté
  */
 export const getHistorique = async (req: Request, res: Response): Promise<void> => {
-  const proprietaireId = req.owner?.id;
-  
-  // Pour les tests sans auth, on peut passer ownerId dans le header
-  if (!proprietaireId) {
-    const headerOwnerId = req.headers['x-owner-id'] as string;
-    if (!headerOwnerId) {
-      res.status(StatusCodes.UNAUTHORIZED).json(
-        jsonResponse({
-          status: "fail",
-          message: "Authentification requise",
-        })
-      );
-      return;
-    }
-  }
-  
-  const ownerId = proprietaireId || req.headers['x-owner-id'] as string;
+  const proprietaireId = req.owner!.id;
   const { page, limit, type, statut, bienId, dateDebut, dateFin } = req.query;
 
   try {
     const result = await TransactionService.getHistoriqueTransactions(
-      ownerId,
+      proprietaireId,
       {
         page: page ? parseInt(page as string) : undefined,
         limit: limit ? parseInt(limit as string) : undefined,
@@ -56,10 +40,7 @@ export const getHistorique = async (req: Request, res: Response): Promise<void> 
   } catch (error) {
     console.error("[TRANSACTION] Erreur lors de la récupération de l'historique:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };
@@ -68,50 +49,23 @@ export const getHistorique = async (req: Request, res: Response): Promise<void> 
  * Récupère les détails d'une transaction spécifique
  */
 export const getTransactionDetail = async (req: Request, res: Response): Promise<void> => {
-  const proprietaireId = req.owner?.id;
-  
-  if (!proprietaireId) {
-    const headerOwnerId = req.headers['x-owner-id'] as string;
-    if (!headerOwnerId) {
-      res.status(StatusCodes.UNAUTHORIZED).json(
-        jsonResponse({
-          status: "fail",
-          message: "Authentification requise",
-        })
-      );
-      return;
-    }
-  }
-
-  const ownerId = proprietaireId || req.headers['x-owner-id'] as string;
+  const proprietaireId = req.owner!.id;
   const { id } = req.params;
 
   try {
-    const transaction = await TransactionService.getTransactionById(id as string, ownerId);
+    const transaction = await TransactionService.getTransactionById(id as string, proprietaireId);
 
     res.status(StatusCodes.OK).json(
-      jsonResponse({
-        status: "success",
-        message: "Transaction récupérée",
-        data: transaction,
-      })
+      jsonResponse({ status: "success", message: "Transaction récupérée", data: transaction })
     );
   } catch (error) {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json(
-        jsonResponse({
-          status: "fail",
-          message: error.message,
-        })
-      );
+      res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
       return;
     }
     console.error("[TRANSACTION] Erreur lors de la récupération de la transaction:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };
@@ -146,40 +100,18 @@ export const getAdminStats = async (_req: Request, res: Response): Promise<void>
  * Récupère les statistiques des transactions du propriétaire
  */
 export const getStats = async (req: Request, res: Response): Promise<void> => {
-  const proprietaireId = req.owner?.id;
-  
-  if (!proprietaireId) {
-    const headerOwnerId = req.headers['x-owner-id'] as string;
-    if (!headerOwnerId) {
-      res.status(StatusCodes.UNAUTHORIZED).json(
-        jsonResponse({
-          status: "fail",
-          message: "Authentification requise",
-        })
-      );
-      return;
-    }
-  }
-
-  const ownerId = proprietaireId || req.headers['x-owner-id'] as string;
+  const proprietaireId = req.owner!.id;
 
   try {
-    const stats = await TransactionService.getStatsTransactions(ownerId);
+    const stats = await TransactionService.getStatsTransactions(proprietaireId);
 
     res.status(StatusCodes.OK).json(
-      jsonResponse({
-        status: "success",
-        message: "Statistiques des transactions récupérées",
-        data: stats,
-      })
+      jsonResponse({ status: "success", message: "Statistiques des transactions récupérées", data: stats })
     );
   } catch (error) {
     console.error("[TRANSACTION] Erreur lors de la récupération des statistiques:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(
-      jsonResponse({
-        status: "error",
-        message: "Une erreur inattendue s'est produite",
-      })
+      jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" })
     );
   }
 };

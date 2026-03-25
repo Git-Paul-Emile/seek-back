@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes";
 import type { StatutAnnonce } from "../generated/prisma/enums.js";
 import { prisma } from "../config/database.js";
 import { computeScoreForProprietaire } from "./trustScore.service.js";
+import { emitPropertyAlert, fetchAndEmitStatsGlobales } from "./socket.service.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -274,6 +275,9 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
 
   const updated = await BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
 
+  // Stats admin temps réel
+  fetchAndEmitStatsGlobales().catch(() => null);
+
   // Register nearby establishments asynchronously
   if (bien.latitude && bien.longitude) {
     fetchNearestEtablissements(bien.latitude, bien.longitude)
@@ -397,7 +401,7 @@ export const getAnnonces = async (params: {
 
 export const validerAnnonce = async (
   bienId: string,
-  action: "APPROUVER" | "REJETER" | "REVISION",
+  action: "APPROUVER" | "REJETER",
   note?: string
 ) => {
   const bien = await BienRepository.getBienById(bienId);
@@ -407,10 +411,15 @@ export const validerAnnonce = async (
     throw new AppError("Cette annonce n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
   }
 
-  const newStatut: StatutAnnonce =
-    action === "APPROUVER" ? "PUBLIE" :
-    action === "REVISION"  ? "EN_REVISION" : "REJETE";
-  return BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+  const newStatut: StatutAnnonce = action === "APPROUVER" ? "PUBLIE" : "REJETE";
+  const result = await BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+
+  // Alertes temps réel aux utilisateurs qui ont sauvegardé des critères
+  if (action === "APPROUVER") {
+    emitPropertyAlert(bienId).catch(() => null);
+  }
+
+  return result;
 };
 
 export const adminDeleteBien = async (bienId: string) => {

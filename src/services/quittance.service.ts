@@ -54,7 +54,7 @@ export const genererQuittance = async (
   });
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Données incohérentes", StatusCodes.BAD_REQUEST);
-  if (echeance.statut !== "PAYE" && echeance.statut !== "PARTIEL")
+  if (echeance.statut !== "PAYE")
     throw new AppError("La quittance n'est disponible que pour les paiements effectués", StatusCodes.BAD_REQUEST);
 
   // Retourner la quittance existante si déjà générée
@@ -123,7 +123,7 @@ export const genererQuittanceInterne = async (echeanceId: string): Promise<void>
     },
   });
   if (!echeance) return;
-  if (echeance.statut !== "PAYE" && echeance.statut !== "PARTIEL") return;
+  if (echeance.statut !== "PAYE") return;
   if (echeance.quittance) return; // déjà générée
 
   const numero = await genererNumero();

@@ -39,6 +39,8 @@ import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
 import proprietairesRouter, { ownerScoreRouter } from "../routes/trustScore.routes.js";
 import monetisationRouter from "../routes/monetisation.routes.js";
 import ownerBailRouter from "../routes/ownerBail.routes.js";
+import signalementRouter from "../routes/signalement.routes.js";
+import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -188,6 +190,12 @@ app.use('/api/transactions', transactionRouter);
 
 // Suspension de comptes (admin)
 app.use('/api/suspension', suspensionRouter);
+
+// Signalements (public & admin)
+app.use('/api/signalements', signalementRouter);
+
+// États des lieux (owner & locataire)
+app.use('/api/etats-des-lieux', etatDesLieuxRouter);
 
 // Documents des biens (owner)
 app.use('/api/biens/:bienId/documents', documentBienRouter);

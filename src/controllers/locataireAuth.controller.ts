@@ -624,7 +624,7 @@ export const getHistoriqueLogement = async (req: Request, res: Response): Promis
   // Enrichir chaque bail avec des stats rapides
   const result = bails.map((bail) => {
     const total = bail.echeancier.length;
-    const payes = bail.echeancier.filter((e) => e.statut === "PAYE" || e.statut === "PARTIEL").length;
+    const payes = bail.echeancier.filter((e) => e.statut === "PAYE").length;
     const montantTotal = bail.echeancier.reduce((sum, e) => sum + e.montant, 0);
     const montantPaye = bail.echeancier
       .filter((e) => e.statut === "PAYE")
@@ -682,24 +682,30 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   }
 
   try {
-    const { token, email, prenom } = await LocataireAuthService.requestPasswordReset(identifiant);
+    const { token, email, telephone, prenom } = await LocataireAuthService.requestPasswordReset(identifiant);
 
-    if (email) {
-      try {
-        const { sendMail } = await import("../utils/mailer.js");
-        const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
-        await sendMail({
-          to: email,
-          subject: "Réinitialisation de votre mot de passe SEEK",
-          html: `<p>Bonjour ${prenom},</p>
-<p>Cliquez sur ce lien pour réinitialiser votre mot de passe locataire (valable 1 heure) :</p>
-<p><a href="${frontUrl}/locataire/reset-password?token=${token}">${frontUrl}/locataire/reset-password?token=${token}</a></p>
-<p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>`,
-        });
-      } catch (e) {
-        console.error("[LOCATAIRE] Erreur envoi email reset:", e);
-      }
-    }
+    const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+    const lien = `${frontUrl}/locataire/reset-password?token=${token}`;
+    const contenu =
+      `Bonjour ${prenom}, réinitialisez votre mot de passe SEEK locataire : ${lien} (valable 1h). ` +
+      `Si vous n'êtes pas à l'origine de cette demande, ignorez ce message.`;
+    const htmlEmail = `
+      <p>Bonjour ${prenom},</p>
+      <p>Une demande de réinitialisation de mot de passe a été effectuée pour votre compte locataire SEEK Immobilier.</p>
+      <p><a href="${lien}" style="background:#2563eb;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none">Réinitialiser mon mot de passe</a></p>
+      <p>Ou copiez ce lien : ${lien}</p>
+      <p><small>Ce lien expire dans 1 heure.</small></p>
+      <p><small>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</small></p>
+    `;
+
+    await NotificationService.envoyerNotification({
+      type: "RESET_PASSWORD",
+      telephone,
+      email,
+      sujet: "Réinitialisation de votre mot de passe SEEK",
+      contenu,
+      htmlEmail,
+    });
   } catch (e: any) {
     if (e.statusCode === StatusCodes.OK) {
       // Compte non trouvé, on répond OK quand même (ne pas révéler)

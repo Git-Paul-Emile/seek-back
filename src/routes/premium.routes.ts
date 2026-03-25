@@ -31,23 +31,20 @@ router.get(
 
 /**
  * POST /api/premium/:id/payer - Simuler le paiement et activer la mise en avant (protégé)
- * Body: { formuleId: string, modePaiement: "ORANGE_MONEY" | "WAVE" }
  */
-// Temporary: Made public for testing - uncomment authenticateOwner for production
 router.post(
   "/:id/payer",
-  // authenticateOwner,
+  authenticateOwner,
   validateId,
   controllerWrapper(PremiumController.payerEtActiverPremium)
 );
 
 /**
  * POST /api/premium/:id/arreter - Arrêter la mise en avant d'un bien (protégé)
- * Body: { motif?: string }
  */
 router.post(
   "/:id/arreter",
-  // authenticateOwner,
+  authenticateOwner,
   validateId,
   controllerWrapper(PremiumController.arreterPremium)
 );
@@ -57,18 +54,17 @@ router.post(
  */
 router.get(
   "/:id/historique",
-  // authenticateOwner,
+  authenticateOwner,
   validateId,
   controllerWrapper(PremiumController.getHistoriqueBien)
 );
 
 /**
  * GET /api/premium/historique - Récupérer l'historique de tous les paiements premium du propriétaire (protégé)
- * Query: { page?: number, limit?: number }
  */
 router.get(
   "/historique",
-  // authenticateOwner,
+  authenticateOwner,
   controllerWrapper(PremiumController.getHistoriquePaiements)
 );
 

@@ -218,6 +218,25 @@ export const emitStatsUpdate = (payload: StatsUpdatePayload): void => {
 };
 
 /**
+ * Requête les 3 compteurs "du jour" et les émet aux admins connectés
+ */
+export const fetchAndEmitStatsGlobales = async (): Promise<void> => {
+  if (!io) return;
+
+  const { prisma } = await import("../config/database.js");
+  const debutJour = new Date();
+  debutJour.setHours(0, 0, 0, 0);
+
+  const [nouveauxBiens, nouvellesInscriptions, transactionsDuJour] = await Promise.all([
+    prisma.bien.count({ where: { createdAt: { gte: debutJour } } }),
+    prisma.proprietaire.count({ where: { createdAt: { gte: debutJour } } }),
+    prisma.transaction.count({ where: { statut: "CONFIRME", dateConfirmation: { gte: debutJour } } }),
+  ]);
+
+  emitStatsUpdate({ nouveauxBiens, nouvellesInscriptions, transactionsDuJour });
+};
+
+/**
  * Émet une alerte de nouveau bien aux utilisateurs concernés
  */
 export const emitPropertyAlert = async (bienId: string): Promise<void> => {

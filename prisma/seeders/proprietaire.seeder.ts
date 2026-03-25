@@ -61,7 +61,7 @@ const PROPRIETAIRES: readonly ProprietaireData[] = [
     statutVerification: 'VERIFIED',
     verifiedAt: new Date('2025-05-15'),
     estSuspendu: true,
-    motifSuspension: "Signalement de comportement frauduleux confirmé par l'administration",
+    motifSuspension: "Comportement frauduleux confirmé par l'administration",
     dateSuspension: new Date('2026-03-10'),
     suspenduPar: 'admin',
   },

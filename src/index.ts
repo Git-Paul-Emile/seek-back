@@ -1,6 +1,7 @@
 import "dotenv/config"; // Doit être le 1er import - charge .env avant tous les autres modules
 import { createServer } from "http";
 import { connectToDatabase } from "./config/database.js";
+import { initializeWebSocket } from "./services/socket.service.js";
 import app from "./config/app.js";
 
 // Lancement
@@ -10,6 +11,9 @@ const initializeApp = async () => {
     
     // Créer le serveur HTTP pour Express
     const httpServer = createServer(app);
+    
+    // Initialiser WebSocket (Socket.IO)
+    initializeWebSocket(httpServer);
     
     // Démarrer le serveur
     httpServer.listen(PORT, () => {

@@ -3,6 +3,7 @@ import { AppError } from "../utils/AppError.js";
 import { prisma } from "../config/database.js";
 import * as ContratRepo from "../repositories/contrat.repository.js";
 import { sendMail } from "../utils/mailer.js";
+import { envoyerNotification } from "./notification.service.js";
 import * as LocataireService from "./locataire.service.js";
 import * as BailService from "./bail.service.js";
 
@@ -119,6 +120,7 @@ const getBailWithRelations = async (bailId: string, bienId: string) => {
           nom: true,
           prenom: true,
           email: true,
+          telephone: true,
           situationProfessionnelle: true,
         },
       },
@@ -353,7 +355,18 @@ export const envoyerContrat = async (
     }
   }
 
-  // TODO : intégration WhatsApp / SMS (bail.locataire.telephone)
+  // Envoi SMS (best-effort — l'email riche est déjà envoyé par sendMail ci-dessus)
+  try {
+    const contenuSms =
+      `Bonjour ${bail.locataire.prenom} ${bail.locataire.nom}, votre contrat de bail "${contrat.titre}" vous a été transmis par votre propriétaire. Connectez-vous à votre espace SEEK pour le consulter. - SEEK Immobilier`;
+    await envoyerNotification({
+      type: "CONTRAT",
+      telephone: bail.locataire.telephone,
+      contenu: contenuSms,
+    });
+  } catch (err) {
+    console.warn("[envoyerContrat] Échec de l'envoi SMS :", (err as Error).message);
+  }
 
   return { sent: true, email: bail.locataire.email ?? null, lienActivation };
 };

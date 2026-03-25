@@ -65,8 +65,7 @@ interface LocataireDef {
 }
 
 interface EcheanceDef {
-  statut: 'A_VENIR' | 'EN_ATTENTE' | 'EN_RETARD' | 'PAYE' | 'PARTIEL' | 'ANNULE';
-  montantPaye?: number;
+  statut: 'A_VENIR' | 'EN_ATTENTE' | 'EN_RETARD' | 'PAYE' | 'ANNULE';
   datePaiement?: Date;
   modePaiement?: string;
   reference?: string;
@@ -800,7 +799,6 @@ function payeEcheance(
 ): EcheanceDef {
   return {
     statut: 'PAYE',
-    montantPaye: undefined,
     datePaiement,
     modePaiement,
     reference,
@@ -1253,7 +1251,6 @@ export class DonneesTestSeeder implements Seeder {
             montant:        bail.montantLoyer,
             statut:         ech.statut as any,
             datePaiement:   ech.datePaiement,
-            montantPaye:    isPaye ? bail.montantLoyer : ech.montantPaye,
             modePaiement:   ech.modePaiement,
             reference:      ech.reference,
             sourceEnregistrement: isPaye ? 'PROPRIETAIRE' : null,
