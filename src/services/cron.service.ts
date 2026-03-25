@@ -84,4 +84,24 @@ export const initCronJobs = () => {
       console.error("[CRON] Erreur lors de l'exécution des rappels de loyers:", err);
     }
   });
+
+  // Purge quotidienne à 03:00 — VueBien (>90j) et Notification (>180j)
+  cron.schedule("0 3 * * *", async () => {
+    try {
+      const cutoffVues = new Date();
+      cutoffVues.setDate(cutoffVues.getDate() - 90);
+
+      const cutoffNotifs = new Date();
+      cutoffNotifs.setDate(cutoffNotifs.getDate() - 180);
+
+      const [deletedVues, deletedNotifs] = await Promise.all([
+        prisma.vueBien.deleteMany({ where: { createdAt: { lt: cutoffVues } } }),
+        prisma.notification.deleteMany({ where: { createdAt: { lt: cutoffNotifs } } }),
+      ]);
+
+      console.log(`[CRON] Purge : ${deletedVues.count} vues (>90j), ${deletedNotifs.count} notifications (>180j) supprimées.`);
+    } catch (err) {
+      console.error("[CRON] Erreur lors de la purge :", err);
+    }
+  });
 };

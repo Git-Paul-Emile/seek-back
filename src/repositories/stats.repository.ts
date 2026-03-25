@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { prisma } from "../config/database.js";
 
 export interface SiteStats {
@@ -35,26 +34,39 @@ export interface RevenusStats {
 export const getRevenusStats = async (): Promise<RevenusStats> => {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
+  const debut12Mois = new Date(now.getFullYear(), now.getMonth() - 11, 1);
 
-  const [totalLoyer, loyerMois, totalPremium] = await Promise.all([
+  const [totalLoyer, loyerMois, totalPremium, loyerParMois, premiumParMois] = await Promise.all([
     prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] } }, _sum: { montant: true } }),
     prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] }, datePaiement: { gte: debutMois } }, _sum: { montant: true } }),
     prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME" }, _sum: { montant: true } }),
+    prisma.$queryRaw<{ mois: Date; montant: number }[]>`
+      SELECT DATE_TRUNC('month', "datePaiement") as mois, COALESCE(SUM("montant"), 0)::float as montant
+      FROM "EcheancierLoyer"
+      WHERE "statut" IN ('PAYE') AND "datePaiement" >= ${debut12Mois}
+      GROUP BY DATE_TRUNC('month', "datePaiement")
+      ORDER BY mois ASC
+    `,
+    prisma.$queryRaw<{ mois: Date; montant: number }[]>`
+      SELECT DATE_TRUNC('month', "dateConfirmation") as mois, COALESCE(SUM("montant"), 0)::float as montant
+      FROM "Transaction"
+      WHERE "type" = 'PAIEMENT_PREMIUM' AND "statut" = 'CONFIRME' AND "dateConfirmation" >= ${debut12Mois}
+      GROUP BY DATE_TRUNC('month', "dateConfirmation")
+      ORDER BY mois ASC
+    `,
   ]);
 
-  // Revenus loyers sur 12 mois
+  // Construire les 12 mois avec les résultats indexés par mois
+  const loyerMap = new Map(loyerParMois.map(r => [r.mois.toISOString().slice(0, 7), r.montant]));
+  const premiumMap = new Map(premiumParMois.map(r => [r.mois.toISOString().slice(0, 7), r.montant]));
+
   const revenus12Mois: { mois: string; montant: number }[] = [];
   const revenus12MoisPremium: { mois: string; montant: number }[] = [];
   for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const dFin = new Date(d.getFullYear(), d.getMonth() + 1, 1);
     const label = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    const [agg, aggPremium] = await Promise.all([
-      prisma.echeancierLoyer.aggregate({ where: { statut: { in: ["PAYE"] }, datePaiement: { gte: d, lt: dFin } }, _sum: { montant: true } }),
-      prisma.transaction.aggregate({ where: { type: "PAIEMENT_PREMIUM", statut: "CONFIRME", dateConfirmation: { gte: d, lt: dFin } }, _sum: { montant: true } }),
-    ]);
-    revenus12Mois.push({ mois: label, montant: agg._sum.montant ?? 0 });
-    revenus12MoisPremium.push({ mois: label, montant: aggPremium._sum.montant ?? 0 });
+    revenus12Mois.push({ mois: label, montant: loyerMap.get(label) ?? 0 });
+    revenus12MoisPremium.push({ mois: label, montant: premiumMap.get(label) ?? 0 });
   }
 
   const topLoc = await prisma.echeancierLoyer.groupBy({
@@ -74,11 +86,16 @@ export const getRevenusStats = async (): Promise<RevenusStats> => {
     revenus12Mois,
     revenusPremium: totalPremium._sum.montant ?? 0,
     revenus12MoisPremium,
-    topProprietairesLoyer: topLoc.map((r) => ({
-      id: r.proprietaireId,
-      ...(propsMap.get(r.proprietaireId) ?? { nom: "?", prenom: "?", telephone: "?" }),
-      montant: r._sum.montant ?? 0,
-    })),
+    topProprietairesLoyer: topLoc.map((r) => {
+      const prop = propsMap.get(r.proprietaireId);
+      return {
+        id: r.proprietaireId,
+        nom: prop?.nom ?? "?",
+        prenom: prop?.prenom ?? "?",
+        telephone: prop?.telephone ?? "?",
+        montant: r._sum.montant ?? 0,
+      };
+    }),
   };
 };
 
@@ -162,13 +179,10 @@ export const getProprietairesStats = async (): Promise<ProprietaireStats> => {
       },
       include: {
         _count: {
-          select: { biens: true },
+          select: { biens: true, locataire: true },
         },
         biens: {
           where: { statutAnnonce: "PUBLIE" },
-          select: { id: true },
-        },
-        locataires: {
           select: { id: true },
         },
       },
@@ -181,7 +195,7 @@ export const getProprietairesStats = async (): Promise<ProprietaireStats> => {
         email: p.email,
         totalBiens: p._count.biens,
         biensActifs: p.biens.length,
-        totalLocataires: p.locataires.length,
+        totalLocataires: p._count.locataire,
       }))
     ),
     

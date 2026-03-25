@@ -491,21 +491,25 @@ export const searchAnnoncePubliques = async (params: {
     ];
   }
 
-  // ── Mode proximité : tri par distance ────────────────────────────────────────
+  // ── Mode proximité : tri par distance (bounding box + Haversine) ─────────────
   if (params.lat !== undefined && params.lng !== undefined) {
     const lat = params.lat;
     const lng = params.lng;
+    const radiusKm = params.radius ?? 5;
 
-    // Récupérer tous les biens avec coordonnées (pas de pagination en DB)
-    const allBiens = await prisma.bien.findMany({
-      where: { ...where, latitude: { not: null }, longitude: { not: null } },
+    // Pré-filtre par bounding box SQL (~1° latitude ≈ 111 km)
+    const delta = radiusKm / 111;
+    const bboxBiens = await prisma.bien.findMany({
+      where: {
+        ...where,
+        latitude: { gte: lat - delta, lte: lat + delta },
+        longitude: { gte: lng - delta, lte: lng + delta },
+      },
       include: INCLUDE_PUBLIC,
     });
 
-    const radiusKm = params.radius ?? 5;
-
-    // Calculer la distance, filtrer par rayon et trier
-    const withDist = allBiens
+    // Calculer la distance exacte, filtrer par rayon et trier
+    const withDist = bboxBiens
       .map((b) => ({ ...b, distance: haversineKm(lat, lng, b.latitude!, b.longitude!) }))
       .filter((b) => b.distance <= radiusKm)
       .sort((a, b) => a.distance - b.distance);
@@ -701,6 +705,7 @@ export const getAnnoncesSimilairesWithScore = async (
       statutBien: { select: { id: true, nom: true, slug: true } },
     },
     orderBy: { createdAt: "desc" },
+    take: limit * POOL_FACTOR,
   });
 
   const foundIds = [...excludedIds, ...candidates.map(b => b.id)];
@@ -795,27 +800,13 @@ export interface OwnerStats {
 }
 
 export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats> => {
-  const statuts = ["BROUILLON", "EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"] as const;
-
-  const [totalBiens, countsByStatut, recentBiens, nbLocatairesActifs, bailsActifs, nbEcheancesEnRetard] = await Promise.all([
+  const [totalBiens, groupedStatuts, recentBiens, nbLocatairesActifs, bailsActifs, nbEcheancesEnRetard] = await Promise.all([
     prisma.bien.count({ where: { proprietaireId } }),
-    Promise.all(
-      statuts.map(async (s) => {
-        let count: number;
-        if (s === "EN_ATTENTE") {
-          count = await prisma.bien.count({
-            where: { proprietaireId, statutAnnonce: "EN_ATTENTE" },
-          });
-        } else if (s === "PUBLIE") {
-          count = await prisma.bien.count({
-            where: { proprietaireId, statutAnnonce: "PUBLIE" },
-          });
-        } else {
-          count = await prisma.bien.count({ where: { proprietaireId, statutAnnonce: s } });
-        }
-        return { statut: s, count };
-      })
-    ),
+    prisma.bien.groupBy({
+      by: ["statutAnnonce"],
+      where: { proprietaireId },
+      _count: true,
+    }),
     prisma.bien.findMany({
       where: { proprietaireId },
       orderBy: { updatedAt: "desc" },
@@ -843,6 +834,9 @@ export const getOwnerStats = async (proprietaireId: string): Promise<OwnerStats>
     }),
   ]);
 
+  const statutMap = new Map(groupedStatuts.map(g => [g.statutAnnonce, g._count]));
+  const statuts = ["BROUILLON", "EN_ATTENTE", "PUBLIE", "REJETE", "ANNULE"] as const;
+  const countsByStatut = statuts.map(s => ({ statut: s, count: statutMap.get(s) ?? 0 }));
   const montantMensuelLoyers = bailsActifs.reduce((sum, b) => sum + b.montantLoyer, 0);
 
   return {
