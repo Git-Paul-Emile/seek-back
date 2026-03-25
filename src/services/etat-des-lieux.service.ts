@@ -85,6 +85,16 @@ export const submitForValidation = async (id: string, proprietaireId: string) =>
   return updated;
 };
 
+export const deleteEtatDesLieux = async (id: string, proprietaireId: string) => {
+  const edl = await EtatDesLieuxRepo.findById(id);
+  if (!edl) throw new AppError("État des lieux introuvable", StatusCodes.NOT_FOUND);
+  if (edl.proprietaireId !== proprietaireId) throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+  if (edl.statut !== "BROUILLON") {
+    throw new AppError("Seul un brouillon peut être supprimé", StatusCodes.BAD_REQUEST);
+  }
+  await EtatDesLieuxRepo.deleteById(id);
+};
+
 export const contesterElementsLocataire = async (
   id: string,
   locataireId: string,

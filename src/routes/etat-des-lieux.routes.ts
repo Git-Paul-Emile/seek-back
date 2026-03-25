@@ -34,6 +34,12 @@ router.post(
   EtatDesLieuxController.submit
 );
 
+router.delete(
+  "/:id",
+  authenticateOwner,
+  EtatDesLieuxController.deleteBrouillon
+);
+
 router.post(
   "/:id/resoudre-contestation",
   authenticateOwner,

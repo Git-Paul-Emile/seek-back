@@ -156,6 +156,10 @@ export const updateBrouillon = async (id: string, data: Partial<EtatDesLieuxCrea
   });
 };
 
+export const deleteById = async (id: string) => {
+  return prisma.etatDesLieux.delete({ where: { id } });
+};
+
 export const contesterElements = async (id: string, elements: { elementId: string; motifContestation: string; photoContestation: string }[]) => {
   return prisma.$transaction(async (tx) => {
     // Put EDL in CONTESTE

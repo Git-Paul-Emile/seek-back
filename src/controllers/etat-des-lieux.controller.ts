@@ -49,6 +49,16 @@ export const submit = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
+export const deleteBrouillon = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    await EtatDesLieuxService.deleteEtatDesLieux(id, req.owner!.id);
+    res.status(StatusCodes.OK).json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getByIdOwner = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id as string;
