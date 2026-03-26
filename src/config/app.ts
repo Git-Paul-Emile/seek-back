@@ -41,6 +41,7 @@ import monetisationRouter from "../routes/monetisation.routes.js";
 import ownerBailRouter from "../routes/ownerBail.routes.js";
 import signalementRouter from "../routes/signalement.routes.js";
 import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
+import configSiteRouter from "../routes/configSite.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -214,6 +215,9 @@ app.use('/api/owner', ownerScoreRouter);
 
 // Monétisation (abonnements, commissions, mises en avant)
 app.use('/api/monetisation', monetisationRouter);
+
+// Configuration globale du site (Footer, Contact)
+app.use('/api/config-site', configSiteRouter);
 
 // ============= SWAGGER UI =============
 

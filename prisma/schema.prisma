@@ -1191,6 +1191,18 @@ model ConfigMonetisation {
   updatedAt         DateTime @updatedAt
 }
 
+model ConfigSite {
+  id                 String   @id @default("config_site")
+  contactEmail       String   @default("contact@seek.sn")
+  contactPhone       String   @default("+221 77 000 00 00")
+  contactAddress     String   @default("Dakar, Sénégal")
+  // Horaires du service client au format JSON
+  // Structure: { "lundi": { "open": "08:00", "close": "18:00", "isOpen": true }, ... }
+  serviceClientHours Json     @default("[{\"day\":\"lundi\",\"isOpen\":true,\"open\":\"08:00\",\"close\":\"18:00\"},{\"day\":\"mardi\",\"isOpen\":true,\"open\":\"08:00\",\"close\":\"18:00\"},{\"day\":\"mercredi\",\"isOpen\":true,\"open\":\"08:00\",\"close\":\"18:00\"},{\"day\":\"jeudi\",\"isOpen\":true,\"open\":\"08:00\",\"close\":\"18:00\"},{\"day\":\"vendredi\",\"isOpen\":true,\"open\":\"08:00\",\"close\":\"18:00\"},{\"day\":\"samedi\",\"isOpen\":true,\"open\":\"09:00\",\"close\":\"18:00\"},{\"day\":\"dimanche\",\"isOpen\":false,\"open\":\"09:00\",\"close\":\"13:00\"}]")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
 // ============================================================
 // INVITATIONS BAIL (locataire existant chez un autre propriétaire)
 // ============================================================

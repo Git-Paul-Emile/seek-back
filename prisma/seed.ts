@@ -16,12 +16,14 @@ import { QuartierSeeder } from './seeders/quartier.seeder.js';
 import { ProprietaireSeeder } from './seeders/proprietaire.seeder.js';
 import { TemoignageSeeder } from './seeders/temoignage.seeder.js';
 import { FormulePremiumSeeder } from './seeders/formulePremium.seeder.js';
+import { ConfigSiteSeeder } from './seeders/configSite.seeder.js';
 import { DonneesTestSeeder } from './seeders/donnees-test.seeder.js';
 
 dotenv.config();
 
 /**
  * Ordre d'exécution — respecter les dépendances entre entités :
+ *  0.  ConfigSite       (indépendant)
  *  1.  Pays             (référencé par Ville)
  *  2.  Ville            (dépend de Pays)
  *  3.  Quartier         (dépend de Ville)
@@ -41,6 +43,7 @@ dotenv.config();
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  */
 const SEEDERS: readonly Seeder[] = [
+  new ConfigSiteSeeder(),
   new PaysSeeder(),
   new VilleSeeder(),
   new QuartierSeeder(),
