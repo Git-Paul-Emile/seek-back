@@ -3,7 +3,7 @@
   "info": {
     "title": "SEEK API - Plateforme Immobilière",
     "version": "1.0.0",
-    "description": "API pour la plateforme de location immobilère SEEK au Sénégal\n\n## Environments\n- **Local**: http://localhost:8000\n- **Production**: https://seek-api.onrender.com\n\n## Authentification\nL'API utilise plusieurs types d'authentification JWT:\n- **Admin**: Cookie HTTP-Only avec access/refresh tokens\n- **Owner**: Bearer token dans le header Authorization\n- **Locataire**: Bearer token spécifique\n- **Compte Public**: Bearer token spécifique",
+    "description": "API pour la plateforme de location immobilère SEEK au Sénégal\n\n## Environments\n- **Local**: http://localhost:8000\n- **Production**: https://seek-back-production.up.railway.app\n\n## Authentification\nL'API utilise plusieurs types d'authentification JWT:\n- **Admin**: Cookie HTTP-Only avec access/refresh tokens\n- **Owner**: Bearer token dans le header Authorization\n- **Locataire**: Bearer token spécifique\n- **Compte Public**: Bearer token spécifique",
     "contact": {
       "name": "Support SEEK",
       "email": "support@seek.sn"
@@ -19,7 +19,7 @@
       "description": "Serveur de développement local"
     },
     {
-      "url": "https://seek-api.onrender.com",
+      "url": "https://seek-back-production.up.railway.app",
       "description": "Serveur de production"
     }
   ],
@@ -61,7 +61,7 @@
     { "name": "Types", "description": "Types de logement et transaction" },
     { "name": "Premium", "description": "Mise en avant payante" },
     { "name": "Monetisation", "description": "Configuration de la monétisation" },
-    { "name": "Stats", "description": "Statistiques" },
+    { "name": "Stats", "description": "Statistiques" }
   ],
   "paths": {
     "/api/health": {

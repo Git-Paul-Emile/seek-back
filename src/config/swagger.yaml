@@ -7,7 +7,7 @@ info:
 
     ## Environments
     - **Local**: http://localhost:8000
-    - **Production**: https://seek-api.onrender.com
+    - **Production**: https://seek-back-production.up.railway.app
 
     ## Authentification
     L'API utilise plusieurs types d'authentification JWT:
@@ -24,7 +24,7 @@ info:
 servers:
   - url: http://localhost:8000
     description: Serveur de développement local
-  - url: https://seek-api.onrender.com
+  - url: https://seek-back-production.up.railway.app
     description: Serveur de production
 components:
   securitySchemes:
