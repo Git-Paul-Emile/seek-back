@@ -16,7 +16,7 @@ type TypeLogementWithCount = TypeLogementType & { count: number };
 export const findAll = async (): Promise<TypeLogementWithCount[]> => {
   const types = await prisma.typeLogement.findMany({
     where:   { actif: true },
-    orderBy: { ordre: "asc" },
+    orderBy: { nom: "asc" },
   });
 
   // Pour chaque type, compter les biens publiés
