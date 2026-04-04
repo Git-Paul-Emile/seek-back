@@ -37,6 +37,18 @@ router.post(
   controllerWrapper(OwnerController.verifierTelephone)
 );
 
+/** POST /api/owner/auth/verifier-telephone-public - public (pour vérification après inscription) */
+router.post(
+  "/verifier-telephone-public",
+  controllerWrapper(OwnerController.verifierTelephonePublic)
+);
+
+/** POST /api/owner/auth/renvoyer-otp-public - public (pour renvoyer OTP après inscription) */
+router.post(
+  "/renvoyer-otp-public",
+  controllerWrapper(OwnerController.renvoyerOtpPublic)
+);
+
 /** POST /api/owner/auth/renvoyer-otp - protégé */
 router.post(
   "/renvoyer-otp",

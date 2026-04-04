@@ -16,7 +16,7 @@ import {
   envoyerConfirmationEspecesProprietaire,
 } from "./notification.service.js";
 import { getConfig } from "./configMonetisation.service.js";
-import { emitTransactionStatus, emitBadgeUpdate, fetchAndEmitStatsGlobales } from "./socket.service.js";
+import { emitTransactionStatus, emitBadgeUpdate, fetchAndEmitStatsGlobales, emitBailUpdated, emitBienUpdated } from "./socket.service.js";
 
 // ─── Génération de l'échéancier ───────────────────────────────────────────────
 
@@ -180,6 +180,8 @@ export const creerBail = async (
     frequencePaiement: data.frequencePaiement,
   });
 
+  emitBailUpdated(proprietaireId, bienId);
+  emitBienUpdated(proprietaireId, bienId);
   return bail;
 };
 
@@ -345,6 +347,7 @@ export const archiverBail = async (
     data: { statut: "ANCIEN" as any },
   });
 
+  emitBailUpdated(proprietaireId, bienId);
   return updated;
 };
 
@@ -402,6 +405,8 @@ export const terminerBail = async (
     })
     .catch((err) => console.error("[Bail] Erreur notif fin bail locataire :", err));
 
+  emitBailUpdated(proprietaireId, bienId);
+  emitBienUpdated(proprietaireId, bienId);
   return updatedTerm;
 };
 
@@ -456,6 +461,8 @@ export const resilierBail = async (
     locataireId:        updatedRes.locataireId,
   }).catch((err) => console.error("[Bail] Erreur notif résiliation locataire :", err));
 
+  emitBailUpdated(proprietaireId, bienId);
+  emitBienUpdated(proprietaireId, bienId);
   return updatedRes;
 };
 
@@ -510,6 +517,8 @@ export const resilierBailLocataire = async (
     })
     .catch((err) => console.error("[Bail] Erreur notif résiliation propriétaire :", err));
 
+  emitBailUpdated(updatedResLoc.proprietaireId, updatedResLoc.bienId);
+  emitBienUpdated(updatedResLoc.proprietaireId, updatedResLoc.bienId);
   return updatedResLoc;
 };
 
@@ -856,7 +865,7 @@ export const payerEcheancesLocataire = async (
   await (prisma.echeancierLoyer.updateMany as any)({
     where: { id: { in: ids } },
     data: {
-      statut: "PAYE",
+      statut: "EN_ATTENTE_CONFIRMATION",
       datePaiement: data.datePaiement,
       modePaiement: data.modePaiement,
       reference: data.reference ?? null,
@@ -865,12 +874,7 @@ export const payerEcheancesLocataire = async (
     },
   });
 
-  // Auto-génération quittances (fire-and-forget)
-  for (const id of ids) {
-    genererQuittanceInterne(id).catch(() => null);
-  }
-
-  // Notification au propriétaire (fire-and-forget)
+  // Notification au propriétaire — paiement en attente de confirmation (fire-and-forget)
   prisma.bailLocation.findUnique({
     where: { id: bail.id },
     include: {
@@ -906,7 +910,8 @@ export const payerEcheancesLocataire = async (
 
 /**
  * Le propriétaire confirme qu'il a bien reçu le paiement enregistré par le locataire.
- * Applicable uniquement aux échéances enregistrées par le locataire (sourceEnregistrement = "LOCATAIRE").
+ * Applicable aux échéances EN_ATTENTE_CONFIRMATION (sourceEnregistrement = "LOCATAIRE")
+ * ou déjà PAYE par le locataire (rétro-compat).
  */
 export const confirmerReceptionPaiement = async (
   bienId: string,
@@ -919,19 +924,61 @@ export const confirmerReceptionPaiement = async (
   const echeance = await prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
   if (!echeance) throw new AppError("Échéance introuvable", StatusCodes.NOT_FOUND);
   if (echeance.bailId !== bailId) throw new AppError("Échéance non associée à ce bail", StatusCodes.BAD_REQUEST);
-  if (echeance.statut !== "PAYE")
-    throw new AppError("Impossible de confirmer une échéance non payée", StatusCodes.BAD_REQUEST);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const statut = echeance.statut as any;
+  if (statut !== "PAYE" && statut !== "EN_ATTENTE_CONFIRMATION")
+    throw new AppError("Impossible de confirmer cette échéance", StatusCodes.BAD_REQUEST);
+  if (statut === "EN_ATTENTE_CONFIRMATION" && echeance.sourceEnregistrement !== "LOCATAIRE")
+    throw new AppError("Ce paiement doit être confirmé par le locataire", StatusCodes.BAD_REQUEST);
   if (echeance.confirmeParProprietaire)
     throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
 
+  const needsValidation = statut === "EN_ATTENTE_CONFIRMATION";
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (prisma.echeancierLoyer.update as any)({
+  const updated = await (prisma.echeancierLoyer.update as any)({
     where: { id: echeanceId },
     data: {
+      ...(needsValidation && { statut: "PAYE" }),
       confirmeParProprietaire: true,
       dateConfirmation: new Date(),
     },
   });
+
+  // Si l'échéance vient de passer à PAYE, générer la quittance
+  if (needsValidation) {
+    genererQuittanceInterne(echeanceId).catch(() => null);
+  }
+
+  // SMS de confirmation au propriétaire (fire-and-forget)
+  prisma.bailLocation.findUnique({
+    where: { id: bailId },
+    include: {
+      locataire: { select: { nom: true, prenom: true } },
+      proprietaire: { select: { telephone: true, email: true } },
+      bien: { select: { titre: true } },
+    },
+  }).then(bailFull => {
+    if (!bailFull?.proprietaire?.telephone) return;
+    const locataireNom = bailFull.locataire
+      ? `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`
+      : "Locataire";
+    envoyerConfirmationEspecesProprietaire({
+      proprietaireTelephone: bailFull.proprietaire.telephone,
+      proprietaireEmail: bailFull.proprietaire.email,
+      locataireNom,
+      montant: echeance.montant,
+      datePaiement: (echeance.datePaiement ?? new Date()).toISOString(),
+      bienTitre: bailFull.bien?.titre,
+      echeanceId,
+      bailId,
+      bienId,
+      proprietaireId,
+      locataireId: echeance.locataireId,
+    }).catch(() => null);
+  }).catch(() => null);
+
+  return updated;
 };
 
 // ─── Paiement espèces (propriétaire enregistre, locataire confirme) ───────────
@@ -1017,6 +1064,8 @@ export const confirmerPaiementEspacesLocataire = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((echeance.statut as any) !== "EN_ATTENTE_CONFIRMATION")
     throw new AppError("Ce paiement n'est pas en attente de confirmation", StatusCodes.BAD_REQUEST);
+  if (echeance.sourceEnregistrement !== "PROPRIETAIRE")
+    throw new AppError("Ce paiement doit être confirmé par le propriétaire", StatusCodes.BAD_REQUEST);
   if (echeance.confirmeParLocataire)
     throw new AppError("Paiement déjà confirmé", StatusCodes.BAD_REQUEST);
 

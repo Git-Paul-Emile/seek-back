@@ -147,6 +147,16 @@ export const getByBailLocataire = async (req: Request, res: Response, next: Next
   }
 };
 
+export const getAllByLocataire = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const locataireId = req.locataire!.id;
+    const result = await EtatDesLieuxService.getAllEtatsDesLieuxLocataire(locataireId);
+    res.status(StatusCodes.OK).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const compareLocataire = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bailId = req.params.bailId as string;

@@ -716,6 +716,7 @@ model Notification {
   proprietaireId String?
   locataireId    String?
 
+  lu        Boolean   @default(false)
   envoyeAt  DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -723,8 +724,10 @@ model Notification {
   @@index([bailId])
   @@index([echeanceId])
   @@index([locataireId])
+  @@index([proprietaireId])
   @@index([type])
   @@index([statut])
+  @@index([lu])
 }
 
 enum StatutDepot {

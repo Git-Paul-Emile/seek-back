@@ -4,6 +4,7 @@ import * as SignalementRepo from "../repositories/signalement.repository.js";
 import * as SuspenionService from "./suspension.service.js";
 import * as SmsService from "./sms.service.js";
 import { Prisma } from "../generated/prisma/client.js";
+import { emitSignalementNew, emitSignalementUpdated, emitBienUpdated } from "./socket.service.js";
 
 // -- Récupérer liste
 export const getSignalements = async (filter?: { statut?: string; search?: string }) => {
@@ -36,6 +37,7 @@ export const createSignalement = async (data: Prisma.SignalementUncheckedCreateI
 
   // Todo: Envoi Email à l'équipe admin (Si NotifQueueService existant)
   console.log(`[Admin Alert] Nouveau signalement #${signalement.id} pour le bien ${signalement.bienId}`);
+  emitSignalementNew(signalement.bienId);
 
   return signalement;
 };
@@ -89,6 +91,10 @@ export const validerSignalement = async (id: string, adminId: string) => {
     }
   }
 
+  // Émettre mise à jour temps réel — le bien est supprimé, les listes owner/admin se rafraîchissent
+  emitSignalementUpdated(bien.id, bien.proprietaire.id);
+  emitBienUpdated(bien.proprietaire.id, bien.id);
+
   return result.signalement;
 };
 
@@ -103,5 +109,7 @@ export const rejeterSignalement = async (id: string, adminId: string) => {
     throw new AppError(`Ce signalement est déjà traité (${signalement.statut})`, StatusCodes.BAD_REQUEST);
   }
 
-  return SignalementRepo.rejeter(id, adminId);
+  const result = await SignalementRepo.rejeter(id, adminId);
+  emitSignalementUpdated(signalement.bienId);
+  return result;
 };

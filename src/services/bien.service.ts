@@ -52,60 +52,86 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+async function queryOverpass(
+  lat: number,
+  lon: number,
+  queries: { type: string; label: string; query: string }[],
+  radius: number
+): Promise<{ elements: OverpassNode[]; ok: boolean }> {
+  const unionParts = queries
+    .map(({ query }) => `node${query}(around:${radius},${lat},${lon});`)
+    .join("\n");
+  const overpassQuery = `[out:json][timeout:25];\n(\n${unionParts}\n);\nout body;`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+  const response = await fetch("https://overpass-api.de/api/interpreter", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `data=${encodeURIComponent(overpassQuery)}`,
+    signal: controller.signal,
+  });
+  clearTimeout(timeoutId);
+
+  if (!response.ok) return { elements: [], ok: false };
+  const json = await response.json() as { elements: OverpassNode[] };
+  return { elements: json.elements ?? [], ok: true };
+}
+
+function pickNearest(
+  elements: OverpassNode[],
+  lat: number,
+  lon: number,
+  queries: { type: string; label: string; query: string }[]
+): Map<string, { node: OverpassNode; dist: number; label: string }> {
+  const found = new Map<string, { node: OverpassNode; dist: number; label: string }>();
+  for (const { type, label } of queries) {
+    let nearest: OverpassNode | null = null;
+    let nearestDist = Infinity;
+    for (const el of elements) {
+      if (!matchesType(el, type)) continue;
+      const dist = haversineDistance(lat, lon, el.lat, el.lon);
+      if (dist < nearestDist) { nearestDist = dist; nearest = el; }
+    }
+    if (nearest) found.set(type, { node: nearest, dist: nearestDist, label });
+  }
+  return found;
+}
+
 async function fetchNearestEtablissements(
   lat: number,
   lon: number
 ): Promise<BienRepository.EtablissementData[]> {
-  const radius = 5000;
   const results: BienRepository.EtablissementData[] = [];
 
-  const unionParts = ETABLISSEMENT_QUERIES.map(
-    ({ query }) => `node${query}(around:${radius},${lat},${lon});`
-  ).join("\n");
-
-  const overpassQuery = `[out:json][timeout:25];\n(\n${unionParts}\n);\nout body;`;
-
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    // 1st pass — 5 km
+    const { elements, ok } = await queryOverpass(lat, lon, ETABLISSEMENT_QUERIES, 5000);
+    if (!ok) return results;
 
-    const response = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `data=${encodeURIComponent(overpassQuery)}`,
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
+    const found = pickNearest(elements, lat, lon, ETABLISSEMENT_QUERIES);
 
-    if (!response.ok) return results;
+    // Types absent from the 5 km radius
+    const missing = ETABLISSEMENT_QUERIES.filter(({ type }) => !found.has(type));
 
-    const json = await response.json() as { elements: OverpassNode[] };
-    const elements: OverpassNode[] = json.elements ?? [];
-
-    for (const { type, label } of ETABLISSEMENT_QUERIES) {
-      let nearest: OverpassNode | null = null;
-      let nearestDist = Infinity;
-
-      for (const el of elements) {
-        if (!matchesType(el, type)) continue;
-        const dist = haversineDistance(lat, lon, el.lat, el.lon);
-        if (dist < nearestDist) {
-          nearestDist = dist;
-          nearest = el;
-        }
-      }
-
-      if (nearest) {
-        results.push({
-          bienId: "",
-          type,
-          nom: nearest.tags?.name ?? label,
-          latitude: nearest.lat,
-          longitude: nearest.lon,
-          distance: Math.round(nearestDist),
-        });
-      }
+    // 2nd pass — 50 km for missing types only
+    if (missing.length > 0) {
+      const { elements: elemsFar } = await queryOverpass(lat, lon, missing, 50000);
+      const foundFar = pickNearest(elemsFar, lat, lon, missing);
+      foundFar.forEach((v, type) => found.set(type, v));
     }
+
+    found.forEach(({ node, dist, label }, type) => {
+      results.push({
+        bienId: "",
+        type,
+        nom: node.tags?.name ?? label,
+        latitude: node.lat,
+        longitude: node.lon,
+        distance: Math.round(dist),
+      });
+    });
   } catch {
     // Overpass unavailable - silently skip
   }
@@ -162,14 +188,10 @@ export const saveDraft = async (
       throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
     }
 
-    // Upload new photos if provided
-    let newPhotoUrls: string[] = [];
-    if (files.length > 0) {
-      for (const file of files) {
-        const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
-        newPhotoUrls.push(result.url);
-      }
-    }
+    // Upload new photos in parallel
+    const newPhotoUrls = files.length > 0
+      ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+      : [];
 
     const photos = [...(existingPhotos || []), ...newPhotoUrls];
     const data: BienRepository.BienData = {
@@ -179,17 +201,12 @@ export const saveDraft = async (
       disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
     };
 
-    // Gérer la logique de baisse de prix
-    // Si le nouveau prix est inférieur à l'ancien prix, enregistrer l'ancien prix et la date
-    if (input.id && rest.prix !== undefined) {
-      const bienExistant = await BienRepository.getBienById(input.id);
-      if (bienExistant && bienExistant.prix && rest.prix !== null && rest.prix < bienExistant.prix) {
-        // Nouvelle baisse de prix significative (minimum 5%)
-        const pourcentageBaisse = ((bienExistant.prix - rest.prix) / bienExistant.prix) * 100;
-        if (pourcentageBaisse >= 5) {
-          (data as any).prixAncien = bienExistant.prix;
-          (data as any).dateDerniereModificationPrix = new Date();
-        }
+    // Gérer la logique de baisse de prix (bien déjà chargé plus haut)
+    if (rest.prix !== undefined && bien.prix && rest.prix !== null && rest.prix < bien.prix) {
+      const pourcentageBaisse = ((bien.prix - rest.prix) / bien.prix) * 100;
+      if (pourcentageBaisse >= 5) {
+        (data as any).prixAncien = bien.prix;
+        (data as any).dateDerniereModificationPrix = new Date();
       }
     }
 
@@ -199,14 +216,10 @@ export const saveDraft = async (
   // Sinon, utiliser le comportement existant (brouillon)
   const existing = await BienRepository.getDraftByProprietaire(proprietaireId);
 
-  // Upload new photos if provided
-  let newPhotoUrls: string[] = [];
-  if (files.length > 0) {
-    for (const file of files) {
-      const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
-      newPhotoUrls.push(result.url);
-    }
-  }
+  // Upload new photos in parallel
+  const newPhotoUrls = files.length > 0
+    ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+    : [];
 
   const photos = [...existingPhotos, ...newPhotoUrls];
   const data: BienRepository.BienData = {
@@ -477,12 +490,8 @@ export const getAnnoncePublieById = async (id: string) => {
   if (!bien) {
     throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
   }
-  // Calcul du score de confiance du propriétaire en arrière-plan (non bloquant)
   const scoreProprietaire = await computeScoreForProprietaire(bien.proprietaireId).catch(() => null);
-  return {
-    ...bien,
-    scoreProprietaire,
-  };
+  return { ...bien, scoreProprietaire };
 };
 
 // ─── Public - annonces similaires avec système de score ─────────────────────

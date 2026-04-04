@@ -140,7 +140,7 @@ export const getLienActivation = async (
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
-      message: "Lien d'activation envoyé au locataire par SMS",
+      message: "Demande traitée avec succès",
       data: result,
     })
   );

@@ -3,7 +3,11 @@ import { AppError } from "../utils/AppError.js";
 import * as EtatDesLieuxRepo from "../repositories/etat-des-lieux.repository.js";
 import { prisma } from "../config/database.js";
 import * as SmsService from "./sms.service.js";
-// import { sendEmail } from "./email.service.js"; // If email service exists
+
+const FRONTEND_URL =
+  process.env.NODE_ENV === "production"
+    ? (process.env.FRONT_URL_PROD ?? "https://seek-front-plum.vercel.app")
+    : (process.env.FRONT_URL ?? "http://localhost:5173");
 
 export const createEtatDesLieux = async (proprietaireId: string, data: any) => {
   const bail = await prisma.bailLocation.findUnique({
@@ -78,7 +82,8 @@ export const submitForValidation = async (id: string, proprietaireId: string) =>
 
   // Notifier le locataire
   if (edl.locataire?.telephone) {
-    const msg = `Bonjour ${edl.locataire.prenom}, votre état des lieux d'${edl.type.toLowerCase()} est prêt. Veuillez vous connecter sur Seek pour le consulter et le valider.`;
+    const lien = `${FRONTEND_URL}/locataire/etats-des-lieux/${updated.id}`;
+    const msg = `Bonjour ${edl.locataire.prenom}, votre état des lieux d'${edl.type.toLowerCase()} est prêt. Consultez et validez-le ici : ${lien}`;
     await SmsService.sendSms(edl.locataire.telephone, msg).catch(e => console.error("Erreur SMS", e));
   }
 
@@ -111,7 +116,8 @@ export const contesterElementsLocataire = async (
   const updated = await EtatDesLieuxRepo.contesterElements(id, elements);
 
   if (edl.proprietaire?.telephone) {
-    const msg = `Bonjour ${edl.proprietaire.prenom}, votre locataire a contesté certains éléments de l'état des lieux d'${edl.type.toLowerCase()}. Veuillez vous connecter sur Seek pour les résoudre.`;
+    const lien = `${FRONTEND_URL}/owner/etats-des-lieux/${updated.id}`;
+    const msg = `Bonjour ${edl.proprietaire.prenom}, votre locataire a contesté certains éléments de l'état des lieux d'${edl.type.toLowerCase()}. Résolvez-les ici : ${lien}`;
     await SmsService.sendSms(edl.proprietaire.telephone, msg).catch((e) => console.error("Erreur SMS", e));
   }
 
@@ -140,11 +146,12 @@ export const resoudreContestationsProprietaire = async (
   const updated = await EtatDesLieuxRepo.resoudreContestations(id, resolutions);
 
   if (edl.locataire?.telephone) {
+    const lien = `${FRONTEND_URL}/locataire/etats-des-lieux/${updated.id}`;
     let msg = "";
     if ((updated.statut as string) === "EN_LITIGE") {
-      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a refusé certaines contestations. L'état des lieux est en litige.`;
+      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a refusé certaines contestations. L'état des lieux est en litige. Voir : ${lien}`;
     } else {
-      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a répondu à vos contestations. Vous pouvez valider l'état des lieux.`;
+      msg = `Bonjour ${edl.locataire.prenom}, le propriétaire a répondu à vos contestations. Vous pouvez valider l'état des lieux : ${lien}`;
     }
     await SmsService.sendSms(edl.locataire.telephone, msg).catch((e) => console.error("Erreur SMS", e));
   }
@@ -165,11 +172,16 @@ export const validerEtatDesLieux = async (id: string, locataireId: string, docum
 
   // Notifier le propriétaire
   if (edl.proprietaire?.telephone) {
-    const msg = `Bonjour ${edl.proprietaire.prenom}, l'état des lieux d'${edl.type.toLowerCase()} a été validé par votre locataire. Le PDF est disponible sur Seek.`;
+    const lien = `${FRONTEND_URL}/owner/etats-des-lieux/${updated.id}`;
+    const msg = `Bonjour ${edl.proprietaire.prenom}, l'état des lieux d'${edl.type.toLowerCase()} a été validé par votre locataire. PDF disponible : ${lien}`;
     await SmsService.sendSms(edl.proprietaire.telephone, msg).catch(e => console.error("Erreur SMS", e));
   }
 
   return updated;
+};
+
+export const getAllEtatsDesLieuxLocataire = async (locataireId: string) => {
+  return EtatDesLieuxRepo.findAllByLocataire(locataireId);
 };
 
 export const getComparison = async (bailId: string, userId: string, role: "PROPRIETAIRE" | "LOCATAIRE") => {

@@ -152,6 +152,14 @@ export const getLien = async (id: string, proprietaireId: string) => {
     throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
   }
 
+  if (locataire.statut === "ACTIF") {
+    return {
+      lien: null,
+      statut: locataire.statut,
+      envoye: false,
+    };
+  }
+
   // Regénérer le token si expiré ou absent
   let token = locataire.activationToken;
   if (!token || (locataire.tokenExpiresAt && locataire.tokenExpiresAt < new Date())) {

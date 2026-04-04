@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import { prisma } from "../config/database.js";
 import { envoyerRappelLoyer } from "./notification.service.js";
+import { emitBailUpdated } from "./socket.service.js";
 
 export const initCronJobs = () => {
   // Planification quotidienne à 08:00
@@ -82,6 +83,83 @@ export const initCronJobs = () => {
       console.log(`[CRON] Fin de la vérification. ${nbRappels} rappel(s) envoyé(s).`);
     } catch (err) {
       console.error("[CRON] Erreur lors de l'exécution des rappels de loyers:", err);
+    }
+  });
+
+  // Auto-archivage quotidien à 01:00 — Bails TERMINE/RESILIE depuis plus de 30 jours
+  cron.schedule("0 1 * * *", async () => {
+    try {
+      console.log("[CRON] Archivage automatique des anciens bails...");
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - 30);
+
+      const bails = await prisma.bailLocation.findMany({
+        where: {
+          statut: { in: ["TERMINE", "RESILIE"] },
+          updatedAt: { lte: cutoff },
+        },
+        select: { id: true, locataireId: true, proprietaireId: true, bienId: true },
+      });
+
+      for (const bail of bails) {
+        await prisma.bailLocation.update({
+          where: { id: bail.id },
+          data: { statut: "ARCHIVE" },
+        });
+        await prisma.locataire.update({
+          where: { id: bail.locataireId },
+          data: { statut: "ANCIEN" },
+        });
+        emitBailUpdated(bail.proprietaireId, bail.bienId);
+      }
+
+      console.log(`[CRON] Archivage : ${bails.length} bail(s) archivé(s).`);
+    } catch (err) {
+      console.error("[CRON] Erreur archivage bails :", err);
+    }
+  });
+
+  // Auto-terminaison quotidienne à 01:00 — Bails ACTIF/EN_PREAVIS dont dateFin est dépassée
+  cron.schedule("5 1 * * *", async () => {
+    try {
+      console.log("[CRON] Terminaison automatique des bails expirés...");
+      const now = new Date();
+
+      const bails = await prisma.bailLocation.findMany({
+        where: {
+          statut: { in: ["ACTIF", "EN_PREAVIS"] },
+          dateFinBail: { lte: now },
+        },
+        select: { id: true, proprietaireId: true, bienId: true },
+      });
+
+      if (bails.length === 0) {
+        console.log("[CRON] Aucun bail expiré à terminer.");
+        return;
+      }
+
+      // Récupérer l'ID du statut "libre"
+      const statutLibre = await prisma.statutBien.findFirst({ where: { slug: "libre" } });
+      if (!statutLibre) {
+        console.error("[CRON] Statut 'libre' introuvable — terminaison annulée.");
+        return;
+      }
+
+      for (const bail of bails) {
+        await prisma.bailLocation.update({
+          where: { id: bail.id },
+          data: { statut: "TERMINE" },
+        });
+        await prisma.bien.update({
+          where: { id: bail.bienId },
+          data: { statutBienId: statutLibre.id },
+        });
+        emitBailUpdated(bail.proprietaireId, bail.bienId);
+      }
+
+      console.log(`[CRON] Terminaison : ${bails.length} bail(s) terminé(s).`);
+    } catch (err) {
+      console.error("[CRON] Erreur terminaison bails :", err);
     }
   });
 

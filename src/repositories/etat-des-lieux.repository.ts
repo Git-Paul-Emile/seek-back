@@ -160,6 +160,17 @@ export const deleteById = async (id: string) => {
   return prisma.etatDesLieux.delete({ where: { id } });
 };
 
+export const findAllByLocataire = async (locataireId: string) => {
+  return prisma.etatDesLieux.findMany({
+    where: { locataireId },
+    include: {
+      pieces: { include: { elements: true } },
+      bien: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
 export const contesterElements = async (id: string, elements: { elementId: string; motifContestation: string; photoContestation: string }[]) => {
   return prisma.$transaction(async (tx) => {
     // Put EDL in CONTESTE

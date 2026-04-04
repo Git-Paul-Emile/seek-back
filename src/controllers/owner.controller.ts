@@ -56,10 +56,7 @@ const clearTokenCookies = (res: Response) => {
 // ─── POST /api/owner/auth/register ───────────────────────────────────────────
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaire } =
-    await OwnerService.register(req.body);
-
-  setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
+  const { proprietaire } = await OwnerService.register(req.body);
 
   // Envoi de l'OTP de vérification téléphone en arrière-plan
   try {
@@ -265,9 +262,13 @@ export const verifierTelephone = async (req: Request, res: Response): Promise<vo
     res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Code OTP requis" }));
     return;
   }
-  await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
+  const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaire } = await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
+  
+  // Définir les cookies après vérification réussie
+  setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
+  
   res.status(StatusCodes.OK).json(
-    jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès." })
+    jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès.", data: proprietaire })
   );
 };
 
@@ -279,6 +280,56 @@ export const renvoyerOtp = async (req: Request, res: Response): Promise<void> =>
     res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" }));
     return;
   }
+  // Récupérer les infos du propriétaire
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { prenom: true, telephone: true },
+  });
+  if (!proprietaire) {
+    res.status(StatusCodes.NOT_FOUND).json(jsonResponse({ status: "fail", message: "Compte introuvable" }));
+    return;
+  }
+
+  const otp = await OwnerService.sendOtpTelephone(proprietaireId);
+  envoyerOtpTelephone({
+    telephone:      proprietaire.telephone,
+    prenom:         proprietaire.prenom,
+    otp,
+    proprietaireId,
+  }).catch((err) => console.error("[Owner] Erreur renvoi OTP :", err));
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Code OTP renvoyé sur votre téléphone." })
+  );
+};
+
+// ─── POST /api/owner/auth/verifier-telephone-public ─────────────────────────
+
+export const verifierTelephonePublic = async (req: Request, res: Response): Promise<void> => {
+  const { proprietaireId, otp } = req.body;
+  if (!proprietaireId || !otp) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "ID propriétaire et code OTP requis" }));
+    return;
+  }
+  const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaire } = await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
+  
+  // Définir les cookies après vérification réussie
+  setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
+  
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès.", data: proprietaire })
+  );
+};
+
+// ─── POST /api/owner/auth/renvoyer-otp-public ───────────────────────────────
+
+export const renvoyerOtpPublic = async (req: Request, res: Response): Promise<void> => {
+  const { proprietaireId } = req.body;
+  if (!proprietaireId) {
+    res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "ID propriétaire requis" }));
+    return;
+  }
+  
   // Récupérer les infos du propriétaire
   const proprietaire = await prisma.proprietaire.findUnique({
     where: { id: proprietaireId },

@@ -121,6 +121,7 @@ const getBailWithRelations = async (bailId: string, bienId: string) => {
           prenom: true,
           email: true,
           telephone: true,
+          statut: true,
           situationProfessionnelle: true,
         },
       },
@@ -266,7 +267,7 @@ export const activerContrat = async (
   const bail = await getBailWithRelations(bailId, bienId);
   let lienActivation = null;
   
-  if (bail.locataire) {
+  if (bail.locataire && bail.locataire.statut !== "ACTIF") {
     try {
       const lienData = await LocataireService.getLien(bail.locataire.id, proprietaireId);
       lienActivation = lienData.lien;
@@ -306,7 +307,7 @@ export const envoyerContrat = async (
   
   // Récupérer le lien d'activation du locataire
   let lienActivation = null;
-  if (bail.locataire) {
+  if (bail.locataire && bail.locataire.statut !== "ACTIF") {
     try {
       const lienData = await LocataireService.getLien(bail.locataire.id, proprietaireId);
       lienActivation = lienData.lien;

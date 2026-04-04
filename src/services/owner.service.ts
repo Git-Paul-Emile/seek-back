@@ -94,7 +94,7 @@ export const register = async (data: {
   email?: string;
   password: string;
 }): Promise<
-  OwnerTokenPair & { proprietaire: { id: string; prenom: string; nom: string } }
+  { proprietaire: { id: string; prenom: string; nom: string; telephone: string; email?: string; telephoneVerifie: boolean } }
 > => {
   // Normaliser les champs optionnels (chaîne vide → null)
   const telephone = data.telephone.replace(/\s/g, "");
@@ -138,25 +138,15 @@ export const register = async (data: {
   // Stats admin temps réel
   fetchAndEmitStatsGlobales().catch(() => null);
 
-  // Génération des tokens et persistance du refresh token
-  const tokens = generateTokenPair(
-    proprietaire.id,
-    proprietaire.prenom,
-    proprietaire.nom
-  );
-
-  await OwnerRepo.createRefreshToken({
-    proprietaireId: proprietaire.id,
-    tokenHash: hashToken(tokens.refreshToken),
-    expiresAt: tokens.refreshTokenExpiresAt,
-  });
-
+  // Ne pas générer de tokens ici - le propriétaire doit d'abord vérifier son téléphone
   return {
-    ...tokens,
     proprietaire: {
       id: proprietaire.id,
       prenom: proprietaire.prenom,
       nom: proprietaire.nom,
+      telephone: proprietaire.telephone,
+      email: proprietaire.email ?? undefined,
+      telephoneVerifie: proprietaire.telephoneVerifie,
     },
   };
 };
@@ -194,7 +184,7 @@ export const login = async (data: {
   identifiant: string;
   password: string;
 }): Promise<
-  OwnerTokenPair & { proprietaire: { id: string; prenom: string; nom: string; telephone: string; email?: string } }
+  OwnerTokenPair & { proprietaire: { id: string; prenom: string; nom: string; telephone: string; email?: string; telephoneVerifie: boolean } }
 > => {
   const identifiant = data.identifiant.trim();
 
@@ -240,6 +230,7 @@ export const login = async (data: {
       nom: proprietaire.nom,
       telephone: proprietaire.telephone,
       email: proprietaire.email ?? undefined,
+      telephoneVerifie: proprietaire.telephoneVerifie,
     },
   };
 };
@@ -316,6 +307,7 @@ export const me = async (id: string) => {
     select: {
       id: true, prenom: true, nom: true, telephone: true, email: true,
       sexe: true, statutVerification: true, verifiedAt: true,
+      telephoneVerifie: true,
       nbAvertissements: true, estRestreint: true, estSuspendu: true,
       estBanni: true, dateFinRestriction: true, dateFinSuspension: true, dateBannissement: true,
     },
@@ -328,6 +320,7 @@ export const me = async (id: string) => {
     telephone: p.telephone,
     email: p.email ?? undefined,
     sexe: p.sexe ?? undefined,
+    telephoneVerifie: p.telephoneVerifie,
     statutVerification: p.statutVerification,
     verifiedAt: p.verifiedAt,
     nbAvertissements: p.nbAvertissements,
@@ -517,7 +510,7 @@ export const sendOtpTelephone = async (proprietaireId: string): Promise<string> 
   return otp;
 };
 
-export const verifyOtpTelephone = async (proprietaireId: string, otp: string): Promise<void> => {
+export const verifyOtpTelephone = async (proprietaireId: string, otp: string): Promise<OwnerTokenPair & { proprietaire: { id: string; prenom: string; nom: string; telephone: string; email?: string; telephoneVerifie: boolean } }> => {
   const proprietaire = await OwnerRepo.findById(proprietaireId);
   if (!proprietaire) throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
 
@@ -527,9 +520,35 @@ export const verifyOtpTelephone = async (proprietaireId: string, otp: string): P
   if (!p.telephoneOtpExpiresAt || p.telephoneOtpExpiresAt < new Date())
     throw new AppError("Code OTP expiré", StatusCodes.BAD_REQUEST);
 
+  // Marquer le téléphone comme vérifié
   await OwnerRepo.update(proprietaireId, {
     telephoneVerifie: true,
     telephoneOtp: null,
     telephoneOtpExpiresAt: null,
   } as any);
+
+  // Générer les tokens après vérification réussie
+  const tokens = generateTokenPair(
+    proprietaire.id,
+    proprietaire.prenom,
+    proprietaire.nom
+  );
+
+  await OwnerRepo.createRefreshToken({
+    proprietaireId: proprietaire.id,
+    tokenHash: hashToken(tokens.refreshToken),
+    expiresAt: tokens.refreshTokenExpiresAt,
+  });
+
+  return {
+    ...tokens,
+    proprietaire: {
+      id: proprietaire.id,
+      prenom: proprietaire.prenom,
+      nom: proprietaire.nom,
+      telephone: proprietaire.telephone,
+      email: proprietaire.email ?? undefined,
+      telephoneVerifie: true,
+    },
+  };
 };

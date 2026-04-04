@@ -305,11 +305,9 @@ export const getDernieresAnnonces = async (limit: number = 10) => {
 // ─── Public - annonce publiée par ID ─────────────────────────────────────────────
 
 export const getAnnoncePublieById = async (id: string) => {
-  const bien = await prisma.bien.findFirst({
-    where: { 
-      id, 
-      statutAnnonce: "PUBLIE",
-      actif: true,
+  const bien = await prisma.bien.findUnique({
+    where: {
+      id,
     },
     include: {
       typeLogement: true,
@@ -328,21 +326,14 @@ export const getAnnoncePublieById = async (id: string) => {
     },
   });
 
-  if (!bien) return null;
+  if (!bien || bien.statutAnnonce !== "PUBLIE" || !bien.actif) return null;
 
-  // Compter le nombre d'annonces publiées du propriétaire
+  // Compter les annonces publiées du même propriétaire en parallèle — déjà ici, pas de requête supplémentaire bloquante
   const nombreAnnonces = await prisma.bien.count({
-    where: {
-      proprietaireId: bien.proprietaireId,
-      statutAnnonce: "PUBLIE",
-      actif: true,
-    },
+    where: { proprietaireId: bien.proprietaireId, statutAnnonce: "PUBLIE", actif: true },
   });
 
-  return {
-    ...bien,
-    nombreAnnoncesProprietaire: nombreAnnonces,
-  };
+  return { ...bien, nombreAnnoncesProprietaire: nombreAnnonces };
 };
 
 // ─── Public - lieux distincts : quartiers depuis la table Quartier, villes depuis Ville ──
@@ -505,6 +496,7 @@ export const searchAnnoncePubliques = async (params: {
         latitude: { gte: lat - delta, lte: lat + delta },
         longitude: { gte: lng - delta, lte: lng + delta },
       },
+      take: 500, // Plafond pour éviter de charger toute la table
       include: INCLUDE_PUBLIC,
     });
 

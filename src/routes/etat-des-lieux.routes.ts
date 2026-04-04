@@ -93,6 +93,12 @@ router.get(
 );
 
 router.get(
+  "/locataire/mes-edl",
+  authenticateLocataire,
+  EtatDesLieuxController.getAllByLocataire
+);
+
+router.get(
   "/locataire/bail/:bailId",
   authenticateLocataire,
   EtatDesLieuxController.getByBailLocataire

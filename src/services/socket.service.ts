@@ -23,6 +23,14 @@ export enum WebSocketEvents {
   // Vérifications d'identité
   VERIFICATION_SUBMITTED = "verification:submitted",
   VERIFICATION_COUNT_UPDATE = "verification:count",
+
+  // Bail & Bien
+  BAIL_UPDATED = "bail:updated",
+  BIEN_UPDATED = "bien:updated",
+
+  // Signalements
+  SIGNALEMENT_NEW = "signalement:new",
+  SIGNALEMENT_UPDATED = "signalement:updated",
 }
 
 // Types de données pour les événements
@@ -290,6 +298,42 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
       
       io.to(`alerts:${alert.telephone}`).emit(WebSocketEvents.NEW_PROPERTY_ALERT, payload);
     }
+  }
+};
+
+/**
+ * Émet une mise à jour de bail (créer, terminer, résilier, archiver, paiement)
+ */
+export const emitBailUpdated = (proprietaireId: string, bienId: string): void => {
+  if (!io) return;
+  io.to(`owner:${proprietaireId}`).emit(WebSocketEvents.BAIL_UPDATED, { proprietaireId, bienId });
+};
+
+/**
+ * Émet une mise à jour d'un bien (statut changé)
+ */
+export const emitBienUpdated = (proprietaireId: string, bienId: string): void => {
+  if (!io) return;
+  io.to(`owner:${proprietaireId}`).emit(WebSocketEvents.BIEN_UPDATED, { proprietaireId, bienId });
+  io.to("admin").emit(WebSocketEvents.BIEN_UPDATED, { proprietaireId, bienId });
+};
+
+/**
+ * Émet un nouveau signalement aux admins
+ */
+export const emitSignalementNew = (bienId: string): void => {
+  if (!io) return;
+  io.to("admin").emit(WebSocketEvents.SIGNALEMENT_NEW, { bienId });
+};
+
+/**
+ * Émet une mise à jour de signalement (validé ou rejeté) aux admins et au propriétaire
+ */
+export const emitSignalementUpdated = (bienId: string, proprietaireId?: string): void => {
+  if (!io) return;
+  io.to("admin").emit(WebSocketEvents.SIGNALEMENT_UPDATED, { bienId });
+  if (proprietaireId) {
+    io.to(`owner:${proprietaireId}`).emit(WebSocketEvents.SIGNALEMENT_UPDATED, { bienId });
   }
 };
 

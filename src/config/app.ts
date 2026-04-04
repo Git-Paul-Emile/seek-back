@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
@@ -42,6 +43,7 @@ import ownerBailRouter from "../routes/ownerBail.routes.js";
 import signalementRouter from "../routes/signalement.routes.js";
 import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
 import configSiteRouter from "../routes/configSite.routes.js";
+import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +59,10 @@ const allowedOrigins = [
   'http://localhost:3001', // React alternative
   'https://seek-front-plum.vercel.app', // Production Vercel
 ];
+
+// ============= COMPRESSION =============
+
+app.use(compression());
 
 // ============= SÉCURITÉ =============
 
@@ -218,6 +224,11 @@ app.use('/api/monetisation', monetisationRouter);
 
 // Configuration globale du site (Footer, Contact)
 app.use('/api/config-site', configSiteRouter);
+
+// Notifications in-app
+app.use('/api/owner/notifications', ownerNotifRouter);
+app.use('/api/locataire/notifications', locataireNotifRouter);
+app.use('/api/admin/notifications', adminNotifRouter);
 
 // ============= SWAGGER UI =============
 

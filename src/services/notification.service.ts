@@ -4,6 +4,8 @@ import { sendSms } from "./sms.service.js";
 import { enqueueNotif } from "./notifQueue.service.js";
 import { emitNotification, emitBadgeUpdate } from "./socket.service.js";
 
+const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type TypeNotif =
@@ -313,12 +315,13 @@ export const envoyerPaiementLocataire = async (params: {
   const dateStr    = new Date(params.datePaiement).toLocaleDateString("fr-FR");
   const nbMois     = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
 
+  const lienConfirmation = `${FRONTEND_URL}/owner/biens/${params.bienId}/paiements`;
   const contenu =
     `Votre locataire ${params.locataireNom} a enregistré un paiement de loyer de ` +
     `${montantStr} FCFA${nbMois} le ${dateStr}` +
     (params.reference ? ` (réf: ${params.reference})` : "") +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Merci de confirmer la réception. - SEEK Immobilier`;
+    `. Confirmez la réception ici : ${lienConfirmation} - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "PAIEMENT_LOCATAIRE",
@@ -349,12 +352,13 @@ export const envoyerPaiementEspecesLocataire = async (params: {
   proprietaireId: string;
   locataireId: string;
 }) => {
+  const lienConfirmation = `${FRONTEND_URL}/locataire/paiements`;
   const contenu =
     `Bonjour ${params.locataireNom}, votre propriétaire a enregistré un paiement en espèces` +
     ` de ${params.montant.toLocaleString("fr-FR")} FCFA` +
     ` en date du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Veuillez confirmer ce paiement depuis votre espace SEEK. - SEEK Immobilier`;
+    `. Confirmez ce paiement ici : ${lienConfirmation} - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "PAIEMENT_ESPECES_LOCATAIRE",

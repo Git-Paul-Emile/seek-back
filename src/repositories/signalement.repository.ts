@@ -87,13 +87,10 @@ export const valider = async (id: string, adminId: string, bienId: string, propr
       }
     });
 
-    // 2. Supprimer/Masquer le bien
-    await tx.bien.update({
-      where: { id: bienId },
-      data: {
-        actif: false,
-        statutAnnonce: "REJETE"
-      }
+    // 2. Supprimer définitivement le bien.
+    // Le signalement est aussi supprimé par cascade via la relation Prisma.
+    await tx.bien.delete({
+      where: { id: bienId }
     });
 
     // 3. Incrémenter le compteur du proprio
