@@ -116,7 +116,7 @@ export const contesterElementsLocataire = async (
   const updated = await EtatDesLieuxRepo.contesterElements(id, elements);
 
   if (edl.proprietaire?.telephone) {
-    const lien = `${FRONTEND_URL}/owner/etats-des-lieux/${updated.id}`;
+    const lien = `${FRONTEND_URL}/owner/etats-des-lieux/${updated!.id}`;
     const msg = `Bonjour ${edl.proprietaire.prenom}, votre locataire a contesté certains éléments de l'état des lieux d'${edl.type.toLowerCase()}. Résolvez-les ici : ${lien}`;
     await SmsService.sendSms(edl.proprietaire.telephone, msg).catch((e) => console.error("Erreur SMS", e));
   }

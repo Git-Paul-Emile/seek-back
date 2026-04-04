@@ -58,7 +58,7 @@ export const markOwnerOneNotificationRead = async (req: Request, res: Response):
   if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
   await prisma.notification.updateMany({
-    where: { id: req.params.id, proprietaireId },
+    where: { id: String(req.params.id), proprietaireId },
     data: { lu: true },
   });
 
@@ -120,7 +120,7 @@ export const markLocataireOneNotificationRead = async (req: Request, res: Respon
   if (!locataireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
   await prisma.notification.updateMany({
-    where: { id: req.params.id, locataireId },
+    where: { id: String(req.params.id), locataireId },
     data: { lu: true },
   });
 
