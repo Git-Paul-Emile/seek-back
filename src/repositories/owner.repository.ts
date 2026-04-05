@@ -5,6 +5,15 @@ import { prisma } from "../config/database.js";
 export const findByTelephone = (telephone: string) =>
   prisma.proprietaire.findUnique({ where: { telephone } });
 
+export const findByTelephones = (telephones: string[]) =>
+  prisma.proprietaire.findFirst({
+    where: {
+      telephone: {
+        in: telephones,
+      },
+    },
+  });
+
 export const findByEmail = (email: string) =>
   prisma.proprietaire.findUnique({ where: { email } });
 

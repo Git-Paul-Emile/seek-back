@@ -97,12 +97,12 @@ export const register = async (data: {
   { proprietaire: { id: string; prenom: string; nom: string; telephone: string; email?: string; telephoneVerifie: boolean } }
 > => {
   // Normaliser les champs optionnels (chaîne vide → null)
-  const telephone = data.telephone.replace(/\s/g, "");
+  const telephone = normalizePhone(data.telephone);
   const email = data.email?.trim() === "" ? null : data.email?.trim() ?? null;
   const sexe = data.sexe?.trim() === "" ? null : data.sexe ?? null;
 
   // Unicité du téléphone
-  const existingPhone = await OwnerRepo.findByTelephone(telephone);
+  const existingPhone = await findOwnerByPhone(telephone);
   if (existingPhone) {
     throw new AppError(
       "Ce numéro de téléphone est déjà associé à un compte.",
@@ -154,7 +154,32 @@ export const register = async (data: {
 // ─── Connexion ────────────────────────────────────────────────────────────────
 
 /** Supprime les espaces, tirets et parenthèses d'un numéro */
-const normalizePhone = (phone: string) => phone.replace(/[\s\-()]/g, "");
+const normalizePhone = (phone: string) => phone.trim().replace(/[\s\-().]/g, "");
+
+const buildPhoneVariants = (raw: string): string[] => {
+  const normalized = normalizePhone(raw);
+  const digitsOnly = normalized.replace(/^\+/, "");
+  const variants = new Set<string>();
+
+  if (!normalized) return [];
+
+  variants.add(normalized);
+  variants.add(digitsOnly);
+
+  if (digitsOnly.startsWith("221")) {
+    const local = digitsOnly.slice(3);
+    if (local) {
+      variants.add(local);
+      variants.add(`+221${local}`);
+      variants.add(`221${local}`);
+    }
+  } else {
+    variants.add(`+221${digitsOnly}`);
+    variants.add(`221${digitsOnly}`);
+  }
+
+  return [...variants].filter(Boolean);
+};
 
 /** Cherche un propriétaire par téléphone en essayant plusieurs variantes */
 const findByPhoneVariants = async (raw: string) => {
@@ -180,6 +205,12 @@ const findByPhoneVariants = async (raw: string) => {
   return null;
 };
 
+const findOwnerByPhone = async (raw: string) => {
+  const variants = buildPhoneVariants(raw);
+  if (variants.length === 0) return null;
+  return OwnerRepo.findByTelephones(variants);
+};
+
 export const login = async (data: {
   identifiant: string;
   password: string;
@@ -189,7 +220,7 @@ export const login = async (data: {
   const identifiant = data.identifiant.trim();
 
   // Chercher par téléphone (plusieurs variantes) puis par email
-  let proprietaire = await findByPhoneVariants(identifiant);
+  let proprietaire = await findOwnerByPhone(identifiant);
   if (!proprietaire) {
     proprietaire = await OwnerRepo.findByEmail(identifiant);
   }

@@ -179,7 +179,38 @@ export const activer = async (data: {
 
 // ─── Connexion ────────────────────────────────────────────────────────────────
 
-const normalizePhone = (phone: string) => phone.replace(/[\s\-()]/g, "");
+const normalizePhone = (phone: string) => phone.trim().replace(/[\s\-().]/g, "");
+
+const buildPhoneVariants = (raw: string): string[] => {
+  const normalized = normalizePhone(raw);
+  const digitsOnly = normalized.replace(/^\+/, "");
+  const variants = new Set<string>();
+
+  if (!normalized) return [];
+
+  variants.add(normalized);
+  variants.add(digitsOnly);
+
+  if (digitsOnly.startsWith("221")) {
+    const local = digitsOnly.slice(3);
+    if (local) {
+      variants.add(local);
+      variants.add(`+221${local}`);
+      variants.add(`221${local}`);
+    }
+  } else {
+    variants.add(`+221${digitsOnly}`);
+    variants.add(`221${digitsOnly}`);
+  }
+
+  return [...variants].filter(Boolean);
+};
+
+const findLocataireByPhone = async (raw: string) => {
+  const variants = buildPhoneVariants(raw);
+  if (variants.length === 0) return null;
+  return LocataireRepo.findByTelephones(variants);
+};
 
 export const login = async (data: {
   identifiant: string;
@@ -188,7 +219,7 @@ export const login = async (data: {
   const identifiant = data.identifiant.trim();
 
   // Chercher par téléphone puis email
-  let locataire = await LocataireRepo.findByTelephone(normalizePhone(identifiant));
+  let locataire = await findLocataireByPhone(identifiant);
   if (!locataire && identifiant.includes("@")) {
     locataire = await LocataireRepo.findByEmail(identifiant);
   }

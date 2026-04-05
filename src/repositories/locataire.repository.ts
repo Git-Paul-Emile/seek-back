@@ -142,6 +142,16 @@ export const findByTelephone = async (telephone: string) => {
   return prisma.locataire.findFirst({ where: { telephone } });
 };
 
+export const findByTelephones = async (telephones: string[]) => {
+  return prisma.locataire.findFirst({
+    where: {
+      telephone: {
+        in: telephones,
+      },
+    },
+  });
+};
+
 export const findByEmail = async (email: string) => {
   return prisma.locataire.findFirst({ where: { email } });
 };
