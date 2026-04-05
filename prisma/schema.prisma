@@ -863,6 +863,7 @@ model ConfigSite {
   contactPhone       String   @default("+221 77 000 00 00")
   contactAddress     String   @default("Dakar, Sénégal")
   serviceClientHours Json     @default("[{\"day\": \"lundi\", \"open\": \"08:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"mardi\", \"open\": \"08:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"mercredi\", \"open\": \"08:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"jeudi\", \"open\": \"08:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"vendredi\", \"open\": \"08:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"samedi\", \"open\": \"09:00\", \"close\": \"18:00\", \"isOpen\": true}, {\"day\": \"dimanche\", \"open\": \"09:00\", \"close\": \"13:00\", \"isOpen\": false}]")
+  logoFiligrane      String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }

@@ -3,6 +3,7 @@ import cloudinary from "../config/cloudinary.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import { optimizeImage, type OptimizeOptions } from "../utils/optimizeImage.js";
+import { applyWatermark } from "../utils/watermark.js";
 
 export interface CloudinaryUploadResult {
   url: string;
@@ -18,9 +19,14 @@ export interface CloudinaryUploadResult {
 export const uploadImage = async (
   buffer: Buffer,
   folder: string,
-  options?: OptimizeOptions
+  options?: OptimizeOptions,
+  watermarkLogoBuffer?: Buffer | null
 ): Promise<CloudinaryUploadResult> => {
-  const optimized = await optimizeImage(buffer, options);
+  let optimized = await optimizeImage(buffer, options);
+
+  if (watermarkLogoBuffer) {
+    optimized = await applyWatermark(optimized, watermarkLogoBuffer);
+  }
 
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(

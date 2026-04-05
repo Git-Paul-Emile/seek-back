@@ -35,3 +35,34 @@ export const updateConfigSite = async (data: {
 
   return updated;
 };
+
+export const updateLogoFiligrane = async (logoUrl: string | null) => {
+  await prisma.configSite.upsert({
+    where: { id: "config_site" },
+    update: { logoFiligrane: logoUrl },
+    create: {
+      id: "config_site",
+      logoFiligrane: logoUrl,
+    },
+  });
+};
+
+/**
+ * Récupère le buffer du logo filigrane depuis son URL Cloudinary.
+ * Retourne null si aucun logo n'est configuré ou si le téléchargement échoue.
+ * Utilisé pour appliquer le filigrane avant l'upload des photos de biens.
+ */
+export const getLogoFiligraneBuffer = async (): Promise<Buffer | null> => {
+  try {
+    const config = await getConfigSite();
+    if (!config?.logoFiligrane) return null;
+
+    const response = await fetch(config.logoFiligrane);
+    if (!response.ok) return null;
+
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  } catch {
+    return null;
+  }
+};

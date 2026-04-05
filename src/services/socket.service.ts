@@ -75,6 +75,7 @@ export interface PropertyAlertPayload {
   telephone: string;
   bienId: string;
   titre: string;
+  typeLogement: string;
   typeTransaction: string;
   prix: number;
   localisation: string;
@@ -152,6 +153,11 @@ export const initializeWebSocket = (httpServer: HTTPServer): SocketIOServer => {
     socket.on("join:alerts", (telephone: string) => {
       socket.join(`alerts:${telephone}`);
       console.log(`🔔 Utilisateur ${telephone} a rejoint les alertes`);
+    });
+
+    socket.on("leave:alerts", (telephone: string) => {
+      socket.leave(`alerts:${telephone}`);
+      console.log(`🔕 Utilisateur ${telephone} a quitté les alertes`);
     });
 
     // Déconnexion
@@ -272,6 +278,12 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
   if (!io) return;
   
   const { prisma } = await import("../config/database.js");
+
+  const normalize = (value?: string | null): string | null => {
+    if (!value) return null;
+    const normalized = value.trim().toLocaleLowerCase();
+    return normalized.length > 0 ? normalized : null;
+  };
   
   // Récupérer les alertes actives
   const alerts = await prisma.alerte.findMany({
@@ -285,6 +297,9 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
     where: { id: bienId },
     select: {
       titre: true,
+      typeLogement: {
+        select: { nom: true }
+      },
       typeTransaction: {
         select: { nom: true }
       },
@@ -300,8 +315,10 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
   for (const alert of alerts) {
     // Vérifier si le bien correspond aux critères de l'alerte
     const correspond = (
-      (!alert.ville || alert.ville === bien.ville) &&
-      (!alert.quartier || alert.quartier === bien.quartier) &&
+      (!normalize(alert.typeLogement) || normalize(alert.typeLogement) === normalize(bien.typeLogement?.nom)) &&
+      (!normalize(alert.typeTransaction) || normalize(alert.typeTransaction) === normalize(bien.typeTransaction?.nom)) &&
+      (!normalize(alert.ville) || normalize(alert.ville) === normalize(bien.ville)) &&
+      (!normalize(alert.quartier) || normalize(alert.quartier) === normalize(bien.quartier)) &&
       (!alert.prixMin || (bien.prix && bien.prix >= alert.prixMin)) &&
       (!alert.prixMax || (bien.prix && bien.prix <= alert.prixMax))
     );
@@ -312,6 +329,7 @@ export const emitPropertyAlert = async (bienId: string): Promise<void> => {
         telephone: alert.telephone,
         bienId,
         titre: bien.titre || "",
+        typeLogement: bien.typeLogement?.nom || "",
         typeTransaction: bien.typeTransaction?.nom || "",
         prix: bien.prix || 0,
         localisation: `${bien.ville || ""}, ${bien.quartier || ""}`,
