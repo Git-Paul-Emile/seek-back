@@ -82,6 +82,11 @@ export declare const getInvitationsByLocataire: (locataireId: string) => Promise
     token: string;
 })[]>;
 export declare const accepterInvitation: (token: string, locataireId: string) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;

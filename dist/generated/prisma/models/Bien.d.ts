@@ -104,7 +104,6 @@ export type BienMinAggregateOutputType = {
     actif: boolean | null;
     statutAnnonce: $Enums.StatutAnnonce | null;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean | null;
     estMisEnAvant: boolean | null;
     dateDebutPromotion: Date | null;
@@ -113,6 +112,7 @@ export type BienMinAggregateOutputType = {
     dernierAffichage: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    publishedAt: Date | null;
 };
 export type BienMaxAggregateOutputType = {
     id: string | null;
@@ -163,7 +163,6 @@ export type BienMaxAggregateOutputType = {
     actif: boolean | null;
     statutAnnonce: $Enums.StatutAnnonce | null;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean | null;
     estMisEnAvant: boolean | null;
     dateDebutPromotion: Date | null;
@@ -172,6 +171,7 @@ export type BienMaxAggregateOutputType = {
     dernierAffichage: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    publishedAt: Date | null;
 };
 export type BienCountAggregateOutputType = {
     id: number;
@@ -223,7 +223,6 @@ export type BienCountAggregateOutputType = {
     actif: number;
     statutAnnonce: number;
     noteAdmin: number;
-    publishedAt: number;
     estPremium: number;
     estMisEnAvant: number;
     dateDebutPromotion: number;
@@ -232,6 +231,7 @@ export type BienCountAggregateOutputType = {
     dernierAffichage: number;
     createdAt: number;
     updatedAt: number;
+    publishedAt: number;
     _all: number;
 };
 export type BienAvgAggregateInputType = {
@@ -325,7 +325,6 @@ export type BienMinAggregateInputType = {
     actif?: true;
     statutAnnonce?: true;
     noteAdmin?: true;
-    publishedAt?: true;
     estPremium?: true;
     estMisEnAvant?: true;
     dateDebutPromotion?: true;
@@ -334,6 +333,7 @@ export type BienMinAggregateInputType = {
     dernierAffichage?: true;
     createdAt?: true;
     updatedAt?: true;
+    publishedAt?: true;
 };
 export type BienMaxAggregateInputType = {
     id?: true;
@@ -384,7 +384,6 @@ export type BienMaxAggregateInputType = {
     actif?: true;
     statutAnnonce?: true;
     noteAdmin?: true;
-    publishedAt?: true;
     estPremium?: true;
     estMisEnAvant?: true;
     dateDebutPromotion?: true;
@@ -393,6 +392,7 @@ export type BienMaxAggregateInputType = {
     dernierAffichage?: true;
     createdAt?: true;
     updatedAt?: true;
+    publishedAt?: true;
 };
 export type BienCountAggregateInputType = {
     id?: true;
@@ -444,7 +444,6 @@ export type BienCountAggregateInputType = {
     actif?: true;
     statutAnnonce?: true;
     noteAdmin?: true;
-    publishedAt?: true;
     estPremium?: true;
     estMisEnAvant?: true;
     dateDebutPromotion?: true;
@@ -453,6 +452,7 @@ export type BienCountAggregateInputType = {
     dernierAffichage?: true;
     createdAt?: true;
     updatedAt?: true;
+    publishedAt?: true;
     _all?: true;
 };
 export type BienAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -581,7 +581,6 @@ export type BienGroupByOutputType = {
     actif: boolean;
     statutAnnonce: $Enums.StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
@@ -590,6 +589,7 @@ export type BienGroupByOutputType = {
     dernierAffichage: Date | null;
     createdAt: Date;
     updatedAt: Date;
+    publishedAt: Date | null;
     _count: BienCountAggregateOutputType | null;
     _avg: BienAvgAggregateOutputType | null;
     _sum: BienSumAggregateOutputType | null;
@@ -652,7 +652,6 @@ export type BienWhereInput = {
     actif?: Prisma.BoolFilter<"Bien"> | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFilter<"Bien"> | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.StringNullableFilter<"Bien"> | string | null;
-    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     estPremium?: Prisma.BoolFilter<"Bien"> | boolean;
     estMisEnAvant?: Prisma.BoolFilter<"Bien"> | boolean;
     dateDebutPromotion?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
@@ -661,23 +660,24 @@ export type BienWhereInput = {
     dernierAffichage?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
-    typeLogement?: Prisma.XOR<Prisma.TypeLogementNullableScalarRelationFilter, Prisma.TypeLogementWhereInput> | null;
-    typeTransaction?: Prisma.XOR<Prisma.TypeTransactionNullableScalarRelationFilter, Prisma.TypeTransactionWhereInput> | null;
-    statutBien?: Prisma.XOR<Prisma.StatutBienNullableScalarRelationFilter, Prisma.StatutBienWhereInput> | null;
+    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    bails?: Prisma.BailLocationListRelationFilter;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     quartierRel?: Prisma.XOR<Prisma.QuartierNullableScalarRelationFilter, Prisma.QuartierWhereInput> | null;
+    statutBien?: Prisma.XOR<Prisma.StatutBienNullableScalarRelationFilter, Prisma.StatutBienWhereInput> | null;
+    typeLogement?: Prisma.XOR<Prisma.TypeLogementNullableScalarRelationFilter, Prisma.TypeLogementWhereInput> | null;
+    typeTransaction?: Prisma.XOR<Prisma.TypeTransactionNullableScalarRelationFilter, Prisma.TypeTransactionWhereInput> | null;
     equipements?: Prisma.BienEquipementListRelationFilter;
     meubles?: Prisma.BienMeubleListRelationFilter;
-    etablissements?: Prisma.EtablissementListRelationFilter;
-    bails?: Prisma.BailLocationListRelationFilter;
-    transactions?: Prisma.TransactionListRelationFilter;
-    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
     documents?: Prisma.DocumentBienListRelationFilter;
-    favoris?: Prisma.FavoriListRelationFilter;
-    vues?: Prisma.VueBienListRelationFilter;
-    bailInvitations?: Prisma.BailInvitationListRelationFilter;
-    signalements?: Prisma.SignalementListRelationFilter;
+    etablissements?: Prisma.EtablissementListRelationFilter;
     etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
+    favoris?: Prisma.FavoriListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    signalements?: Prisma.SignalementListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    vues?: Prisma.VueBienListRelationFilter;
 };
 export type BienOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -729,7 +729,6 @@ export type BienOrderByWithRelationInput = {
     actif?: Prisma.SortOrder;
     statutAnnonce?: Prisma.SortOrder;
     noteAdmin?: Prisma.SortOrderInput | Prisma.SortOrder;
-    publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     estPremium?: Prisma.SortOrder;
     estMisEnAvant?: Prisma.SortOrder;
     dateDebutPromotion?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -738,23 +737,24 @@ export type BienOrderByWithRelationInput = {
     dernierAffichage?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    typeLogement?: Prisma.TypeLogementOrderByWithRelationInput;
-    typeTransaction?: Prisma.TypeTransactionOrderByWithRelationInput;
-    statutBien?: Prisma.StatutBienOrderByWithRelationInput;
+    publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bailInvitations?: Prisma.BailInvitationOrderByRelationAggregateInput;
+    bails?: Prisma.BailLocationOrderByRelationAggregateInput;
     proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
     quartierRel?: Prisma.QuartierOrderByWithRelationInput;
+    statutBien?: Prisma.StatutBienOrderByWithRelationInput;
+    typeLogement?: Prisma.TypeLogementOrderByWithRelationInput;
+    typeTransaction?: Prisma.TypeTransactionOrderByWithRelationInput;
     equipements?: Prisma.BienEquipementOrderByRelationAggregateInput;
     meubles?: Prisma.BienMeubleOrderByRelationAggregateInput;
-    etablissements?: Prisma.EtablissementOrderByRelationAggregateInput;
-    bails?: Prisma.BailLocationOrderByRelationAggregateInput;
-    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
-    promotionHistories?: Prisma.PromotionHistoryOrderByRelationAggregateInput;
     documents?: Prisma.DocumentBienOrderByRelationAggregateInput;
-    favoris?: Prisma.FavoriOrderByRelationAggregateInput;
-    vues?: Prisma.VueBienOrderByRelationAggregateInput;
-    bailInvitations?: Prisma.BailInvitationOrderByRelationAggregateInput;
-    signalements?: Prisma.SignalementOrderByRelationAggregateInput;
+    etablissements?: Prisma.EtablissementOrderByRelationAggregateInput;
     etatsDesLieux?: Prisma.EtatDesLieuxOrderByRelationAggregateInput;
+    favoris?: Prisma.FavoriOrderByRelationAggregateInput;
+    promotionHistories?: Prisma.PromotionHistoryOrderByRelationAggregateInput;
+    signalements?: Prisma.SignalementOrderByRelationAggregateInput;
+    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
+    vues?: Prisma.VueBienOrderByRelationAggregateInput;
 };
 export type BienWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -809,7 +809,6 @@ export type BienWhereUniqueInput = Prisma.AtLeast<{
     actif?: Prisma.BoolFilter<"Bien"> | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFilter<"Bien"> | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.StringNullableFilter<"Bien"> | string | null;
-    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     estPremium?: Prisma.BoolFilter<"Bien"> | boolean;
     estMisEnAvant?: Prisma.BoolFilter<"Bien"> | boolean;
     dateDebutPromotion?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
@@ -818,23 +817,24 @@ export type BienWhereUniqueInput = Prisma.AtLeast<{
     dernierAffichage?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
-    typeLogement?: Prisma.XOR<Prisma.TypeLogementNullableScalarRelationFilter, Prisma.TypeLogementWhereInput> | null;
-    typeTransaction?: Prisma.XOR<Prisma.TypeTransactionNullableScalarRelationFilter, Prisma.TypeTransactionWhereInput> | null;
-    statutBien?: Prisma.XOR<Prisma.StatutBienNullableScalarRelationFilter, Prisma.StatutBienWhereInput> | null;
+    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    bails?: Prisma.BailLocationListRelationFilter;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     quartierRel?: Prisma.XOR<Prisma.QuartierNullableScalarRelationFilter, Prisma.QuartierWhereInput> | null;
+    statutBien?: Prisma.XOR<Prisma.StatutBienNullableScalarRelationFilter, Prisma.StatutBienWhereInput> | null;
+    typeLogement?: Prisma.XOR<Prisma.TypeLogementNullableScalarRelationFilter, Prisma.TypeLogementWhereInput> | null;
+    typeTransaction?: Prisma.XOR<Prisma.TypeTransactionNullableScalarRelationFilter, Prisma.TypeTransactionWhereInput> | null;
     equipements?: Prisma.BienEquipementListRelationFilter;
     meubles?: Prisma.BienMeubleListRelationFilter;
-    etablissements?: Prisma.EtablissementListRelationFilter;
-    bails?: Prisma.BailLocationListRelationFilter;
-    transactions?: Prisma.TransactionListRelationFilter;
-    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
     documents?: Prisma.DocumentBienListRelationFilter;
-    favoris?: Prisma.FavoriListRelationFilter;
-    vues?: Prisma.VueBienListRelationFilter;
-    bailInvitations?: Prisma.BailInvitationListRelationFilter;
-    signalements?: Prisma.SignalementListRelationFilter;
+    etablissements?: Prisma.EtablissementListRelationFilter;
     etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
+    favoris?: Prisma.FavoriListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    signalements?: Prisma.SignalementListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    vues?: Prisma.VueBienListRelationFilter;
 }, "id">;
 export type BienOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -886,7 +886,6 @@ export type BienOrderByWithAggregationInput = {
     actif?: Prisma.SortOrder;
     statutAnnonce?: Prisma.SortOrder;
     noteAdmin?: Prisma.SortOrderInput | Prisma.SortOrder;
-    publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     estPremium?: Prisma.SortOrder;
     estMisEnAvant?: Prisma.SortOrder;
     dateDebutPromotion?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -895,6 +894,7 @@ export type BienOrderByWithAggregationInput = {
     dernierAffichage?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.BienCountOrderByAggregateInput;
     _avg?: Prisma.BienAvgOrderByAggregateInput;
     _max?: Prisma.BienMaxOrderByAggregateInput;
@@ -954,7 +954,6 @@ export type BienScalarWhereWithAggregatesInput = {
     actif?: Prisma.BoolWithAggregatesFilter<"Bien"> | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceWithAggregatesFilter<"Bien"> | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.StringNullableWithAggregatesFilter<"Bien"> | string | null;
-    publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Bien"> | Date | string | null;
     estPremium?: Prisma.BoolWithAggregatesFilter<"Bien"> | boolean;
     estMisEnAvant?: Prisma.BoolWithAggregatesFilter<"Bien"> | boolean;
     dateDebutPromotion?: Prisma.DateTimeNullableWithAggregatesFilter<"Bien"> | Date | string | null;
@@ -963,6 +962,7 @@ export type BienScalarWhereWithAggregatesInput = {
     dernierAffichage?: Prisma.DateTimeNullableWithAggregatesFilter<"Bien"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Bien"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Bien"> | Date | string;
+    publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Bien"> | Date | string | null;
 };
 export type BienCreateInput = {
     id?: string;
@@ -1009,7 +1009,6 @@ export type BienCreateInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -1018,23 +1017,24 @@ export type BienCreateInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateInput = {
     id?: string;
@@ -1086,7 +1086,6 @@ export type BienUncheckedCreateInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -1095,18 +1094,19 @@ export type BienUncheckedCreateInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1153,7 +1153,6 @@ export type BienUpdateInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1162,23 +1161,24 @@ export type BienUpdateInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1230,7 +1230,6 @@ export type BienUncheckedUpdateInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1239,18 +1238,19 @@ export type BienUncheckedUpdateInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateManyInput = {
     id?: string;
@@ -1302,7 +1302,6 @@ export type BienCreateManyInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -1311,6 +1310,7 @@ export type BienCreateManyInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1357,7 +1357,6 @@ export type BienUpdateManyMutationInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1366,6 +1365,7 @@ export type BienUpdateManyMutationInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1417,7 +1417,6 @@ export type BienUncheckedUpdateManyInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -1426,6 +1425,7 @@ export type BienUncheckedUpdateManyInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienListRelationFilter = {
     every?: Prisma.BienWhereInput;
@@ -1485,7 +1485,6 @@ export type BienCountOrderByAggregateInput = {
     actif?: Prisma.SortOrder;
     statutAnnonce?: Prisma.SortOrder;
     noteAdmin?: Prisma.SortOrder;
-    publishedAt?: Prisma.SortOrder;
     estPremium?: Prisma.SortOrder;
     estMisEnAvant?: Prisma.SortOrder;
     dateDebutPromotion?: Prisma.SortOrder;
@@ -1494,6 +1493,7 @@ export type BienCountOrderByAggregateInput = {
     dernierAffichage?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    publishedAt?: Prisma.SortOrder;
 };
 export type BienAvgOrderByAggregateInput = {
     latitude?: Prisma.SortOrder;
@@ -1565,7 +1565,6 @@ export type BienMaxOrderByAggregateInput = {
     actif?: Prisma.SortOrder;
     statutAnnonce?: Prisma.SortOrder;
     noteAdmin?: Prisma.SortOrder;
-    publishedAt?: Prisma.SortOrder;
     estPremium?: Prisma.SortOrder;
     estMisEnAvant?: Prisma.SortOrder;
     dateDebutPromotion?: Prisma.SortOrder;
@@ -1574,6 +1573,7 @@ export type BienMaxOrderByAggregateInput = {
     dernierAffichage?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    publishedAt?: Prisma.SortOrder;
 };
 export type BienMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -1624,7 +1624,6 @@ export type BienMinOrderByAggregateInput = {
     actif?: Prisma.SortOrder;
     statutAnnonce?: Prisma.SortOrder;
     noteAdmin?: Prisma.SortOrder;
-    publishedAt?: Prisma.SortOrder;
     estPremium?: Prisma.SortOrder;
     estMisEnAvant?: Prisma.SortOrder;
     dateDebutPromotion?: Prisma.SortOrder;
@@ -1633,6 +1632,7 @@ export type BienMinOrderByAggregateInput = {
     dernierAffichage?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    publishedAt?: Prisma.SortOrder;
 };
 export type BienSumOrderByAggregateInput = {
     latitude?: Prisma.SortOrder;
@@ -2071,7 +2071,6 @@ export type BienCreateWithoutQuartierRelInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2080,22 +2079,23 @@ export type BienCreateWithoutQuartierRelInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
     typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
     typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutQuartierRelInput = {
     id?: string;
@@ -2146,7 +2146,6 @@ export type BienUncheckedCreateWithoutQuartierRelInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2155,18 +2154,19 @@ export type BienUncheckedCreateWithoutQuartierRelInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutQuartierRelInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -2242,7 +2242,6 @@ export type BienScalarWhereInput = {
     actif?: Prisma.BoolFilter<"Bien"> | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFilter<"Bien"> | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.StringNullableFilter<"Bien"> | string | null;
-    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     estPremium?: Prisma.BoolFilter<"Bien"> | boolean;
     estMisEnAvant?: Prisma.BoolFilter<"Bien"> | boolean;
     dateDebutPromotion?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
@@ -2251,6 +2250,7 @@ export type BienScalarWhereInput = {
     dernierAffichage?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Bien"> | Date | string;
+    publishedAt?: Prisma.DateTimeNullableFilter<"Bien"> | Date | string | null;
 };
 export type BienCreateWithoutTypeLogementInput = {
     id?: string;
@@ -2297,7 +2297,6 @@ export type BienCreateWithoutTypeLogementInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2306,22 +2305,23 @@ export type BienCreateWithoutTypeLogementInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutTypeLogementInput = {
     id?: string;
@@ -2372,7 +2372,6 @@ export type BienUncheckedCreateWithoutTypeLogementInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2381,18 +2380,19 @@ export type BienUncheckedCreateWithoutTypeLogementInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutTypeLogementInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -2460,7 +2460,6 @@ export type BienCreateWithoutTypeTransactionInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2469,22 +2468,23 @@ export type BienCreateWithoutTypeTransactionInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutTypeTransactionInput = {
     id?: string;
@@ -2535,7 +2535,6 @@ export type BienUncheckedCreateWithoutTypeTransactionInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2544,18 +2543,19 @@ export type BienUncheckedCreateWithoutTypeTransactionInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutTypeTransactionInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -2623,7 +2623,6 @@ export type BienCreateWithoutStatutBienInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2632,22 +2631,23 @@ export type BienCreateWithoutStatutBienInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutStatutBienInput = {
     id?: string;
@@ -2698,7 +2698,6 @@ export type BienUncheckedCreateWithoutStatutBienInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2707,18 +2706,19 @@ export type BienUncheckedCreateWithoutStatutBienInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutStatutBienInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -2786,7 +2786,6 @@ export type BienCreateWithoutFavorisInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2795,22 +2794,23 @@ export type BienCreateWithoutFavorisInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutFavorisInput = {
     id?: string;
@@ -2862,7 +2862,6 @@ export type BienUncheckedCreateWithoutFavorisInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -2871,17 +2870,18 @@ export type BienUncheckedCreateWithoutFavorisInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutFavorisInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -2941,7 +2941,6 @@ export type BienUpdateWithoutFavorisInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -2950,22 +2949,23 @@ export type BienUpdateWithoutFavorisInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutFavorisInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3017,7 +3017,6 @@ export type BienUncheckedUpdateWithoutFavorisInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3026,17 +3025,18 @@ export type BienUncheckedUpdateWithoutFavorisInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutVuesInput = {
     id?: string;
@@ -3083,7 +3083,6 @@ export type BienCreateWithoutVuesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3092,22 +3091,23 @@ export type BienCreateWithoutVuesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutVuesInput = {
     id?: string;
@@ -3159,7 +3159,6 @@ export type BienUncheckedCreateWithoutVuesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3168,17 +3167,18 @@ export type BienUncheckedCreateWithoutVuesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutVuesInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -3238,7 +3238,6 @@ export type BienUpdateWithoutVuesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3247,22 +3246,23 @@ export type BienUpdateWithoutVuesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutVuesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3314,7 +3314,6 @@ export type BienUncheckedUpdateWithoutVuesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3323,17 +3322,18 @@ export type BienUncheckedUpdateWithoutVuesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutEquipementsInput = {
     id?: string;
@@ -3380,7 +3380,6 @@ export type BienCreateWithoutEquipementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3389,22 +3388,23 @@ export type BienCreateWithoutEquipementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutEquipementsInput = {
     id?: string;
@@ -3456,7 +3456,6 @@ export type BienUncheckedCreateWithoutEquipementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3465,17 +3464,18 @@ export type BienUncheckedCreateWithoutEquipementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
-    documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
+    publishedAt?: Date | string | null;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
+    meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
+    documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutEquipementsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -3535,7 +3535,6 @@ export type BienUpdateWithoutEquipementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3544,22 +3543,23 @@ export type BienUpdateWithoutEquipementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutEquipementsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3611,7 +3611,6 @@ export type BienUncheckedUpdateWithoutEquipementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3620,17 +3619,18 @@ export type BienUncheckedUpdateWithoutEquipementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
-    documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
+    meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
+    documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutMeublesInput = {
     id?: string;
@@ -3677,7 +3677,6 @@ export type BienCreateWithoutMeublesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3686,22 +3685,23 @@ export type BienCreateWithoutMeublesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutMeublesInput = {
     id?: string;
@@ -3753,7 +3753,6 @@ export type BienUncheckedCreateWithoutMeublesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3762,17 +3761,18 @@ export type BienUncheckedCreateWithoutMeublesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
-    documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
+    publishedAt?: Date | string | null;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
+    equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
+    documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutMeublesInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -3832,7 +3832,6 @@ export type BienUpdateWithoutMeublesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3841,22 +3840,23 @@ export type BienUpdateWithoutMeublesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutMeublesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3908,7 +3908,6 @@ export type BienUncheckedUpdateWithoutMeublesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -3917,17 +3916,18 @@ export type BienUncheckedUpdateWithoutMeublesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
-    documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
+    equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
+    documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutDocumentsInput = {
     id?: string;
@@ -3974,7 +3974,6 @@ export type BienCreateWithoutDocumentsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -3983,22 +3982,23 @@ export type BienCreateWithoutDocumentsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
     etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutDocumentsInput = {
     id?: string;
@@ -4050,7 +4050,6 @@ export type BienUncheckedCreateWithoutDocumentsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4059,17 +4058,18 @@ export type BienUncheckedCreateWithoutDocumentsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
     etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutDocumentsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -4129,7 +4129,6 @@ export type BienUpdateWithoutDocumentsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4138,22 +4137,23 @@ export type BienUpdateWithoutDocumentsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
     etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutDocumentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -4205,7 +4205,6 @@ export type BienUncheckedUpdateWithoutDocumentsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4214,17 +4213,18 @@ export type BienUncheckedUpdateWithoutDocumentsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
     etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutEtablissementsInput = {
     id?: string;
@@ -4271,7 +4271,6 @@ export type BienCreateWithoutEtablissementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4280,22 +4279,23 @@ export type BienCreateWithoutEtablissementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutEtablissementsInput = {
     id?: string;
@@ -4347,7 +4347,6 @@ export type BienUncheckedCreateWithoutEtablissementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4356,17 +4355,18 @@ export type BienUncheckedCreateWithoutEtablissementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutEtablissementsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -4426,7 +4426,6 @@ export type BienUpdateWithoutEtablissementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4435,22 +4434,23 @@ export type BienUpdateWithoutEtablissementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutEtablissementsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -4502,7 +4502,6 @@ export type BienUncheckedUpdateWithoutEtablissementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4511,17 +4510,18 @@ export type BienUncheckedUpdateWithoutEtablissementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutBailsInput = {
     id?: string;
@@ -4568,7 +4568,6 @@ export type BienCreateWithoutBailsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4577,22 +4576,23 @@ export type BienCreateWithoutBailsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutBailsInput = {
     id?: string;
@@ -4644,7 +4644,6 @@ export type BienUncheckedCreateWithoutBailsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4653,17 +4652,18 @@ export type BienUncheckedCreateWithoutBailsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutBailsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -4723,7 +4723,6 @@ export type BienUpdateWithoutBailsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4732,22 +4731,23 @@ export type BienUpdateWithoutBailsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutBailsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -4799,7 +4799,6 @@ export type BienUncheckedUpdateWithoutBailsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -4808,17 +4807,18 @@ export type BienUncheckedUpdateWithoutBailsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutProprietaireInput = {
     id?: string;
@@ -4865,7 +4865,6 @@ export type BienCreateWithoutProprietaireInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4874,22 +4873,23 @@ export type BienCreateWithoutProprietaireInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
+    quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
     typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
     typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
-    quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutProprietaireInput = {
     id?: string;
@@ -4940,7 +4940,6 @@ export type BienUncheckedCreateWithoutProprietaireInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -4949,18 +4948,19 @@ export type BienUncheckedCreateWithoutProprietaireInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutProprietaireInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -5028,7 +5028,6 @@ export type BienCreateWithoutTransactionsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5037,22 +5036,23 @@ export type BienCreateWithoutTransactionsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutTransactionsInput = {
     id?: string;
@@ -5104,7 +5104,6 @@ export type BienUncheckedCreateWithoutTransactionsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5113,17 +5112,18 @@ export type BienUncheckedCreateWithoutTransactionsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutTransactionsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -5183,7 +5183,6 @@ export type BienUpdateWithoutTransactionsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5192,22 +5191,23 @@ export type BienUpdateWithoutTransactionsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutTransactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -5259,7 +5259,6 @@ export type BienUncheckedUpdateWithoutTransactionsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5268,17 +5267,18 @@ export type BienUncheckedUpdateWithoutTransactionsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutPromotionHistoriesInput = {
     id?: string;
@@ -5325,7 +5325,6 @@ export type BienCreateWithoutPromotionHistoriesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5334,22 +5333,23 @@ export type BienCreateWithoutPromotionHistoriesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutPromotionHistoriesInput = {
     id?: string;
@@ -5401,7 +5401,6 @@ export type BienUncheckedCreateWithoutPromotionHistoriesInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5410,17 +5409,18 @@ export type BienUncheckedCreateWithoutPromotionHistoriesInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutPromotionHistoriesInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -5480,7 +5480,6 @@ export type BienUpdateWithoutPromotionHistoriesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5489,22 +5488,23 @@ export type BienUpdateWithoutPromotionHistoriesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutPromotionHistoriesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -5556,7 +5556,6 @@ export type BienUncheckedUpdateWithoutPromotionHistoriesInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5565,17 +5564,18 @@ export type BienUncheckedUpdateWithoutPromotionHistoriesInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutBailInvitationsInput = {
     id?: string;
@@ -5622,7 +5622,6 @@ export type BienCreateWithoutBailInvitationsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5631,22 +5630,23 @@ export type BienCreateWithoutBailInvitationsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutBailInvitationsInput = {
     id?: string;
@@ -5698,7 +5698,6 @@ export type BienUncheckedCreateWithoutBailInvitationsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5707,17 +5706,18 @@ export type BienUncheckedCreateWithoutBailInvitationsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutBailInvitationsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -5777,7 +5777,6 @@ export type BienUpdateWithoutBailInvitationsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5786,22 +5785,23 @@ export type BienUpdateWithoutBailInvitationsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutBailInvitationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -5853,7 +5853,6 @@ export type BienUncheckedUpdateWithoutBailInvitationsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -5862,17 +5861,18 @@ export type BienUncheckedUpdateWithoutBailInvitationsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutSignalementsInput = {
     id?: string;
@@ -5919,7 +5919,6 @@ export type BienCreateWithoutSignalementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -5928,22 +5927,23 @@ export type BienCreateWithoutSignalementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutSignalementsInput = {
     id?: string;
@@ -5995,7 +5995,6 @@ export type BienUncheckedCreateWithoutSignalementsInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -6004,17 +6003,18 @@ export type BienUncheckedCreateWithoutSignalementsInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBienInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutSignalementsInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -6074,7 +6074,6 @@ export type BienUpdateWithoutSignalementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6083,22 +6082,23 @@ export type BienUpdateWithoutSignalementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutSignalementsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6150,7 +6150,6 @@ export type BienUncheckedUpdateWithoutSignalementsInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6159,17 +6158,18 @@ export type BienUncheckedUpdateWithoutSignalementsInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateWithoutEtatsDesLieuxInput = {
     id?: string;
@@ -6216,7 +6216,6 @@ export type BienCreateWithoutEtatsDesLieuxInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -6225,22 +6224,23 @@ export type BienCreateWithoutEtatsDesLieuxInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
-    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
-    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBiensInput;
     quartierRel?: Prisma.QuartierCreateNestedOneWithoutBiensInput;
+    statutBien?: Prisma.StatutBienCreateNestedOneWithoutBiensInput;
+    typeLogement?: Prisma.TypeLogementCreateNestedOneWithoutBiensInput;
+    typeTransaction?: Prisma.TypeTransactionCreateNestedOneWithoutBiensInput;
     equipements?: Prisma.BienEquipementCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementCreateNestedManyWithoutBienInput;
     favoris?: Prisma.FavoriCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutBienInput;
     signalements?: Prisma.SignalementCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienCreateNestedManyWithoutBienInput;
 };
 export type BienUncheckedCreateWithoutEtatsDesLieuxInput = {
     id?: string;
@@ -6292,7 +6292,6 @@ export type BienUncheckedCreateWithoutEtatsDesLieuxInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -6301,17 +6300,18 @@ export type BienUncheckedCreateWithoutEtatsDesLieuxInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
     equipements?: Prisma.BienEquipementUncheckedCreateNestedManyWithoutBienInput;
     meubles?: Prisma.BienMeubleUncheckedCreateNestedManyWithoutBienInput;
-    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutBienInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     documents?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutBienInput;
+    etablissements?: Prisma.EtablissementUncheckedCreateNestedManyWithoutBienInput;
     favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutBienInput;
-    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutBienInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutBienInput;
     signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutBienInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBienInput;
+    vues?: Prisma.VueBienUncheckedCreateNestedManyWithoutBienInput;
 };
 export type BienCreateOrConnectWithoutEtatsDesLieuxInput = {
     where: Prisma.BienWhereUniqueInput;
@@ -6371,7 +6371,6 @@ export type BienUpdateWithoutEtatsDesLieuxInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6380,22 +6379,23 @@ export type BienUpdateWithoutEtatsDesLieuxInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutEtatsDesLieuxInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6447,7 +6447,6 @@ export type BienUncheckedUpdateWithoutEtatsDesLieuxInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6456,17 +6455,18 @@ export type BienUncheckedUpdateWithoutEtatsDesLieuxInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienCreateManyQuartierRelInput = {
     id?: string;
@@ -6517,7 +6517,6 @@ export type BienCreateManyQuartierRelInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -6526,6 +6525,7 @@ export type BienCreateManyQuartierRelInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateWithoutQuartierRelInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6572,7 +6572,6 @@ export type BienUpdateWithoutQuartierRelInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6581,22 +6580,23 @@ export type BienUpdateWithoutQuartierRelInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
     typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
     typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutQuartierRelInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6647,7 +6647,6 @@ export type BienUncheckedUpdateWithoutQuartierRelInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6656,18 +6655,19 @@ export type BienUncheckedUpdateWithoutQuartierRelInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateManyWithoutQuartierRelInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6718,7 +6718,6 @@ export type BienUncheckedUpdateManyWithoutQuartierRelInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6727,6 +6726,7 @@ export type BienUncheckedUpdateManyWithoutQuartierRelInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienCreateManyTypeLogementInput = {
     id?: string;
@@ -6777,7 +6777,6 @@ export type BienCreateManyTypeLogementInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -6786,6 +6785,7 @@ export type BienCreateManyTypeLogementInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateWithoutTypeLogementInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6832,7 +6832,6 @@ export type BienUpdateWithoutTypeLogementInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6841,22 +6840,23 @@ export type BienUpdateWithoutTypeLogementInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutTypeLogementInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6907,7 +6907,6 @@ export type BienUncheckedUpdateWithoutTypeLogementInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6916,18 +6915,19 @@ export type BienUncheckedUpdateWithoutTypeLogementInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateManyWithoutTypeLogementInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -6978,7 +6978,6 @@ export type BienUncheckedUpdateManyWithoutTypeLogementInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -6987,6 +6986,7 @@ export type BienUncheckedUpdateManyWithoutTypeLogementInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienCreateManyTypeTransactionInput = {
     id?: string;
@@ -7037,7 +7037,6 @@ export type BienCreateManyTypeTransactionInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -7046,6 +7045,7 @@ export type BienCreateManyTypeTransactionInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateWithoutTypeTransactionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7092,7 +7092,6 @@ export type BienUpdateWithoutTypeTransactionInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7101,22 +7100,23 @@ export type BienUpdateWithoutTypeTransactionInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutTypeTransactionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7167,7 +7167,6 @@ export type BienUncheckedUpdateWithoutTypeTransactionInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7176,18 +7175,19 @@ export type BienUncheckedUpdateWithoutTypeTransactionInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateManyWithoutTypeTransactionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7238,7 +7238,6 @@ export type BienUncheckedUpdateManyWithoutTypeTransactionInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7247,6 +7246,7 @@ export type BienUncheckedUpdateManyWithoutTypeTransactionInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienCreateManyStatutBienInput = {
     id?: string;
@@ -7297,7 +7297,6 @@ export type BienCreateManyStatutBienInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -7306,6 +7305,7 @@ export type BienCreateManyStatutBienInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateWithoutStatutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7352,7 +7352,6 @@ export type BienUpdateWithoutStatutBienInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7361,22 +7360,23 @@ export type BienUpdateWithoutStatutBienInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
-    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBiensNestedInput;
     quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
+    typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutStatutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7427,7 +7427,6 @@ export type BienUncheckedUpdateWithoutStatutBienInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7436,18 +7435,19 @@ export type BienUncheckedUpdateWithoutStatutBienInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateManyWithoutStatutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7498,7 +7498,6 @@ export type BienUncheckedUpdateManyWithoutStatutBienInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7507,6 +7506,7 @@ export type BienUncheckedUpdateManyWithoutStatutBienInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type BienCreateManyProprietaireInput = {
     id?: string;
@@ -7557,7 +7557,6 @@ export type BienCreateManyProprietaireInput = {
     actif?: boolean;
     statutAnnonce?: $Enums.StatutAnnonce;
     noteAdmin?: string | null;
-    publishedAt?: Date | string | null;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: Date | string | null;
@@ -7566,6 +7565,7 @@ export type BienCreateManyProprietaireInput = {
     dernierAffichage?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    publishedAt?: Date | string | null;
 };
 export type BienUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7612,7 +7612,6 @@ export type BienUpdateWithoutProprietaireInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7621,22 +7620,23 @@ export type BienUpdateWithoutProprietaireInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
+    quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
+    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
     typeLogement?: Prisma.TypeLogementUpdateOneWithoutBiensNestedInput;
     typeTransaction?: Prisma.TypeTransactionUpdateOneWithoutBiensNestedInput;
-    statutBien?: Prisma.StatutBienUpdateOneWithoutBiensNestedInput;
-    quartierRel?: Prisma.QuartierUpdateOneWithoutBiensNestedInput;
     equipements?: Prisma.BienEquipementUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7687,7 +7687,6 @@ export type BienUncheckedUpdateWithoutProprietaireInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7696,18 +7695,19 @@ export type BienUncheckedUpdateWithoutProprietaireInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
     equipements?: Prisma.BienEquipementUncheckedUpdateManyWithoutBienNestedInput;
     meubles?: Prisma.BienMeubleUncheckedUpdateManyWithoutBienNestedInput;
-    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutBienNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
     documents?: Prisma.DocumentBienUncheckedUpdateManyWithoutBienNestedInput;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
-    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
-    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutBienNestedInput;
-    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    etablissements?: Prisma.EtablissementUncheckedUpdateManyWithoutBienNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBienNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutBienNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutBienNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutBienNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBienNestedInput;
+    vues?: Prisma.VueBienUncheckedUpdateManyWithoutBienNestedInput;
 };
 export type BienUncheckedUpdateManyWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7758,7 +7758,6 @@ export type BienUncheckedUpdateManyWithoutProprietaireInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     statutAnnonce?: Prisma.EnumStatutAnnonceFieldUpdateOperationsInput | $Enums.StatutAnnonce;
     noteAdmin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     estPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     estMisEnAvant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dateDebutPromotion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -7767,37 +7766,38 @@ export type BienUncheckedUpdateManyWithoutProprietaireInput = {
     dernierAffichage?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 /**
  * Count Type BienCountOutputType
  */
 export type BienCountOutputType = {
+    bailInvitations: number;
+    bails: number;
     equipements: number;
     meubles: number;
-    etablissements: number;
-    bails: number;
-    transactions: number;
-    promotionHistories: number;
     documents: number;
-    favoris: number;
-    vues: number;
-    bailInvitations: number;
-    signalements: number;
+    etablissements: number;
     etatsDesLieux: number;
+    favoris: number;
+    promotionHistories: number;
+    signalements: number;
+    transactions: number;
+    vues: number;
 };
 export type BienCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    bailInvitations?: boolean | BienCountOutputTypeCountBailInvitationsArgs;
+    bails?: boolean | BienCountOutputTypeCountBailsArgs;
     equipements?: boolean | BienCountOutputTypeCountEquipementsArgs;
     meubles?: boolean | BienCountOutputTypeCountMeublesArgs;
-    etablissements?: boolean | BienCountOutputTypeCountEtablissementsArgs;
-    bails?: boolean | BienCountOutputTypeCountBailsArgs;
-    transactions?: boolean | BienCountOutputTypeCountTransactionsArgs;
-    promotionHistories?: boolean | BienCountOutputTypeCountPromotionHistoriesArgs;
     documents?: boolean | BienCountOutputTypeCountDocumentsArgs;
-    favoris?: boolean | BienCountOutputTypeCountFavorisArgs;
-    vues?: boolean | BienCountOutputTypeCountVuesArgs;
-    bailInvitations?: boolean | BienCountOutputTypeCountBailInvitationsArgs;
-    signalements?: boolean | BienCountOutputTypeCountSignalementsArgs;
+    etablissements?: boolean | BienCountOutputTypeCountEtablissementsArgs;
     etatsDesLieux?: boolean | BienCountOutputTypeCountEtatsDesLieuxArgs;
+    favoris?: boolean | BienCountOutputTypeCountFavorisArgs;
+    promotionHistories?: boolean | BienCountOutputTypeCountPromotionHistoriesArgs;
+    signalements?: boolean | BienCountOutputTypeCountSignalementsArgs;
+    transactions?: boolean | BienCountOutputTypeCountTransactionsArgs;
+    vues?: boolean | BienCountOutputTypeCountVuesArgs;
 };
 /**
  * BienCountOutputType without action
@@ -7807,6 +7807,18 @@ export type BienCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
      * Select specific fields to fetch from the BienCountOutputType
      */
     select?: Prisma.BienCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * BienCountOutputType without action
+ */
+export type BienCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BailInvitationWhereInput;
+};
+/**
+ * BienCountOutputType without action
+ */
+export type BienCountOutputTypeCountBailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BailLocationWhereInput;
 };
 /**
  * BienCountOutputType without action
@@ -7823,32 +7835,20 @@ export type BienCountOutputTypeCountMeublesArgs<ExtArgs extends runtime.Types.Ex
 /**
  * BienCountOutputType without action
  */
+export type BienCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.DocumentBienWhereInput;
+};
+/**
+ * BienCountOutputType without action
+ */
 export type BienCountOutputTypeCountEtablissementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.EtablissementWhereInput;
 };
 /**
  * BienCountOutputType without action
  */
-export type BienCountOutputTypeCountBailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BailLocationWhereInput;
-};
-/**
- * BienCountOutputType without action
- */
-export type BienCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.TransactionWhereInput;
-};
-/**
- * BienCountOutputType without action
- */
-export type BienCountOutputTypeCountPromotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.PromotionHistoryWhereInput;
-};
-/**
- * BienCountOutputType without action
- */
-export type BienCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.DocumentBienWhereInput;
+export type BienCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EtatDesLieuxWhereInput;
 };
 /**
  * BienCountOutputType without action
@@ -7859,14 +7859,8 @@ export type BienCountOutputTypeCountFavorisArgs<ExtArgs extends runtime.Types.Ex
 /**
  * BienCountOutputType without action
  */
-export type BienCountOutputTypeCountVuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.VueBienWhereInput;
-};
-/**
- * BienCountOutputType without action
- */
-export type BienCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BailInvitationWhereInput;
+export type BienCountOutputTypeCountPromotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PromotionHistoryWhereInput;
 };
 /**
  * BienCountOutputType without action
@@ -7877,8 +7871,14 @@ export type BienCountOutputTypeCountSignalementsArgs<ExtArgs extends runtime.Typ
 /**
  * BienCountOutputType without action
  */
-export type BienCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.EtatDesLieuxWhereInput;
+export type BienCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
+};
+/**
+ * BienCountOutputType without action
+ */
+export type BienCountOutputTypeCountVuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.VueBienWhereInput;
 };
 export type BienSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -7930,7 +7930,6 @@ export type BienSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     actif?: boolean;
     statutAnnonce?: boolean;
     noteAdmin?: boolean;
-    publishedAt?: boolean;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: boolean;
@@ -7939,23 +7938,24 @@ export type BienSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     dernierAffichage?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    publishedAt?: boolean;
+    bailInvitations?: boolean | Prisma.Bien$bailInvitationsArgs<ExtArgs>;
+    bails?: boolean | Prisma.Bien$bailsArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
     equipements?: boolean | Prisma.Bien$equipementsArgs<ExtArgs>;
     meubles?: boolean | Prisma.Bien$meublesArgs<ExtArgs>;
-    etablissements?: boolean | Prisma.Bien$etablissementsArgs<ExtArgs>;
-    bails?: boolean | Prisma.Bien$bailsArgs<ExtArgs>;
-    transactions?: boolean | Prisma.Bien$transactionsArgs<ExtArgs>;
-    promotionHistories?: boolean | Prisma.Bien$promotionHistoriesArgs<ExtArgs>;
     documents?: boolean | Prisma.Bien$documentsArgs<ExtArgs>;
-    favoris?: boolean | Prisma.Bien$favorisArgs<ExtArgs>;
-    vues?: boolean | Prisma.Bien$vuesArgs<ExtArgs>;
-    bailInvitations?: boolean | Prisma.Bien$bailInvitationsArgs<ExtArgs>;
-    signalements?: boolean | Prisma.Bien$signalementsArgs<ExtArgs>;
+    etablissements?: boolean | Prisma.Bien$etablissementsArgs<ExtArgs>;
     etatsDesLieux?: boolean | Prisma.Bien$etatsDesLieuxArgs<ExtArgs>;
+    favoris?: boolean | Prisma.Bien$favorisArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Bien$promotionHistoriesArgs<ExtArgs>;
+    signalements?: boolean | Prisma.Bien$signalementsArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Bien$transactionsArgs<ExtArgs>;
+    vues?: boolean | Prisma.Bien$vuesArgs<ExtArgs>;
     _count?: boolean | Prisma.BienCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["bien"]>;
 export type BienSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -8008,7 +8008,6 @@ export type BienSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     actif?: boolean;
     statutAnnonce?: boolean;
     noteAdmin?: boolean;
-    publishedAt?: boolean;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: boolean;
@@ -8017,11 +8016,12 @@ export type BienSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     dernierAffichage?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    publishedAt?: boolean;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
 }, ExtArgs["result"]["bien"]>;
 export type BienSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -8073,7 +8073,6 @@ export type BienSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     actif?: boolean;
     statutAnnonce?: boolean;
     noteAdmin?: boolean;
-    publishedAt?: boolean;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: boolean;
@@ -8082,11 +8081,12 @@ export type BienSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     dernierAffichage?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    publishedAt?: boolean;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
 }, ExtArgs["result"]["bien"]>;
 export type BienSelectScalar = {
     id?: boolean;
@@ -8138,7 +8138,6 @@ export type BienSelectScalar = {
     actif?: boolean;
     statutAnnonce?: boolean;
     noteAdmin?: boolean;
-    publishedAt?: boolean;
     estPremium?: boolean;
     estMisEnAvant?: boolean;
     dateDebutPromotion?: boolean;
@@ -8147,62 +8146,63 @@ export type BienSelectScalar = {
     dernierAffichage?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    publishedAt?: boolean;
 };
-export type BienOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titre" | "description" | "typeLogementId" | "typeTransactionId" | "statutBienId" | "proprietaireId" | "pays" | "region" | "ville" | "quartier" | "quartierId" | "adresse" | "pointRepere" | "latitude" | "longitude" | "surface" | "surfaceParcelle" | "nbChambres" | "nbSdb" | "nbSalons" | "nbCuisines" | "etage" | "nbEtages" | "nbAppartements" | "nbPieces" | "nbWc" | "typeTerrain" | "cloture" | "typeBureau" | "rideauMetallique" | "meuble" | "fumeurs" | "animaux" | "parking" | "ascenseur" | "prix" | "prixAncien" | "dateDerniereModificationPrix" | "frequencePaiement" | "chargesIncluses" | "caution" | "disponibleLe" | "photos" | "nbVues" | "nbFavoris" | "actif" | "statutAnnonce" | "noteAdmin" | "publishedAt" | "estPremium" | "estMisEnAvant" | "dateDebutPromotion" | "dateFinPromotion" | "positionRotation" | "dernierAffichage" | "createdAt" | "updatedAt", ExtArgs["result"]["bien"]>;
+export type BienOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titre" | "description" | "typeLogementId" | "typeTransactionId" | "statutBienId" | "proprietaireId" | "pays" | "region" | "ville" | "quartier" | "quartierId" | "adresse" | "pointRepere" | "latitude" | "longitude" | "surface" | "surfaceParcelle" | "nbChambres" | "nbSdb" | "nbSalons" | "nbCuisines" | "etage" | "nbEtages" | "nbAppartements" | "nbPieces" | "nbWc" | "typeTerrain" | "cloture" | "typeBureau" | "rideauMetallique" | "meuble" | "fumeurs" | "animaux" | "parking" | "ascenseur" | "prix" | "prixAncien" | "dateDerniereModificationPrix" | "frequencePaiement" | "chargesIncluses" | "caution" | "disponibleLe" | "photos" | "nbVues" | "nbFavoris" | "actif" | "statutAnnonce" | "noteAdmin" | "estPremium" | "estMisEnAvant" | "dateDebutPromotion" | "dateFinPromotion" | "positionRotation" | "dernierAffichage" | "createdAt" | "updatedAt" | "publishedAt", ExtArgs["result"]["bien"]>;
 export type BienInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    bailInvitations?: boolean | Prisma.Bien$bailInvitationsArgs<ExtArgs>;
+    bails?: boolean | Prisma.Bien$bailsArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
     equipements?: boolean | Prisma.Bien$equipementsArgs<ExtArgs>;
     meubles?: boolean | Prisma.Bien$meublesArgs<ExtArgs>;
-    etablissements?: boolean | Prisma.Bien$etablissementsArgs<ExtArgs>;
-    bails?: boolean | Prisma.Bien$bailsArgs<ExtArgs>;
-    transactions?: boolean | Prisma.Bien$transactionsArgs<ExtArgs>;
-    promotionHistories?: boolean | Prisma.Bien$promotionHistoriesArgs<ExtArgs>;
     documents?: boolean | Prisma.Bien$documentsArgs<ExtArgs>;
-    favoris?: boolean | Prisma.Bien$favorisArgs<ExtArgs>;
-    vues?: boolean | Prisma.Bien$vuesArgs<ExtArgs>;
-    bailInvitations?: boolean | Prisma.Bien$bailInvitationsArgs<ExtArgs>;
-    signalements?: boolean | Prisma.Bien$signalementsArgs<ExtArgs>;
+    etablissements?: boolean | Prisma.Bien$etablissementsArgs<ExtArgs>;
     etatsDesLieux?: boolean | Prisma.Bien$etatsDesLieuxArgs<ExtArgs>;
+    favoris?: boolean | Prisma.Bien$favorisArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Bien$promotionHistoriesArgs<ExtArgs>;
+    signalements?: boolean | Prisma.Bien$signalementsArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Bien$transactionsArgs<ExtArgs>;
+    vues?: boolean | Prisma.Bien$vuesArgs<ExtArgs>;
     _count?: boolean | Prisma.BienCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type BienIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
 };
 export type BienIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
-    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
-    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     quartierRel?: boolean | Prisma.Bien$quartierRelArgs<ExtArgs>;
+    statutBien?: boolean | Prisma.Bien$statutBienArgs<ExtArgs>;
+    typeLogement?: boolean | Prisma.Bien$typeLogementArgs<ExtArgs>;
+    typeTransaction?: boolean | Prisma.Bien$typeTransactionArgs<ExtArgs>;
 };
 export type $BienPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Bien";
     objects: {
-        typeLogement: Prisma.$TypeLogementPayload<ExtArgs> | null;
-        typeTransaction: Prisma.$TypeTransactionPayload<ExtArgs> | null;
-        statutBien: Prisma.$StatutBienPayload<ExtArgs> | null;
+        bailInvitations: Prisma.$BailInvitationPayload<ExtArgs>[];
+        bails: Prisma.$BailLocationPayload<ExtArgs>[];
         proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
         quartierRel: Prisma.$QuartierPayload<ExtArgs> | null;
+        statutBien: Prisma.$StatutBienPayload<ExtArgs> | null;
+        typeLogement: Prisma.$TypeLogementPayload<ExtArgs> | null;
+        typeTransaction: Prisma.$TypeTransactionPayload<ExtArgs> | null;
         equipements: Prisma.$BienEquipementPayload<ExtArgs>[];
         meubles: Prisma.$BienMeublePayload<ExtArgs>[];
-        etablissements: Prisma.$EtablissementPayload<ExtArgs>[];
-        bails: Prisma.$BailLocationPayload<ExtArgs>[];
-        transactions: Prisma.$TransactionPayload<ExtArgs>[];
-        promotionHistories: Prisma.$PromotionHistoryPayload<ExtArgs>[];
         documents: Prisma.$DocumentBienPayload<ExtArgs>[];
-        favoris: Prisma.$FavoriPayload<ExtArgs>[];
-        vues: Prisma.$VueBienPayload<ExtArgs>[];
-        bailInvitations: Prisma.$BailInvitationPayload<ExtArgs>[];
-        signalements: Prisma.$SignalementPayload<ExtArgs>[];
+        etablissements: Prisma.$EtablissementPayload<ExtArgs>[];
         etatsDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>[];
+        favoris: Prisma.$FavoriPayload<ExtArgs>[];
+        promotionHistories: Prisma.$PromotionHistoryPayload<ExtArgs>[];
+        signalements: Prisma.$SignalementPayload<ExtArgs>[];
+        transactions: Prisma.$TransactionPayload<ExtArgs>[];
+        vues: Prisma.$VueBienPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -8254,7 +8254,6 @@ export type $BienPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         actif: boolean;
         statutAnnonce: $Enums.StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
@@ -8263,6 +8262,7 @@ export type $BienPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         dernierAffichage: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        publishedAt: Date | null;
     }, ExtArgs["result"]["bien"]>;
     composites: {};
 };
@@ -8592,23 +8592,23 @@ export interface BienDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
  */
 export interface Prisma__BienClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    typeLogement<T extends Prisma.Bien$typeLogementArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$typeLogementArgs<ExtArgs>>): Prisma.Prisma__TypeLogementClient<runtime.Types.Result.GetResult<Prisma.$TypeLogementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    typeTransaction<T extends Prisma.Bien$typeTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$typeTransactionArgs<ExtArgs>>): Prisma.Prisma__TypeTransactionClient<runtime.Types.Result.GetResult<Prisma.$TypeTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    statutBien<T extends Prisma.Bien$statutBienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$statutBienArgs<ExtArgs>>): Prisma.Prisma__StatutBienClient<runtime.Types.Result.GetResult<Prisma.$StatutBienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    bailInvitations<T extends Prisma.Bien$bailInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$bailInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    bails<T extends Prisma.Bien$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     quartierRel<T extends Prisma.Bien$quartierRelArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$quartierRelArgs<ExtArgs>>): Prisma.Prisma__QuartierClient<runtime.Types.Result.GetResult<Prisma.$QuartierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    statutBien<T extends Prisma.Bien$statutBienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$statutBienArgs<ExtArgs>>): Prisma.Prisma__StatutBienClient<runtime.Types.Result.GetResult<Prisma.$StatutBienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    typeLogement<T extends Prisma.Bien$typeLogementArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$typeLogementArgs<ExtArgs>>): Prisma.Prisma__TypeLogementClient<runtime.Types.Result.GetResult<Prisma.$TypeLogementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    typeTransaction<T extends Prisma.Bien$typeTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$typeTransactionArgs<ExtArgs>>): Prisma.Prisma__TypeTransactionClient<runtime.Types.Result.GetResult<Prisma.$TypeTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     equipements<T extends Prisma.Bien$equipementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$equipementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienEquipementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     meubles<T extends Prisma.Bien$meublesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$meublesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienMeublePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    etablissements<T extends Prisma.Bien$etablissementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$etablissementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtablissementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    bails<T extends Prisma.Bien$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    transactions<T extends Prisma.Bien$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    promotionHistories<T extends Prisma.Bien$promotionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$promotionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     documents<T extends Prisma.Bien$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    favoris<T extends Prisma.Bien$favorisArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$favorisArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    vues<T extends Prisma.Bien$vuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$vuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    bailInvitations<T extends Prisma.Bien$bailInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$bailInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    signalements<T extends Prisma.Bien$signalementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$signalementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignalementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    etablissements<T extends Prisma.Bien$etablissementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$etablissementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtablissementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     etatsDesLieux<T extends Prisma.Bien$etatsDesLieuxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$etatsDesLieuxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    favoris<T extends Prisma.Bien$favorisArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$favorisArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    promotionHistories<T extends Prisma.Bien$promotionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$promotionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    signalements<T extends Prisma.Bien$signalementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$signalementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignalementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    transactions<T extends Prisma.Bien$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    vues<T extends Prisma.Bien$vuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Bien$vuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8683,7 +8683,6 @@ export interface BienFieldRefs {
     readonly actif: Prisma.FieldRef<"Bien", 'Boolean'>;
     readonly statutAnnonce: Prisma.FieldRef<"Bien", 'StatutAnnonce'>;
     readonly noteAdmin: Prisma.FieldRef<"Bien", 'String'>;
-    readonly publishedAt: Prisma.FieldRef<"Bien", 'DateTime'>;
     readonly estPremium: Prisma.FieldRef<"Bien", 'Boolean'>;
     readonly estMisEnAvant: Prisma.FieldRef<"Bien", 'Boolean'>;
     readonly dateDebutPromotion: Prisma.FieldRef<"Bien", 'DateTime'>;
@@ -8692,6 +8691,7 @@ export interface BienFieldRefs {
     readonly dernierAffichage: Prisma.FieldRef<"Bien", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Bien", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Bien", 'DateTime'>;
+    readonly publishedAt: Prisma.FieldRef<"Bien", 'DateTime'>;
 }
 /**
  * Bien findUnique
@@ -9071,6 +9071,88 @@ export type BienDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
     limit?: number;
 };
 /**
+ * Bien.bailInvitations
+ */
+export type Bien$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailInvitation
+     */
+    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BailInvitation
+     */
+    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
+    where?: Prisma.BailInvitationWhereInput;
+    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
+    cursor?: Prisma.BailInvitationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
+};
+/**
+ * Bien.bails
+ */
+export type Bien$bailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailLocation
+     */
+    select?: Prisma.BailLocationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BailLocation
+     */
+    omit?: Prisma.BailLocationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BailLocationInclude<ExtArgs> | null;
+    where?: Prisma.BailLocationWhereInput;
+    orderBy?: Prisma.BailLocationOrderByWithRelationInput | Prisma.BailLocationOrderByWithRelationInput[];
+    cursor?: Prisma.BailLocationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BailLocationScalarFieldEnum | Prisma.BailLocationScalarFieldEnum[];
+};
+/**
+ * Bien.quartierRel
+ */
+export type Bien$quartierRelArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Quartier
+     */
+    select?: Prisma.QuartierSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Quartier
+     */
+    omit?: Prisma.QuartierOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.QuartierInclude<ExtArgs> | null;
+    where?: Prisma.QuartierWhereInput;
+};
+/**
+ * Bien.statutBien
+ */
+export type Bien$statutBienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StatutBien
+     */
+    select?: Prisma.StatutBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the StatutBien
+     */
+    omit?: Prisma.StatutBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.StatutBienInclude<ExtArgs> | null;
+    where?: Prisma.StatutBienWhereInput;
+};
+/**
  * Bien.typeLogement
  */
 export type Bien$typeLogementArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -9105,42 +9187,6 @@ export type Bien$typeTransactionArgs<ExtArgs extends runtime.Types.Extensions.In
      */
     include?: Prisma.TypeTransactionInclude<ExtArgs> | null;
     where?: Prisma.TypeTransactionWhereInput;
-};
-/**
- * Bien.statutBien
- */
-export type Bien$statutBienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the StatutBien
-     */
-    select?: Prisma.StatutBienSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the StatutBien
-     */
-    omit?: Prisma.StatutBienOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.StatutBienInclude<ExtArgs> | null;
-    where?: Prisma.StatutBienWhereInput;
-};
-/**
- * Bien.quartierRel
- */
-export type Bien$quartierRelArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Quartier
-     */
-    select?: Prisma.QuartierSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Quartier
-     */
-    omit?: Prisma.QuartierOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.QuartierInclude<ExtArgs> | null;
-    where?: Prisma.QuartierWhereInput;
 };
 /**
  * Bien.equipements
@@ -9189,6 +9235,29 @@ export type Bien$meublesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
     distinct?: Prisma.BienMeubleScalarFieldEnum | Prisma.BienMeubleScalarFieldEnum[];
 };
 /**
+ * Bien.documents
+ */
+export type Bien$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocumentBien
+     */
+    select?: Prisma.DocumentBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DocumentBien
+     */
+    omit?: Prisma.DocumentBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DocumentBienInclude<ExtArgs> | null;
+    where?: Prisma.DocumentBienWhereInput;
+    orderBy?: Prisma.DocumentBienOrderByWithRelationInput | Prisma.DocumentBienOrderByWithRelationInput[];
+    cursor?: Prisma.DocumentBienWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.DocumentBienScalarFieldEnum | Prisma.DocumentBienScalarFieldEnum[];
+};
+/**
  * Bien.etablissements
  */
 export type Bien$etablissementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -9212,96 +9281,27 @@ export type Bien$etablissementsArgs<ExtArgs extends runtime.Types.Extensions.Int
     distinct?: Prisma.EtablissementScalarFieldEnum | Prisma.EtablissementScalarFieldEnum[];
 };
 /**
- * Bien.bails
+ * Bien.etatsDesLieux
  */
-export type Bien$bailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Bien$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BailLocation
+     * Select specific fields to fetch from the EtatDesLieux
      */
-    select?: Prisma.BailLocationSelect<ExtArgs> | null;
+    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the BailLocation
+     * Omit specific fields from the EtatDesLieux
      */
-    omit?: Prisma.BailLocationOmit<ExtArgs> | null;
+    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.BailLocationInclude<ExtArgs> | null;
-    where?: Prisma.BailLocationWhereInput;
-    orderBy?: Prisma.BailLocationOrderByWithRelationInput | Prisma.BailLocationOrderByWithRelationInput[];
-    cursor?: Prisma.BailLocationWhereUniqueInput;
+    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
+    where?: Prisma.EtatDesLieuxWhereInput;
+    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
+    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.BailLocationScalarFieldEnum | Prisma.BailLocationScalarFieldEnum[];
-};
-/**
- * Bien.transactions
- */
-export type Bien$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Transaction
-     */
-    select?: Prisma.TransactionSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: Prisma.TransactionOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.TransactionInclude<ExtArgs> | null;
-    where?: Prisma.TransactionWhereInput;
-    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
-    cursor?: Prisma.TransactionWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
-};
-/**
- * Bien.promotionHistories
- */
-export type Bien$promotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PromotionHistory
-     */
-    select?: Prisma.PromotionHistorySelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the PromotionHistory
-     */
-    omit?: Prisma.PromotionHistoryOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.PromotionHistoryInclude<ExtArgs> | null;
-    where?: Prisma.PromotionHistoryWhereInput;
-    orderBy?: Prisma.PromotionHistoryOrderByWithRelationInput | Prisma.PromotionHistoryOrderByWithRelationInput[];
-    cursor?: Prisma.PromotionHistoryWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.PromotionHistoryScalarFieldEnum | Prisma.PromotionHistoryScalarFieldEnum[];
-};
-/**
- * Bien.documents
- */
-export type Bien$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DocumentBien
-     */
-    select?: Prisma.DocumentBienSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the DocumentBien
-     */
-    omit?: Prisma.DocumentBienOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.DocumentBienInclude<ExtArgs> | null;
-    where?: Prisma.DocumentBienWhereInput;
-    orderBy?: Prisma.DocumentBienOrderByWithRelationInput | Prisma.DocumentBienOrderByWithRelationInput[];
-    cursor?: Prisma.DocumentBienWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.DocumentBienScalarFieldEnum | Prisma.DocumentBienScalarFieldEnum[];
+    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
 };
 /**
  * Bien.favoris
@@ -9327,50 +9327,27 @@ export type Bien$favorisArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
     distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
 };
 /**
- * Bien.vues
+ * Bien.promotionHistories
  */
-export type Bien$vuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Bien$promotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VueBien
+     * Select specific fields to fetch from the PromotionHistory
      */
-    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    select?: Prisma.PromotionHistorySelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the VueBien
+     * Omit specific fields from the PromotionHistory
      */
-    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    omit?: Prisma.PromotionHistoryOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.VueBienInclude<ExtArgs> | null;
-    where?: Prisma.VueBienWhereInput;
-    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
-    cursor?: Prisma.VueBienWhereUniqueInput;
+    include?: Prisma.PromotionHistoryInclude<ExtArgs> | null;
+    where?: Prisma.PromotionHistoryWhereInput;
+    orderBy?: Prisma.PromotionHistoryOrderByWithRelationInput | Prisma.PromotionHistoryOrderByWithRelationInput[];
+    cursor?: Prisma.PromotionHistoryWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.VueBienScalarFieldEnum | Prisma.VueBienScalarFieldEnum[];
-};
-/**
- * Bien.bailInvitations
- */
-export type Bien$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BailInvitation
-     */
-    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the BailInvitation
-     */
-    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
-    where?: Prisma.BailInvitationWhereInput;
-    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
-    cursor?: Prisma.BailInvitationWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
+    distinct?: Prisma.PromotionHistoryScalarFieldEnum | Prisma.PromotionHistoryScalarFieldEnum[];
 };
 /**
  * Bien.signalements
@@ -9396,27 +9373,50 @@ export type Bien$signalementsArgs<ExtArgs extends runtime.Types.Extensions.Inter
     distinct?: Prisma.SignalementScalarFieldEnum | Prisma.SignalementScalarFieldEnum[];
 };
 /**
- * Bien.etatsDesLieux
+ * Bien.transactions
  */
-export type Bien$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Bien$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the EtatDesLieux
+     * Select specific fields to fetch from the Transaction
      */
-    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the EtatDesLieux
+     * Omit specific fields from the Transaction
      */
-    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
-    where?: Prisma.EtatDesLieuxWhereInput;
-    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
-    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    cursor?: Prisma.TransactionWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Bien.vues
+ */
+export type Bien$vuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    where?: Prisma.VueBienWhereInput;
+    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
+    cursor?: Prisma.VueBienWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.VueBienScalarFieldEnum | Prisma.VueBienScalarFieldEnum[];
 };
 /**
  * Bien without action

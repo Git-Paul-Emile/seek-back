@@ -24,6 +24,7 @@ export type AlerteSumAggregateOutputType = {
 export type AlerteMinAggregateOutputType = {
     id: string | null;
     telephone: string | null;
+    comptePublicId: string | null;
     ville: string | null;
     quartier: string | null;
     typeLogement: string | null;
@@ -38,6 +39,7 @@ export type AlerteMinAggregateOutputType = {
 export type AlerteMaxAggregateOutputType = {
     id: string | null;
     telephone: string | null;
+    comptePublicId: string | null;
     ville: string | null;
     quartier: string | null;
     typeLogement: string | null;
@@ -52,6 +54,7 @@ export type AlerteMaxAggregateOutputType = {
 export type AlerteCountAggregateOutputType = {
     id: number;
     telephone: number;
+    comptePublicId: number;
     ville: number;
     quartier: number;
     typeLogement: number;
@@ -75,6 +78,7 @@ export type AlerteSumAggregateInputType = {
 export type AlerteMinAggregateInputType = {
     id?: true;
     telephone?: true;
+    comptePublicId?: true;
     ville?: true;
     quartier?: true;
     typeLogement?: true;
@@ -89,6 +93,7 @@ export type AlerteMinAggregateInputType = {
 export type AlerteMaxAggregateInputType = {
     id?: true;
     telephone?: true;
+    comptePublicId?: true;
     ville?: true;
     quartier?: true;
     typeLogement?: true;
@@ -103,6 +108,7 @@ export type AlerteMaxAggregateInputType = {
 export type AlerteCountAggregateInputType = {
     id?: true;
     telephone?: true;
+    comptePublicId?: true;
     ville?: true;
     quartier?: true;
     typeLogement?: true;
@@ -194,6 +200,7 @@ export type AlerteGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type AlerteGroupByOutputType = {
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     ville: string | null;
     quartier: string | null;
     typeLogement: string | null;
@@ -219,6 +226,7 @@ export type AlerteWhereInput = {
     NOT?: Prisma.AlerteWhereInput | Prisma.AlerteWhereInput[];
     id?: Prisma.StringFilter<"Alerte"> | string;
     telephone?: Prisma.StringFilter<"Alerte"> | string;
+    comptePublicId?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     ville?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     quartier?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     typeLogement?: Prisma.StringNullableFilter<"Alerte"> | string | null;
@@ -229,10 +237,12 @@ export type AlerteWhereInput = {
     statut?: Prisma.EnumStatutAlerteFilter<"Alerte"> | $Enums.StatutAlerte;
     createdAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicNullableScalarRelationFilter, Prisma.ComptePublicWhereInput> | null;
 };
 export type AlerteOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
     ville?: Prisma.SortOrderInput | Prisma.SortOrder;
     quartier?: Prisma.SortOrderInput | Prisma.SortOrder;
     typeLogement?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -243,6 +253,7 @@ export type AlerteOrderByWithRelationInput = {
     statut?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    comptePublic?: Prisma.ComptePublicOrderByWithRelationInput;
 };
 export type AlerteWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -250,6 +261,7 @@ export type AlerteWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.AlerteWhereInput[];
     NOT?: Prisma.AlerteWhereInput | Prisma.AlerteWhereInput[];
     telephone?: Prisma.StringFilter<"Alerte"> | string;
+    comptePublicId?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     ville?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     quartier?: Prisma.StringNullableFilter<"Alerte"> | string | null;
     typeLogement?: Prisma.StringNullableFilter<"Alerte"> | string | null;
@@ -260,10 +272,12 @@ export type AlerteWhereUniqueInput = Prisma.AtLeast<{
     statut?: Prisma.EnumStatutAlerteFilter<"Alerte"> | $Enums.StatutAlerte;
     createdAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicNullableScalarRelationFilter, Prisma.ComptePublicWhereInput> | null;
 }, "id">;
 export type AlerteOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
     ville?: Prisma.SortOrderInput | Prisma.SortOrder;
     quartier?: Prisma.SortOrderInput | Prisma.SortOrder;
     typeLogement?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -286,6 +300,7 @@ export type AlerteScalarWhereWithAggregatesInput = {
     NOT?: Prisma.AlerteScalarWhereWithAggregatesInput | Prisma.AlerteScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Alerte"> | string;
     telephone?: Prisma.StringWithAggregatesFilter<"Alerte"> | string;
+    comptePublicId?: Prisma.StringNullableWithAggregatesFilter<"Alerte"> | string | null;
     ville?: Prisma.StringNullableWithAggregatesFilter<"Alerte"> | string | null;
     quartier?: Prisma.StringNullableWithAggregatesFilter<"Alerte"> | string | null;
     typeLogement?: Prisma.StringNullableWithAggregatesFilter<"Alerte"> | string | null;
@@ -310,10 +325,12 @@ export type AlerteCreateInput = {
     statut?: $Enums.StatutAlerte;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutAlertesInput;
 };
 export type AlerteUncheckedCreateInput = {
     id?: string;
     telephone: string;
+    comptePublicId?: string | null;
     ville?: string | null;
     quartier?: string | null;
     typeLogement?: string | null;
@@ -338,10 +355,12 @@ export type AlerteUpdateInput = {
     statut?: Prisma.EnumStatutAlerteFieldUpdateOperationsInput | $Enums.StatutAlerte;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutAlertesNestedInput;
 };
 export type AlerteUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     quartier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typeLogement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -356,6 +375,7 @@ export type AlerteUncheckedUpdateInput = {
 export type AlerteCreateManyInput = {
     id?: string;
     telephone: string;
+    comptePublicId?: string | null;
     ville?: string | null;
     quartier?: string | null;
     typeLogement?: string | null;
@@ -384,6 +404,7 @@ export type AlerteUpdateManyMutationInput = {
 export type AlerteUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     quartier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typeLogement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -395,9 +416,18 @@ export type AlerteUncheckedUpdateManyInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
+export type AlerteListRelationFilter = {
+    every?: Prisma.AlerteWhereInput;
+    some?: Prisma.AlerteWhereInput;
+    none?: Prisma.AlerteWhereInput;
+};
+export type AlerteOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
 export type AlerteCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
     ville?: Prisma.SortOrder;
     quartier?: Prisma.SortOrder;
     typeLogement?: Prisma.SortOrder;
@@ -416,6 +446,7 @@ export type AlerteAvgOrderByAggregateInput = {
 export type AlerteMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
     ville?: Prisma.SortOrder;
     quartier?: Prisma.SortOrder;
     typeLogement?: Prisma.SortOrder;
@@ -430,6 +461,7 @@ export type AlerteMaxOrderByAggregateInput = {
 export type AlerteMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     telephone?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
     ville?: Prisma.SortOrder;
     quartier?: Prisma.SortOrder;
     typeLogement?: Prisma.SortOrder;
@@ -445,12 +477,174 @@ export type AlerteSumOrderByAggregateInput = {
     prixMin?: Prisma.SortOrder;
     prixMax?: Prisma.SortOrder;
 };
+export type AlerteCreateNestedManyWithoutComptePublicInput = {
+    create?: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput> | Prisma.AlerteCreateWithoutComptePublicInput[] | Prisma.AlerteUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.AlerteCreateOrConnectWithoutComptePublicInput | Prisma.AlerteCreateOrConnectWithoutComptePublicInput[];
+    createMany?: Prisma.AlerteCreateManyComptePublicInputEnvelope;
+    connect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+};
+export type AlerteUncheckedCreateNestedManyWithoutComptePublicInput = {
+    create?: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput> | Prisma.AlerteCreateWithoutComptePublicInput[] | Prisma.AlerteUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.AlerteCreateOrConnectWithoutComptePublicInput | Prisma.AlerteCreateOrConnectWithoutComptePublicInput[];
+    createMany?: Prisma.AlerteCreateManyComptePublicInputEnvelope;
+    connect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+};
+export type AlerteUpdateManyWithoutComptePublicNestedInput = {
+    create?: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput> | Prisma.AlerteCreateWithoutComptePublicInput[] | Prisma.AlerteUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.AlerteCreateOrConnectWithoutComptePublicInput | Prisma.AlerteCreateOrConnectWithoutComptePublicInput[];
+    upsert?: Prisma.AlerteUpsertWithWhereUniqueWithoutComptePublicInput | Prisma.AlerteUpsertWithWhereUniqueWithoutComptePublicInput[];
+    createMany?: Prisma.AlerteCreateManyComptePublicInputEnvelope;
+    set?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    disconnect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    delete?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    connect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    update?: Prisma.AlerteUpdateWithWhereUniqueWithoutComptePublicInput | Prisma.AlerteUpdateWithWhereUniqueWithoutComptePublicInput[];
+    updateMany?: Prisma.AlerteUpdateManyWithWhereWithoutComptePublicInput | Prisma.AlerteUpdateManyWithWhereWithoutComptePublicInput[];
+    deleteMany?: Prisma.AlerteScalarWhereInput | Prisma.AlerteScalarWhereInput[];
+};
+export type AlerteUncheckedUpdateManyWithoutComptePublicNestedInput = {
+    create?: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput> | Prisma.AlerteCreateWithoutComptePublicInput[] | Prisma.AlerteUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.AlerteCreateOrConnectWithoutComptePublicInput | Prisma.AlerteCreateOrConnectWithoutComptePublicInput[];
+    upsert?: Prisma.AlerteUpsertWithWhereUniqueWithoutComptePublicInput | Prisma.AlerteUpsertWithWhereUniqueWithoutComptePublicInput[];
+    createMany?: Prisma.AlerteCreateManyComptePublicInputEnvelope;
+    set?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    disconnect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    delete?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    connect?: Prisma.AlerteWhereUniqueInput | Prisma.AlerteWhereUniqueInput[];
+    update?: Prisma.AlerteUpdateWithWhereUniqueWithoutComptePublicInput | Prisma.AlerteUpdateWithWhereUniqueWithoutComptePublicInput[];
+    updateMany?: Prisma.AlerteUpdateManyWithWhereWithoutComptePublicInput | Prisma.AlerteUpdateManyWithWhereWithoutComptePublicInput[];
+    deleteMany?: Prisma.AlerteScalarWhereInput | Prisma.AlerteScalarWhereInput[];
+};
 export type EnumStatutAlerteFieldUpdateOperationsInput = {
     set?: $Enums.StatutAlerte;
+};
+export type AlerteCreateWithoutComptePublicInput = {
+    id?: string;
+    telephone: string;
+    ville?: string | null;
+    quartier?: string | null;
+    typeLogement?: string | null;
+    typeTransaction?: string | null;
+    prixMin?: number | null;
+    prixMax?: number | null;
+    canalPrefere?: string;
+    statut?: $Enums.StatutAlerte;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type AlerteUncheckedCreateWithoutComptePublicInput = {
+    id?: string;
+    telephone: string;
+    ville?: string | null;
+    quartier?: string | null;
+    typeLogement?: string | null;
+    typeTransaction?: string | null;
+    prixMin?: number | null;
+    prixMax?: number | null;
+    canalPrefere?: string;
+    statut?: $Enums.StatutAlerte;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type AlerteCreateOrConnectWithoutComptePublicInput = {
+    where: Prisma.AlerteWhereUniqueInput;
+    create: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput>;
+};
+export type AlerteCreateManyComptePublicInputEnvelope = {
+    data: Prisma.AlerteCreateManyComptePublicInput | Prisma.AlerteCreateManyComptePublicInput[];
+    skipDuplicates?: boolean;
+};
+export type AlerteUpsertWithWhereUniqueWithoutComptePublicInput = {
+    where: Prisma.AlerteWhereUniqueInput;
+    update: Prisma.XOR<Prisma.AlerteUpdateWithoutComptePublicInput, Prisma.AlerteUncheckedUpdateWithoutComptePublicInput>;
+    create: Prisma.XOR<Prisma.AlerteCreateWithoutComptePublicInput, Prisma.AlerteUncheckedCreateWithoutComptePublicInput>;
+};
+export type AlerteUpdateWithWhereUniqueWithoutComptePublicInput = {
+    where: Prisma.AlerteWhereUniqueInput;
+    data: Prisma.XOR<Prisma.AlerteUpdateWithoutComptePublicInput, Prisma.AlerteUncheckedUpdateWithoutComptePublicInput>;
+};
+export type AlerteUpdateManyWithWhereWithoutComptePublicInput = {
+    where: Prisma.AlerteScalarWhereInput;
+    data: Prisma.XOR<Prisma.AlerteUpdateManyMutationInput, Prisma.AlerteUncheckedUpdateManyWithoutComptePublicInput>;
+};
+export type AlerteScalarWhereInput = {
+    AND?: Prisma.AlerteScalarWhereInput | Prisma.AlerteScalarWhereInput[];
+    OR?: Prisma.AlerteScalarWhereInput[];
+    NOT?: Prisma.AlerteScalarWhereInput | Prisma.AlerteScalarWhereInput[];
+    id?: Prisma.StringFilter<"Alerte"> | string;
+    telephone?: Prisma.StringFilter<"Alerte"> | string;
+    comptePublicId?: Prisma.StringNullableFilter<"Alerte"> | string | null;
+    ville?: Prisma.StringNullableFilter<"Alerte"> | string | null;
+    quartier?: Prisma.StringNullableFilter<"Alerte"> | string | null;
+    typeLogement?: Prisma.StringNullableFilter<"Alerte"> | string | null;
+    typeTransaction?: Prisma.StringNullableFilter<"Alerte"> | string | null;
+    prixMin?: Prisma.IntNullableFilter<"Alerte"> | number | null;
+    prixMax?: Prisma.IntNullableFilter<"Alerte"> | number | null;
+    canalPrefere?: Prisma.StringFilter<"Alerte"> | string;
+    statut?: Prisma.EnumStatutAlerteFilter<"Alerte"> | $Enums.StatutAlerte;
+    createdAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Alerte"> | Date | string;
+};
+export type AlerteCreateManyComptePublicInput = {
+    id?: string;
+    telephone: string;
+    ville?: string | null;
+    quartier?: string | null;
+    typeLogement?: string | null;
+    typeTransaction?: string | null;
+    prixMin?: number | null;
+    prixMax?: number | null;
+    canalPrefere?: string;
+    statut?: $Enums.StatutAlerte;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type AlerteUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    quartier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeLogement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeTransaction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prixMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    prixMax?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    canalPrefere?: Prisma.StringFieldUpdateOperationsInput | string;
+    statut?: Prisma.EnumStatutAlerteFieldUpdateOperationsInput | $Enums.StatutAlerte;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type AlerteUncheckedUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    quartier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeLogement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeTransaction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prixMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    prixMax?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    canalPrefere?: Prisma.StringFieldUpdateOperationsInput | string;
+    statut?: Prisma.EnumStatutAlerteFieldUpdateOperationsInput | $Enums.StatutAlerte;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type AlerteUncheckedUpdateManyWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    ville?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    quartier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeLogement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typeTransaction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    prixMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    prixMax?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    canalPrefere?: Prisma.StringFieldUpdateOperationsInput | string;
+    statut?: Prisma.EnumStatutAlerteFieldUpdateOperationsInput | $Enums.StatutAlerte;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type AlerteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     telephone?: boolean;
+    comptePublicId?: boolean;
     ville?: boolean;
     quartier?: boolean;
     typeLogement?: boolean;
@@ -461,10 +655,12 @@ export type AlerteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     statut?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
 }, ExtArgs["result"]["alerte"]>;
 export type AlerteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     telephone?: boolean;
+    comptePublicId?: boolean;
     ville?: boolean;
     quartier?: boolean;
     typeLogement?: boolean;
@@ -475,10 +671,12 @@ export type AlerteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     statut?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
 }, ExtArgs["result"]["alerte"]>;
 export type AlerteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     telephone?: boolean;
+    comptePublicId?: boolean;
     ville?: boolean;
     quartier?: boolean;
     typeLogement?: boolean;
@@ -489,10 +687,12 @@ export type AlerteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     statut?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
 }, ExtArgs["result"]["alerte"]>;
 export type AlerteSelectScalar = {
     id?: boolean;
     telephone?: boolean;
+    comptePublicId?: boolean;
     ville?: boolean;
     quartier?: boolean;
     typeLogement?: boolean;
@@ -504,13 +704,25 @@ export type AlerteSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type AlerteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "telephone" | "ville" | "quartier" | "typeLogement" | "typeTransaction" | "prixMin" | "prixMax" | "canalPrefere" | "statut" | "createdAt" | "updatedAt", ExtArgs["result"]["alerte"]>;
+export type AlerteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "telephone" | "comptePublicId" | "ville" | "quartier" | "typeLogement" | "typeTransaction" | "prixMin" | "prixMax" | "canalPrefere" | "statut" | "createdAt" | "updatedAt", ExtArgs["result"]["alerte"]>;
+export type AlerteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
+};
+export type AlerteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
+};
+export type AlerteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.Alerte$comptePublicArgs<ExtArgs>;
+};
 export type $AlertePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Alerte";
-    objects: {};
+    objects: {
+        comptePublic: Prisma.$ComptePublicPayload<ExtArgs> | null;
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         telephone: string;
+        comptePublicId: string | null;
         ville: string | null;
         quartier: string | null;
         typeLogement: string | null;
@@ -850,6 +1062,7 @@ export interface AlerteDelegate<ExtArgs extends runtime.Types.Extensions.Interna
  */
 export interface Prisma__AlerteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    comptePublic<T extends Prisma.Alerte$comptePublicArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Alerte$comptePublicArgs<ExtArgs>>): Prisma.Prisma__ComptePublicClient<runtime.Types.Result.GetResult<Prisma.$ComptePublicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -877,6 +1090,7 @@ export interface Prisma__AlerteClient<T, Null = never, ExtArgs extends runtime.T
 export interface AlerteFieldRefs {
     readonly id: Prisma.FieldRef<"Alerte", 'String'>;
     readonly telephone: Prisma.FieldRef<"Alerte", 'String'>;
+    readonly comptePublicId: Prisma.FieldRef<"Alerte", 'String'>;
     readonly ville: Prisma.FieldRef<"Alerte", 'String'>;
     readonly quartier: Prisma.FieldRef<"Alerte", 'String'>;
     readonly typeLogement: Prisma.FieldRef<"Alerte", 'String'>;
@@ -901,6 +1115,10 @@ export type AlerteFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Intern
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * Filter, which Alerte to fetch.
      */
     where: Prisma.AlerteWhereUniqueInput;
@@ -918,6 +1136,10 @@ export type AlerteFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * Filter, which Alerte to fetch.
      */
     where: Prisma.AlerteWhereUniqueInput;
@@ -934,6 +1156,10 @@ export type AlerteFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Interna
      * Omit specific fields from the Alerte
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
     /**
      * Filter, which Alerte to fetch.
      */
@@ -982,6 +1208,10 @@ export type AlerteFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * Filter, which Alerte to fetch.
      */
     where?: Prisma.AlerteWhereInput;
@@ -1029,6 +1259,10 @@ export type AlerteFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * Filter, which Alertes to fetch.
      */
     where?: Prisma.AlerteWhereInput;
@@ -1071,6 +1305,10 @@ export type AlerteCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * The data needed to create a Alerte.
      */
     data: Prisma.XOR<Prisma.AlerteCreateInput, Prisma.AlerteUncheckedCreateInput>;
@@ -1102,6 +1340,10 @@ export type AlerteCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
      */
     data: Prisma.AlerteCreateManyInput | Prisma.AlerteCreateManyInput[];
     skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteIncludeCreateManyAndReturn<ExtArgs> | null;
 };
 /**
  * Alerte update
@@ -1115,6 +1357,10 @@ export type AlerteUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
      * Omit specific fields from the Alerte
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
     /**
      * The data needed to update a Alerte.
      */
@@ -1165,6 +1411,10 @@ export type AlerteUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
      * Limit how many Alertes to update.
      */
     limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 /**
  * Alerte upsert
@@ -1178,6 +1428,10 @@ export type AlerteUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
      * Omit specific fields from the Alerte
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
     /**
      * The filter to search for the Alerte to update in case it exists.
      */
@@ -1204,6 +1458,10 @@ export type AlerteDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    /**
      * Filter which Alerte to delete.
      */
     where: Prisma.AlerteWhereUniqueInput;
@@ -1222,6 +1480,24 @@ export type AlerteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
     limit?: number;
 };
 /**
+ * Alerte.comptePublic
+ */
+export type Alerte$comptePublicArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ComptePublic
+     */
+    select?: Prisma.ComptePublicSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ComptePublic
+     */
+    omit?: Prisma.ComptePublicOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ComptePublicInclude<ExtArgs> | null;
+    where?: Prisma.ComptePublicWhereInput;
+};
+/**
  * Alerte without action
  */
 export type AlerteDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1233,6 +1509,10 @@ export type AlerteDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalA
      * Omit specific fields from the Alerte
      */
     omit?: Prisma.AlerteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
 };
 export {};
 //# sourceMappingURL=Alerte.d.ts.map

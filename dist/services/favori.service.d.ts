@@ -29,10 +29,6 @@ export declare const getFavoris: (comptePublicId: string) => Promise<{
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         estMisEnAvant: boolean;
-        statutBien: {
-            nom: string;
-            slug: string;
-        } | null;
         proprietaire: {
             id: string;
             telephone: string;
@@ -41,6 +37,10 @@ export declare const getFavoris: (comptePublicId: string) => Promise<{
             prenom: string;
             statutVerification: import("../generated/prisma/enums.js").StatutVerification;
         };
+        statutBien: {
+            nom: string;
+            slug: string;
+        } | null;
     };
     changements: {
         prixChange: boolean;
@@ -53,10 +53,10 @@ export declare const getFavoris: (comptePublicId: string) => Promise<{
 }[]>;
 export declare const addFavori: (comptePublicId: string, bienId: string) => Promise<{
     id: string;
+    comptePublicId: string;
     createdAt: Date;
     updatedAt: Date;
     bienId: string;
-    comptePublicId: string;
     prixSnapshot: number | null;
     statutSnapshot: string | null;
     actifSnapshot: boolean;

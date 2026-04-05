@@ -19,6 +19,7 @@ export declare const findSignalements: (filter?: {
     statut: import("../generated/prisma/enums.js").StatutSignalement;
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     createdAt: Date;
     updatedAt: Date;
     nom: string;
@@ -26,10 +27,21 @@ export declare const findSignalements: (filter?: {
     dateTraitement: Date | null;
     bienId: string;
     motif: import("../generated/prisma/enums.js").MotifSignalement;
-    comptePublicId: string | null;
     commentaire: string | null;
 })[]>;
 export declare const findById: (id: string) => Promise<({
+    comptePublic: {
+        proprietaireId: string | null;
+        id: string;
+        telephone: string;
+        createdAt: Date;
+        updatedAt: Date;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        password: string;
+        locataireId: string | null;
+    } | null;
     bien: {
         typeLogement: {
             id: string;
@@ -154,28 +166,19 @@ export declare const findById: (id: string) => Promise<({
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
-    comptePublic: {
-        id: string;
-        telephone: string;
-        createdAt: Date;
-        updatedAt: Date;
-        nom: string;
-        email: string | null;
-        prenom: string;
-        password: string;
-    } | null;
 } & {
     statut: import("../generated/prisma/enums.js").StatutSignalement;
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     createdAt: Date;
     updatedAt: Date;
     nom: string;
@@ -183,13 +186,13 @@ export declare const findById: (id: string) => Promise<({
     dateTraitement: Date | null;
     bienId: string;
     motif: import("../generated/prisma/enums.js").MotifSignalement;
-    comptePublicId: string | null;
     commentaire: string | null;
 }) | null>;
 export declare const create: (data: Prisma.SignalementUncheckedCreateInput) => Promise<{
     statut: import("../generated/prisma/enums.js").StatutSignalement;
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     createdAt: Date;
     updatedAt: Date;
     nom: string;
@@ -197,13 +200,13 @@ export declare const create: (data: Prisma.SignalementUncheckedCreateInput) => P
     dateTraitement: Date | null;
     bienId: string;
     motif: import("../generated/prisma/enums.js").MotifSignalement;
-    comptePublicId: string | null;
     commentaire: string | null;
 }>;
 export declare const getExisting: (bienId: string, comptePublicId?: string, telephone?: string) => Promise<{
     statut: import("../generated/prisma/enums.js").StatutSignalement;
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     createdAt: Date;
     updatedAt: Date;
     nom: string;
@@ -211,7 +214,6 @@ export declare const getExisting: (bienId: string, comptePublicId?: string, tele
     dateTraitement: Date | null;
     bienId: string;
     motif: import("../generated/prisma/enums.js").MotifSignalement;
-    comptePublicId: string | null;
     commentaire: string | null;
 } | null>;
 export declare const valider: (id: string, adminId: string, bienId: string, proprietaireId: string) => Promise<{
@@ -219,6 +221,7 @@ export declare const valider: (id: string, adminId: string, bienId: string, prop
         statut: import("../generated/prisma/enums.js").StatutSignalement;
         id: string;
         telephone: string;
+        comptePublicId: string | null;
         createdAt: Date;
         updatedAt: Date;
         nom: string;
@@ -226,7 +229,6 @@ export declare const valider: (id: string, adminId: string, bienId: string, prop
         dateTraitement: Date | null;
         bienId: string;
         motif: import("../generated/prisma/enums.js").MotifSignalement;
-        comptePublicId: string | null;
         commentaire: string | null;
     };
     proprietaire: {
@@ -261,6 +263,7 @@ export declare const rejeter: (id: string, adminId: string) => Promise<{
     statut: import("../generated/prisma/enums.js").StatutSignalement;
     id: string;
     telephone: string;
+    comptePublicId: string | null;
     createdAt: Date;
     updatedAt: Date;
     nom: string;
@@ -268,7 +271,6 @@ export declare const rejeter: (id: string, adminId: string) => Promise<{
     dateTraitement: Date | null;
     bienId: string;
     motif: import("../generated/prisma/enums.js").MotifSignalement;
-    comptePublicId: string | null;
     commentaire: string | null;
 }>;
 //# sourceMappingURL=signalement.repository.d.ts.map

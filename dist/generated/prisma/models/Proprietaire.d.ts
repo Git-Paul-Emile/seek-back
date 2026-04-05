@@ -333,18 +333,19 @@ export type ProprietaireWhereInput = {
     dateBannissement?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
-    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
-    biens?: Prisma.BienListRelationFilter;
-    locataire?: Prisma.LocataireListRelationFilter;
-    bails?: Prisma.BailLocationListRelationFilter;
-    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
-    transactions?: Prisma.TransactionListRelationFilter;
-    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
-    documentsBien?: Prisma.DocumentBienListRelationFilter;
-    messagesInternes?: Prisma.MessageInterneListRelationFilter;
     bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    bails?: Prisma.BailLocationListRelationFilter;
+    biens?: Prisma.BienListRelationFilter;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicNullableScalarRelationFilter, Prisma.ComptePublicWhereInput> | null;
+    documentsBien?: Prisma.DocumentBienListRelationFilter;
     etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
+    locataire?: Prisma.LocataireListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneListRelationFilter;
+    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
 };
 export type ProprietaireOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -372,18 +373,19 @@ export type ProprietaireOrderByWithRelationInput = {
     dateBannissement?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenOrderByRelationAggregateInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput;
-    biens?: Prisma.BienOrderByRelationAggregateInput;
-    locataire?: Prisma.LocataireOrderByRelationAggregateInput;
-    bails?: Prisma.BailLocationOrderByRelationAggregateInput;
-    verification?: Prisma.VerificationDocumentsOrderByWithRelationInput;
-    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
-    promotionHistories?: Prisma.PromotionHistoryOrderByRelationAggregateInput;
-    documentsBien?: Prisma.DocumentBienOrderByRelationAggregateInput;
-    messagesInternes?: Prisma.MessageInterneOrderByRelationAggregateInput;
     bailInvitations?: Prisma.BailInvitationOrderByRelationAggregateInput;
+    bails?: Prisma.BailLocationOrderByRelationAggregateInput;
+    biens?: Prisma.BienOrderByRelationAggregateInput;
+    comptePublic?: Prisma.ComptePublicOrderByWithRelationInput;
+    documentsBien?: Prisma.DocumentBienOrderByRelationAggregateInput;
     etatsDesLieux?: Prisma.EtatDesLieuxOrderByRelationAggregateInput;
+    locataire?: Prisma.LocataireOrderByRelationAggregateInput;
+    messagesInternes?: Prisma.MessageInterneOrderByRelationAggregateInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput;
+    promotionHistories?: Prisma.PromotionHistoryOrderByRelationAggregateInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenOrderByRelationAggregateInput;
+    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
+    verification?: Prisma.VerificationDocumentsOrderByWithRelationInput;
 };
 export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -414,18 +416,19 @@ export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     dateBannissement?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
-    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
-    biens?: Prisma.BienListRelationFilter;
-    locataire?: Prisma.LocataireListRelationFilter;
-    bails?: Prisma.BailLocationListRelationFilter;
-    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
-    transactions?: Prisma.TransactionListRelationFilter;
-    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
-    documentsBien?: Prisma.DocumentBienListRelationFilter;
-    messagesInternes?: Prisma.MessageInterneListRelationFilter;
     bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    bails?: Prisma.BailLocationListRelationFilter;
+    biens?: Prisma.BienListRelationFilter;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicNullableScalarRelationFilter, Prisma.ComptePublicWhereInput> | null;
+    documentsBien?: Prisma.DocumentBienListRelationFilter;
     etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
+    locataire?: Prisma.LocataireListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneListRelationFilter;
+    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
 }, "id" | "telephone" | "email">;
 export type ProprietaireOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -515,18 +518,19 @@ export type ProprietaireCreateInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateInput = {
     id?: string;
@@ -554,18 +558,19 @@ export type ProprietaireUncheckedCreateInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -593,18 +598,19 @@ export type ProprietaireUpdateInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -632,18 +638,19 @@ export type ProprietaireUncheckedUpdateInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateManyInput = {
     id?: string;
@@ -729,6 +736,10 @@ export type ProprietaireUncheckedUpdateManyInput = {
 export type ProprietaireScalarRelationFilter = {
     is?: Prisma.ProprietaireWhereInput;
     isNot?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireNullableScalarRelationFilter = {
+    is?: Prisma.ProprietaireWhereInput | null;
+    isNot?: Prisma.ProprietaireWhereInput | null;
 };
 export type ProprietaireCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -830,6 +841,20 @@ export type ProprietaireUpdateOneRequiredWithoutBiensNestedInput = {
     upsert?: Prisma.ProprietaireUpsertWithoutBiensInput;
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutBiensInput, Prisma.ProprietaireUpdateWithoutBiensInput>, Prisma.ProprietaireUncheckedUpdateWithoutBiensInput>;
+};
+export type ProprietaireCreateNestedOneWithoutComptePublicInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutComptePublicInput, Prisma.ProprietaireUncheckedCreateWithoutComptePublicInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutComptePublicInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneWithoutComptePublicNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutComptePublicInput, Prisma.ProprietaireUncheckedCreateWithoutComptePublicInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutComptePublicInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutComptePublicInput;
+    disconnect?: Prisma.ProprietaireWhereInput | boolean;
+    delete?: Prisma.ProprietaireWhereInput | boolean;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutComptePublicInput, Prisma.ProprietaireUpdateWithoutComptePublicInput>, Prisma.ProprietaireUncheckedUpdateWithoutComptePublicInput>;
 };
 export type ProprietaireCreateNestedOneWithoutDocumentsBienInput = {
     create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedCreateWithoutDocumentsBienInput>;
@@ -992,17 +1017,18 @@ export type ProprietaireCreateWithoutBiensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutBiensInput = {
     id?: string;
@@ -1030,17 +1056,18 @@ export type ProprietaireUncheckedCreateWithoutBiensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutBiensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1081,17 +1108,18 @@ export type ProprietaireUpdateWithoutBiensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutBiensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1119,17 +1147,187 @@ export type ProprietaireUncheckedUpdateWithoutBiensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutComptePublicInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutComptePublicInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutComptePublicInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutComptePublicInput, Prisma.ProprietaireUncheckedCreateWithoutComptePublicInput>;
+};
+export type ProprietaireUpsertWithoutComptePublicInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutComptePublicInput, Prisma.ProprietaireUncheckedUpdateWithoutComptePublicInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutComptePublicInput, Prisma.ProprietaireUncheckedCreateWithoutComptePublicInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutComptePublicInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutComptePublicInput, Prisma.ProprietaireUncheckedUpdateWithoutComptePublicInput>;
+};
+export type ProprietaireUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutDocumentsBienInput = {
     id?: string;
@@ -1157,17 +1355,18 @@ export type ProprietaireCreateWithoutDocumentsBienInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutDocumentsBienInput = {
     id?: string;
@@ -1195,17 +1394,18 @@ export type ProprietaireUncheckedCreateWithoutDocumentsBienInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutDocumentsBienInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1246,17 +1446,18 @@ export type ProprietaireUpdateWithoutDocumentsBienInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutDocumentsBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1284,17 +1485,18 @@ export type ProprietaireUncheckedUpdateWithoutDocumentsBienInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutLocataireInput = {
     id?: string;
@@ -1322,17 +1524,18 @@ export type ProprietaireCreateWithoutLocataireInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutLocataireInput = {
     id?: string;
@@ -1360,17 +1563,18 @@ export type ProprietaireUncheckedCreateWithoutLocataireInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutLocataireInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1411,17 +1615,18 @@ export type ProprietaireUpdateWithoutLocataireInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutLocataireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1449,17 +1654,18 @@ export type ProprietaireUncheckedUpdateWithoutLocataireInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutBailsInput = {
     id?: string;
@@ -1487,17 +1693,18 @@ export type ProprietaireCreateWithoutBailsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutBailsInput = {
     id?: string;
@@ -1525,17 +1732,18 @@ export type ProprietaireUncheckedCreateWithoutBailsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutBailsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1576,17 +1784,18 @@ export type ProprietaireUpdateWithoutBailsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutBailsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1614,17 +1823,18 @@ export type ProprietaireUncheckedUpdateWithoutBailsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutVerificationInput = {
     id?: string;
@@ -1652,17 +1862,18 @@ export type ProprietaireCreateWithoutVerificationInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutVerificationInput = {
     id?: string;
@@ -1690,17 +1901,18 @@ export type ProprietaireUncheckedCreateWithoutVerificationInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutVerificationInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1741,17 +1953,18 @@ export type ProprietaireUpdateWithoutVerificationInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutVerificationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1779,17 +1992,18 @@ export type ProprietaireUncheckedUpdateWithoutVerificationInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutMessagesInternesInput = {
     id?: string;
@@ -1817,17 +2031,18 @@ export type ProprietaireCreateWithoutMessagesInternesInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutMessagesInternesInput = {
     id?: string;
@@ -1855,17 +2070,18 @@ export type ProprietaireUncheckedCreateWithoutMessagesInternesInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutMessagesInternesInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -1906,17 +2122,18 @@ export type ProprietaireUpdateWithoutMessagesInternesInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutMessagesInternesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1944,17 +2161,18 @@ export type ProprietaireUncheckedUpdateWithoutMessagesInternesInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -1982,17 +2200,18 @@ export type ProprietaireCreateWithoutRefreshTokensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -2020,17 +2239,18 @@ export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2071,17 +2291,18 @@ export type ProprietaireUpdateWithoutRefreshTokensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2109,17 +2330,18 @@ export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutPasswordResetTokensInput = {
     id?: string;
@@ -2147,17 +2369,18 @@ export type ProprietaireCreateWithoutPasswordResetTokensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutPasswordResetTokensInput = {
     id?: string;
@@ -2185,17 +2408,18 @@ export type ProprietaireUncheckedCreateWithoutPasswordResetTokensInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutPasswordResetTokensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2236,17 +2460,18 @@ export type ProprietaireUpdateWithoutPasswordResetTokensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2274,17 +2499,18 @@ export type ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutTransactionsInput = {
     id?: string;
@@ -2312,17 +2538,18 @@ export type ProprietaireCreateWithoutTransactionsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutTransactionsInput = {
     id?: string;
@@ -2350,17 +2577,18 @@ export type ProprietaireUncheckedCreateWithoutTransactionsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutTransactionsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2401,17 +2629,18 @@ export type ProprietaireUpdateWithoutTransactionsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutTransactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2439,17 +2668,18 @@ export type ProprietaireUncheckedUpdateWithoutTransactionsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutPromotionHistoriesInput = {
     id?: string;
@@ -2477,17 +2707,18 @@ export type ProprietaireCreateWithoutPromotionHistoriesInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutPromotionHistoriesInput = {
     id?: string;
@@ -2515,17 +2746,18 @@ export type ProprietaireUncheckedCreateWithoutPromotionHistoriesInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutPromotionHistoriesInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2566,17 +2798,18 @@ export type ProprietaireUpdateWithoutPromotionHistoriesInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2604,17 +2837,18 @@ export type ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutBailInvitationsInput = {
     id?: string;
@@ -2642,17 +2876,18 @@ export type ProprietaireCreateWithoutBailInvitationsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
     documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutBailInvitationsInput = {
     id?: string;
@@ -2680,17 +2915,18 @@ export type ProprietaireUncheckedCreateWithoutBailInvitationsInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
     documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutBailInvitationsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2731,17 +2967,18 @@ export type ProprietaireUpdateWithoutBailInvitationsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
     documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutBailInvitationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2769,17 +3006,18 @@ export type ProprietaireUncheckedUpdateWithoutBailInvitationsInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
     documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutEtatsDesLieuxInput = {
     id?: string;
@@ -2807,17 +3045,18 @@ export type ProprietaireCreateWithoutEtatsDesLieuxInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput = {
     id?: string;
@@ -2845,17 +3084,18 @@ export type ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput = {
     dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
-    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
-    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
-    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
     bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    comptePublic?: Prisma.ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutEtatsDesLieuxInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -2896,17 +3136,18 @@ export type ProprietaireUpdateWithoutEtatsDesLieuxInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2934,46 +3175,47 @@ export type ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput = {
     dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
-    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
-    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
-    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
-    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
     bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    comptePublic?: Prisma.ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
 };
 /**
  * Count Type ProprietaireCountOutputType
  */
 export type ProprietaireCountOutputType = {
-    refreshTokens: number;
-    passwordResetTokens: number;
-    biens: number;
-    locataire: number;
-    bails: number;
-    transactions: number;
-    promotionHistories: number;
-    documentsBien: number;
-    messagesInternes: number;
     bailInvitations: number;
+    bails: number;
+    biens: number;
+    documentsBien: number;
     etatsDesLieux: number;
+    locataire: number;
+    messagesInternes: number;
+    passwordResetTokens: number;
+    promotionHistories: number;
+    refreshTokens: number;
+    transactions: number;
 };
 export type ProprietaireCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    refreshTokens?: boolean | ProprietaireCountOutputTypeCountRefreshTokensArgs;
-    passwordResetTokens?: boolean | ProprietaireCountOutputTypeCountPasswordResetTokensArgs;
-    biens?: boolean | ProprietaireCountOutputTypeCountBiensArgs;
-    locataire?: boolean | ProprietaireCountOutputTypeCountLocataireArgs;
-    bails?: boolean | ProprietaireCountOutputTypeCountBailsArgs;
-    transactions?: boolean | ProprietaireCountOutputTypeCountTransactionsArgs;
-    promotionHistories?: boolean | ProprietaireCountOutputTypeCountPromotionHistoriesArgs;
-    documentsBien?: boolean | ProprietaireCountOutputTypeCountDocumentsBienArgs;
-    messagesInternes?: boolean | ProprietaireCountOutputTypeCountMessagesInternesArgs;
     bailInvitations?: boolean | ProprietaireCountOutputTypeCountBailInvitationsArgs;
+    bails?: boolean | ProprietaireCountOutputTypeCountBailsArgs;
+    biens?: boolean | ProprietaireCountOutputTypeCountBiensArgs;
+    documentsBien?: boolean | ProprietaireCountOutputTypeCountDocumentsBienArgs;
     etatsDesLieux?: boolean | ProprietaireCountOutputTypeCountEtatsDesLieuxArgs;
+    locataire?: boolean | ProprietaireCountOutputTypeCountLocataireArgs;
+    messagesInternes?: boolean | ProprietaireCountOutputTypeCountMessagesInternesArgs;
+    passwordResetTokens?: boolean | ProprietaireCountOutputTypeCountPasswordResetTokensArgs;
+    promotionHistories?: boolean | ProprietaireCountOutputTypeCountPromotionHistoriesArgs;
+    refreshTokens?: boolean | ProprietaireCountOutputTypeCountRefreshTokensArgs;
+    transactions?: boolean | ProprietaireCountOutputTypeCountTransactionsArgs;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -2987,26 +3229,8 @@ export type ProprietaireCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
 /**
  * ProprietaireCountOutputType without action
  */
-export type ProprietaireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.ProprietaireRefreshTokenWhereInput;
-};
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.PasswordResetTokenWhereInput;
-};
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BienWhereInput;
-};
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountLocataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.LocataireWhereInput;
+export type ProprietaireCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BailInvitationWhereInput;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -3017,14 +3241,8 @@ export type ProprietaireCountOutputTypeCountBailsArgs<ExtArgs extends runtime.Ty
 /**
  * ProprietaireCountOutputType without action
  */
-export type ProprietaireCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.TransactionWhereInput;
-};
-/**
- * ProprietaireCountOutputType without action
- */
-export type ProprietaireCountOutputTypeCountPromotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.PromotionHistoryWhereInput;
+export type ProprietaireCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BienWhereInput;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -3035,20 +3253,44 @@ export type ProprietaireCountOutputTypeCountDocumentsBienArgs<ExtArgs extends ru
 /**
  * ProprietaireCountOutputType without action
  */
+export type ProprietaireCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EtatDesLieuxWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountLocataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.LocataireWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
 export type ProprietaireCountOutputTypeCountMessagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.MessageInterneWhereInput;
 };
 /**
  * ProprietaireCountOutputType without action
  */
-export type ProprietaireCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.BailInvitationWhereInput;
+export type ProprietaireCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PasswordResetTokenWhereInput;
 };
 /**
  * ProprietaireCountOutputType without action
  */
-export type ProprietaireCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.EtatDesLieuxWhereInput;
+export type ProprietaireCountOutputTypeCountPromotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PromotionHistoryWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ProprietaireRefreshTokenWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
 };
 export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -3076,18 +3318,19 @@ export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.Internal
     dateBannissement?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
-    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
-    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
-    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
-    bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
-    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
-    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
-    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
-    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
-    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
     bailInvitations?: boolean | Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>;
+    bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
+    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.Proprietaire$comptePublicArgs<ExtArgs>;
+    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
     etatsDesLieux?: boolean | Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
+    refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
+    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -3173,18 +3416,19 @@ export type ProprietaireSelectScalar = {
 };
 export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "prenom" | "nom" | "sexe" | "telephone" | "email" | "password" | "statutVerification" | "verifiedAt" | "telephoneVerifie" | "telephoneOtp" | "telephoneOtpExpiresAt" | "estSuspendu" | "motifSuspension" | "dateSuspension" | "suspenduPar" | "nbAvertissements" | "nbSignalementsValides" | "estRestreint" | "dateFinRestriction" | "dateFinSuspension" | "estBanni" | "dateBannissement" | "createdAt" | "updatedAt", ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
-    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
-    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
-    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
-    bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
-    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
-    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
-    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
-    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
-    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
     bailInvitations?: boolean | Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>;
+    bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
+    biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.Proprietaire$comptePublicArgs<ExtArgs>;
+    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
     etatsDesLieux?: boolean | Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
+    refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
+    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProprietaireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -3192,18 +3436,19 @@ export type ProprietaireIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $ProprietairePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Proprietaire";
     objects: {
-        refreshTokens: Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>[];
-        passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[];
-        biens: Prisma.$BienPayload<ExtArgs>[];
-        locataire: Prisma.$LocatairePayload<ExtArgs>[];
-        bails: Prisma.$BailLocationPayload<ExtArgs>[];
-        verification: Prisma.$VerificationDocumentsPayload<ExtArgs> | null;
-        transactions: Prisma.$TransactionPayload<ExtArgs>[];
-        promotionHistories: Prisma.$PromotionHistoryPayload<ExtArgs>[];
-        documentsBien: Prisma.$DocumentBienPayload<ExtArgs>[];
-        messagesInternes: Prisma.$MessageInternePayload<ExtArgs>[];
         bailInvitations: Prisma.$BailInvitationPayload<ExtArgs>[];
+        bails: Prisma.$BailLocationPayload<ExtArgs>[];
+        biens: Prisma.$BienPayload<ExtArgs>[];
+        comptePublic: Prisma.$ComptePublicPayload<ExtArgs> | null;
+        documentsBien: Prisma.$DocumentBienPayload<ExtArgs>[];
         etatsDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>[];
+        locataire: Prisma.$LocatairePayload<ExtArgs>[];
+        messagesInternes: Prisma.$MessageInternePayload<ExtArgs>[];
+        passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[];
+        promotionHistories: Prisma.$PromotionHistoryPayload<ExtArgs>[];
+        refreshTokens: Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>[];
+        transactions: Prisma.$TransactionPayload<ExtArgs>[];
+        verification: Prisma.$VerificationDocumentsPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -3560,18 +3805,19 @@ export interface ProprietaireDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__ProprietaireClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    passwordResetTokens<T extends Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    biens<T extends Prisma.Proprietaire$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    locataire<T extends Prisma.Proprietaire$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$locataireArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    bails<T extends Prisma.Proprietaire$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    verification<T extends Prisma.Proprietaire$verificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$verificationArgs<ExtArgs>>): Prisma.Prisma__VerificationDocumentsClient<runtime.Types.Result.GetResult<Prisma.$VerificationDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
-    transactions<T extends Prisma.Proprietaire$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    promotionHistories<T extends Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    documentsBien<T extends Prisma.Proprietaire$documentsBienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$documentsBienArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    messagesInternes<T extends Prisma.Proprietaire$messagesInternesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$messagesInternesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInternePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     bailInvitations<T extends Prisma.Proprietaire$bailInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    bails<T extends Prisma.Proprietaire$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    biens<T extends Prisma.Proprietaire$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    comptePublic<T extends Prisma.Proprietaire$comptePublicArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$comptePublicArgs<ExtArgs>>): Prisma.Prisma__ComptePublicClient<runtime.Types.Result.GetResult<Prisma.$ComptePublicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    documentsBien<T extends Prisma.Proprietaire$documentsBienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$documentsBienArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     etatsDesLieux<T extends Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    locataire<T extends Prisma.Proprietaire$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$locataireArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    messagesInternes<T extends Prisma.Proprietaire$messagesInternesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$messagesInternesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInternePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    passwordResetTokens<T extends Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    promotionHistories<T extends Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    transactions<T extends Prisma.Proprietaire$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    verification<T extends Prisma.Proprietaire$verificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$verificationArgs<ExtArgs>>): Prisma.Prisma__VerificationDocumentsClient<runtime.Types.Result.GetResult<Prisma.$VerificationDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3993,96 +4239,27 @@ export type ProprietaireDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
     limit?: number;
 };
 /**
- * Proprietaire.refreshTokens
+ * Proprietaire.bailInvitations
  */
-export type Proprietaire$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ProprietaireRefreshToken
+     * Select specific fields to fetch from the BailInvitation
      */
-    select?: Prisma.ProprietaireRefreshTokenSelect<ExtArgs> | null;
+    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the ProprietaireRefreshToken
+     * Omit specific fields from the BailInvitation
      */
-    omit?: Prisma.ProprietaireRefreshTokenOmit<ExtArgs> | null;
+    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.ProprietaireRefreshTokenInclude<ExtArgs> | null;
-    where?: Prisma.ProprietaireRefreshTokenWhereInput;
-    orderBy?: Prisma.ProprietaireRefreshTokenOrderByWithRelationInput | Prisma.ProprietaireRefreshTokenOrderByWithRelationInput[];
-    cursor?: Prisma.ProprietaireRefreshTokenWhereUniqueInput;
+    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
+    where?: Prisma.BailInvitationWhereInput;
+    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
+    cursor?: Prisma.BailInvitationWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.ProprietaireRefreshTokenScalarFieldEnum | Prisma.ProprietaireRefreshTokenScalarFieldEnum[];
-};
-/**
- * Proprietaire.passwordResetTokens
- */
-export type Proprietaire$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PasswordResetToken
-     */
-    select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the PasswordResetToken
-     */
-    omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null;
-    where?: Prisma.PasswordResetTokenWhereInput;
-    orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[];
-    cursor?: Prisma.PasswordResetTokenWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[];
-};
-/**
- * Proprietaire.biens
- */
-export type Proprietaire$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Bien
-     */
-    select?: Prisma.BienSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Bien
-     */
-    omit?: Prisma.BienOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.BienInclude<ExtArgs> | null;
-    where?: Prisma.BienWhereInput;
-    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
-    cursor?: Prisma.BienWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
-};
-/**
- * Proprietaire.locataire
- */
-export type Proprietaire$locataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Locataire
-     */
-    select?: Prisma.LocataireSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Locataire
-     */
-    omit?: Prisma.LocataireOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.LocataireInclude<ExtArgs> | null;
-    where?: Prisma.LocataireWhereInput;
-    orderBy?: Prisma.LocataireOrderByWithRelationInput | Prisma.LocataireOrderByWithRelationInput[];
-    cursor?: Prisma.LocataireWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.LocataireScalarFieldEnum | Prisma.LocataireScalarFieldEnum[];
+    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
 };
 /**
  * Proprietaire.bails
@@ -4108,68 +4285,45 @@ export type Proprietaire$bailsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     distinct?: Prisma.BailLocationScalarFieldEnum | Prisma.BailLocationScalarFieldEnum[];
 };
 /**
- * Proprietaire.verification
+ * Proprietaire.biens
  */
-export type Proprietaire$verificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationDocuments
+     * Select specific fields to fetch from the Bien
      */
-    select?: Prisma.VerificationDocumentsSelect<ExtArgs> | null;
+    select?: Prisma.BienSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the VerificationDocuments
+     * Omit specific fields from the Bien
      */
-    omit?: Prisma.VerificationDocumentsOmit<ExtArgs> | null;
+    omit?: Prisma.BienOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.VerificationDocumentsInclude<ExtArgs> | null;
-    where?: Prisma.VerificationDocumentsWhereInput;
-};
-/**
- * Proprietaire.transactions
- */
-export type Proprietaire$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Transaction
-     */
-    select?: Prisma.TransactionSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: Prisma.TransactionOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.TransactionInclude<ExtArgs> | null;
-    where?: Prisma.TransactionWhereInput;
-    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
-    cursor?: Prisma.TransactionWhereUniqueInput;
+    include?: Prisma.BienInclude<ExtArgs> | null;
+    where?: Prisma.BienWhereInput;
+    orderBy?: Prisma.BienOrderByWithRelationInput | Prisma.BienOrderByWithRelationInput[];
+    cursor?: Prisma.BienWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+    distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
 };
 /**
- * Proprietaire.promotionHistories
+ * Proprietaire.comptePublic
  */
-export type Proprietaire$promotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$comptePublicArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PromotionHistory
+     * Select specific fields to fetch from the ComptePublic
      */
-    select?: Prisma.PromotionHistorySelect<ExtArgs> | null;
+    select?: Prisma.ComptePublicSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the PromotionHistory
+     * Omit specific fields from the ComptePublic
      */
-    omit?: Prisma.PromotionHistoryOmit<ExtArgs> | null;
+    omit?: Prisma.ComptePublicOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.PromotionHistoryInclude<ExtArgs> | null;
-    where?: Prisma.PromotionHistoryWhereInput;
-    orderBy?: Prisma.PromotionHistoryOrderByWithRelationInput | Prisma.PromotionHistoryOrderByWithRelationInput[];
-    cursor?: Prisma.PromotionHistoryWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.PromotionHistoryScalarFieldEnum | Prisma.PromotionHistoryScalarFieldEnum[];
+    include?: Prisma.ComptePublicInclude<ExtArgs> | null;
+    where?: Prisma.ComptePublicWhereInput;
 };
 /**
  * Proprietaire.documentsBien
@@ -4195,6 +4349,52 @@ export type Proprietaire$documentsBienArgs<ExtArgs extends runtime.Types.Extensi
     distinct?: Prisma.DocumentBienScalarFieldEnum | Prisma.DocumentBienScalarFieldEnum[];
 };
 /**
+ * Proprietaire.etatsDesLieux
+ */
+export type Proprietaire$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EtatDesLieux
+     */
+    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EtatDesLieux
+     */
+    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
+    where?: Prisma.EtatDesLieuxWhereInput;
+    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
+    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
+};
+/**
+ * Proprietaire.locataire
+ */
+export type Proprietaire$locataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Locataire
+     */
+    select?: Prisma.LocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Locataire
+     */
+    omit?: Prisma.LocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.LocataireInclude<ExtArgs> | null;
+    where?: Prisma.LocataireWhereInput;
+    orderBy?: Prisma.LocataireOrderByWithRelationInput | Prisma.LocataireOrderByWithRelationInput[];
+    cursor?: Prisma.LocataireWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.LocataireScalarFieldEnum | Prisma.LocataireScalarFieldEnum[];
+};
+/**
  * Proprietaire.messagesInternes
  */
 export type Proprietaire$messagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4218,50 +4418,114 @@ export type Proprietaire$messagesInternesArgs<ExtArgs extends runtime.Types.Exte
     distinct?: Prisma.MessageInterneScalarFieldEnum | Prisma.MessageInterneScalarFieldEnum[];
 };
 /**
- * Proprietaire.bailInvitations
+ * Proprietaire.passwordResetTokens
  */
-export type Proprietaire$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BailInvitation
+     * Select specific fields to fetch from the PasswordResetToken
      */
-    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
+    select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the BailInvitation
+     * Omit specific fields from the PasswordResetToken
      */
-    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
+    omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
-    where?: Prisma.BailInvitationWhereInput;
-    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
-    cursor?: Prisma.BailInvitationWhereUniqueInput;
+    include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null;
+    where?: Prisma.PasswordResetTokenWhereInput;
+    orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[];
+    cursor?: Prisma.PasswordResetTokenWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
+    distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[];
 };
 /**
- * Proprietaire.etatsDesLieux
+ * Proprietaire.promotionHistories
  */
-export type Proprietaire$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$promotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the EtatDesLieux
+     * Select specific fields to fetch from the PromotionHistory
      */
-    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    select?: Prisma.PromotionHistorySelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the EtatDesLieux
+     * Omit specific fields from the PromotionHistory
      */
-    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    omit?: Prisma.PromotionHistoryOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
-    where?: Prisma.EtatDesLieuxWhereInput;
-    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
-    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    include?: Prisma.PromotionHistoryInclude<ExtArgs> | null;
+    where?: Prisma.PromotionHistoryWhereInput;
+    orderBy?: Prisma.PromotionHistoryOrderByWithRelationInput | Prisma.PromotionHistoryOrderByWithRelationInput[];
+    cursor?: Prisma.PromotionHistoryWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
+    distinct?: Prisma.PromotionHistoryScalarFieldEnum | Prisma.PromotionHistoryScalarFieldEnum[];
+};
+/**
+ * Proprietaire.refreshTokens
+ */
+export type Proprietaire$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProprietaireRefreshToken
+     */
+    select?: Prisma.ProprietaireRefreshTokenSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ProprietaireRefreshToken
+     */
+    omit?: Prisma.ProprietaireRefreshTokenOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ProprietaireRefreshTokenInclude<ExtArgs> | null;
+    where?: Prisma.ProprietaireRefreshTokenWhereInput;
+    orderBy?: Prisma.ProprietaireRefreshTokenOrderByWithRelationInput | Prisma.ProprietaireRefreshTokenOrderByWithRelationInput[];
+    cursor?: Prisma.ProprietaireRefreshTokenWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ProprietaireRefreshTokenScalarFieldEnum | Prisma.ProprietaireRefreshTokenScalarFieldEnum[];
+};
+/**
+ * Proprietaire.transactions
+ */
+export type Proprietaire$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Proprietaire.verification
+ */
+export type Proprietaire$verificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationDocuments
+     */
+    select?: Prisma.VerificationDocumentsSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VerificationDocuments
+     */
+    omit?: Prisma.VerificationDocumentsOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VerificationDocumentsInclude<ExtArgs> | null;
+    where?: Prisma.VerificationDocumentsWhereInput;
 };
 /**
  * Proprietaire without action

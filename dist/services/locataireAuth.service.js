@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
 import { prisma } from "../config/database.js";
+import { envoyerNotification } from "./notification.service.js";
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const getSecret = (key) => {
     const value = process.env[key];
@@ -78,6 +79,23 @@ export const activer = async (data) => {
     const fullLocataire = await LocataireRepo.findById(locataire.id);
     if (!fullLocataire)
         throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+    const proprietaire = await prisma.proprietaire.findUnique({
+        where: { id: locataire.proprietaireId },
+        select: { telephone: true, email: true, prenom: true, nom: true },
+    });
+    if (proprietaire?.telephone) {
+        await envoyerNotification({
+            type: "VERIFICATION_LOCATAIRE",
+            target: "owner",
+            telephone: proprietaire.telephone,
+            email: proprietaire.email,
+            sujet: "Compte locataire activé",
+            contenu: `${fullLocataire.prenom} ${fullLocataire.nom} a activé son compte locataire.`,
+            proprietaireId: locataire.proprietaireId,
+            locataireId: fullLocataire.id,
+            noSmsEmail: true,
+        }).catch(() => null);
+    }
     return {
         ...tokens,
         locataire: fullLocataire,
@@ -157,7 +175,7 @@ export const refresh = async (oldRefreshToken) => {
         tokenHash: hashToken(tokens.refreshToken),
         expiresAt: tokens.refreshTokenExpiresAt,
     });
-    return tokens;
+    return { ...tokens, locataireId: locataire.id };
 };
 // ─── Logout ───────────────────────────────────────────────────────────────────
 export const logout = async (refreshToken) => {
@@ -165,7 +183,9 @@ export const logout = async (refreshToken) => {
     const stored = await LocataireRepo.findRefreshToken(tokenHash);
     if (stored && !stored.revokedAt) {
         await LocataireRepo.revokeRefreshToken(tokenHash);
+        return stored.locataireId;
     }
+    return null;
 };
 // ─── Me ───────────────────────────────────────────────────────────────────────
 export const me = async (id) => {

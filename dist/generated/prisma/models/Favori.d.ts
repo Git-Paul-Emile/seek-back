@@ -192,8 +192,8 @@ export type FavoriWhereInput = {
     actifSnapshot?: Prisma.BoolFilter<"Favori"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
-    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
 };
 export type FavoriOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -204,8 +204,8 @@ export type FavoriOrderByWithRelationInput = {
     actifSnapshot?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    comptePublic?: Prisma.ComptePublicOrderByWithRelationInput;
     bien?: Prisma.BienOrderByWithRelationInput;
+    comptePublic?: Prisma.ComptePublicOrderByWithRelationInput;
 };
 export type FavoriWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -220,8 +220,8 @@ export type FavoriWhereUniqueInput = Prisma.AtLeast<{
     actifSnapshot?: Prisma.BoolFilter<"Favori"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
-    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
 }, "id" | "comptePublicId_bienId">;
 export type FavoriOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -258,8 +258,8 @@ export type FavoriCreateInput = {
     actifSnapshot?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    comptePublic: Prisma.ComptePublicCreateNestedOneWithoutFavorisInput;
     bien: Prisma.BienCreateNestedOneWithoutFavorisInput;
+    comptePublic: Prisma.ComptePublicCreateNestedOneWithoutFavorisInput;
 };
 export type FavoriUncheckedCreateInput = {
     id?: string;
@@ -278,8 +278,8 @@ export type FavoriUpdateInput = {
     actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    comptePublic?: Prisma.ComptePublicUpdateOneRequiredWithoutFavorisNestedInput;
     bien?: Prisma.BienUpdateOneRequiredWithoutFavorisNestedInput;
+    comptePublic?: Prisma.ComptePublicUpdateOneRequiredWithoutFavorisNestedInput;
 };
 export type FavoriUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -615,8 +615,8 @@ export type FavoriSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     actifSnapshot?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["favori"]>;
 export type FavoriSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -627,8 +627,8 @@ export type FavoriSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     actifSnapshot?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["favori"]>;
 export type FavoriSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -639,8 +639,8 @@ export type FavoriSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     actifSnapshot?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["favori"]>;
 export type FavoriSelectScalar = {
     id?: boolean;
@@ -654,22 +654,22 @@ export type FavoriSelectScalar = {
 };
 export type FavoriOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "comptePublicId" | "bienId" | "prixSnapshot" | "statutSnapshot" | "actifSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["favori"]>;
 export type FavoriInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 };
 export type FavoriIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 };
 export type FavoriIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
 };
 export type $FavoriPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Favori";
     objects: {
-        comptePublic: Prisma.$ComptePublicPayload<ExtArgs>;
         bien: Prisma.$BienPayload<ExtArgs>;
+        comptePublic: Prisma.$ComptePublicPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1009,8 +1009,8 @@ export interface FavoriDelegate<ExtArgs extends runtime.Types.Extensions.Interna
  */
 export interface Prisma__FavoriClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    comptePublic<T extends Prisma.ComptePublicDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublicDefaultArgs<ExtArgs>>): Prisma.Prisma__ComptePublicClient<runtime.Types.Result.GetResult<Prisma.$ComptePublicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     bien<T extends Prisma.BienDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BienDefaultArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    comptePublic<T extends Prisma.ComptePublicDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublicDefaultArgs<ExtArgs>>): Prisma.Prisma__ComptePublicClient<runtime.Types.Result.GetResult<Prisma.$ComptePublicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

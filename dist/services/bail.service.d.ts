@@ -1,4 +1,9 @@
 export declare const getBailActif: (bienId: string, proprietaireId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -43,6 +48,11 @@ export declare const getBailActif: (bienId: string, proprietaireId: string) => P
     initiePar: string | null;
 }) | null>;
 export declare const getHistoriqueBails: (bienId: string, proprietaireId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -99,6 +109,11 @@ export declare const creerBail: (bienId: string, proprietaireId: string, data: {
     delaiGrace?: number;
     frequencePaiement?: string | null;
 }) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -213,6 +228,11 @@ export declare const mettreEnPreavisLocataire: (locataireId: string, motif?: str
     initiePar: string | null;
 }>;
 export declare const mettreEnRenouvellement: (bienId: string, bailId: string, proprietaireId: string) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -257,6 +277,11 @@ export declare const mettreEnRenouvellement: (bienId: string, bailId: string, pr
     initiePar: string | null;
 }>;
 export declare const archiverBail: (bienId: string, bailId: string, proprietaireId: string) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -301,6 +326,11 @@ export declare const archiverBail: (bienId: string, bailId: string, proprietaire
     initiePar: string | null;
 }>;
 export declare const getBailAArchiver: (bienId: string, proprietaireId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -345,6 +375,11 @@ export declare const getBailAArchiver: (bienId: string, proprietaireId: string) 
     initiePar: string | null;
 }) | null>;
 export declare const terminerBail: (bienId: string, bailId: string, proprietaireId: string) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -566,7 +601,31 @@ export declare const confirmerReceptionPaiement: (bienId: string, bailId: string
 export declare const enregistrerPaiementEspeces: (bienId: string, bailId: string, echeanceId: string, proprietaireId: string, data: {
     datePaiement: Date;
     note?: string;
-}) => Promise<any>;
+    nombreMois?: number;
+}) => Promise<{
+    proprietaireId: string;
+    statut: import("../generated/prisma/enums.js").StatutPaiement;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    bailId: string;
+    bienId: string;
+    locataireId: string;
+    dateEcheance: Date;
+    montant: number;
+    datePaiement: Date | null;
+    modePaiement: string | null;
+    reference: string | null;
+    note: string | null;
+    sourceEnregistrement: string | null;
+    commissionTaux: number | null;
+    commissionMontant: number | null;
+    montantNet: number | null;
+    confirmeParProprietaire: boolean;
+    dateConfirmation: Date | null;
+    confirmeParLocataire: boolean;
+    dateConfirmationLocataire: Date | null;
+} | null>;
 /**
  * Le locataire confirme le paiement espèces enregistré par le propriétaire.
  * L'échéance passe en PAYE, quittance générée, notifications envoyées.
@@ -634,6 +693,11 @@ export declare const prolongerEcheancesAnnee: (bienId: string, bailId: string, p
     existed?: undefined;
 }>;
 export declare const activerBail: (bienId: string, bailId: string, proprietaireId: string) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;

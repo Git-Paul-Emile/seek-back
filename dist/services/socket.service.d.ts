@@ -17,7 +17,8 @@ export declare enum WebSocketEvents {
 }
 export interface NotificationPayload {
     id: string;
-    proprietaireId: string;
+    proprietaireId?: string;
+    locataireId?: string;
     type: string;
     titre: string;
     message: string;

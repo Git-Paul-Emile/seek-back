@@ -196,6 +196,7 @@ export const confirmerReception = async (req, res) => {
 // ─── Paiement espèces (propriétaire → EN_ATTENTE_CONFIRMATION) ───────────────
 const enregistrerEspecesSchema = z.object({
     datePaiement: z.coerce.date(),
+    nombreMois: z.number().int().min(1).max(36).optional(),
     montant: z.number().positive().optional(),
     note: z.string().optional(),
 });

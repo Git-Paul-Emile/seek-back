@@ -138,8 +138,8 @@ export type PieceEtatDesLieuxWhereInput = {
     nom?: Prisma.StringFilter<"PieceEtatDesLieux"> | string;
     createdAt?: Prisma.DateTimeFilter<"PieceEtatDesLieux"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"PieceEtatDesLieux"> | Date | string;
-    etatDesLieux?: Prisma.XOR<Prisma.EtatDesLieuxScalarRelationFilter, Prisma.EtatDesLieuxWhereInput>;
     elements?: Prisma.ElementEtatDesLieuxListRelationFilter;
+    etatDesLieux?: Prisma.XOR<Prisma.EtatDesLieuxScalarRelationFilter, Prisma.EtatDesLieuxWhereInput>;
 };
 export type PieceEtatDesLieuxOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -147,8 +147,8 @@ export type PieceEtatDesLieuxOrderByWithRelationInput = {
     nom?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    etatDesLieux?: Prisma.EtatDesLieuxOrderByWithRelationInput;
     elements?: Prisma.ElementEtatDesLieuxOrderByRelationAggregateInput;
+    etatDesLieux?: Prisma.EtatDesLieuxOrderByWithRelationInput;
 };
 export type PieceEtatDesLieuxWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -159,8 +159,8 @@ export type PieceEtatDesLieuxWhereUniqueInput = Prisma.AtLeast<{
     nom?: Prisma.StringFilter<"PieceEtatDesLieux"> | string;
     createdAt?: Prisma.DateTimeFilter<"PieceEtatDesLieux"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"PieceEtatDesLieux"> | Date | string;
-    etatDesLieux?: Prisma.XOR<Prisma.EtatDesLieuxScalarRelationFilter, Prisma.EtatDesLieuxWhereInput>;
     elements?: Prisma.ElementEtatDesLieuxListRelationFilter;
+    etatDesLieux?: Prisma.XOR<Prisma.EtatDesLieuxScalarRelationFilter, Prisma.EtatDesLieuxWhereInput>;
 }, "id">;
 export type PieceEtatDesLieuxOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -187,8 +187,8 @@ export type PieceEtatDesLieuxCreateInput = {
     nom: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    etatDesLieux: Prisma.EtatDesLieuxCreateNestedOneWithoutPiecesInput;
     elements?: Prisma.ElementEtatDesLieuxCreateNestedManyWithoutPieceInput;
+    etatDesLieux: Prisma.EtatDesLieuxCreateNestedOneWithoutPiecesInput;
 };
 export type PieceEtatDesLieuxUncheckedCreateInput = {
     id?: string;
@@ -203,8 +203,8 @@ export type PieceEtatDesLieuxUpdateInput = {
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    etatDesLieux?: Prisma.EtatDesLieuxUpdateOneRequiredWithoutPiecesNestedInput;
     elements?: Prisma.ElementEtatDesLieuxUpdateManyWithoutPieceNestedInput;
+    etatDesLieux?: Prisma.EtatDesLieuxUpdateOneRequiredWithoutPiecesNestedInput;
 };
 export type PieceEtatDesLieuxUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -459,8 +459,8 @@ export type PieceEtatDesLieuxSelect<ExtArgs extends runtime.Types.Extensions.Int
     nom?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    etatDesLieux?: boolean | Prisma.EtatDesLieuxDefaultArgs<ExtArgs>;
     elements?: boolean | Prisma.PieceEtatDesLieux$elementsArgs<ExtArgs>;
+    etatDesLieux?: boolean | Prisma.EtatDesLieuxDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.PieceEtatDesLieuxCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["pieceEtatDesLieux"]>;
 export type PieceEtatDesLieuxSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -488,8 +488,8 @@ export type PieceEtatDesLieuxSelectScalar = {
 };
 export type PieceEtatDesLieuxOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "etatDesLieuxId" | "nom" | "createdAt" | "updatedAt", ExtArgs["result"]["pieceEtatDesLieux"]>;
 export type PieceEtatDesLieuxInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    etatDesLieux?: boolean | Prisma.EtatDesLieuxDefaultArgs<ExtArgs>;
     elements?: boolean | Prisma.PieceEtatDesLieux$elementsArgs<ExtArgs>;
+    etatDesLieux?: boolean | Prisma.EtatDesLieuxDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.PieceEtatDesLieuxCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type PieceEtatDesLieuxIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -501,8 +501,8 @@ export type PieceEtatDesLieuxIncludeUpdateManyAndReturn<ExtArgs extends runtime.
 export type $PieceEtatDesLieuxPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "PieceEtatDesLieux";
     objects: {
-        etatDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>;
         elements: Prisma.$ElementEtatDesLieuxPayload<ExtArgs>[];
+        etatDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -839,8 +839,8 @@ export interface PieceEtatDesLieuxDelegate<ExtArgs extends runtime.Types.Extensi
  */
 export interface Prisma__PieceEtatDesLieuxClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    etatDesLieux<T extends Prisma.EtatDesLieuxDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EtatDesLieuxDefaultArgs<ExtArgs>>): Prisma.Prisma__EtatDesLieuxClient<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     elements<T extends Prisma.PieceEtatDesLieux$elementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PieceEtatDesLieux$elementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ElementEtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    etatDesLieux<T extends Prisma.EtatDesLieuxDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EtatDesLieuxDefaultArgs<ExtArgs>>): Prisma.Prisma__EtatDesLieuxClient<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

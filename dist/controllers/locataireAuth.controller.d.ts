@@ -23,5 +23,7 @@ export declare const mettreEnPreavisLocataire: (req: Request, res: Response) => 
 export declare const resilierBailLocataire: (req: Request, res: Response) => Promise<void>;
 export declare const getMessagesBailLocataire: (req: Request, res: Response) => Promise<void>;
 export declare const marquerMessagesLusLocataire: (req: Request, res: Response) => Promise<void>;
+export declare const getAlerteEdlManquant: (req: Request, res: Response) => Promise<void>;
+export declare const demanderEtatDesLieux: (req: Request, res: Response) => Promise<void>;
 export declare const supprimerCompte: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=locataireAuth.controller.d.ts.map

@@ -133,13 +133,13 @@ export declare const findById: (id: string) => Promise<({
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;
@@ -282,13 +282,13 @@ export declare const findByBailAndType: (bailId: string, type: "ENTREE" | "SORTI
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     pieces: ({
         elements: {
@@ -486,13 +486,13 @@ export declare const findAllByLocataire: (locataireId: string) => Promise<({
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     pieces: ({
         elements: {
@@ -615,13 +615,13 @@ export declare const contesterElements: (id: string, elements: {
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;
@@ -797,13 +797,13 @@ export declare const resoudreContestations: (id: string, resolutions: {
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;

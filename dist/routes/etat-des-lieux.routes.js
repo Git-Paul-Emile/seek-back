@@ -8,6 +8,7 @@ const router = Router();
 // Routes Propriétaire - GET (spécifiques d'abord)
 // ========================
 router.get("/owner/bail/:bailId/comparison", authenticateOwner, EtatDesLieuxController.compareOwner);
+router.get("/owner/bail/:bailId/context", authenticateOwner, EtatDesLieuxController.getCreationContextOwner);
 router.get("/owner/bail/:bailId", authenticateOwner, EtatDesLieuxController.getByBailOwner);
 router.get("/owner/:id", authenticateOwner, EtatDesLieuxController.getByIdOwner);
 // ========================
@@ -23,6 +24,7 @@ router.post("/:id/resoudre-contestation", authenticateOwner, EtatDesLieuxControl
 // Routes Locataire - GET (spécifiques d'abord)
 // ========================
 router.get("/mes-edl", authenticateLocataire, EtatDesLieuxController.getAllByLocataire);
+router.get("/locataire/mes-edl", authenticateLocataire, EtatDesLieuxController.getAllByLocataire);
 router.get("/locataire/bail/:bailId/comparison", authenticateLocataire, EtatDesLieuxController.compareLocataire);
 router.get("/locataire/bail/:bailId", authenticateLocataire, EtatDesLieuxController.getByBailLocataire);
 router.get("/locataire/:id", authenticateLocataire, EtatDesLieuxController.getByIdLocataire);

@@ -249,7 +249,6 @@ export const BienScalarFieldEnum = {
     actif: 'actif',
     statutAnnonce: 'statutAnnonce',
     noteAdmin: 'noteAdmin',
-    publishedAt: 'publishedAt',
     estPremium: 'estPremium',
     estMisEnAvant: 'estMisEnAvant',
     dateDebutPromotion: 'dateDebutPromotion',
@@ -257,7 +256,8 @@ export const BienScalarFieldEnum = {
     positionRotation: 'positionRotation',
     dernierAffichage: 'dernierAffichage',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    publishedAt: 'publishedAt'
 };
 export const ComptePublicScalarFieldEnum = {
     id: 'id',
@@ -267,7 +267,9 @@ export const ComptePublicScalarFieldEnum = {
     email: 'email',
     password: 'password',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    locataireId: 'locataireId',
+    proprietaireId: 'proprietaireId'
 };
 export const ComptePublicRefreshTokenScalarFieldEnum = {
     id: 'id',
@@ -440,10 +442,10 @@ export const NotificationScalarFieldEnum = {
     bienId: 'bienId',
     proprietaireId: 'proprietaireId',
     locataireId: 'locataireId',
-    lu: 'lu',
     envoyeAt: 'envoyeAt',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    lu: 'lu'
 };
 export const DepotCautionScalarFieldEnum = {
     id: 'id',
@@ -593,6 +595,7 @@ export const RefreshTokenScalarFieldEnum = {
 export const AlerteScalarFieldEnum = {
     id: 'id',
     telephone: 'telephone',
+    comptePublicId: 'comptePublicId',
     ville: 'ville',
     quartier: 'quartier',
     typeLogement: 'typeLogement',

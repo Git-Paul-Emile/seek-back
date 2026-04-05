@@ -365,6 +365,17 @@ export const validerAnnonce = async (bienId, action, note) => {
     // Alertes temps réel aux utilisateurs qui ont sauvegardé des critères
     if (action === "APPROUVER") {
         emitPropertyAlert(bienId).catch(() => null);
+        // Re-fetch établissements si la 1ère tentative (soumission) avait échoué
+        if (result.latitude && result.longitude && result.etablissements?.length === 0) {
+            fetchNearestEtablissements(result.latitude, result.longitude)
+                .then(async (etablissements) => {
+                if (etablissements.length === 0)
+                    return;
+                const withBienId = etablissements.map((e) => ({ ...e, bienId }));
+                await BienRepository.createEtablissements(withBienId);
+            })
+                .catch(() => { });
+        }
     }
     return result;
 };

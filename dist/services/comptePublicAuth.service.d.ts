@@ -76,4 +76,22 @@ export declare const changePassword: (id: string, data: {
     newPassword: string;
 }) => Promise<void>;
 export declare const deleteAccount: (id: string, password: string) => Promise<void>;
+export declare const getOrCreateForProprietaire: (proprietaireId: string) => Promise<{
+    compte: {
+        id: string;
+        nom: string;
+        prenom: string;
+    };
+    tokens: TokenPair;
+}>;
+export declare const getOrCreateForLocataire: (locataireId: string) => Promise<{
+    compte: {
+        id: string;
+        nom: string;
+        prenom: string;
+    };
+    tokens: TokenPair;
+}>;
+export declare const revokePublicTokensForProprietaire: (proprietaireId: string) => Promise<void>;
+export declare const revokePublicTokensForLocataire: (locataireId: string) => Promise<void>;
 //# sourceMappingURL=comptePublicAuth.service.d.ts.map

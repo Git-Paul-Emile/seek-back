@@ -43,7 +43,7 @@ export const substituerVariables = (contenu, data) => {
         prenom_locataire: locataire.prenom,
         profession_locataire: locataire.situationProfessionnelle || "",
         adresse_bien: adresseBien,
-        ville: bien.ville || "",
+        ville: bien.region || bien.ville || "",
         region: bien.region || bien.ville || "",
         quartier: bien.quartier || "",
         loyer: formatMontant(bail.montantLoyer),
@@ -249,6 +249,7 @@ export const envoyerContrat = async (bienId, bailId, contratId, proprietaireId) 
                 where: { id: proprietaireId },
                 select: { nom: true, prenom: true },
             });
+            const dashboardLink = `${process.env.FRONTEND_URL ?? "http://localhost:5173"}/locataire/dashboard`;
             await sendMail({
                 to: bail.locataire.email,
                 subject: `Votre contrat de bail - ${contrat.titre}`,
@@ -261,8 +262,13 @@ export const envoyerContrat = async (bienId, bailId, contratId, proprietaireId) 
             <div style="border:1px solid #e5e7eb; border-top:none; padding:24px; border-radius:0 0 8px 8px;">
               <p>Bonjour <strong>${bail.locataire.prenom} ${bail.locataire.nom}</strong>,</p>
               <p>
-                ${proprietaire ? `${proprietaire.prenom} ${proprietaire.nom}` : "Votre propriétaire"}
+               ${proprietaire ? `${proprietaire.prenom} ${proprietaire.nom}` : "Votre propriétaire"}
                 vous a transmis votre contrat de bail. Veuillez en prendre connaissance ci-dessous.
+              </p>
+              <p>
+                <a href="${dashboardLink}" style="background:#D4A843;color:#0C1A35;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">
+                  Ouvrir mon espace locataire
+                </a>
               </p>
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
               ${contrat.contenu}
@@ -283,11 +289,19 @@ export const envoyerContrat = async (bienId, bailId, contratId, proprietaireId) 
     }
     // Envoi SMS (best-effort — l'email riche est déjà envoyé par sendMail ci-dessus)
     try {
-        const contenuSms = `Bonjour ${bail.locataire.prenom} ${bail.locataire.nom}, votre contrat de bail "${contrat.titre}" vous a été transmis par votre propriétaire. Connectez-vous à votre espace SEEK pour le consulter. - SEEK Immobilier`;
+        const dashboardLink = `${process.env.FRONTEND_URL ?? "http://localhost:5173"}/locataire/dashboard`;
+        const contenuSms = `Bonjour ${bail.locataire.prenom} ${bail.locataire.nom}, votre contrat de bail "${contrat.titre}" vous a été transmis par votre propriétaire. Consultez-le ici : ${dashboardLink} - SEEK Immobilier`;
         await envoyerNotification({
             type: "CONTRAT",
+            target: "locataire",
             telephone: bail.locataire.telephone,
+            email: bail.locataire.email,
+            sujet: "Contrat de bail disponible",
             contenu: contenuSms,
+            bailId,
+            bienId,
+            proprietaireId,
+            locataireId: bail.locataire.id,
         });
     }
     catch (err) {

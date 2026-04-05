@@ -35,5 +35,6 @@ router.delete("/profile", authenticateOwner, controllerWrapper(OwnerController.d
 router.get("/messages-bail", authenticateOwner, controllerWrapper(OwnerController.getMessagesInternes));
 /** POST /api/owner/messages-bail/lus - marquer tous comme lus */
 router.post("/messages-bail/lus", authenticateOwner, controllerWrapper(OwnerController.marquerMessagesLus));
+router.get("/edl-manquants", authenticateOwner, controllerWrapper(OwnerController.getBiensSansEdl));
 export default router;
 //# sourceMappingURL=owner.routes.js.map

@@ -192,13 +192,13 @@ export declare const getEtatDesLieuxById: (id: string, userId: string, role: "PR
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;
@@ -388,13 +388,13 @@ export declare const contesterElementsLocataire: (id: string, locataireId: strin
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;
@@ -570,13 +570,13 @@ export declare const resoudreContestationsProprietaire: (id: string, proprietair
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     locataire: {
         proprietaireId: string;
@@ -734,13 +734,13 @@ export declare const getAllEtatsDesLieuxLocataire: (locataireId: string) => Prom
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     };
     pieces: ({
         elements: {
@@ -833,13 +833,13 @@ export declare const getComparison: (bailId: string, userId: string, role: "PROP
             actif: boolean;
             statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
             noteAdmin: string | null;
-            publishedAt: Date | null;
             estPremium: boolean;
             estMisEnAvant: boolean;
             dateDebutPromotion: Date | null;
             dateFinPromotion: Date | null;
             positionRotation: number;
             dernierAffichage: Date | null;
+            publishedAt: Date | null;
         };
         pieces: ({
             elements: {
@@ -931,13 +931,13 @@ export declare const getComparison: (bailId: string, userId: string, role: "PROP
             actif: boolean;
             statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
             noteAdmin: string | null;
-            publishedAt: Date | null;
             estPremium: boolean;
             estMisEnAvant: boolean;
             dateDebutPromotion: Date | null;
             dateFinPromotion: Date | null;
             positionRotation: number;
             dernierAffichage: Date | null;
+            publishedAt: Date | null;
         };
         pieces: ({
             elements: {
@@ -976,5 +976,12 @@ export declare const getComparison: (bailId: string, userId: string, role: "PROP
         documentPdf: string | null;
         nbCles: number | null;
     }) | null;
+}>;
+export declare const getOwnerCreationContext: (bailId: string, proprietaireId: string) => Promise<{
+    bailId: string;
+    statut: import("../generated/prisma/enums.js").StatutBail;
+    dateFinBail: Date | null;
+    canCreateSortie: boolean;
+    sortieBlockReason: string | null;
 }>;
 //# sourceMappingURL=etat-des-lieux.service.d.ts.map

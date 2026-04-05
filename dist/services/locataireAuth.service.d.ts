@@ -42,8 +42,10 @@ export declare const login: (data: {
         prenom: string;
     };
 }>;
-export declare const refresh: (oldRefreshToken: string) => Promise<LocataireTokenPair>;
-export declare const logout: (refreshToken: string) => Promise<void>;
+export declare const refresh: (oldRefreshToken: string) => Promise<LocataireTokenPair & {
+    locataireId: string;
+}>;
+export declare const logout: (refreshToken: string) => Promise<string | null>;
 export declare const me: (id: string) => Promise<{
     proprietaireId: string;
     statut: import("../generated/prisma/enums.js").StatutLocataire;

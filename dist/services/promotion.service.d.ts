@@ -55,6 +55,13 @@ export declare const getAnnoncesMiseEnAvant: (limit?: number) => Promise<{
             slug: string;
             ordre: number;
         } | null;
+        proprietaire: {
+            id: string;
+            telephone: string;
+            nom: string;
+            prenom: string;
+            statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+        };
         statutBien: {
             id: string;
             createdAt: Date;
@@ -64,13 +71,6 @@ export declare const getAnnoncesMiseEnAvant: (limit?: number) => Promise<{
             slug: string;
             ordre: number;
         } | null;
-        proprietaire: {
-            id: string;
-            telephone: string;
-            nom: string;
-            prenom: string;
-            statutVerification: import("../generated/prisma/enums.js").StatutVerification;
-        };
     } & {
         description: string | null;
         proprietaireId: string;
@@ -123,13 +123,13 @@ export declare const getAnnoncesMiseEnAvant: (limit?: number) => Promise<{
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     })[];
     total: number;
     rotation: {

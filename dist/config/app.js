@@ -47,15 +47,20 @@ import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../rou
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-const allowedOrigins = [
-    process.env.FRONT_URL || 'http://localhost:8080',
-    process.env.FRONT_URL_PROD || 'https://seek-front-plum.vercel.app',
-    'http://localhost:5173', // Vite default
-    'http://localhost:8080',
-    'http://localhost:3000', // React default
-    'http://localhost:3001', // React alternative
-    'https://seek-front-plum.vercel.app', // Production Vercel
-];
+const allowedOrigins = new Set([
+    process.env.FRONT_URL,
+    process.env.FRONT_URL_PROD,
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "https://seek-front-plum.vercel.app",
+].filter((origin) => Boolean(origin)));
+const isAllowedDevOrigin = (origin) => /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 // ============= COMPRESSION =============
 app.use(compression());
 // ============= SÉCURITÉ =============
@@ -71,23 +76,25 @@ app.use(helmet({
     },
     crossOriginEmbedderPolicy: false,
 }));
-// Rate limiting global
-app.use(limiteurGlobal);
-// ============= CORS =============
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests with no origin (e.g., curl, mobile apps)
         if (!origin)
             return callback(null, true);
-        if (allowedOrigins.includes(origin))
+        if (allowedOrigins.has(origin) || isAllowedDevOrigin(origin))
             return callback(null, true);
         return callback(new Error('CORS policy: origin not allowed'), false);
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-owner-id'],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-owner-id"],
+    optionsSuccessStatus: 204,
 };
+// ============= CORS =============
 app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
+// Rate limiting global
+app.use(limiteurGlobal);
 // ============= PARSERS =============
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

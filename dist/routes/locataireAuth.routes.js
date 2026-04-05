@@ -30,6 +30,8 @@ router.patch("/bail/preavis", authenticateLocataire, controllerWrapper(Locataire
 router.patch("/bail/resilier", authenticateLocataire, controllerWrapper(LocataireAuthController.resilierBailLocataire));
 router.get("/messages-bail", authenticateLocataire, controllerWrapper(LocataireAuthController.getMessagesBailLocataire));
 router.post("/messages-bail/lus", authenticateLocataire, controllerWrapper(LocataireAuthController.marquerMessagesLusLocataire));
+router.get("/edl-manquant", authenticateLocataire, controllerWrapper(LocataireAuthController.getAlerteEdlManquant));
+router.post("/edl-manquant/demande", authenticateLocataire, controllerWrapper(LocataireAuthController.demanderEtatDesLieux));
 router.delete("/compte", authenticateLocataire, controllerWrapper(LocataireAuthController.supprimerCompte));
 /** GET /api/locataire/auth/invitations - Liste des invitations en attente */
 router.get("/invitations", authenticateLocataire, controllerWrapper(BailInvitationController.getInvitations));

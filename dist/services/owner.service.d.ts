@@ -41,8 +41,10 @@ export declare const login: (data: {
         telephoneVerifie: boolean;
     };
 }>;
-export declare const refresh: (oldRefreshToken: string) => Promise<OwnerTokenPair>;
-export declare const logout: (refreshToken: string) => Promise<void>;
+export declare const refresh: (oldRefreshToken: string) => Promise<OwnerTokenPair & {
+    proprietaireId: string;
+}>;
+export declare const logout: (refreshToken: string) => Promise<string | null>;
 export declare const me: (id: string) => Promise<{
     id: any;
     prenom: any;

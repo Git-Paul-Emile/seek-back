@@ -156,13 +156,6 @@ export declare const getLocataireWithBails: (id: string) => Promise<{
     telephone: string;
     createdAt: Date;
     updatedAt: Date;
-    proprietaire: {
-        id: string;
-        telephone: string;
-        nom: string;
-        email: string | null;
-        prenom: string;
-    };
     bails: {
         statut: import("../generated/prisma/enums.js").StatutBail;
         id: string;
@@ -199,10 +192,6 @@ export declare const getLocataireWithBails: (id: string) => Promise<{
             etage: number | null;
             nbPieces: number | null;
             actif: boolean;
-            statutBien: {
-                id: string;
-                nom: string;
-            } | null;
             quartierRel: {
                 id: string;
                 ville: {
@@ -214,6 +203,10 @@ export declare const getLocataireWithBails: (id: string) => Promise<{
                     };
                     nom: string;
                 };
+                nom: string;
+            } | null;
+            statutBien: {
+                id: string;
                 nom: string;
             } | null;
         };
@@ -236,6 +229,13 @@ export declare const getLocataireWithBails: (id: string) => Promise<{
             } | null;
         } | null;
     }[];
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+    };
     nom: string;
     email: string | null;
     prenom: string;
@@ -245,13 +245,6 @@ export declare const getLocataireWithBails: (id: string) => Promise<{
     suspenduPar: string | null;
 } | null>;
 export declare const getLocataireAvecDocuments: (id: string) => Promise<({
-    proprietaire: {
-        id: string;
-        telephone: string;
-        nom: string;
-        email: string | null;
-        prenom: string;
-    };
     bails: ({
         bien: {
             id: string;
@@ -280,6 +273,13 @@ export declare const getLocataireAvecDocuments: (id: string) => Promise<({
         motifResiliation: string | null;
         initiePar: string | null;
     })[];
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+    };
     verification: {
         statut: import("../generated/prisma/enums.js").StatutVerificationLocataire;
         id: string;

@@ -235,8 +235,8 @@ export type EtatDesLieuxWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"EtatDesLieux"> | Date | string;
     bail?: Prisma.XOR<Prisma.BailLocationScalarRelationFilter, Prisma.BailLocationWhereInput>;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     pieces?: Prisma.PieceEtatDesLieuxListRelationFilter;
 };
 export type EtatDesLieuxOrderByWithRelationInput = {
@@ -255,8 +255,8 @@ export type EtatDesLieuxOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     bail?: Prisma.BailLocationOrderByWithRelationInput;
     bien?: Prisma.BienOrderByWithRelationInput;
-    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
     locataire?: Prisma.LocataireOrderByWithRelationInput;
+    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
     pieces?: Prisma.PieceEtatDesLieuxOrderByRelationAggregateInput;
 };
 export type EtatDesLieuxWhereUniqueInput = Prisma.AtLeast<{
@@ -279,8 +279,8 @@ export type EtatDesLieuxWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"EtatDesLieux"> | Date | string;
     bail?: Prisma.XOR<Prisma.BailLocationScalarRelationFilter, Prisma.BailLocationWhereInput>;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     pieces?: Prisma.PieceEtatDesLieuxListRelationFilter;
 }, "id" | "bailId_type">;
 export type EtatDesLieuxOrderByWithAggregationInput = {
@@ -333,8 +333,8 @@ export type EtatDesLieuxCreateInput = {
     updatedAt?: Date | string;
     bail: Prisma.BailLocationCreateNestedOneWithoutEtatsDesLieuxInput;
     bien: Prisma.BienCreateNestedOneWithoutEtatsDesLieuxInput;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutEtatsDesLieuxInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     pieces?: Prisma.PieceEtatDesLieuxCreateNestedManyWithoutEtatDesLieuxInput;
 };
 export type EtatDesLieuxUncheckedCreateInput = {
@@ -365,8 +365,8 @@ export type EtatDesLieuxUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bail?: Prisma.BailLocationUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     bien?: Prisma.BienUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     pieces?: Prisma.PieceEtatDesLieuxUpdateManyWithoutEtatDesLieuxNestedInput;
 };
 export type EtatDesLieuxUncheckedUpdateInput = {
@@ -674,8 +674,8 @@ export type EtatDesLieuxCreateWithoutBienInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     bail: Prisma.BailLocationCreateNestedOneWithoutEtatsDesLieuxInput;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutEtatsDesLieuxInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     pieces?: Prisma.PieceEtatDesLieuxCreateNestedManyWithoutEtatDesLieuxInput;
 };
 export type EtatDesLieuxUncheckedCreateWithoutBienInput = {
@@ -794,8 +794,8 @@ export type EtatDesLieuxCreateWithoutBailInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     bien: Prisma.BienCreateNestedOneWithoutEtatsDesLieuxInput;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutEtatsDesLieuxInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     pieces?: Prisma.PieceEtatDesLieuxCreateNestedManyWithoutEtatDesLieuxInput;
 };
 export type EtatDesLieuxUncheckedCreateWithoutBailInput = {
@@ -897,8 +897,8 @@ export type EtatDesLieuxCreateWithoutPiecesInput = {
     updatedAt?: Date | string;
     bail: Prisma.BailLocationCreateNestedOneWithoutEtatsDesLieuxInput;
     bien: Prisma.BienCreateNestedOneWithoutEtatsDesLieuxInput;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutEtatsDesLieuxInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput;
 };
 export type EtatDesLieuxUncheckedCreateWithoutPiecesInput = {
     id?: string;
@@ -940,8 +940,8 @@ export type EtatDesLieuxUpdateWithoutPiecesInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bail?: Prisma.BailLocationUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     bien?: Prisma.BienUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
 };
 export type EtatDesLieuxUncheckedUpdateWithoutPiecesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -983,8 +983,8 @@ export type EtatDesLieuxUpdateWithoutBienInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bail?: Prisma.BailLocationUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     pieces?: Prisma.PieceEtatDesLieuxUpdateManyWithoutEtatDesLieuxNestedInput;
 };
 export type EtatDesLieuxUncheckedUpdateWithoutBienInput = {
@@ -1099,8 +1099,8 @@ export type EtatDesLieuxUpdateWithoutBailInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bien?: Prisma.BienUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput;
     pieces?: Prisma.PieceEtatDesLieuxUpdateManyWithoutEtatDesLieuxNestedInput;
 };
 export type EtatDesLieuxUncheckedUpdateWithoutBailInput = {
@@ -1230,8 +1230,8 @@ export type EtatDesLieuxSelect<ExtArgs extends runtime.Types.Extensions.Internal
     updatedAt?: boolean;
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     pieces?: boolean | Prisma.EtatDesLieux$piecesArgs<ExtArgs>;
     _count?: boolean | Prisma.EtatDesLieuxCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["etatDesLieux"]>;
@@ -1251,8 +1251,8 @@ export type EtatDesLieuxSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     updatedAt?: boolean;
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["etatDesLieux"]>;
 export type EtatDesLieuxSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1270,8 +1270,8 @@ export type EtatDesLieuxSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     updatedAt?: boolean;
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["etatDesLieux"]>;
 export type EtatDesLieuxSelectScalar = {
     id?: boolean;
@@ -1292,30 +1292,30 @@ export type EtatDesLieuxOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type EtatDesLieuxInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     pieces?: boolean | Prisma.EtatDesLieux$piecesArgs<ExtArgs>;
     _count?: boolean | Prisma.EtatDesLieuxCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type EtatDesLieuxIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 };
 export type EtatDesLieuxIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bail?: boolean | Prisma.BailLocationDefaultArgs<ExtArgs>;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 };
 export type $EtatDesLieuxPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "EtatDesLieux";
     objects: {
         bail: Prisma.$BailLocationPayload<ExtArgs>;
         bien: Prisma.$BienPayload<ExtArgs>;
-        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
         locataire: Prisma.$LocatairePayload<ExtArgs>;
+        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
         pieces: Prisma.$PieceEtatDesLieuxPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1663,8 +1663,8 @@ export interface Prisma__EtatDesLieuxClient<T, Null = never, ExtArgs extends run
     readonly [Symbol.toStringTag]: "PrismaPromise";
     bail<T extends Prisma.BailLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__BailLocationClient<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     bien<T extends Prisma.BienDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BienDefaultArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     locataire<T extends Prisma.LocataireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LocataireDefaultArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     pieces<T extends Prisma.EtatDesLieux$piecesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EtatDesLieux$piecesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PieceEtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.

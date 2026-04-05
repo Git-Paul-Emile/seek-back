@@ -5,6 +5,7 @@ import * as LocataireRepo from "../repositories/locataire.repository.js";
 import { prisma } from "../config/database.js";
 import * as CloudinaryService from "./cloudinary.service.js";
 import { envoyerLienActivationLocataire } from "./notification.service.js";
+import { envoyerNotification } from "./notification.service.js";
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
 const TOKEN_EXPIRY_HOURS = 72;
 // ─── Liste ────────────────────────────────────────────────────────────────────
@@ -42,8 +43,6 @@ export const create = async (proprietaireId, data) => {
         locataireTelephone: telephone,
         locataireNom: `${data.prenom.trim()} ${data.nom.trim()}`,
         lien,
-        locataireId: locataire.id,
-        proprietaireId,
     }).catch((err) => console.error("[Locataire] Erreur envoi lien activation :", err));
     return locataire;
 };
@@ -118,8 +117,6 @@ export const getLien = async (id, proprietaireId) => {
         locataireTelephone: locataire.telephone,
         locataireNom: `${locataire.prenom} ${locataire.nom}`,
         lien,
-        locataireId: locataire.id,
-        proprietaireId,
     }).catch((err) => console.error("[Locataire] Erreur renvoi lien activation :", err));
     return {
         // Le lien est retourné pour usage interne (ex: email contrat via contrat.service.ts)
@@ -152,6 +149,19 @@ export const approveLocataireVerification = async (locataireId, proprietaireId) 
     if (!updated) {
         throw new AppError("Erreur lors de l'approbation", StatusCodes.INTERNAL_SERVER_ERROR);
     }
+    if (locataire.telephone) {
+        await envoyerNotification({
+            type: "VERIFICATION_LOCATAIRE",
+            target: "locataire",
+            telephone: locataire.telephone,
+            email: locataire.email,
+            sujet: "Identité approuvée",
+            contenu: "Votre vérification d'identité a été approuvée par votre propriétaire.",
+            proprietaireId,
+            locataireId,
+            noSmsEmail: true,
+        }).catch(() => null);
+    }
     return updated;
 };
 export const rejectLocataireVerification = async (locataireId, proprietaireId, motifRejet) => {
@@ -178,6 +188,19 @@ export const rejectLocataireVerification = async (locataireId, proprietaireId, m
     const updated = await LocataireRepo.rejectVerification(locataireId, proprietaireId, motifRejet);
     if (!updated) {
         throw new AppError("Erreur lors du rejet", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    if (locataire.telephone) {
+        await envoyerNotification({
+            type: "VERIFICATION_LOCATAIRE",
+            target: "locataire",
+            telephone: locataire.telephone,
+            email: locataire.email,
+            sujet: "Identité rejetée",
+            contenu: `Votre vérification d'identité a été rejetée. Motif du rejet : ${motifRejet}`,
+            proprietaireId,
+            locataireId,
+            noSmsEmail: true,
+        }).catch(() => null);
     }
     return updated;
 };

@@ -14,6 +14,7 @@ const BIEN_INCLUDE = {
     proprietaire: {
         select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
     },
+    etablissements: { select: { id: true } },
 };
 // ─── Fonctions CRUD ───────────────────────────────────────────────────────────
 export const createBien = async (data) => {

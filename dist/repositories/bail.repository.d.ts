@@ -15,6 +15,11 @@ export interface CreateBailData {
     frequencePaiement?: string | null;
 }
 export declare const create: (data: CreateBailData) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -59,6 +64,11 @@ export declare const create: (data: CreateBailData) => Promise<{
     initiePar: string | null;
 }>;
 export declare const findById: (id: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -103,6 +113,11 @@ export declare const findById: (id: string) => Promise<({
     initiePar: string | null;
 }) | null>;
 export declare const findActifByBien: (bienId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -147,6 +162,11 @@ export declare const findActifByBien: (bienId: string) => Promise<({
     initiePar: string | null;
 }) | null>;
 export declare const findAArchiverByBien: (bienId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -191,6 +211,11 @@ export declare const findAArchiverByBien: (bienId: string) => Promise<({
     initiePar: string | null;
 }) | null>;
 export declare const findByBien: (bienId: string) => Promise<({
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -235,6 +260,11 @@ export declare const findByBien: (bienId: string) => Promise<({
     initiePar: string | null;
 })[]>;
 export declare const updateStatut: (id: string, statut: StatutBail) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -279,6 +309,11 @@ export declare const updateStatut: (id: string, statut: StatutBail) => Promise<{
     initiePar: string | null;
 }>;
 export declare const prolonger: (id: string, dateFinBail: Date) => Promise<{
+    etatsDesLieux: {
+        statut: import("../generated/prisma/enums.js").StatutEtatDesLieux;
+        id: string;
+        type: import("../generated/prisma/enums.js").TypeEtatDesLieux;
+    }[];
     bien: {
         id: string;
         ville: string | null;
@@ -404,12 +439,12 @@ export declare const updateBienStatut: (bienId: string, statutBienId: string) =>
     actif: boolean;
     statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 //# sourceMappingURL=bail.repository.d.ts.map

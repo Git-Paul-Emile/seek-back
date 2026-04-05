@@ -26,6 +26,13 @@ const BAIL_INCLUDE = {
             typeTransaction: { select: { slug: true } },
         },
     },
+    etatsDesLieux: {
+        select: {
+            id: true,
+            type: true,
+            statut: true,
+        },
+    },
 };
 // ─── CRUD ─────────────────────────────────────────────────────────────────────
 export const create = async (data) => {

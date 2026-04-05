@@ -19,6 +19,8 @@ export type ComptePublicMinAggregateOutputType = {
     password: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    locataireId: string | null;
+    proprietaireId: string | null;
 };
 export type ComptePublicMaxAggregateOutputType = {
     id: string | null;
@@ -29,6 +31,8 @@ export type ComptePublicMaxAggregateOutputType = {
     password: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    locataireId: string | null;
+    proprietaireId: string | null;
 };
 export type ComptePublicCountAggregateOutputType = {
     id: number;
@@ -39,6 +43,8 @@ export type ComptePublicCountAggregateOutputType = {
     password: number;
     createdAt: number;
     updatedAt: number;
+    locataireId: number;
+    proprietaireId: number;
     _all: number;
 };
 export type ComptePublicMinAggregateInputType = {
@@ -50,6 +56,8 @@ export type ComptePublicMinAggregateInputType = {
     password?: true;
     createdAt?: true;
     updatedAt?: true;
+    locataireId?: true;
+    proprietaireId?: true;
 };
 export type ComptePublicMaxAggregateInputType = {
     id?: true;
@@ -60,6 +68,8 @@ export type ComptePublicMaxAggregateInputType = {
     password?: true;
     createdAt?: true;
     updatedAt?: true;
+    locataireId?: true;
+    proprietaireId?: true;
 };
 export type ComptePublicCountAggregateInputType = {
     id?: true;
@@ -70,6 +80,8 @@ export type ComptePublicCountAggregateInputType = {
     password?: true;
     createdAt?: true;
     updatedAt?: true;
+    locataireId?: true;
+    proprietaireId?: true;
     _all?: true;
 };
 export type ComptePublicAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -143,6 +155,8 @@ export type ComptePublicGroupByOutputType = {
     password: string;
     createdAt: Date;
     updatedAt: Date;
+    locataireId: string | null;
+    proprietaireId: string | null;
     _count: ComptePublicCountAggregateOutputType | null;
     _min: ComptePublicMinAggregateOutputType | null;
     _max: ComptePublicMaxAggregateOutputType | null;
@@ -162,9 +176,14 @@ export type ComptePublicWhereInput = {
     password?: Prisma.StringFilter<"ComptePublic"> | string;
     createdAt?: Prisma.DateTimeFilter<"ComptePublic"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ComptePublic"> | Date | string;
-    favoris?: Prisma.FavoriListRelationFilter;
+    locataireId?: Prisma.StringNullableFilter<"ComptePublic"> | string | null;
+    proprietaireId?: Prisma.StringNullableFilter<"ComptePublic"> | string | null;
+    locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireNullableScalarRelationFilter, Prisma.ProprietaireWhereInput> | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenListRelationFilter;
+    favoris?: Prisma.FavoriListRelationFilter;
     signalements?: Prisma.SignalementListRelationFilter;
+    alertes?: Prisma.AlerteListRelationFilter;
 };
 export type ComptePublicOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -175,14 +194,21 @@ export type ComptePublicOrderByWithRelationInput = {
     password?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    favoris?: Prisma.FavoriOrderByRelationAggregateInput;
+    locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    locataire?: Prisma.LocataireOrderByWithRelationInput;
+    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenOrderByRelationAggregateInput;
+    favoris?: Prisma.FavoriOrderByRelationAggregateInput;
     signalements?: Prisma.SignalementOrderByRelationAggregateInput;
+    alertes?: Prisma.AlerteOrderByRelationAggregateInput;
 };
 export type ComptePublicWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
     telephone?: string;
     email?: string;
+    locataireId?: string;
+    proprietaireId?: string;
     AND?: Prisma.ComptePublicWhereInput | Prisma.ComptePublicWhereInput[];
     OR?: Prisma.ComptePublicWhereInput[];
     NOT?: Prisma.ComptePublicWhereInput | Prisma.ComptePublicWhereInput[];
@@ -191,10 +217,13 @@ export type ComptePublicWhereUniqueInput = Prisma.AtLeast<{
     password?: Prisma.StringFilter<"ComptePublic"> | string;
     createdAt?: Prisma.DateTimeFilter<"ComptePublic"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ComptePublic"> | Date | string;
-    favoris?: Prisma.FavoriListRelationFilter;
+    locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireNullableScalarRelationFilter, Prisma.ProprietaireWhereInput> | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenListRelationFilter;
+    favoris?: Prisma.FavoriListRelationFilter;
     signalements?: Prisma.SignalementListRelationFilter;
-}, "id" | "telephone" | "email">;
+    alertes?: Prisma.AlerteListRelationFilter;
+}, "id" | "telephone" | "email" | "locataireId" | "proprietaireId">;
 export type ComptePublicOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     nom?: Prisma.SortOrder;
@@ -204,6 +233,8 @@ export type ComptePublicOrderByWithAggregationInput = {
     password?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.ComptePublicCountOrderByAggregateInput;
     _max?: Prisma.ComptePublicMaxOrderByAggregateInput;
     _min?: Prisma.ComptePublicMinOrderByAggregateInput;
@@ -220,6 +251,8 @@ export type ComptePublicScalarWhereWithAggregatesInput = {
     password?: Prisma.StringWithAggregatesFilter<"ComptePublic"> | string;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"ComptePublic"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ComptePublic"> | Date | string;
+    locataireId?: Prisma.StringNullableWithAggregatesFilter<"ComptePublic"> | string | null;
+    proprietaireId?: Prisma.StringNullableWithAggregatesFilter<"ComptePublic"> | string | null;
 };
 export type ComptePublicCreateInput = {
     id?: string;
@@ -230,9 +263,12 @@ export type ComptePublicCreateInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicUncheckedCreateInput = {
     id?: string;
@@ -243,9 +279,12 @@ export type ComptePublicUncheckedCreateInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -256,9 +295,12 @@ export type ComptePublicUpdateInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -269,9 +311,12 @@ export type ComptePublicUncheckedUpdateInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicCreateManyInput = {
     id?: string;
@@ -282,6 +327,8 @@ export type ComptePublicCreateManyInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
 };
 export type ComptePublicUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -302,6 +349,8 @@ export type ComptePublicUncheckedUpdateManyInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type ComptePublicCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -312,6 +361,8 @@ export type ComptePublicCountOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
 };
 export type ComptePublicMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -322,6 +373,8 @@ export type ComptePublicMaxOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
 };
 export type ComptePublicMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -332,6 +385,8 @@ export type ComptePublicMinOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
 };
 export type ComptePublicScalarRelationFilter = {
     is?: Prisma.ComptePublicWhereInput;
@@ -365,6 +420,76 @@ export type ComptePublicUpdateOneRequiredWithoutFavorisNestedInput = {
     connect?: Prisma.ComptePublicWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutFavorisInput, Prisma.ComptePublicUpdateWithoutFavorisInput>, Prisma.ComptePublicUncheckedUpdateWithoutFavorisInput>;
 };
+export type ComptePublicCreateNestedOneWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutLocataireInput;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+};
+export type ComptePublicUncheckedCreateNestedOneWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutLocataireInput;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+};
+export type ComptePublicUpdateOneWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutLocataireInput;
+    upsert?: Prisma.ComptePublicUpsertWithoutLocataireInput;
+    disconnect?: Prisma.ComptePublicWhereInput | boolean;
+    delete?: Prisma.ComptePublicWhereInput | boolean;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutLocataireInput, Prisma.ComptePublicUpdateWithoutLocataireInput>, Prisma.ComptePublicUncheckedUpdateWithoutLocataireInput>;
+};
+export type ComptePublicUncheckedUpdateOneWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutLocataireInput;
+    upsert?: Prisma.ComptePublicUpsertWithoutLocataireInput;
+    disconnect?: Prisma.ComptePublicWhereInput | boolean;
+    delete?: Prisma.ComptePublicWhereInput | boolean;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutLocataireInput, Prisma.ComptePublicUpdateWithoutLocataireInput>, Prisma.ComptePublicUncheckedUpdateWithoutLocataireInput>;
+};
+export type ComptePublicCreateNestedOneWithoutProprietaireInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutProprietaireInput;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+};
+export type ComptePublicUncheckedCreateNestedOneWithoutProprietaireInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutProprietaireInput;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+};
+export type ComptePublicUpdateOneWithoutProprietaireNestedInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutProprietaireInput;
+    upsert?: Prisma.ComptePublicUpsertWithoutProprietaireInput;
+    disconnect?: Prisma.ComptePublicWhereInput | boolean;
+    delete?: Prisma.ComptePublicWhereInput | boolean;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutProprietaireInput, Prisma.ComptePublicUpdateWithoutProprietaireInput>, Prisma.ComptePublicUncheckedUpdateWithoutProprietaireInput>;
+};
+export type ComptePublicUncheckedUpdateOneWithoutProprietaireNestedInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutProprietaireInput;
+    upsert?: Prisma.ComptePublicUpsertWithoutProprietaireInput;
+    disconnect?: Prisma.ComptePublicWhereInput | boolean;
+    delete?: Prisma.ComptePublicWhereInput | boolean;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutProprietaireInput, Prisma.ComptePublicUpdateWithoutProprietaireInput>, Prisma.ComptePublicUncheckedUpdateWithoutProprietaireInput>;
+};
+export type ComptePublicCreateNestedOneWithoutAlertesInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutAlertesInput, Prisma.ComptePublicUncheckedCreateWithoutAlertesInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutAlertesInput;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+};
+export type ComptePublicUpdateOneWithoutAlertesNestedInput = {
+    create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutAlertesInput, Prisma.ComptePublicUncheckedCreateWithoutAlertesInput>;
+    connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutAlertesInput;
+    upsert?: Prisma.ComptePublicUpsertWithoutAlertesInput;
+    disconnect?: Prisma.ComptePublicWhereInput | boolean;
+    delete?: Prisma.ComptePublicWhereInput | boolean;
+    connect?: Prisma.ComptePublicWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ComptePublicUpdateToOneWithWhereWithoutAlertesInput, Prisma.ComptePublicUpdateWithoutAlertesInput>, Prisma.ComptePublicUncheckedUpdateWithoutAlertesInput>;
+};
 export type ComptePublicCreateNestedOneWithoutSignalementsInput = {
     create?: Prisma.XOR<Prisma.ComptePublicCreateWithoutSignalementsInput, Prisma.ComptePublicUncheckedCreateWithoutSignalementsInput>;
     connectOrCreate?: Prisma.ComptePublicCreateOrConnectWithoutSignalementsInput;
@@ -388,8 +513,11 @@ export type ComptePublicCreateWithoutRefreshTokensInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
     favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -400,8 +528,11 @@ export type ComptePublicUncheckedCreateWithoutRefreshTokensInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
     favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.ComptePublicWhereUniqueInput;
@@ -425,8 +556,11 @@ export type ComptePublicUpdateWithoutRefreshTokensInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
     favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -437,8 +571,11 @@ export type ComptePublicUncheckedUpdateWithoutRefreshTokensInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicCreateWithoutFavorisInput = {
     id?: string;
@@ -449,8 +586,11 @@ export type ComptePublicCreateWithoutFavorisInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicUncheckedCreateWithoutFavorisInput = {
     id?: string;
@@ -461,8 +601,11 @@ export type ComptePublicUncheckedCreateWithoutFavorisInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
     signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicCreateOrConnectWithoutFavorisInput = {
     where: Prisma.ComptePublicWhereUniqueInput;
@@ -486,8 +629,11 @@ export type ComptePublicUpdateWithoutFavorisInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicUncheckedUpdateWithoutFavorisInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -498,7 +644,229 @@ export type ComptePublicUncheckedUpdateWithoutFavorisInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicCreateWithoutLocataireInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicUncheckedCreateWithoutLocataireInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaireId?: string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicCreateOrConnectWithoutLocataireInput = {
+    where: Prisma.ComptePublicWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+};
+export type ComptePublicUpsertWithoutLocataireInput = {
+    update: Prisma.XOR<Prisma.ComptePublicUpdateWithoutLocataireInput, Prisma.ComptePublicUncheckedUpdateWithoutLocataireInput>;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutLocataireInput, Prisma.ComptePublicUncheckedCreateWithoutLocataireInput>;
+    where?: Prisma.ComptePublicWhereInput;
+};
+export type ComptePublicUpdateToOneWithWhereWithoutLocataireInput = {
+    where?: Prisma.ComptePublicWhereInput;
+    data: Prisma.XOR<Prisma.ComptePublicUpdateWithoutLocataireInput, Prisma.ComptePublicUncheckedUpdateWithoutLocataireInput>;
+};
+export type ComptePublicUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicUncheckedUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicCreateWithoutProprietaireInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicUncheckedCreateWithoutProprietaireInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    locataireId?: string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicCreateOrConnectWithoutProprietaireInput = {
+    where: Prisma.ComptePublicWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+};
+export type ComptePublicUpsertWithoutProprietaireInput = {
+    update: Prisma.XOR<Prisma.ComptePublicUpdateWithoutProprietaireInput, Prisma.ComptePublicUncheckedUpdateWithoutProprietaireInput>;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutProprietaireInput, Prisma.ComptePublicUncheckedCreateWithoutProprietaireInput>;
+    where?: Prisma.ComptePublicWhereInput;
+};
+export type ComptePublicUpdateToOneWithWhereWithoutProprietaireInput = {
+    where?: Prisma.ComptePublicWhereInput;
+    data: Prisma.XOR<Prisma.ComptePublicUpdateWithoutProprietaireInput, Prisma.ComptePublicUncheckedUpdateWithoutProprietaireInput>;
+};
+export type ComptePublicUpdateWithoutProprietaireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicUncheckedUpdateWithoutProprietaireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicCreateWithoutAlertesInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicUncheckedCreateWithoutAlertesInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    signalements?: Prisma.SignalementUncheckedCreateNestedManyWithoutComptePublicInput;
+};
+export type ComptePublicCreateOrConnectWithoutAlertesInput = {
+    where: Prisma.ComptePublicWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutAlertesInput, Prisma.ComptePublicUncheckedCreateWithoutAlertesInput>;
+};
+export type ComptePublicUpsertWithoutAlertesInput = {
+    update: Prisma.XOR<Prisma.ComptePublicUpdateWithoutAlertesInput, Prisma.ComptePublicUncheckedUpdateWithoutAlertesInput>;
+    create: Prisma.XOR<Prisma.ComptePublicCreateWithoutAlertesInput, Prisma.ComptePublicUncheckedCreateWithoutAlertesInput>;
+    where?: Prisma.ComptePublicWhereInput;
+};
+export type ComptePublicUpdateToOneWithWhereWithoutAlertesInput = {
+    where?: Prisma.ComptePublicWhereInput;
+    data: Prisma.XOR<Prisma.ComptePublicUpdateWithoutAlertesInput, Prisma.ComptePublicUncheckedUpdateWithoutAlertesInput>;
+};
+export type ComptePublicUpdateWithoutAlertesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    signalements?: Prisma.SignalementUpdateManyWithoutComptePublicNestedInput;
+};
+export type ComptePublicUncheckedUpdateWithoutAlertesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
     signalements?: Prisma.SignalementUncheckedUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicCreateWithoutSignalementsInput = {
@@ -510,8 +878,11 @@ export type ComptePublicCreateWithoutSignalementsInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutComptePublicInput;
+    proprietaire?: Prisma.ProprietaireCreateNestedOneWithoutComptePublicInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicUncheckedCreateWithoutSignalementsInput = {
     id?: string;
@@ -522,8 +893,11 @@ export type ComptePublicUncheckedCreateWithoutSignalementsInput = {
     password: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    locataireId?: string | null;
+    proprietaireId?: string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedCreateNestedManyWithoutComptePublicInput;
+    favoris?: Prisma.FavoriUncheckedCreateNestedManyWithoutComptePublicInput;
+    alertes?: Prisma.AlerteUncheckedCreateNestedManyWithoutComptePublicInput;
 };
 export type ComptePublicCreateOrConnectWithoutSignalementsInput = {
     where: Prisma.ComptePublicWhereUniqueInput;
@@ -547,8 +921,11 @@ export type ComptePublicUpdateWithoutSignalementsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutComptePublicNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneWithoutComptePublicNestedInput;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUpdateManyWithoutComptePublicNestedInput;
 };
 export type ComptePublicUncheckedUpdateWithoutSignalementsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -559,21 +936,26 @@ export type ComptePublicUncheckedUpdateWithoutSignalementsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     refreshTokens?: Prisma.ComptePublicRefreshTokenUncheckedUpdateManyWithoutComptePublicNestedInput;
+    favoris?: Prisma.FavoriUncheckedUpdateManyWithoutComptePublicNestedInput;
+    alertes?: Prisma.AlerteUncheckedUpdateManyWithoutComptePublicNestedInput;
 };
 /**
  * Count Type ComptePublicCountOutputType
  */
 export type ComptePublicCountOutputType = {
-    favoris: number;
     refreshTokens: number;
+    favoris: number;
     signalements: number;
+    alertes: number;
 };
 export type ComptePublicCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    favoris?: boolean | ComptePublicCountOutputTypeCountFavorisArgs;
     refreshTokens?: boolean | ComptePublicCountOutputTypeCountRefreshTokensArgs;
+    favoris?: boolean | ComptePublicCountOutputTypeCountFavorisArgs;
     signalements?: boolean | ComptePublicCountOutputTypeCountSignalementsArgs;
+    alertes?: boolean | ComptePublicCountOutputTypeCountAlertesArgs;
 };
 /**
  * ComptePublicCountOutputType without action
@@ -587,20 +969,26 @@ export type ComptePublicCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
 /**
  * ComptePublicCountOutputType without action
  */
-export type ComptePublicCountOutputTypeCountFavorisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.FavoriWhereInput;
-};
-/**
- * ComptePublicCountOutputType without action
- */
 export type ComptePublicCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ComptePublicRefreshTokenWhereInput;
 };
 /**
  * ComptePublicCountOutputType without action
  */
+export type ComptePublicCountOutputTypeCountFavorisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FavoriWhereInput;
+};
+/**
+ * ComptePublicCountOutputType without action
+ */
 export type ComptePublicCountOutputTypeCountSignalementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.SignalementWhereInput;
+};
+/**
+ * ComptePublicCountOutputType without action
+ */
+export type ComptePublicCountOutputTypeCountAlertesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.AlerteWhereInput;
 };
 export type ComptePublicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -611,9 +999,14 @@ export type ComptePublicSelect<ExtArgs extends runtime.Types.Extensions.Internal
     password?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    favoris?: boolean | Prisma.ComptePublic$favorisArgs<ExtArgs>;
+    locataireId?: boolean;
+    proprietaireId?: boolean;
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.ComptePublic$refreshTokensArgs<ExtArgs>;
+    favoris?: boolean | Prisma.ComptePublic$favorisArgs<ExtArgs>;
     signalements?: boolean | Prisma.ComptePublic$signalementsArgs<ExtArgs>;
+    alertes?: boolean | Prisma.ComptePublic$alertesArgs<ExtArgs>;
     _count?: boolean | Prisma.ComptePublicCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["comptePublic"]>;
 export type ComptePublicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -625,6 +1018,10 @@ export type ComptePublicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     password?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    locataireId?: boolean;
+    proprietaireId?: boolean;
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
 }, ExtArgs["result"]["comptePublic"]>;
 export type ComptePublicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -635,6 +1032,10 @@ export type ComptePublicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     password?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    locataireId?: boolean;
+    proprietaireId?: boolean;
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
 }, ExtArgs["result"]["comptePublic"]>;
 export type ComptePublicSelectScalar = {
     id?: boolean;
@@ -645,22 +1046,36 @@ export type ComptePublicSelectScalar = {
     password?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    locataireId?: boolean;
+    proprietaireId?: boolean;
 };
-export type ComptePublicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "prenom" | "telephone" | "email" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["comptePublic"]>;
+export type ComptePublicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "prenom" | "telephone" | "email" | "password" | "createdAt" | "updatedAt" | "locataireId" | "proprietaireId", ExtArgs["result"]["comptePublic"]>;
 export type ComptePublicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    favoris?: boolean | Prisma.ComptePublic$favorisArgs<ExtArgs>;
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.ComptePublic$refreshTokensArgs<ExtArgs>;
+    favoris?: boolean | Prisma.ComptePublic$favorisArgs<ExtArgs>;
     signalements?: boolean | Prisma.ComptePublic$signalementsArgs<ExtArgs>;
+    alertes?: boolean | Prisma.ComptePublic$alertesArgs<ExtArgs>;
     _count?: boolean | Prisma.ComptePublicCountOutputTypeDefaultArgs<ExtArgs>;
 };
-export type ComptePublicIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
-export type ComptePublicIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type ComptePublicIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
+};
+export type ComptePublicIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    locataire?: boolean | Prisma.ComptePublic$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ComptePublic$proprietaireArgs<ExtArgs>;
+};
 export type $ComptePublicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "ComptePublic";
     objects: {
-        favoris: Prisma.$FavoriPayload<ExtArgs>[];
+        locataire: Prisma.$LocatairePayload<ExtArgs> | null;
+        proprietaire: Prisma.$ProprietairePayload<ExtArgs> | null;
         refreshTokens: Prisma.$ComptePublicRefreshTokenPayload<ExtArgs>[];
+        favoris: Prisma.$FavoriPayload<ExtArgs>[];
         signalements: Prisma.$SignalementPayload<ExtArgs>[];
+        alertes: Prisma.$AlertePayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -671,6 +1086,8 @@ export type $ComptePublicPayload<ExtArgs extends runtime.Types.Extensions.Intern
         password: string;
         createdAt: Date;
         updatedAt: Date;
+        locataireId: string | null;
+        proprietaireId: string | null;
     }, ExtArgs["result"]["comptePublic"]>;
     composites: {};
 };
@@ -1000,9 +1417,12 @@ export interface ComptePublicDelegate<ExtArgs extends runtime.Types.Extensions.I
  */
 export interface Prisma__ComptePublicClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    favoris<T extends Prisma.ComptePublic$favorisArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$favorisArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    locataire<T extends Prisma.ComptePublic$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$locataireArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    proprietaire<T extends Prisma.ComptePublic$proprietaireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$proprietaireArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     refreshTokens<T extends Prisma.ComptePublic$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComptePublicRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    favoris<T extends Prisma.ComptePublic$favorisArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$favorisArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     signalements<T extends Prisma.ComptePublic$signalementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$signalementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignalementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    alertes<T extends Prisma.ComptePublic$alertesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublic$alertesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1036,6 +1456,8 @@ export interface ComptePublicFieldRefs {
     readonly password: Prisma.FieldRef<"ComptePublic", 'String'>;
     readonly createdAt: Prisma.FieldRef<"ComptePublic", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"ComptePublic", 'DateTime'>;
+    readonly locataireId: Prisma.FieldRef<"ComptePublic", 'String'>;
+    readonly proprietaireId: Prisma.FieldRef<"ComptePublic", 'String'>;
 }
 /**
  * ComptePublic findUnique
@@ -1275,6 +1697,10 @@ export type ComptePublicCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
      */
     data: Prisma.ComptePublicCreateManyInput | Prisma.ComptePublicCreateManyInput[];
     skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ComptePublicIncludeCreateManyAndReturn<ExtArgs> | null;
 };
 /**
  * ComptePublic update
@@ -1342,6 +1768,10 @@ export type ComptePublicUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
      * Limit how many ComptePublics to update.
      */
     limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ComptePublicIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 /**
  * ComptePublic upsert
@@ -1407,27 +1837,40 @@ export type ComptePublicDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
     limit?: number;
 };
 /**
- * ComptePublic.favoris
+ * ComptePublic.locataire
  */
-export type ComptePublic$favorisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ComptePublic$locataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Favori
+     * Select specific fields to fetch from the Locataire
      */
-    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    select?: Prisma.LocataireSelect<ExtArgs> | null;
     /**
-     * Omit specific fields from the Favori
+     * Omit specific fields from the Locataire
      */
-    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    omit?: Prisma.LocataireOmit<ExtArgs> | null;
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: Prisma.FavoriInclude<ExtArgs> | null;
-    where?: Prisma.FavoriWhereInput;
-    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
-    cursor?: Prisma.FavoriWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
+    include?: Prisma.LocataireInclude<ExtArgs> | null;
+    where?: Prisma.LocataireWhereInput;
+};
+/**
+ * ComptePublic.proprietaire
+ */
+export type ComptePublic$proprietaireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Proprietaire
+     */
+    select?: Prisma.ProprietaireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Proprietaire
+     */
+    omit?: Prisma.ProprietaireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ProprietaireInclude<ExtArgs> | null;
+    where?: Prisma.ProprietaireWhereInput;
 };
 /**
  * ComptePublic.refreshTokens
@@ -1453,6 +1896,29 @@ export type ComptePublic$refreshTokensArgs<ExtArgs extends runtime.Types.Extensi
     distinct?: Prisma.ComptePublicRefreshTokenScalarFieldEnum | Prisma.ComptePublicRefreshTokenScalarFieldEnum[];
 };
 /**
+ * ComptePublic.favoris
+ */
+export type ComptePublic$favorisArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    where?: Prisma.FavoriWhereInput;
+    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
+    cursor?: Prisma.FavoriWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
+};
+/**
  * ComptePublic.signalements
  */
 export type ComptePublic$signalementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1474,6 +1940,29 @@ export type ComptePublic$signalementsArgs<ExtArgs extends runtime.Types.Extensio
     take?: number;
     skip?: number;
     distinct?: Prisma.SignalementScalarFieldEnum | Prisma.SignalementScalarFieldEnum[];
+};
+/**
+ * ComptePublic.alertes
+ */
+export type ComptePublic$alertesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alerte
+     */
+    select?: Prisma.AlerteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Alerte
+     */
+    omit?: Prisma.AlerteOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.AlerteInclude<ExtArgs> | null;
+    where?: Prisma.AlerteWhereInput;
+    orderBy?: Prisma.AlerteOrderByWithRelationInput | Prisma.AlerteOrderByWithRelationInput[];
+    cursor?: Prisma.AlerteWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.AlerteScalarFieldEnum | Prisma.AlerteScalarFieldEnum[];
 };
 /**
  * ComptePublic without action

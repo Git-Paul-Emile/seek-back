@@ -138,8 +138,8 @@ export type VilleWhereInput = {
     paysId?: Prisma.StringFilter<"Ville"> | string;
     createdAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-    pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
     quartiers?: Prisma.QuartierListRelationFilter;
+    pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
 };
 export type VilleOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -147,8 +147,8 @@ export type VilleOrderByWithRelationInput = {
     paysId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    pays?: Prisma.PaysOrderByWithRelationInput;
     quartiers?: Prisma.QuartierOrderByRelationAggregateInput;
+    pays?: Prisma.PaysOrderByWithRelationInput;
 };
 export type VilleWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -160,8 +160,8 @@ export type VilleWhereUniqueInput = Prisma.AtLeast<{
     paysId?: Prisma.StringFilter<"Ville"> | string;
     createdAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Ville"> | Date | string;
-    pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
     quartiers?: Prisma.QuartierListRelationFilter;
+    pays?: Prisma.XOR<Prisma.PaysScalarRelationFilter, Prisma.PaysWhereInput>;
 }, "id" | "nom_paysId">;
 export type VilleOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -188,8 +188,8 @@ export type VilleCreateInput = {
     nom: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    pays: Prisma.PaysCreateNestedOneWithoutVillesInput;
     quartiers?: Prisma.QuartierCreateNestedManyWithoutVilleInput;
+    pays: Prisma.PaysCreateNestedOneWithoutVillesInput;
 };
 export type VilleUncheckedCreateInput = {
     id?: string;
@@ -204,8 +204,8 @@ export type VilleUpdateInput = {
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    pays?: Prisma.PaysUpdateOneRequiredWithoutVillesNestedInput;
     quartiers?: Prisma.QuartierUpdateManyWithoutVilleNestedInput;
+    pays?: Prisma.PaysUpdateOneRequiredWithoutVillesNestedInput;
 };
 export type VilleUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -464,8 +464,8 @@ export type VilleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     paysId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
     quartiers?: boolean | Prisma.Ville$quartiersArgs<ExtArgs>;
+    pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.VilleCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["ville"]>;
 export type VilleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -493,8 +493,8 @@ export type VilleSelectScalar = {
 };
 export type VilleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "paysId" | "createdAt" | "updatedAt", ExtArgs["result"]["ville"]>;
 export type VilleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
     quartiers?: boolean | Prisma.Ville$quartiersArgs<ExtArgs>;
+    pays?: boolean | Prisma.PaysDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.VilleCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type VilleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -506,8 +506,8 @@ export type VilleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $VillePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Ville";
     objects: {
-        pays: Prisma.$PaysPayload<ExtArgs>;
         quartiers: Prisma.$QuartierPayload<ExtArgs>[];
+        pays: Prisma.$PaysPayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -844,8 +844,8 @@ export interface VilleDelegate<ExtArgs extends runtime.Types.Extensions.Internal
  */
 export interface Prisma__VilleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    pays<T extends Prisma.PaysDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaysDefaultArgs<ExtArgs>>): Prisma.Prisma__PaysClient<runtime.Types.Result.GetResult<Prisma.$PaysPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     quartiers<T extends Prisma.Ville$quartiersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ville$quartiersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuartierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    pays<T extends Prisma.PaysDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaysDefaultArgs<ExtArgs>>): Prisma.Prisma__PaysClient<runtime.Types.Result.GetResult<Prisma.$PaysPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

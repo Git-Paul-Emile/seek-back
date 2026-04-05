@@ -146,8 +146,8 @@ export type MeubleWhereInput = {
     actif?: Prisma.BoolFilter<"Meuble"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
-    categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
     biens?: Prisma.BienMeubleListRelationFilter;
+    categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
 };
 export type MeubleOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -156,8 +156,8 @@ export type MeubleOrderByWithRelationInput = {
     actif?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    categorie?: Prisma.CategorieMeubleOrderByWithRelationInput;
     biens?: Prisma.BienMeubleOrderByRelationAggregateInput;
+    categorie?: Prisma.CategorieMeubleOrderByWithRelationInput;
 };
 export type MeubleWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -170,8 +170,8 @@ export type MeubleWhereUniqueInput = Prisma.AtLeast<{
     actif?: Prisma.BoolFilter<"Meuble"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Meuble"> | Date | string;
-    categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
     biens?: Prisma.BienMeubleListRelationFilter;
+    categorie?: Prisma.XOR<Prisma.CategorieMeubleScalarRelationFilter, Prisma.CategorieMeubleWhereInput>;
 }, "id" | "nom_categorieId">;
 export type MeubleOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -201,8 +201,8 @@ export type MeubleCreateInput = {
     actif?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    categorie: Prisma.CategorieMeubleCreateNestedOneWithoutMeublesInput;
     biens?: Prisma.BienMeubleCreateNestedManyWithoutMeubleInput;
+    categorie: Prisma.CategorieMeubleCreateNestedOneWithoutMeublesInput;
 };
 export type MeubleUncheckedCreateInput = {
     id?: string;
@@ -219,8 +219,8 @@ export type MeubleUpdateInput = {
     actif?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    categorie?: Prisma.CategorieMeubleUpdateOneRequiredWithoutMeublesNestedInput;
     biens?: Prisma.BienMeubleUpdateManyWithoutMeubleNestedInput;
+    categorie?: Prisma.CategorieMeubleUpdateOneRequiredWithoutMeublesNestedInput;
 };
 export type MeubleUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -498,8 +498,8 @@ export type MeubleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     actif?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
     biens?: boolean | Prisma.Meuble$biensArgs<ExtArgs>;
+    categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.MeubleCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["meuble"]>;
 export type MeubleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -530,8 +530,8 @@ export type MeubleSelectScalar = {
 };
 export type MeubleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "categorieId" | "actif" | "createdAt" | "updatedAt", ExtArgs["result"]["meuble"]>;
 export type MeubleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
     biens?: boolean | Prisma.Meuble$biensArgs<ExtArgs>;
+    categorie?: boolean | Prisma.CategorieMeubleDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.MeubleCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type MeubleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -543,8 +543,8 @@ export type MeubleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $MeublePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Meuble";
     objects: {
-        categorie: Prisma.$CategorieMeublePayload<ExtArgs>;
         biens: Prisma.$BienMeublePayload<ExtArgs>[];
+        categorie: Prisma.$CategorieMeublePayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -882,8 +882,8 @@ export interface MeubleDelegate<ExtArgs extends runtime.Types.Extensions.Interna
  */
 export interface Prisma__MeubleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    categorie<T extends Prisma.CategorieMeubleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategorieMeubleDefaultArgs<ExtArgs>>): Prisma.Prisma__CategorieMeubleClient<runtime.Types.Result.GetResult<Prisma.$CategorieMeublePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     biens<T extends Prisma.Meuble$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meuble$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienMeublePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    categorie<T extends Prisma.CategorieMeubleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategorieMeubleDefaultArgs<ExtArgs>>): Prisma.Prisma__CategorieMeubleClient<runtime.Types.Result.GetResult<Prisma.$CategorieMeublePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

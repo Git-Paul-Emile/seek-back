@@ -264,6 +264,7 @@ model ComptePublic {
   refreshTokens  ComptePublicRefreshToken[]
   favoris        Favori[]
   signalements   Signalement[]
+  alertes        Alerte[]
 }
 
 model ComptePublicRefreshToken {
@@ -746,21 +747,24 @@ model RefreshToken {
 }
 
 model Alerte {
-  id              String       @id @default(uuid())
+  id              String        @id @default(uuid())
   telephone       String
+  comptePublicId  String?
   ville           String?
   quartier        String?
   typeLogement    String?
   typeTransaction String?
   prixMin         Int?
   prixMax         Int?
-  canalPrefere    String       @default("SMS")
-  statut          StatutAlerte @default(ACTIVE)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  canalPrefere    String        @default("SMS")
+  statut          StatutAlerte  @default(ACTIVE)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  comptePublic    ComptePublic? @relation(fields: [comptePublicId], references: [id], onDelete: Cascade)
 
   @@index([telephone])
   @@index([statut])
+  @@index([comptePublicId])
 }
 
 model Transaction {

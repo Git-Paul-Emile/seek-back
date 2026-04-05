@@ -83,13 +83,13 @@ export declare const getTransactionById: (transactionId: string, proprietaireId:
         actif: boolean;
         statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     } | null;
     locataire: {
         id: string;

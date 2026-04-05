@@ -10,6 +10,7 @@ export declare const forgotPassword: (req: Request, res: Response) => Promise<vo
 export declare const resetPassword: (req: Request, res: Response) => Promise<void>;
 export declare const getMessagesInternes: (req: Request, res: Response) => Promise<void>;
 export declare const marquerMessagesLus: (req: Request, res: Response) => Promise<void>;
+export declare const getBiensSansEdl: (req: Request, res: Response) => Promise<void>;
 export declare const verifierTelephone: (req: Request, res: Response) => Promise<void>;
 export declare const renvoyerOtp: (req: Request, res: Response) => Promise<void>;
 export declare const verifierTelephonePublic: (req: Request, res: Response) => Promise<void>;

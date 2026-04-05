@@ -1,6 +1,7 @@
-export type TypeNotif = "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT" | "VERIFICATION_LOCATAIRE" | "PAIEMENT_LOCATAIRE" | "PREAVIS" | "RESILIATION" | "FIN_BAIL" | "CONTRAT" | "RESET_PASSWORD" | "ALERTE" | "INVITATION_BAIL" | "VERIFICATION_TELEPHONE" | "PAIEMENT_ESPECES_LOCATAIRE" | "CONFIRMATION_ESPECES_PROPRIETAIRE" | "ANNONCE_VALIDEE" | "ANNONCE_REJETEE";
+export type TypeNotif = "RAPPEL_LOYER" | "CONFIRMATION_PAIEMENT" | "ALERTE_RETARD" | "INITIATION_PAIEMENT" | "VERIFICATION_LOCATAIRE" | "PAIEMENT_LOCATAIRE" | "PREAVIS" | "RESILIATION" | "FIN_BAIL" | "CONTRAT" | "RESET_PASSWORD" | "ALERTE" | "INVITATION_BAIL" | "VERIFICATION_TELEPHONE" | "PAIEMENT_ESPECES_LOCATAIRE" | "CONFIRMATION_ESPECES_PROPRIETAIRE" | "ETAT_DES_LIEUX_DISPONIBLE" | "ETAT_DES_LIEUX_VALIDE" | "ETAT_DES_LIEUX_MODIFIE" | "ANNONCE_VALIDEE" | "ANNONCE_REJETEE";
 export interface NotificationPayload {
     type: TypeNotif;
+    target?: "owner" | "locataire";
     /** Numéro de téléphone (obligatoire, prioritaire) */
     telephone: string;
     /** Email (optionnel, envoyé en complément si fourni) */
@@ -32,8 +33,8 @@ export declare const envoyerNotification: (payload: NotificationPayload) => Prom
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerRappelLoyer: (params: {
     locataireTelephone: string;
@@ -63,8 +64,8 @@ export declare const envoyerRappelLoyer: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerConfirmationPaiement: (params: {
     locataireTelephone: string;
@@ -95,8 +96,40 @@ export declare const envoyerConfirmationPaiement: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
+}>;
+export declare const envoyerConfirmationPaiementProprietaire: (params: {
+    locataireTelephone: string;
+    locataireEmail?: string | null;
+    proprietaireLabel?: string | null;
+    montant: number;
+    datePaiement: string;
+    modePaiement?: string | null;
+    bienTitre?: string | null;
+    echeanceId: string;
+    bailId: string;
+    bienId: string;
+    proprietaireId: string;
+    locataireId: string;
+}) => Promise<{
+    proprietaireId: string | null;
+    statut: import("../generated/prisma/enums.js").StatutNotification;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    messageRetour: string | null;
+    contenu: string;
+    sujet: string | null;
+    type: import("../generated/prisma/enums.js").TypeNotification;
+    canal: string;
+    destinataire: string;
+    echeanceId: string | null;
+    bailId: string | null;
+    bienId: string | null;
+    locataireId: string | null;
+    envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerAlerteRetard: (params: {
     locataireTelephone: string;
@@ -127,8 +160,8 @@ export declare const envoyerAlerteRetard: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerInitiationPaiement: (params: {
     proprietaireTelephone: string;
@@ -159,8 +192,8 @@ export declare const envoyerInitiationPaiement: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerPaiementLocataire: (params: {
     proprietaireTelephone: string;
@@ -192,8 +225,8 @@ export declare const envoyerPaiementLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerPaiementEspecesLocataire: (params: {
     locataireTelephone: string;
@@ -202,6 +235,7 @@ export declare const envoyerPaiementEspecesLocataire: (params: {
     montant: number;
     datePaiement: string;
     bienTitre?: string | null;
+    nombreMois?: number;
     echeanceId: string;
     bailId: string;
     bienId: string;
@@ -223,8 +257,8 @@ export declare const envoyerPaiementEspecesLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerConfirmationEspecesProprietaire: (params: {
     proprietaireTelephone: string;
@@ -254,8 +288,8 @@ export declare const envoyerConfirmationEspecesProprietaire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerPreavisLocataire: (params: {
     locataireTelephone: string;
@@ -283,8 +317,8 @@ export declare const envoyerPreavisLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerPreavisProprietaire: (params: {
     proprietaireTelephone: string;
@@ -312,8 +346,8 @@ export declare const envoyerPreavisProprietaire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerResiliationLocataire: (params: {
     locataireTelephone: string;
@@ -341,8 +375,8 @@ export declare const envoyerResiliationLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerResiliationProprietaire: (params: {
     proprietaireTelephone: string;
@@ -370,8 +404,8 @@ export declare const envoyerResiliationProprietaire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerFinBailLocataire: (params: {
     locataireTelephone: string;
@@ -398,15 +432,13 @@ export declare const envoyerFinBailLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerLienActivationLocataire: (params: {
     locataireTelephone: string;
     locataireNom: string;
     lien: string;
-    locataireId: string;
-    proprietaireId: string;
 }) => Promise<{
     proprietaireId: string | null;
     statut: import("../generated/prisma/enums.js").StatutNotification;
@@ -423,8 +455,8 @@ export declare const envoyerLienActivationLocataire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerResetPasswordProprietaire: (params: {
     telephone: string;
@@ -448,8 +480,8 @@ export declare const envoyerResetPasswordProprietaire: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const envoyerOtpTelephone: (params: {
     telephone: string;
@@ -472,8 +504,8 @@ export declare const envoyerOtpTelephone: (params: {
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }>;
 export declare const getNotificationsBail: (bailId: string) => Promise<{
     proprietaireId: string | null;
@@ -491,8 +523,8 @@ export declare const getNotificationsBail: (bailId: string) => Promise<{
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }[]>;
 export declare const getNotificationsEcheance: (echeanceId: string) => Promise<{
     proprietaireId: string | null;
@@ -510,7 +542,7 @@ export declare const getNotificationsEcheance: (echeanceId: string) => Promise<{
     bailId: string | null;
     bienId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
+    lu: boolean;
 }[]>;
 //# sourceMappingURL=notification.service.d.ts.map

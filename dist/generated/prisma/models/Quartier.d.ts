@@ -188,8 +188,8 @@ export type QuartierWhereInput = {
     longitude?: Prisma.FloatFilter<"Quartier"> | number;
     createdAt?: Prisma.DateTimeFilter<"Quartier"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Quartier"> | Date | string;
-    ville?: Prisma.XOR<Prisma.VilleScalarRelationFilter, Prisma.VilleWhereInput>;
     biens?: Prisma.BienListRelationFilter;
+    ville?: Prisma.XOR<Prisma.VilleScalarRelationFilter, Prisma.VilleWhereInput>;
 };
 export type QuartierOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -199,8 +199,8 @@ export type QuartierOrderByWithRelationInput = {
     longitude?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    ville?: Prisma.VilleOrderByWithRelationInput;
     biens?: Prisma.BienOrderByRelationAggregateInput;
+    ville?: Prisma.VilleOrderByWithRelationInput;
 };
 export type QuartierWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -214,8 +214,8 @@ export type QuartierWhereUniqueInput = Prisma.AtLeast<{
     longitude?: Prisma.FloatFilter<"Quartier"> | number;
     createdAt?: Prisma.DateTimeFilter<"Quartier"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Quartier"> | Date | string;
-    ville?: Prisma.XOR<Prisma.VilleScalarRelationFilter, Prisma.VilleWhereInput>;
     biens?: Prisma.BienListRelationFilter;
+    ville?: Prisma.XOR<Prisma.VilleScalarRelationFilter, Prisma.VilleWhereInput>;
 }, "id" | "nom_villeId">;
 export type QuartierOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -250,8 +250,8 @@ export type QuartierCreateInput = {
     longitude: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    ville: Prisma.VilleCreateNestedOneWithoutQuartiersInput;
     biens?: Prisma.BienCreateNestedManyWithoutQuartierRelInput;
+    ville: Prisma.VilleCreateNestedOneWithoutQuartiersInput;
 };
 export type QuartierUncheckedCreateInput = {
     id?: string;
@@ -270,8 +270,8 @@ export type QuartierUpdateInput = {
     longitude?: Prisma.FloatFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    ville?: Prisma.VilleUpdateOneRequiredWithoutQuartiersNestedInput;
     biens?: Prisma.BienUpdateManyWithoutQuartierRelNestedInput;
+    ville?: Prisma.VilleUpdateOneRequiredWithoutQuartiersNestedInput;
 };
 export type QuartierUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -585,8 +585,8 @@ export type QuartierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     longitude?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    ville?: boolean | Prisma.VilleDefaultArgs<ExtArgs>;
     biens?: boolean | Prisma.Quartier$biensArgs<ExtArgs>;
+    ville?: boolean | Prisma.VilleDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.QuartierCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["quartier"]>;
 export type QuartierSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -620,8 +620,8 @@ export type QuartierSelectScalar = {
 };
 export type QuartierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nom" | "villeId" | "latitude" | "longitude" | "createdAt" | "updatedAt", ExtArgs["result"]["quartier"]>;
 export type QuartierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    ville?: boolean | Prisma.VilleDefaultArgs<ExtArgs>;
     biens?: boolean | Prisma.Quartier$biensArgs<ExtArgs>;
+    ville?: boolean | Prisma.VilleDefaultArgs<ExtArgs>;
     _count?: boolean | Prisma.QuartierCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type QuartierIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -633,8 +633,8 @@ export type QuartierIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $QuartierPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Quartier";
     objects: {
-        ville: Prisma.$VillePayload<ExtArgs>;
         biens: Prisma.$BienPayload<ExtArgs>[];
+        ville: Prisma.$VillePayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -973,8 +973,8 @@ export interface QuartierDelegate<ExtArgs extends runtime.Types.Extensions.Inter
  */
 export interface Prisma__QuartierClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    ville<T extends Prisma.VilleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VilleDefaultArgs<ExtArgs>>): Prisma.Prisma__VilleClient<runtime.Types.Result.GetResult<Prisma.$VillePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     biens<T extends Prisma.Quartier$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Quartier$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    ville<T extends Prisma.VilleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VilleDefaultArgs<ExtArgs>>): Prisma.Prisma__VilleClient<runtime.Types.Result.GetResult<Prisma.$VillePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.

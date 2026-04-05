@@ -72,7 +72,7 @@ export const envoyerNotification = async (payload) => {
         }));
     }
     // Push temps réel si le destinataire est un propriétaire connecté
-    if (payload.proprietaireId) {
+    if (payload.target === "owner" && payload.proprietaireId) {
         emitNotification({
             id: notification.id,
             proprietaireId: payload.proprietaireId,
@@ -85,6 +85,18 @@ export const envoyerNotification = async (payload) => {
         });
         emitBadgeUpdate(payload.proprietaireId).catch(() => null);
     }
+    if (payload.target === "locataire" && payload.locataireId) {
+        emitNotification({
+            id: notification.id,
+            locataireId: payload.locataireId,
+            type: payload.type,
+            titre: payload.sujet ?? payload.type,
+            message: payload.contenu,
+            bailId: payload.bailId,
+            bienId: payload.bienId,
+            createdAt: notification.createdAt.toISOString(),
+        });
+    }
     return notification;
 };
 // ─── Rappel loyer à venir / en retard ────────────────────────────────────────
@@ -95,6 +107,7 @@ export const envoyerRappelLoyer = async (params) => {
         `. Merci de procéder au paiement. - SEEK Immobilier`;
     return envoyerNotification({
         type: "RAPPEL_LOYER",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Rappel de loyer",
@@ -115,10 +128,36 @@ export const envoyerConfirmationPaiement = async (params) => {
         `. Merci. - SEEK Immobilier`;
     return envoyerNotification({
         type: "CONFIRMATION_PAIEMENT",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Confirmation de paiement",
         contenu,
+        echeanceId: params.echeanceId,
+        bailId: params.bailId,
+        bienId: params.bienId,
+        proprietaireId: params.proprietaireId,
+        locataireId: params.locataireId,
+    });
+};
+export const envoyerConfirmationPaiementProprietaire = async (params) => {
+    const proprietaireLabel = params.proprietaireLabel?.trim() || "Votre propriétaire";
+    const montantStr = params.montant.toLocaleString("fr-FR");
+    const dateStr = new Date(params.datePaiement).toLocaleDateString("fr-FR");
+    const mode = (params.modePaiement ?? "").trim().toLowerCase();
+    const isEspeces = mode === "espèces" || mode === "especes";
+    return envoyerNotification({
+        type: "CONFIRMATION_PAIEMENT",
+        target: "locataire",
+        telephone: params.locataireTelephone,
+        email: params.locataireEmail,
+        sujet: isEspeces
+            ? "Paiement en espèces confirmé par votre propriétaire"
+            : "Paiement confirmé par votre propriétaire",
+        contenu: `${proprietaireLabel} a confirmé votre paiement ${isEspeces ? "en espèces " : ""}` +
+            `de ${montantStr} FCFA du ${dateStr}` +
+            (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+            `. Le paiement est maintenant validé. - SEEK Immobilier`,
         echeanceId: params.echeanceId,
         bailId: params.bailId,
         bienId: params.bienId,
@@ -134,6 +173,7 @@ export const envoyerAlerteRetard = async (params) => {
         `. Veuillez régulariser au plus vite. - SEEK Immobilier`;
     return envoyerNotification({
         type: "ALERTE_RETARD",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Loyer en retard",
@@ -153,6 +193,7 @@ export const envoyerInitiationPaiement = async (params) => {
         `. Veuillez confirmer la réception. - SEEK Immobilier`;
     return envoyerNotification({
         type: "INITIATION_PAIEMENT",
+        target: "owner",
         telephone: params.proprietaireTelephone,
         email: params.proprietaireEmail,
         sujet: "Initiation de paiement locataire",
@@ -178,6 +219,7 @@ export const envoyerPaiementLocataire = async (params) => {
         `. Confirmez la réception ici : ${lienConfirmation} - SEEK Immobilier`;
     return envoyerNotification({
         type: "PAIEMENT_LOCATAIRE",
+        target: "owner",
         telephone: params.proprietaireTelephone,
         email: params.proprietaireEmail,
         sujet: "Paiement de loyer enregistré par votre locataire",
@@ -192,13 +234,15 @@ export const envoyerPaiementLocataire = async (params) => {
 // ─── Paiement espèces enregistré par le propriétaire (notifier le locataire) ──
 export const envoyerPaiementEspecesLocataire = async (params) => {
     const lienConfirmation = `${FRONTEND_URL}/locataire/paiements`;
+    const nbMois = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
     const contenu = `Bonjour ${params.locataireNom}, votre propriétaire a enregistré un paiement en espèces` +
-        ` de ${params.montant.toLocaleString("fr-FR")} FCFA` +
+        ` de ${params.montant.toLocaleString("fr-FR")} FCFA${nbMois}` +
         ` en date du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
         (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
         `. Confirmez ce paiement ici : ${lienConfirmation} - SEEK Immobilier`;
     return envoyerNotification({
         type: "PAIEMENT_ESPECES_LOCATAIRE",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Paiement en espèces à confirmer",
@@ -219,6 +263,7 @@ export const envoyerConfirmationEspecesProprietaire = async (params) => {
         `. Le paiement est maintenant validé. - SEEK Immobilier`;
     return envoyerNotification({
         type: "CONFIRMATION_ESPECES_PROPRIETAIRE",
+        target: "owner",
         telephone: params.proprietaireTelephone,
         email: params.proprietaireEmail,
         sujet: "Paiement en espèces confirmé par votre locataire",
@@ -238,6 +283,7 @@ export const envoyerPreavisLocataire = async (params) => {
         `. Date de fin de bail fixée au ${fin}. - SEEK Immobilier`;
     return envoyerNotification({
         type: "PREAVIS",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Préavis de fin de bail",
@@ -256,6 +302,7 @@ export const envoyerPreavisProprietaire = async (params) => {
         `. Date de fin de bail fixée au ${fin}. - SEEK Immobilier`;
     return envoyerNotification({
         type: "PREAVIS",
+        target: "owner",
         telephone: params.proprietaireTelephone,
         email: params.proprietaireEmail,
         sujet: "Préavis donné par votre locataire",
@@ -274,6 +321,7 @@ export const envoyerResiliationLocataire = async (params) => {
         `. - SEEK Immobilier`;
     return envoyerNotification({
         type: "RESILIATION",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Résiliation de votre bail",
@@ -292,6 +340,7 @@ export const envoyerResiliationProprietaire = async (params) => {
         `. - SEEK Immobilier`;
     return envoyerNotification({
         type: "RESILIATION",
+        target: "owner",
         telephone: params.proprietaireTelephone,
         email: params.proprietaireEmail,
         sujet: "Résiliation par votre locataire",
@@ -309,6 +358,7 @@ export const envoyerFinBailLocataire = async (params) => {
         `. Merci pour votre séjour. - SEEK Immobilier`;
     return envoyerNotification({
         type: "FIN_BAIL",
+        target: "locataire",
         telephone: params.locataireTelephone,
         email: params.locataireEmail,
         sujet: "Fin de votre bail",
@@ -326,9 +376,8 @@ export const envoyerLienActivationLocataire = async (params) => {
     return envoyerNotification({
         type: "VERIFICATION_LOCATAIRE",
         telephone: params.locataireTelephone,
+        sujet: "Activation de votre compte locataire",
         contenu,
-        locataireId: params.locataireId,
-        proprietaireId: params.proprietaireId,
     });
 };
 // ─── Reset password (SMS + email) ─────────────────────────────────────────────

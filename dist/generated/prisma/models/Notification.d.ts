@@ -25,10 +25,10 @@ export type NotificationMinAggregateOutputType = {
     bienId: string | null;
     proprietaireId: string | null;
     locataireId: string | null;
-    lu: boolean | null;
     envoyeAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    lu: boolean | null;
 };
 export type NotificationMaxAggregateOutputType = {
     id: string | null;
@@ -44,10 +44,10 @@ export type NotificationMaxAggregateOutputType = {
     bienId: string | null;
     proprietaireId: string | null;
     locataireId: string | null;
-    lu: boolean | null;
     envoyeAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    lu: boolean | null;
 };
 export type NotificationCountAggregateOutputType = {
     id: number;
@@ -63,10 +63,10 @@ export type NotificationCountAggregateOutputType = {
     bienId: number;
     proprietaireId: number;
     locataireId: number;
-    lu: number;
     envoyeAt: number;
     createdAt: number;
     updatedAt: number;
+    lu: number;
     _all: number;
 };
 export type NotificationMinAggregateInputType = {
@@ -83,10 +83,10 @@ export type NotificationMinAggregateInputType = {
     bienId?: true;
     proprietaireId?: true;
     locataireId?: true;
-    lu?: true;
     envoyeAt?: true;
     createdAt?: true;
     updatedAt?: true;
+    lu?: true;
 };
 export type NotificationMaxAggregateInputType = {
     id?: true;
@@ -102,10 +102,10 @@ export type NotificationMaxAggregateInputType = {
     bienId?: true;
     proprietaireId?: true;
     locataireId?: true;
-    lu?: true;
     envoyeAt?: true;
     createdAt?: true;
     updatedAt?: true;
+    lu?: true;
 };
 export type NotificationCountAggregateInputType = {
     id?: true;
@@ -121,10 +121,10 @@ export type NotificationCountAggregateInputType = {
     bienId?: true;
     proprietaireId?: true;
     locataireId?: true;
-    lu?: true;
     envoyeAt?: true;
     createdAt?: true;
     updatedAt?: true;
+    lu?: true;
     _all?: true;
 };
 export type NotificationAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -203,10 +203,10 @@ export type NotificationGroupByOutputType = {
     bienId: string | null;
     proprietaireId: string | null;
     locataireId: string | null;
-    lu: boolean;
     envoyeAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
+    lu: boolean;
     _count: NotificationCountAggregateOutputType | null;
     _min: NotificationMinAggregateOutputType | null;
     _max: NotificationMaxAggregateOutputType | null;
@@ -231,10 +231,10 @@ export type NotificationWhereInput = {
     bienId?: Prisma.StringNullableFilter<"Notification"> | string | null;
     proprietaireId?: Prisma.StringNullableFilter<"Notification"> | string | null;
     locataireId?: Prisma.StringNullableFilter<"Notification"> | string | null;
-    lu?: Prisma.BoolFilter<"Notification"> | boolean;
     envoyeAt?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Notification"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Notification"> | Date | string;
+    lu?: Prisma.BoolFilter<"Notification"> | boolean;
 };
 export type NotificationOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -250,10 +250,10 @@ export type NotificationOrderByWithRelationInput = {
     bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
     proprietaireId?: Prisma.SortOrderInput | Prisma.SortOrder;
     locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    lu?: Prisma.SortOrder;
     envoyeAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
 };
 export type NotificationWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -272,10 +272,10 @@ export type NotificationWhereUniqueInput = Prisma.AtLeast<{
     bienId?: Prisma.StringNullableFilter<"Notification"> | string | null;
     proprietaireId?: Prisma.StringNullableFilter<"Notification"> | string | null;
     locataireId?: Prisma.StringNullableFilter<"Notification"> | string | null;
-    lu?: Prisma.BoolFilter<"Notification"> | boolean;
     envoyeAt?: Prisma.DateTimeNullableFilter<"Notification"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Notification"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Notification"> | Date | string;
+    lu?: Prisma.BoolFilter<"Notification"> | boolean;
 }, "id">;
 export type NotificationOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -291,10 +291,10 @@ export type NotificationOrderByWithAggregationInput = {
     bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
     proprietaireId?: Prisma.SortOrderInput | Prisma.SortOrder;
     locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    lu?: Prisma.SortOrder;
     envoyeAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
     _count?: Prisma.NotificationCountOrderByAggregateInput;
     _max?: Prisma.NotificationMaxOrderByAggregateInput;
     _min?: Prisma.NotificationMinOrderByAggregateInput;
@@ -316,10 +316,10 @@ export type NotificationScalarWhereWithAggregatesInput = {
     bienId?: Prisma.StringNullableWithAggregatesFilter<"Notification"> | string | null;
     proprietaireId?: Prisma.StringNullableWithAggregatesFilter<"Notification"> | string | null;
     locataireId?: Prisma.StringNullableWithAggregatesFilter<"Notification"> | string | null;
-    lu?: Prisma.BoolWithAggregatesFilter<"Notification"> | boolean;
     envoyeAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Notification"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Notification"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Notification"> | Date | string;
+    lu?: Prisma.BoolWithAggregatesFilter<"Notification"> | boolean;
 };
 export type NotificationCreateInput = {
     id?: string;
@@ -335,10 +335,10 @@ export type NotificationCreateInput = {
     bienId?: string | null;
     proprietaireId?: string | null;
     locataireId?: string | null;
-    lu?: boolean;
     envoyeAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    lu?: boolean;
 };
 export type NotificationUncheckedCreateInput = {
     id?: string;
@@ -354,10 +354,10 @@ export type NotificationUncheckedCreateInput = {
     bienId?: string | null;
     proprietaireId?: string | null;
     locataireId?: string | null;
-    lu?: boolean;
     envoyeAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    lu?: boolean;
 };
 export type NotificationUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -373,10 +373,10 @@ export type NotificationUpdateInput = {
     bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     envoyeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -392,10 +392,10 @@ export type NotificationUncheckedUpdateInput = {
     bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     envoyeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationCreateManyInput = {
     id?: string;
@@ -411,10 +411,10 @@ export type NotificationCreateManyInput = {
     bienId?: string | null;
     proprietaireId?: string | null;
     locataireId?: string | null;
-    lu?: boolean;
     envoyeAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    lu?: boolean;
 };
 export type NotificationUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -430,10 +430,10 @@ export type NotificationUpdateManyMutationInput = {
     bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     envoyeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -449,10 +449,10 @@ export type NotificationUncheckedUpdateManyInput = {
     bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     proprietaireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     envoyeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -468,10 +468,10 @@ export type NotificationCountOrderByAggregateInput = {
     bienId?: Prisma.SortOrder;
     proprietaireId?: Prisma.SortOrder;
     locataireId?: Prisma.SortOrder;
-    lu?: Prisma.SortOrder;
     envoyeAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
 };
 export type NotificationMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -487,10 +487,10 @@ export type NotificationMaxOrderByAggregateInput = {
     bienId?: Prisma.SortOrder;
     proprietaireId?: Prisma.SortOrder;
     locataireId?: Prisma.SortOrder;
-    lu?: Prisma.SortOrder;
     envoyeAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
 };
 export type NotificationMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -506,10 +506,10 @@ export type NotificationMinOrderByAggregateInput = {
     bienId?: Prisma.SortOrder;
     proprietaireId?: Prisma.SortOrder;
     locataireId?: Prisma.SortOrder;
-    lu?: Prisma.SortOrder;
     envoyeAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
 };
 export type EnumTypeNotificationFieldUpdateOperationsInput = {
     set?: $Enums.TypeNotification;
@@ -531,10 +531,10 @@ export type NotificationSelect<ExtArgs extends runtime.Types.Extensions.Internal
     bienId?: boolean;
     proprietaireId?: boolean;
     locataireId?: boolean;
-    lu?: boolean;
     envoyeAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    lu?: boolean;
 }, ExtArgs["result"]["notification"]>;
 export type NotificationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -550,10 +550,10 @@ export type NotificationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     bienId?: boolean;
     proprietaireId?: boolean;
     locataireId?: boolean;
-    lu?: boolean;
     envoyeAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    lu?: boolean;
 }, ExtArgs["result"]["notification"]>;
 export type NotificationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -569,10 +569,10 @@ export type NotificationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     bienId?: boolean;
     proprietaireId?: boolean;
     locataireId?: boolean;
-    lu?: boolean;
     envoyeAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    lu?: boolean;
 }, ExtArgs["result"]["notification"]>;
 export type NotificationSelectScalar = {
     id?: boolean;
@@ -588,12 +588,12 @@ export type NotificationSelectScalar = {
     bienId?: boolean;
     proprietaireId?: boolean;
     locataireId?: boolean;
-    lu?: boolean;
     envoyeAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    lu?: boolean;
 };
-export type NotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "canal" | "destinataire" | "sujet" | "contenu" | "statut" | "messageRetour" | "echeanceId" | "bailId" | "bienId" | "proprietaireId" | "locataireId" | "lu" | "envoyeAt" | "createdAt" | "updatedAt", ExtArgs["result"]["notification"]>;
+export type NotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "canal" | "destinataire" | "sujet" | "contenu" | "statut" | "messageRetour" | "echeanceId" | "bailId" | "bienId" | "proprietaireId" | "locataireId" | "envoyeAt" | "createdAt" | "updatedAt" | "lu", ExtArgs["result"]["notification"]>;
 export type $NotificationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Notification";
     objects: {};
@@ -611,10 +611,10 @@ export type $NotificationPayload<ExtArgs extends runtime.Types.Extensions.Intern
         bienId: string | null;
         proprietaireId: string | null;
         locataireId: string | null;
-        lu: boolean;
         envoyeAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        lu: boolean;
     }, ExtArgs["result"]["notification"]>;
     composites: {};
 };
@@ -982,10 +982,10 @@ export interface NotificationFieldRefs {
     readonly bienId: Prisma.FieldRef<"Notification", 'String'>;
     readonly proprietaireId: Prisma.FieldRef<"Notification", 'String'>;
     readonly locataireId: Prisma.FieldRef<"Notification", 'String'>;
-    readonly lu: Prisma.FieldRef<"Notification", 'Boolean'>;
     readonly envoyeAt: Prisma.FieldRef<"Notification", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Notification", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Notification", 'DateTime'>;
+    readonly lu: Prisma.FieldRef<"Notification", 'Boolean'>;
 }
 /**
  * Notification findUnique

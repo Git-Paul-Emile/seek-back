@@ -5,6 +5,7 @@ import * as BailService from "../services/bail.service.js";
 import * as MobileMoneyService from "../services/mobileMoney.service.js";
 import * as QuittanceService from "../services/quittance.service.js";
 import * as NotificationService from "../services/notification.service.js";
+import * as ComptePublicService from "../services/comptePublicAuth.service.js";
 import { prisma } from "../config/database.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
@@ -46,6 +47,30 @@ const clearAuthCookies = (res) => {
     res.clearCookie("locataireAccessToken", baseOptions);
     res.clearCookie("locataireRefreshToken", baseOptions);
 };
+const setComptePublicCookies = (res, accessToken, refreshToken, refreshTokenExpiresAt) => {
+    const IS_PROD = process.env.NODE_ENV === "production";
+    res.cookie("comptePublicAccessToken", accessToken, {
+        httpOnly: true,
+        secure: IS_PROD,
+        sameSite: IS_PROD ? "none" : "lax",
+        path: "/",
+        maxAge: 15 * 60 * 1000,
+    });
+    res.cookie("comptePublicRefreshToken", refreshToken, {
+        httpOnly: true,
+        secure: IS_PROD,
+        sameSite: IS_PROD ? "none" : "lax",
+        path: "/api/public/auth/refresh",
+        expires: refreshTokenExpiresAt,
+    });
+};
+const clearComptePublicCookies = (res) => {
+    const IS_PROD = process.env.NODE_ENV === "production";
+    const sameSite = IS_PROD ? "none" : "lax";
+    const base = { path: "/", httpOnly: true, secure: IS_PROD, sameSite };
+    res.clearCookie("comptePublicAccessToken", base);
+    res.clearCookie("comptePublicRefreshToken", { ...base, path: "/api/public/auth/refresh" });
+};
 // ─── Activation ───────────────────────────────────────────────────────────────
 const activerSchema = z.object({
     token: z.string().min(1, "Token requis"),
@@ -73,6 +98,14 @@ export const activer = async (req, res) => {
     }
     const result = await LocataireAuthService.activer(parsed.data);
     setAuthCookies(res, result.accessToken, result.refreshToken, result.refreshTokenExpiresAt);
+    // Compte public automatique (première connexion après activation)
+    try {
+        const { tokens: cpTokens } = await ComptePublicService.getOrCreateForLocataire(result.locataire.id);
+        setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+    }
+    catch (err) {
+        console.error("[Locataire activer] Erreur création compte public :", err);
+    }
     res.status(StatusCodes.OK).json(jsonResponse({
         status: "success",
         message: "Compte activé avec succès",
@@ -96,6 +129,14 @@ export const login = async (req, res) => {
     }
     const result = await LocataireAuthService.login(parsed.data);
     setAuthCookies(res, result.accessToken, result.refreshToken, result.refreshTokenExpiresAt);
+    // Compte public automatique
+    try {
+        const { tokens: cpTokens } = await ComptePublicService.getOrCreateForLocataire(result.locataire.id);
+        setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+    }
+    catch (err) {
+        console.error("[Locataire login] Erreur création compte public :", err);
+    }
     res.status(StatusCodes.OK).json(jsonResponse({
         status: "success",
         message: "Connexion réussie",
@@ -112,10 +153,17 @@ export const refreshToken = async (req, res) => {
     try {
         const tokens = await LocataireAuthService.refresh(token);
         setAuthCookies(res, tokens.accessToken, tokens.refreshToken, tokens.refreshTokenExpiresAt);
+        // Renouveler aussi le token du compte public lié
+        try {
+            const { tokens: cpTokens } = await ComptePublicService.getOrCreateForLocataire(tokens.locataireId);
+            setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+        }
+        catch (err) {
+            console.error("[Locataire refresh] Erreur renouvellement compte public :", err);
+        }
         res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Token renouvelé", data: null }));
     }
     catch (error) {
-        // Nettoyer les cookies quand le refresh échoue pour éviter une boucle avec token révoqué
         clearAuthCookies(res);
         throw error;
     }
@@ -124,9 +172,18 @@ export const refreshToken = async (req, res) => {
 export const logout = async (req, res) => {
     const token = req.cookies?.locataireRefreshToken;
     if (token) {
-        await LocataireAuthService.logout(token);
+        const locataireId = await LocataireAuthService.logout(token);
+        if (locataireId) {
+            try {
+                await ComptePublicService.revokePublicTokensForLocataire(locataireId);
+            }
+            catch (err) {
+                console.error("[Locataire logout] Erreur révocation compte public :", err);
+            }
+        }
     }
     clearAuthCookies(res);
+    clearComptePublicCookies(res);
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Déconnexion réussie", data: null }));
 };
 // ─── Me ───────────────────────────────────────────────────────────────────────
@@ -386,6 +443,31 @@ export const submitVerification = async (req, res) => {
                 dateTraitement: null,
             },
         });
+        const locataireComplet = await prisma.locataire.findUnique({
+            where: { id: req.locataire.id },
+            select: {
+                id: true,
+                prenom: true,
+                nom: true,
+                proprietaireId: true,
+                proprietaire: {
+                    select: { telephone: true, email: true },
+                },
+            },
+        });
+        if (locataireComplet?.proprietaire?.telephone) {
+            await NotificationService.envoyerNotification({
+                type: "VERIFICATION_LOCATAIRE",
+                target: "owner",
+                telephone: locataireComplet.proprietaire.telephone,
+                email: locataireComplet.proprietaire.email,
+                sujet: "Documents d'identité soumis",
+                contenu: `${locataireComplet.prenom} ${locataireComplet.nom} a soumis ses documents d'identité pour vérification.`,
+                proprietaireId: locataireComplet.proprietaireId,
+                locataireId: locataireComplet.id,
+                noSmsEmail: true,
+            }).catch(() => null);
+        }
         res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Documents soumis pour vérification", data: verification }));
     }
     catch (error) {
@@ -594,6 +676,141 @@ export const marquerMessagesLusLocataire = async (req, res) => {
         data: { lu: true },
     });
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
+};
+export const getAlerteEdlManquant = async (req, res) => {
+    if (!req.locataire?.id) {
+        throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+    }
+    const bail = await prisma.bailLocation.findFirst({
+        where: {
+            locataireId: req.locataire.id,
+            statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"] },
+            etatsDesLieux: {
+                none: { type: "ENTREE" },
+            },
+        },
+        select: {
+            id: true,
+            bienId: true,
+            proprietaireId: true,
+            dateDebutBail: true,
+            bien: {
+                select: {
+                    titre: true,
+                    ville: true,
+                    region: true,
+                },
+            },
+            proprietaire: {
+                select: {
+                    prenom: true,
+                    nom: true,
+                    telephone: true,
+                    email: true,
+                },
+            },
+        },
+        orderBy: { dateDebutBail: "desc" },
+    });
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Alerte état des lieux récupérée",
+        data: bail,
+    }));
+};
+export const demanderEtatDesLieux = async (req, res) => {
+    if (!req.locataire?.id) {
+        throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
+    }
+    const bail = await prisma.bailLocation.findFirst({
+        where: {
+            locataireId: req.locataire.id,
+            statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"] },
+            etatsDesLieux: {
+                none: { type: "ENTREE" },
+            },
+        },
+        select: {
+            id: true,
+            bienId: true,
+            proprietaireId: true,
+            locataireId: true,
+            bien: {
+                select: {
+                    titre: true,
+                    ville: true,
+                },
+            },
+            locataire: {
+                select: {
+                    prenom: true,
+                    nom: true,
+                },
+            },
+            proprietaire: {
+                select: {
+                    telephone: true,
+                    email: true,
+                    prenom: true,
+                },
+            },
+        },
+    });
+    if (!bail) {
+        throw new AppError("Aucun bail sans état des lieux à signaler", StatusCodes.BAD_REQUEST);
+    }
+    const dejaEnvoye = await prisma.notification.findFirst({
+        where: {
+            type: "ALERTE",
+            bailId: bail.id,
+            proprietaireId: bail.proprietaireId,
+            locataireId: bail.locataireId,
+            sujet: "Demande d'état des lieux",
+            createdAt: {
+                gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+            },
+        },
+        select: { id: true },
+    });
+    if (dejaEnvoye) {
+        res.status(StatusCodes.OK).json(jsonResponse({
+            status: "success",
+            message: "Une demande récente a déjà été envoyée",
+            data: { sent: false },
+        }));
+        return;
+    }
+    const bienLabel = bail.bien?.titre || bail.bien?.ville || "le bien loué";
+    const locataireNom = `${bail.locataire?.prenom ?? ""} ${bail.locataire?.nom ?? ""}`.trim();
+    if (bail.proprietaire?.telephone) {
+        await NotificationService.envoyerNotification({
+            type: "ALERTE",
+            target: "owner",
+            telephone: bail.proprietaire.telephone,
+            email: bail.proprietaire.email,
+            sujet: "Demande d'état des lieux",
+            contenu: `${locataireNom || "Votre locataire"} demande la création de l'état des lieux d'entrée pour ${bienLabel}.`,
+            bailId: bail.id,
+            bienId: bail.bienId,
+            proprietaireId: bail.proprietaireId,
+            locataireId: bail.locataireId,
+        }).catch(() => null);
+    }
+    await prisma.messageInterne.create({
+        data: {
+            proprietaireId: bail.proprietaireId,
+            bailId: bail.id,
+            bienId: bail.bienId,
+            type: "DEMANDE_EDL",
+            titre: "Demande d'état des lieux",
+            corps: `${locataireNom || "Votre locataire"} demande la création de l'état des lieux d'entrée pour ${bienLabel}.`,
+        },
+    }).catch(() => null);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Demande d'état des lieux envoyée avec succès",
+        data: { sent: true },
+    }));
 };
 // ─── Suppression du compte ────────────────────────────────────────────────────
 export const supprimerCompte = async (req, res) => {

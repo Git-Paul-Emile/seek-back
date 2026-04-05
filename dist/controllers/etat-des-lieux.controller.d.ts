@@ -7,6 +7,7 @@ export declare const deleteBrouillon: (req: Request, res: Response, next: NextFu
 export declare const getByIdOwner: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export declare const getByBailOwner: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export declare const compareOwner: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getCreationContextOwner: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export declare const contester: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export declare const resoudreContestations: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export declare const validate: (req: Request, res: Response, next: NextFunction) => Promise<void>;

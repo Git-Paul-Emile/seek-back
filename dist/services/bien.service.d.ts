@@ -12,11 +12,6 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -25,6 +20,11 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     equipements: ({
         equipement: {
             id: string;
@@ -44,6 +44,9 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
         meubleId: string;
         quantite: number;
     })[];
+    etablissements: {
+        id: string;
+    }[];
 } & {
     description: string | null;
     proprietaireId: string;
@@ -96,13 +99,13 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }) | null>;
 export declare const saveDraft: (input: SaveDraftInput, proprietaireId: string, files: Express.Multer.File[]) => Promise<{
     typeLogement: {
@@ -115,11 +118,6 @@ export declare const saveDraft: (input: SaveDraftInput, proprietaireId: string, 
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -128,6 +126,11 @@ export declare const saveDraft: (input: SaveDraftInput, proprietaireId: string, 
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     equipements: ({
         equipement: {
             id: string;
@@ -147,6 +150,9 @@ export declare const saveDraft: (input: SaveDraftInput, proprietaireId: string, 
         meubleId: string;
         quantite: number;
     })[];
+    etablissements: {
+        id: string;
+    }[];
 } & {
     description: string | null;
     proprietaireId: string;
@@ -199,13 +205,13 @@ export declare const saveDraft: (input: SaveDraftInput, proprietaireId: string, 
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const soumettreAnnonce: (bienId: string, proprietaireId: string) => Promise<{
     typeLogement: {
@@ -218,11 +224,6 @@ export declare const soumettreAnnonce: (bienId: string, proprietaireId: string) 
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -231,6 +232,11 @@ export declare const soumettreAnnonce: (bienId: string, proprietaireId: string) 
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     equipements: ({
         equipement: {
             id: string;
@@ -250,6 +256,9 @@ export declare const soumettreAnnonce: (bienId: string, proprietaireId: string) 
         meubleId: string;
         quantite: number;
     })[];
+    etablissements: {
+        id: string;
+    }[];
 } & {
     description: string | null;
     proprietaireId: string;
@@ -302,13 +311,13 @@ export declare const soumettreAnnonce: (bienId: string, proprietaireId: string) 
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const getBiensByProprietaire: (proprietaireId: string) => Promise<{
     hasBailActif: boolean;
@@ -322,11 +331,6 @@ export declare const getBiensByProprietaire: (proprietaireId: string) => Promise
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -335,6 +339,11 @@ export declare const getBiensByProprietaire: (proprietaireId: string) => Promise
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     description: string | null;
     proprietaireId: string;
     id: string;
@@ -386,13 +395,13 @@ export declare const getBiensByProprietaire: (proprietaireId: string) => Promise
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }[]>;
 export declare const getBienById: (id: string) => Promise<({
     typeLogement: {
@@ -414,6 +423,14 @@ export declare const getBienById: (id: string) => Promise<({
         slug: string;
         ordre: number;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
     statutBien: {
         id: string;
         createdAt: Date;
@@ -423,14 +440,6 @@ export declare const getBienById: (id: string) => Promise<({
         slug: string;
         ordre: number;
     } | null;
-    proprietaire: {
-        id: string;
-        telephone: string;
-        nom: string;
-        email: string | null;
-        prenom: string;
-        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
-    };
     equipements: ({
         equipement: {
             categorie: {
@@ -540,13 +549,13 @@ export declare const getBienById: (id: string) => Promise<({
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }) | null>;
 export declare const deleteBien: (bienId: string, proprietaireId: string) => Promise<{
     description: string | null;
@@ -600,13 +609,13 @@ export declare const deleteBien: (bienId: string, proprietaireId: string) => Pro
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const retourBrouillon: (bienId: string, proprietaireId: string) => Promise<{
     typeLogement: {
@@ -619,11 +628,6 @@ export declare const retourBrouillon: (bienId: string, proprietaireId: string) =
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -632,6 +636,11 @@ export declare const retourBrouillon: (bienId: string, proprietaireId: string) =
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     equipements: ({
         equipement: {
             id: string;
@@ -651,6 +660,9 @@ export declare const retourBrouillon: (bienId: string, proprietaireId: string) =
         meubleId: string;
         quantite: number;
     })[];
+    etablissements: {
+        id: string;
+    }[];
 } & {
     description: string | null;
     proprietaireId: string;
@@ -703,13 +715,13 @@ export declare const retourBrouillon: (bienId: string, proprietaireId: string) =
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const annulerAnnonce: (bienId: string, proprietaireId: string) => Promise<{
     description: string | null;
@@ -763,13 +775,13 @@ export declare const annulerAnnonce: (bienId: string, proprietaireId: string) =>
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const countAnnoncesPending: () => Promise<number>;
 export declare const getAnnoncesCounts: () => Promise<{
@@ -794,11 +806,6 @@ export declare const getAnnonces: (params: {
             nom: string;
             slug: string;
         } | null;
-        statutBien: {
-            id: string;
-            nom: string;
-            slug: string;
-        } | null;
         proprietaire: {
             id: string;
             telephone: string;
@@ -807,6 +814,11 @@ export declare const getAnnonces: (params: {
             prenom: string;
             statutVerification: import("../generated/prisma/enums.js").StatutVerification;
         };
+        statutBien: {
+            id: string;
+            nom: string;
+            slug: string;
+        } | null;
     } & {
         description: string | null;
         proprietaireId: string;
@@ -859,13 +871,13 @@ export declare const getAnnonces: (params: {
         actif: boolean;
         statutAnnonce: StatutAnnonce;
         noteAdmin: string | null;
-        publishedAt: Date | null;
         estPremium: boolean;
         estMisEnAvant: boolean;
         dateDebutPromotion: Date | null;
         dateFinPromotion: Date | null;
         positionRotation: number;
         dernierAffichage: Date | null;
+        publishedAt: Date | null;
     })[];
     total: number;
     page: number;
@@ -883,11 +895,6 @@ export declare const validerAnnonce: (bienId: string, action: "APPROUVER" | "REJ
         nom: string;
         slug: string;
     } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
     proprietaire: {
         id: string;
         telephone: string;
@@ -896,6 +903,11 @@ export declare const validerAnnonce: (bienId: string, action: "APPROUVER" | "REJ
         prenom: string;
         statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
+    statutBien: {
+        id: string;
+        nom: string;
+        slug: string;
+    } | null;
     equipements: ({
         equipement: {
             id: string;
@@ -915,6 +927,9 @@ export declare const validerAnnonce: (bienId: string, action: "APPROUVER" | "REJ
         meubleId: string;
         quantite: number;
     })[];
+    etablissements: {
+        id: string;
+    }[];
 } & {
     description: string | null;
     proprietaireId: string;
@@ -967,13 +982,13 @@ export declare const validerAnnonce: (bienId: string, action: "APPROUVER" | "REJ
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const adminDeleteBien: (bienId: string) => Promise<{
     description: string | null;
@@ -1027,13 +1042,13 @@ export declare const adminDeleteBien: (bienId: string) => Promise<{
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const getDernieresAnnonces: (limit?: number) => Promise<any[]>;
 export declare const getDistinctLieux: () => Promise<{
@@ -1092,6 +1107,14 @@ export declare const getAnnoncePublieById: (id: string) => Promise<{
         slug: string;
         ordre: number;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
     statutBien: {
         id: string;
         createdAt: Date;
@@ -1101,14 +1124,6 @@ export declare const getAnnoncePublieById: (id: string) => Promise<{
         slug: string;
         ordre: number;
     } | null;
-    proprietaire: {
-        id: string;
-        telephone: string;
-        nom: string;
-        email: string | null;
-        prenom: string;
-        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
-    };
     equipements: ({
         equipement: {
             categorie: {
@@ -1217,13 +1232,13 @@ export declare const getAnnoncePublieById: (id: string) => Promise<{
     actif: boolean;
     statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    publishedAt: Date | null;
     estPremium: boolean;
     estMisEnAvant: boolean;
     dateDebutPromotion: Date | null;
     dateFinPromotion: Date | null;
     positionRotation: number;
     dernierAffichage: Date | null;
+    publishedAt: Date | null;
 }>;
 export declare const getAnnoncesSimilaires: (bienId: string, limit?: number) => Promise<BienWithRelations[]>;
 //# sourceMappingURL=bien.service.d.ts.map

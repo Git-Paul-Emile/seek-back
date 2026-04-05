@@ -176,7 +176,7 @@ export const refresh = async (oldRefreshToken) => {
         tokenHash: hashToken(tokens.refreshToken),
         expiresAt: tokens.refreshTokenExpiresAt,
     });
-    return tokens;
+    return { ...tokens, proprietaireId: proprietaire.id };
 };
 // ─── Logout ───────────────────────────────────────────────────────────────────
 export const logout = async (refreshToken) => {
@@ -184,7 +184,9 @@ export const logout = async (refreshToken) => {
     const stored = await OwnerRepo.findRefreshToken(tokenHash);
     if (stored && !stored.revokedAt) {
         await OwnerRepo.revokeRefreshToken(tokenHash);
+        return stored.proprietaireId;
     }
+    return null;
 };
 // ─── Me ───────────────────────────────────────────────────────────────────────
 export const me = async (id) => {

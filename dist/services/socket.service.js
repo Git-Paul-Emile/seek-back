@@ -49,15 +49,27 @@ export const initializeWebSocket = (httpServer) => {
             socket.join(`owner:${proprietaireId}`);
             console.log(`👤 Propriétaire ${proprietaireId} a rejoint la room`);
         });
+        socket.on("leave:owner", (proprietaireId) => {
+            socket.leave(`owner:${proprietaireId}`);
+            console.log(`👤 Propriétaire ${proprietaireId} a quitté la room`);
+        });
         // Room pour les locataires
         socket.on("join:locataire", (locataireId) => {
             socket.join(`locataire:${locataireId}`);
             console.log(`🏠 Locataire ${locataireId} a rejoint la room`);
         });
+        socket.on("leave:locataire", (locataireId) => {
+            socket.leave(`locataire:${locataireId}`);
+            console.log(`🏠 Locataire ${locataireId} a quitté la room`);
+        });
         // Room pour les admins
         socket.on("join:admin", () => {
             socket.join("admin");
             console.log(`⚡ Admin ${socket.id} a rejoint la room admin`);
+        });
+        socket.on("leave:admin", () => {
+            socket.leave("admin");
+            console.log(`⚡ Admin ${socket.id} a quitté la room admin`);
         });
         // Room pour les alertes (par téléphone utilisateur)
         socket.on("join:alerts", (telephone) => {
@@ -88,8 +100,13 @@ export const getIO = () => {
 export const emitNotification = (payload) => {
     if (!io)
         return;
-    io.to(`owner:${payload.proprietaireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
-    emitBadgeUpdate(payload.proprietaireId);
+    if (payload.proprietaireId) {
+        io.to(`owner:${payload.proprietaireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
+        emitBadgeUpdate(payload.proprietaireId);
+    }
+    if (payload.locataireId) {
+        io.to(`locataire:${payload.locataireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
+    }
 };
 /**
  * Met à jour les badges d'un propriétaire

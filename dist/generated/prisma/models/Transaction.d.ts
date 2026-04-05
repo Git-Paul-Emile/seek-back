@@ -301,11 +301,11 @@ export type TransactionWhereInput = {
     metadata?: Prisma.JsonNullableFilter<"Transaction">;
     createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
-    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
     bail?: Prisma.XOR<Prisma.BailLocationNullableScalarRelationFilter, Prisma.BailLocationWhereInput> | null;
+    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
     echeance?: Prisma.XOR<Prisma.EcheancierLoyerNullableScalarRelationFilter, Prisma.EcheancierLoyerWhereInput> | null;
     locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
 };
 export type TransactionOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -330,11 +330,11 @@ export type TransactionOrderByWithRelationInput = {
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
-    bien?: Prisma.BienOrderByWithRelationInput;
     bail?: Prisma.BailLocationOrderByWithRelationInput;
+    bien?: Prisma.BienOrderByWithRelationInput;
     echeance?: Prisma.EcheancierLoyerOrderByWithRelationInput;
     locataire?: Prisma.LocataireOrderByWithRelationInput;
+    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
 };
 export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -362,11 +362,11 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     metadata?: Prisma.JsonNullableFilter<"Transaction">;
     createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
-    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
-    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
     bail?: Prisma.XOR<Prisma.BailLocationNullableScalarRelationFilter, Prisma.BailLocationWhereInput> | null;
+    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
     echeance?: Prisma.XOR<Prisma.EcheancierLoyerNullableScalarRelationFilter, Prisma.EcheancierLoyerWhereInput> | null;
     locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
 }, "id">;
 export type TransactionOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -442,11 +442,11 @@ export type TransactionCreateInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
-    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
     locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
 };
 export type TransactionUncheckedCreateInput = {
     id?: string;
@@ -490,11 +490,11 @@ export type TransactionUpdateInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
-    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
     locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
 };
 export type TransactionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -885,10 +885,10 @@ export type TransactionCreateWithoutBienInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
     bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
     echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
     locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
 };
 export type TransactionUncheckedCreateWithoutBienInput = {
     id?: string;
@@ -979,10 +979,10 @@ export type TransactionCreateWithoutLocataireInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
-    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
 };
 export type TransactionUncheckedCreateWithoutLocataireInput = {
     id?: string;
@@ -1046,10 +1046,10 @@ export type TransactionCreateWithoutBailInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
     bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
     locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
 };
 export type TransactionUncheckedCreateWithoutBailInput = {
     id?: string;
@@ -1113,10 +1113,10 @@ export type TransactionCreateWithoutEcheanceInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
-    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
 };
 export type TransactionUncheckedCreateWithoutEcheanceInput = {
     id?: string;
@@ -1180,8 +1180,8 @@ export type TransactionCreateWithoutProprietaireInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
     echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
     locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
 };
@@ -1270,10 +1270,10 @@ export type TransactionUpdateWithoutBienInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
     bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
     echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
     locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
 };
 export type TransactionUncheckedUpdateWithoutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1362,10 +1362,10 @@ export type TransactionUpdateWithoutLocataireInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
-    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
 };
 export type TransactionUncheckedUpdateWithoutLocataireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1454,10 +1454,10 @@ export type TransactionUpdateWithoutBailInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
     bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
     locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
 };
 export type TransactionUncheckedUpdateWithoutBailInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1546,10 +1546,10 @@ export type TransactionUpdateWithoutEcheanceInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
-    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
 };
 export type TransactionUncheckedUpdateWithoutEcheanceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1638,8 +1638,8 @@ export type TransactionUpdateWithoutProprietaireInput = {
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
     echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
     locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
 };
@@ -1712,11 +1712,11 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["transaction"]>;
 export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1741,11 +1741,11 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["transaction"]>;
 export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1770,11 +1770,11 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
     metadata?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["transaction"]>;
 export type TransactionSelectScalar = {
     id?: boolean;
@@ -1802,34 +1802,34 @@ export type TransactionSelectScalar = {
 };
 export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "proprietaireId" | "type" | "statut" | "montant" | "devise" | "modePaiement" | "provider" | "reference" | "transactionId" | "dateInitiation" | "dateConfirmation" | "dateEcheance" | "bienId" | "bailId" | "echeanceId" | "locataireId" | "note" | "instructions" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>;
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 };
 export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 };
 export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
-    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
     echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
     locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
 };
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Transaction";
     objects: {
-        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
-        bien: Prisma.$BienPayload<ExtArgs> | null;
         bail: Prisma.$BailLocationPayload<ExtArgs> | null;
+        bien: Prisma.$BienPayload<ExtArgs> | null;
         echeance: Prisma.$EcheancierLoyerPayload<ExtArgs> | null;
         locataire: Prisma.$LocatairePayload<ExtArgs> | null;
+        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -2183,11 +2183,11 @@ export interface TransactionDelegate<ExtArgs extends runtime.Types.Extensions.In
  */
 export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    bien<T extends Prisma.Transaction$bienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$bienArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     bail<T extends Prisma.Transaction$bailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$bailArgs<ExtArgs>>): Prisma.Prisma__BailLocationClient<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    bien<T extends Prisma.Transaction$bienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$bienArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     echeance<T extends Prisma.Transaction$echeanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$echeanceArgs<ExtArgs>>): Prisma.Prisma__EcheancierLoyerClient<runtime.Types.Result.GetResult<Prisma.$EcheancierLoyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     locataire<T extends Prisma.Transaction$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$locataireArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2614,24 +2614,6 @@ export type TransactionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
     limit?: number;
 };
 /**
- * Transaction.bien
- */
-export type Transaction$bienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Bien
-     */
-    select?: Prisma.BienSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the Bien
-     */
-    omit?: Prisma.BienOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.BienInclude<ExtArgs> | null;
-    where?: Prisma.BienWhereInput;
-};
-/**
  * Transaction.bail
  */
 export type Transaction$bailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2648,6 +2630,24 @@ export type Transaction$bailArgs<ExtArgs extends runtime.Types.Extensions.Intern
      */
     include?: Prisma.BailLocationInclude<ExtArgs> | null;
     where?: Prisma.BailLocationWhereInput;
+};
+/**
+ * Transaction.bien
+ */
+export type Transaction$bienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Bien
+     */
+    select?: Prisma.BienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Bien
+     */
+    omit?: Prisma.BienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienInclude<ExtArgs> | null;
+    where?: Prisma.BienWhereInput;
 };
 /**
  * Transaction.echeance

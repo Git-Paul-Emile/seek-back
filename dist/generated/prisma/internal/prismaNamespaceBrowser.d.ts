@@ -261,7 +261,6 @@ export declare const BienScalarFieldEnum: {
     readonly actif: "actif";
     readonly statutAnnonce: "statutAnnonce";
     readonly noteAdmin: "noteAdmin";
-    readonly publishedAt: "publishedAt";
     readonly estPremium: "estPremium";
     readonly estMisEnAvant: "estMisEnAvant";
     readonly dateDebutPromotion: "dateDebutPromotion";
@@ -270,6 +269,7 @@ export declare const BienScalarFieldEnum: {
     readonly dernierAffichage: "dernierAffichage";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly publishedAt: "publishedAt";
 };
 export type BienScalarFieldEnum = (typeof BienScalarFieldEnum)[keyof typeof BienScalarFieldEnum];
 export declare const ComptePublicScalarFieldEnum: {
@@ -281,6 +281,8 @@ export declare const ComptePublicScalarFieldEnum: {
     readonly password: "password";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly locataireId: "locataireId";
+    readonly proprietaireId: "proprietaireId";
 };
 export type ComptePublicScalarFieldEnum = (typeof ComptePublicScalarFieldEnum)[keyof typeof ComptePublicScalarFieldEnum];
 export declare const ComptePublicRefreshTokenScalarFieldEnum: {
@@ -466,10 +468,10 @@ export declare const NotificationScalarFieldEnum: {
     readonly bienId: "bienId";
     readonly proprietaireId: "proprietaireId";
     readonly locataireId: "locataireId";
-    readonly lu: "lu";
     readonly envoyeAt: "envoyeAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly lu: "lu";
 };
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
 export declare const DepotCautionScalarFieldEnum: {
@@ -633,6 +635,7 @@ export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[k
 export declare const AlerteScalarFieldEnum: {
     readonly id: "id";
     readonly telephone: "telephone";
+    readonly comptePublicId: "comptePublicId";
     readonly ville: "ville";
     readonly quartier: "quartier";
     readonly typeLogement: "typeLogement";
