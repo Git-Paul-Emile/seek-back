@@ -7,7 +7,34 @@ import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 const router = Router();
 
 // ========================
-// Routes Propriétaire
+// Routes Propriétaire - GET (spécifiques d'abord)
+// ========================
+router.get(
+  "/owner/bail/:bailId/comparison",
+  authenticateOwner,
+  EtatDesLieuxController.compareOwner
+);
+
+router.get(
+  "/owner/bail/:bailId/context",
+  authenticateOwner,
+  EtatDesLieuxController.getCreationContextOwner
+);
+
+router.get(
+  "/owner/bail/:bailId",
+  authenticateOwner,
+  EtatDesLieuxController.getByBailOwner
+);
+
+router.get(
+  "/owner/:id",
+  authenticateOwner,
+  EtatDesLieuxController.getByIdOwner
+);
+
+// ========================
+// Routes Propriétaire - Autres (POST, PUT, DELETE)
 // ========================
 router.post(
   "/upload",
@@ -46,50 +73,13 @@ router.post(
   EtatDesLieuxController.resoudreContestations
 );
 
-router.get(
-  "/owner/:id",
-  authenticateOwner,
-  EtatDesLieuxController.getByIdOwner
-);
-
-router.get(
-  "/owner/bail/:bailId",
-  authenticateOwner,
-  EtatDesLieuxController.getByBailOwner
-);
-
-router.get(
-  "/owner/bail/:bailId/comparison",
-  authenticateOwner,
-  EtatDesLieuxController.compareOwner
-);
-
 // ========================
-// Routes Locataire
+// Routes Locataire - GET (spécifiques d'abord)
 // ========================
-router.post(
-  "/locataire/upload",
-  authenticateLocataire,
-  uploadImageMiddleware,
-  EtatDesLieuxController.uploadImage
-);
-
-router.post(
-  "/:id/contester",
-  authenticateLocataire,
-  EtatDesLieuxController.contester
-);
-
-router.post(
-  "/:id/validate",
-  authenticateLocataire,
-  EtatDesLieuxController.validate
-);
-
 router.get(
-  "/locataire/:id",
+  "/mes-edl",
   authenticateLocataire,
-  EtatDesLieuxController.getByIdLocataire
+  EtatDesLieuxController.getAllByLocataire
 );
 
 router.get(
@@ -99,15 +89,43 @@ router.get(
 );
 
 router.get(
+  "/locataire/bail/:bailId/comparison",
+  authenticateLocataire,
+  EtatDesLieuxController.compareLocataire
+);
+
+router.get(
   "/locataire/bail/:bailId",
   authenticateLocataire,
   EtatDesLieuxController.getByBailLocataire
 );
 
 router.get(
-  "/locataire/bail/:bailId/comparison",
+  "/locataire/:id",
   authenticateLocataire,
-  EtatDesLieuxController.compareLocataire
+  EtatDesLieuxController.getByIdLocataire
+);
+
+// ========================
+// Routes Locataire - Autres (POST)
+// ========================
+router.post(
+  "/locataire/upload",
+  authenticateLocataire,
+  uploadImageMiddleware,
+  EtatDesLieuxController.uploadImage
+);
+
+router.post(
+  "/locataire/:id/contester",
+  authenticateLocataire,
+  EtatDesLieuxController.contester
+);
+
+router.post(
+  "/locataire/:id/validate",
+  authenticateLocataire,
+  EtatDesLieuxController.validate
 );
 
 export default router;

@@ -1,0 +1,1655 @@
+Connecte a la base de donnees principale
+🔌 Serveur WebSocket initialisé
+Serveur demarre sur http://localhost:8000
+✅ Client connecté: E5Vkzsob5O0MEbxxAAAB
+✅ Client connecté: JNkrHTHo9Vu14TIWAAAD
+✅ Client connecté: QBujETGsCCDtRGjyAAAF
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: QBujETGsCCDtRGjyAAAF
+✅ Client connecté: N80aY844Flk76uMDAAAH
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:18:33.512Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: N80aY844Flk76uMDAAAH
+✅ Client connecté: MNDtb0T_M6SP6PXBAAAJ
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:20:47.088Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+👤 Propriétaire 8efa8596-966c-4938-a2bd-fff783d8862d a rejoint la room
+AppError: Identifiant ou mot de passe incorrect.
+    at Module.login (file:///C:/xampp/htdocs/seek/back/dist/services/locataireAuth.service.js:96:15)
+    at async login (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:97:20)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+AppError: Identifiant ou mot de passe incorrect.
+    at Module.login (file:///C:/xampp/htdocs/seek/back/dist/services/locataireAuth.service.js:96:15)
+    at async login (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:97:20)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: MNDtb0T_M6SP6PXBAAAJ
+✅ Client connecté: 2QL_4bSVTL1Ui1khAAAL
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:29:50.723Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: 2QL_4bSVTL1Ui1khAAAL
+✅ Client connecté: d85BAhvPlGB38IC8AAAN
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:30:15.212Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: d85BAhvPlGB38IC8AAAN
+✅ Client connecté: fgSJrsaXOMvmlIMGAAAP
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:34:02.505Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: fgSJrsaXOMvmlIMGAAAP
+❌ Client déconnecté: JNkrHTHo9Vu14TIWAAAD
+✅ Client connecté: BUi0OQL0w09hPtHDAAAR
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T15:37:51.830Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: BUi0OQL0w09hPtHDAAAR
+✅ Client connecté: fk3uvnBYEGrWcmMqAAAT
+AppError: Refresh token manquant
+    at refreshToken (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:110:15)
+    at file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:15
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:117:3)
+    at handle (C:\xampp\htdocs\seek\back\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at C:\xampp\htdocs\seek\back\node_modules\router\index.js:295:15
+    at processParams (C:\xampp\htdocs\seek\back\node_modules\router\index.js:582:12)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\index.js:291:5) {
+  statusCode: 401,
+  isOperational: true
+}
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:00:25.260Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: E5Vkzsob5O0MEbxxAAAB
+AppError: Refresh token manquant
+    at refreshToken (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:110:15)
+    at file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:15
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:117:3)
+    at handle (C:\xampp\htdocs\seek\back\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at C:\xampp\htdocs\seek\back\node_modules\router\index.js:295:15
+    at processParams (C:\xampp\htdocs\seek\back\node_modules\router\index.js:582:12)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\index.js:291:5) {
+  statusCode: 401,
+  isOperational: true
+}
+✅ Client connecté: IaM_GP_dQGSxP8ubAAAV
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:01:23.760Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+👤 Propriétaire 8efa8596-966c-4938-a2bd-fff783d8862d a rejoint la room
+❌ Client déconnecté: IaM_GP_dQGSxP8ubAAAV
+AppError: Refresh token manquant
+    at refreshToken (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:110:15)
+    at file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:15
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:117:3)
+    at handle (C:\xampp\htdocs\seek\back\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at C:\xampp\htdocs\seek\back\node_modules\router\index.js:295:15
+    at processParams (C:\xampp\htdocs\seek\back\node_modules\router\index.js:582:12)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\index.js:291:5) {
+  statusCode: 401,
+  isOperational: true
+}
+✅ Client connecté: 4-Tqcdx5T9F3LayIAAAX
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:02:39.536Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+👤 Propriétaire 8efa8596-966c-4938-a2bd-fff783d8862d a rejoint la room
+[SMS] Envoyé → 221772995851
+AppError: Refresh token manquant
+    at refreshToken (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:110:15)
+    at file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:15
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:117:3)
+    at handle (C:\xampp\htdocs\seek\back\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at C:\xampp\htdocs\seek\back\node_modules\router\index.js:295:15
+    at processParams (C:\xampp\htdocs\seek\back\node_modules\router\index.js:582:12)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\index.js:291:5) {
+  statusCode: 401,
+  isOperational: true
+}
+✅ Client connecté: EBbde4FpouFBNpRVAAAZ
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:04:30.834Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: EBbde4FpouFBNpRVAAAZ
+✅ Client connecté: 0ui9v3TooivTkKrIAAAb
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:11:47.218Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: 0ui9v3TooivTkKrIAAAb
+✅ Client connecté: 39tqw-2iOUn8d22JAAAd
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:14:16.727Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+[Error: ENOENT: no such file or directory, stat 'C:\xampp\htdocs\seek\back\dist\config\swagger.yaml'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\xampp\\htdocs\\seek\\back\\dist\\config\\swagger.yaml',
+  expose: false,
+  statusCode: 404,
+  status: 404
+}
+❌ Client déconnecté: 39tqw-2iOUn8d22JAAAd
+✅ Client connecté: qH_brFRoFEYJLd9oAAAf
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:21:07.361Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: Identifiant ou mot de passe incorrect.
+    at Module.login (file:///C:/xampp/htdocs/seek/back/dist/services/owner.service.js:126:15)
+    at async login (file:///C:/xampp/htdocs/seek/back/dist/controllers/owner.controller.js:63:80)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+👤 Propriétaire 8efa8596-966c-4938-a2bd-fff783d8862d a rejoint la room
+❌ Client déconnecté: fk3uvnBYEGrWcmMqAAAT
+AppError: Refresh token manquant
+    at refreshToken (file:///C:/xampp/htdocs/seek/back/dist/controllers/locataireAuth.controller.js:110:15)
+    at file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:15
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\xampp\htdocs\seek\back\node_modules\router\lib\route.js:117:3)
+    at handle (C:\xampp\htdocs\seek\back\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\xampp\htdocs\seek\back\node_modules\router\lib\layer.js:152:17)
+    at C:\xampp\htdocs\seek\back\node_modules\router\index.js:295:15
+    at processParams (C:\xampp\htdocs\seek\back\node_modules\router\index.js:582:12)
+    at next (C:\xampp\htdocs\seek\back\node_modules\router\index.js:291:5) {
+  statusCode: 401,
+  isOperational: true
+}
+✅ Client connecté: PTTaiiyP_-2PkEhkAAAh
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:27:43.286Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+👤 Propriétaire 8efa8596-966c-4938-a2bd-fff783d8862d a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: PTTaiiyP_-2PkEhkAAAh
+✅ Client connecté: 7SQLlKgqM6RlrG_SAAAj
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:30:37.037Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: 7SQLlKgqM6RlrG_SAAAj
+✅ Client connecté: ZWJKimV2Qw8Uf46vAAAl
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:48:26.091Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: ZWJKimV2Qw8Uf46vAAAl
+✅ Client connecté: _fOa_hFJMhBgP6q8AAAn
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:55:13.122Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: _fOa_hFJMhBgP6q8AAAn
+✅ Client connecté: PVsOhiESZTZlQk1dAAAp
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T16:56:51.757Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: PVsOhiESZTZlQk1dAAAp
+✅ Client connecté: lz3JfierlSOjyBO1AAAr
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:00:26.914Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: lz3JfierlSOjyBO1AAAr
+✅ Client connecté: SgIiGB9-KxQLD4bTAAAt
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:02:20.682Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: SgIiGB9-KxQLD4bTAAAt
+✅ Client connecté: Szy6Wndm98jEt3nCAAAv
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:07:12.994Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: Szy6Wndm98jEt3nCAAAv
+✅ Client connecté: PuGF5YUCKJpFABZnAAAx
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:11:09.984Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: 4-Tqcdx5T9F3LayIAAAX
+✅ Client connecté: 8IDzZC3AB80laQePAAAz
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:13:34.587Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+❌ Client déconnecté: PuGF5YUCKJpFABZnAAAx
+✅ Client connecté: wwl029ClN7-5h_L_AAA1
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:17:50.335Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: wwl029ClN7-5h_L_AAA1
+✅ Client connecté: RxrkTglf4Cf3Hb_kAAA3
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:20:49.697Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+❌ Client déconnecté: RxrkTglf4Cf3Hb_kAAA3
+✅ Client connecté: h8i-OfJZD-78o9f2AAA5
+AppError: Refresh token invalide
+    at Module.refreshTokens (file:///C:/xampp/htdocs/seek/back/dist/services/comptePublicAuth.service.js:92:15)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/comptePublicAuth.controller.js:48:32)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  statusCode: 401,
+  isOperational: true
+}
+PrismaClientValidationError: 
+Invalid `prisma.refreshToken.updateMany()` invocation:
+
+{
+  where: {
+    adminId: 1,
+             ~
+    revokedAt: null
+  },
+  data: {
+    revokedAt: new Date("2026-04-04T17:20:56.831Z")
+  }
+}
+
+Argument `adminId`: Invalid value provided. Expected StringFilter or String, provided Int.
+    at In (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:36:1363)
+    at Wn.handleRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6911)
+    at Wn.handleAndLogRequestError (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6593)
+    at Wn.request (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:128:6300)
+    at async a (file:///C:/xampp/htdocs/seek/back/node_modules/@prisma/client/runtime/library.mjs:137:9506)
+    at async Module.refresh (file:///C:/xampp/htdocs/seek/back/dist/services/auth.service.js:67:9)
+    at async refresh (file:///C:/xampp/htdocs/seek/back/dist/controllers/auth.controller.js:54:66)
+    at async file:///C:/xampp/htdocs/seek/back/dist/utils/ControllerWrapper.js:3:9 {
+  clientVersion: '6.19.2'
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room
+AppError: État des lieux introuvable
+    at Module.getEtatDesLieuxById (file:///C:/xampp/htdocs/seek/back/dist/services/etat-des-lieux.service.js:56:15)
+    at async getByIdLocataire (file:///C:/xampp/htdocs/seek/back/dist/controllers/etat-des-lieux.controller.js:129:24) {
+  statusCode: 404,
+  isOperational: true
+}
+🏠 Locataire a932c942-618f-4a81-9c00-210be7f4f38a a rejoint la room

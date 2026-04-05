@@ -2,21 +2,21 @@ import { StatusCodes } from "http-status-codes";
 import * as TypeLogementService from "../services/typeLogement.service.js";
 import * as CloudinaryService from "../services/cloudinary.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
-// GET /api/types-logement — public
+// GET /api/types-logement - public
 export const getAll = async (_req, res) => {
     const types = await TypeLogementService.getAll();
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Types de logement récupérés", data: types }));
 };
-// GET /api/types-logement/admin — admin (inclut inactifs)
+// GET /api/types-logement/admin - admin (inclut inactifs)
 export const getAllAdmin = async (_req, res) => {
     const types = await TypeLogementService.getAllAdmin();
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Types de logement récupérés", data: types }));
 };
-// POST /api/types-logement — admin
+// POST /api/types-logement - admin
 export const create = async (req, res) => {
     let imageUrl;
     if (req.file) {
-        const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement");
+        const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement", { maxDimension: 600, quality: 85 });
         imageUrl = result.url;
     }
     const type = await TypeLogementService.create({
@@ -26,7 +26,7 @@ export const create = async (req, res) => {
     });
     res.status(StatusCodes.CREATED).json(jsonResponse({ status: "success", message: "Type de logement créé", data: type }));
 };
-// PUT /api/types-logement/:id — admin
+// PUT /api/types-logement/:id - admin
 export const update = async (req, res) => {
     const id = req.params.id;
     let imageUrl;
@@ -41,7 +41,7 @@ export const update = async (req, res) => {
                 });
             }
         }
-        const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement");
+        const result = await CloudinaryService.uploadImage(req.file.buffer, "seek/types-logement", { maxDimension: 600, quality: 85 });
         imageUrl = result.url;
     }
     // Construire le payload de mise à jour avec les champs présents
@@ -58,7 +58,7 @@ export const update = async (req, res) => {
     const type = await TypeLogementService.update(id, updatePayload);
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Type de logement mis à jour", data: type }));
 };
-// DELETE /api/types-logement/:id — admin
+// DELETE /api/types-logement/:id - admin
 export const remove = async (req, res) => {
     const id = req.params.id;
     // Récupérer l'image avant la suppression pour nettoyer Cloudinary

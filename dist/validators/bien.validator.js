@@ -2,12 +2,12 @@ import { z } from "zod";
 // ─── Schema pour enregistrer un brouillon (validation souple) ─────────────────
 export const saveDraftSchema = z.object({
     // ID optionnel pour la mise à jour d'un bien existant
-    id: z.string().uuid().optional(),
+    id: z.uuid().optional(),
     titre: z.string().max(200).optional().nullable(),
     description: z.string().max(5000).optional().nullable(),
-    typeLogementId: z.string().uuid().optional().nullable(),
-    typeTransactionId: z.string().uuid().optional().nullable(),
-    statutBienId: z.string().uuid().optional().nullable(),
+    typeLogementId: z.uuid().optional().nullable(),
+    typeTransactionId: z.uuid().optional().nullable(),
+    statutBienId: z.uuid().optional().nullable(),
     pays: z.string().optional().nullable(),
     region: z.string().optional().nullable(),
     ville: z.string().optional().nullable(),
@@ -32,7 +32,7 @@ export const saveDraftSchema = z.object({
     prix: z.coerce.number().min(0).optional().nullable(),
     frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
     chargesIncluses: z.coerce.boolean().default(false),
-    caution: z.coerce.number().min(0).optional().nullable(),
+    caution: z.coerce.number().int().min(0).optional().nullable(),
     disponibleLe: z.string().optional().nullable(),
     equipementIds: z.array(z.string().uuid()).default([]),
     meubles: z.array(z.object({
@@ -73,7 +73,7 @@ export const createBienSchema = z.object({
     prix: z.coerce.number().min(0, "Le prix doit être positif"),
     frequencePaiement: z.enum(["journalier", "hebdomadaire", "mensuel", "trimestriel", "semestriel", "annuel", "unique"]).optional().nullable(),
     chargesIncluses: z.coerce.boolean().default(false),
-    caution: z.coerce.number().min(0).optional().nullable(),
+    caution: z.coerce.number().int().min(0).optional().nullable(),
     disponibleLe: z.string().optional().nullable(),
     equipementIds: z.array(z.string().uuid()).default([]),
     meubles: z.array(z.object({
@@ -84,7 +84,7 @@ export const createBienSchema = z.object({
 });
 // ─── Schema pour valider une annonce (admin) ──────────────────────────────────
 export const validerAnnonceSchema = z.object({
-    action: z.enum(["APPROUVER", "REJETER", "REVISION"]),
+    action: z.enum(["APPROUVER", "REJETER"]),
     note: z.string().max(1000).optional(),
 });
 //# sourceMappingURL=bien.validator.js.map

@@ -1,4 +1,4 @@
-import type { Admin, RefreshToken } from "../generated/prisma/index.js";
+import type { Admin, RefreshToken } from "../generated/prisma/client.js";
 export declare const findAdminByEmail: (email: string) => Promise<Admin | null>;
 export declare const findAdminById: (id: string) => Promise<Admin | null>;
 export declare const updateAdmin: (id: string, data: {

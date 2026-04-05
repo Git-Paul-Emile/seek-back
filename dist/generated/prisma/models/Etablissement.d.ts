@@ -410,13 +410,6 @@ export type EtablissementUncheckedUpdateManyWithoutBienNestedInput = {
     updateMany?: Prisma.EtablissementUpdateManyWithWhereWithoutBienInput | Prisma.EtablissementUpdateManyWithWhereWithoutBienInput[];
     deleteMany?: Prisma.EtablissementScalarWhereInput | Prisma.EtablissementScalarWhereInput[];
 };
-export type FloatFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type EtablissementCreateWithoutBienInput = {
     id?: string;
     type: string;

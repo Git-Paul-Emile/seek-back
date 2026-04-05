@@ -1,0 +1,152 @@
+import { StatusCodes } from "http-status-codes";
+import { AppError } from "../utils/AppError.js";
+import { prisma } from "../config/database.js";
+const BIEN_SELECT = {
+    id: true,
+    titre: true,
+    prix: true,
+    prixAncien: true,
+    photos: true,
+    pays: true,
+    region: true,
+    quartier: true,
+    surface: true,
+    nbChambres: true,
+    nbSdb: true,
+    actif: true,
+    statutAnnonce: true,
+    parking: true,
+    dateDerniereModificationPrix: true,
+    estMisEnAvant: true,
+    typeLogement: { select: { nom: true } },
+    typeTransaction: { select: { nom: true, slug: true } },
+    statutBien: { select: { nom: true, slug: true } },
+    proprietaire: {
+        select: {
+            id: true,
+            prenom: true,
+            nom: true,
+            telephone: true,
+            email: true,
+            statutVerification: true,
+        },
+    },
+};
+export const getFavoris = async (comptePublicId) => {
+    const favoris = await prisma.favori.findMany({
+        where: { comptePublicId },
+        orderBy: { createdAt: "desc" },
+        include: { bien: { select: BIEN_SELECT } },
+    });
+    return favoris.map((f) => {
+        const bien = f.bien;
+        const prixChange = f.prixSnapshot !== null && bien.prix !== null && bien.prix !== f.prixSnapshot;
+        const statutChange = f.statutSnapshot !== null && bien.statutBien?.slug !== f.statutSnapshot;
+        const bienSuppr = !bien.actif || bien.statutAnnonce !== "PUBLIE";
+        return {
+            id: f.id,
+            bienId: f.bienId,
+            createdAt: f.createdAt,
+            prixSnapshot: f.prixSnapshot,
+            statutSnapshot: f.statutSnapshot,
+            actifSnapshot: f.actifSnapshot,
+            bien,
+            changements: {
+                prixChange,
+                nouveauPrix: prixChange ? bien.prix : null,
+                prixAncienSnapshot: prixChange ? f.prixSnapshot : null,
+                statutChange,
+                nouveauStatut: statutChange ? bien.statutBien?.slug : null,
+                bienSuppr,
+            },
+        };
+    });
+};
+export const addFavori = async (comptePublicId, bienId) => {
+    const bien = await prisma.bien.findFirst({
+        where: { id: bienId, actif: true, statutAnnonce: "PUBLIE" },
+        select: { id: true, prix: true, statutBien: { select: { slug: true } } },
+    });
+    if (!bien) {
+        throw new AppError("Annonce introuvable ou non disponible", StatusCodes.NOT_FOUND);
+    }
+    const existing = await prisma.favori.findUnique({
+        where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    });
+    if (existing)
+        return existing;
+    await prisma.$transaction([
+        prisma.favori.create({
+            data: {
+                comptePublicId,
+                bienId,
+                prixSnapshot: bien.prix ?? null,
+                statutSnapshot: bien.statutBien?.slug ?? null,
+                actifSnapshot: true,
+            },
+        }),
+        prisma.bien.update({
+            where: { id: bienId },
+            data: { nbFavoris: { increment: 1 } },
+        }),
+    ]);
+};
+export const toggleFavori = async (comptePublicId, bienId) => {
+    const existing = await prisma.favori.findUnique({
+        where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    });
+    if (existing) {
+        await prisma.$transaction([
+            prisma.favori.delete({
+                where: { comptePublicId_bienId: { comptePublicId, bienId } },
+            }),
+            prisma.bien.update({
+                where: { id: bienId },
+                data: { nbFavoris: { decrement: 1 } },
+            }),
+        ]);
+        return { action: "removed" };
+    }
+    await addFavori(comptePublicId, bienId);
+    return { action: "added" };
+};
+export const removeFavori = async (comptePublicId, bienId) => {
+    const existing = await prisma.favori.findUnique({
+        where: { comptePublicId_bienId: { comptePublicId, bienId } },
+    });
+    if (!existing)
+        throw new AppError("Favori introuvable", StatusCodes.NOT_FOUND);
+    await prisma.$transaction([
+        prisma.favori.delete({
+            where: { comptePublicId_bienId: { comptePublicId, bienId } },
+        }),
+        prisma.bien.update({
+            where: { id: bienId },
+            data: { nbFavoris: { decrement: 1 } },
+        }),
+    ]);
+};
+export const updateSnapshot = async (comptePublicId, bienId) => {
+    const bien = await prisma.bien.findFirst({
+        where: { id: bienId },
+        select: { prix: true, statutBien: { select: { slug: true } }, actif: true },
+    });
+    if (!bien)
+        return;
+    await prisma.favori.update({
+        where: { comptePublicId_bienId: { comptePublicId, bienId } },
+        data: {
+            prixSnapshot: bien.prix ?? null,
+            statutSnapshot: bien.statutBien?.slug ?? null,
+            actifSnapshot: bien.actif,
+        },
+    });
+};
+export const getFavoriIds = async (comptePublicId) => {
+    const favoris = await prisma.favori.findMany({
+        where: { comptePublicId },
+        select: { bienId: true },
+    });
+    return favoris.map((f) => f.bienId);
+};
+//# sourceMappingURL=favori.service.js.map

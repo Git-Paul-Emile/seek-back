@@ -1,4 +1,4 @@
-import type { TypeLogement } from "../generated/prisma/index.js";
+import type { TypeLogement } from "../generated/prisma/client.js";
 export declare const getAll: () => Promise<TypeLogement[]>;
 export declare const getAllAdmin: () => Promise<TypeLogement[]>;
 export declare const getById: (id: string) => Promise<TypeLogement | null>;

@@ -70,6 +70,7 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
     Pays: 'Pays',
     Ville: 'Ville',
+    Quartier: 'Quartier',
     TypeLogement: 'TypeLogement',
     TypeTransaction: 'TypeTransaction',
     StatutBien: 'StatutBien',
@@ -77,17 +78,46 @@ export const ModelName = {
     CategorieEquipement: 'CategorieEquipement',
     Meuble: 'Meuble',
     Equipement: 'Equipement',
+    FormulePremium: 'FormulePremium',
     Bien: 'Bien',
+    ComptePublic: 'ComptePublic',
+    ComptePublicRefreshToken: 'ComptePublicRefreshToken',
+    Favori: 'Favori',
+    VueBien: 'VueBien',
     BienEquipement: 'BienEquipement',
     BienMeuble: 'BienMeuble',
+    DocumentBien: 'DocumentBien',
     Etablissement: 'Etablissement',
     Locataire: 'Locataire',
+    LocataireVerification: 'LocataireVerification',
     BailLocation: 'BailLocation',
+    EcheancierLoyer: 'EcheancierLoyer',
+    Quittance: 'Quittance',
+    Notification: 'Notification',
+    DepotCaution: 'DepotCaution',
+    ModeleContrat: 'ModeleContrat',
+    Contrat: 'Contrat',
     LocataireRefreshToken: 'LocataireRefreshToken',
+    LocatairePasswordResetToken: 'LocatairePasswordResetToken',
+    VerificationDocuments: 'VerificationDocuments',
     Proprietaire: 'Proprietaire',
+    MessageInterne: 'MessageInterne',
+    MessageInterneLocataire: 'MessageInterneLocataire',
     ProprietaireRefreshToken: 'ProprietaireRefreshToken',
+    PasswordResetToken: 'PasswordResetToken',
     Admin: 'Admin',
-    RefreshToken: 'RefreshToken'
+    RefreshToken: 'RefreshToken',
+    Alerte: 'Alerte',
+    Transaction: 'Transaction',
+    Temoignage: 'Temoignage',
+    PromotionHistory: 'PromotionHistory',
+    ConfigMonetisation: 'ConfigMonetisation',
+    ConfigSite: 'ConfigSite',
+    BailInvitation: 'BailInvitation',
+    Signalement: 'Signalement',
+    EtatDesLieux: 'EtatDesLieux',
+    PieceEtatDesLieux: 'PieceEtatDesLieux',
+    ElementEtatDesLieux: 'ElementEtatDesLieux'
 };
 /**
  * Enums
@@ -109,6 +139,15 @@ export const VilleScalarFieldEnum = {
     id: 'id',
     nom: 'nom',
     paysId: 'paysId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const QuartierScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    villeId: 'villeId',
+    latitude: 'latitude',
+    longitude: 'longitude',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -174,6 +213,21 @@ export const EquipementScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
+export const FormulePremiumScalarFieldEnum = {
+    id: 'id',
+    code: 'code',
+    nom: 'nom',
+    dureeJours: 'dureeJours',
+    prix: 'prix',
+    accroche: 'accroche',
+    description: 'description',
+    idealPour: 'idealPour',
+    populer: 'populer',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 export const BienScalarFieldEnum = {
     id: 'id',
     titre: 'titre',
@@ -186,6 +240,7 @@ export const BienScalarFieldEnum = {
     region: 'region',
     ville: 'ville',
     quartier: 'quartier',
+    quartierId: 'quartierId',
     adresse: 'adresse',
     pointRepere: 'pointRepere',
     latitude: 'latitude',
@@ -211,18 +266,62 @@ export const BienScalarFieldEnum = {
     parking: 'parking',
     ascenseur: 'ascenseur',
     prix: 'prix',
+    prixAncien: 'prixAncien',
+    dateDerniereModificationPrix: 'dateDerniereModificationPrix',
     frequencePaiement: 'frequencePaiement',
     chargesIncluses: 'chargesIncluses',
     caution: 'caution',
     disponibleLe: 'disponibleLe',
     photos: 'photos',
+    nbVues: 'nbVues',
+    nbFavoris: 'nbFavoris',
     actif: 'actif',
     statutAnnonce: 'statutAnnonce',
     noteAdmin: 'noteAdmin',
-    hasPendingRevision: 'hasPendingRevision',
-    pendingRevision: 'pendingRevision',
+    publishedAt: 'publishedAt',
+    estPremium: 'estPremium',
+    estMisEnAvant: 'estMisEnAvant',
+    dateDebutPromotion: 'dateDebutPromotion',
+    dateFinPromotion: 'dateFinPromotion',
+    positionRotation: 'positionRotation',
+    dernierAffichage: 'dernierAffichage',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const ComptePublicScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    prenom: 'prenom',
+    telephone: 'telephone',
+    email: 'email',
+    password: 'password',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ComptePublicRefreshTokenScalarFieldEnum = {
+    id: 'id',
+    comptePublicId: 'comptePublicId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    revokedAt: 'revokedAt',
+    createdAt: 'createdAt'
+};
+export const FavoriScalarFieldEnum = {
+    id: 'id',
+    comptePublicId: 'comptePublicId',
+    bienId: 'bienId',
+    prixSnapshot: 'prixSnapshot',
+    statutSnapshot: 'statutSnapshot',
+    actifSnapshot: 'actifSnapshot',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const VueBienScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    userId: 'userId',
+    ipAddress: 'ipAddress',
+    createdAt: 'createdAt'
 };
 export const BienEquipementScalarFieldEnum = {
     bienId: 'bienId',
@@ -232,6 +331,17 @@ export const BienMeubleScalarFieldEnum = {
     bienId: 'bienId',
     meubleId: 'meubleId',
     quantite: 'quantite'
+};
+export const DocumentBienScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    nom: 'nom',
+    type: 'type',
+    url: 'url',
+    taille: 'taille',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const EtablissementScalarFieldEnum = {
     id: 'id',
@@ -259,13 +369,32 @@ export const LocataireScalarFieldEnum = {
     numPieceIdentite: 'numPieceIdentite',
     typePiece: 'typePiece',
     dateDelivrance: 'dateDelivrance',
-    dateExpiration: 'dateExpiration',
+    dateExpirationPiece: 'dateExpirationPiece',
     autoriteDelivrance: 'autoriteDelivrance',
     situationProfessionnelle: 'situationProfessionnelle',
     activationToken: 'activationToken',
     tokenExpiresAt: 'tokenExpiresAt',
     statut: 'statut',
     password: 'password',
+    estSuspendu: 'estSuspendu',
+    motifSuspension: 'motifSuspension',
+    dateSuspension: 'dateSuspension',
+    suspenduPar: 'suspenduPar',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const LocataireVerificationScalarFieldEnum = {
+    id: 'id',
+    locataireId: 'locataireId',
+    typePiece: 'typePiece',
+    pieceIdentiteRecto: 'pieceIdentiteRecto',
+    pieceIdentiteVerso: 'pieceIdentiteVerso',
+    selfie: 'selfie',
+    statut: 'statut',
+    conditionsAcceptees: 'conditionsAcceptees',
+    motifRejet: 'motifRejet',
+    traitePar: 'traitePar',
+    dateTraitement: 'dateTraitement',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -280,7 +409,102 @@ export const BailLocationScalarFieldEnum = {
     renouvellement: 'renouvellement',
     montantLoyer: 'montantLoyer',
     montantCaution: 'montantCaution',
+    cautionVersee: 'cautionVersee',
+    jourLimitePaiement: 'jourLimitePaiement',
+    delaiGrace: 'delaiGrace',
     frequencePaiement: 'frequencePaiement',
+    statut: 'statut',
+    motifResiliation: 'motifResiliation',
+    initiePar: 'initiePar',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const EcheancierLoyerScalarFieldEnum = {
+    id: 'id',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    locataireId: 'locataireId',
+    dateEcheance: 'dateEcheance',
+    montant: 'montant',
+    statut: 'statut',
+    datePaiement: 'datePaiement',
+    modePaiement: 'modePaiement',
+    reference: 'reference',
+    note: 'note',
+    sourceEnregistrement: 'sourceEnregistrement',
+    commissionTaux: 'commissionTaux',
+    commissionMontant: 'commissionMontant',
+    montantNet: 'montantNet',
+    confirmeParProprietaire: 'confirmeParProprietaire',
+    dateConfirmation: 'dateConfirmation',
+    confirmeParLocataire: 'confirmeParLocataire',
+    dateConfirmationLocataire: 'dateConfirmationLocataire',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const QuittanceScalarFieldEnum = {
+    id: 'id',
+    echeanceId: 'echeanceId',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    locataireId: 'locataireId',
+    numero: 'numero',
+    dateGeneration: 'dateGeneration',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const NotificationScalarFieldEnum = {
+    id: 'id',
+    type: 'type',
+    canal: 'canal',
+    destinataire: 'destinataire',
+    sujet: 'sujet',
+    contenu: 'contenu',
+    statut: 'statut',
+    messageRetour: 'messageRetour',
+    echeanceId: 'echeanceId',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    locataireId: 'locataireId',
+    lu: 'lu',
+    envoyeAt: 'envoyeAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const DepotCautionScalarFieldEnum = {
+    id: 'id',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    locataireId: 'locataireId',
+    montant: 'montant',
+    statut: 'statut',
+    dateReception: 'dateReception',
+    dateRestitution: 'dateRestitution',
+    montantRestitue: 'montantRestitue',
+    motifRetenue: 'motifRetenue',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ModeleContratScalarFieldEnum = {
+    id: 'id',
+    titre: 'titre',
+    typeBail: 'typeBail',
+    contenu: 'contenu',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ContratScalarFieldEnum = {
+    id: 'id',
+    bailId: 'bailId',
+    modeleId: 'modeleId',
+    titre: 'titre',
+    contenu: 'contenu',
     statut: 'statut',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -293,6 +517,28 @@ export const LocataireRefreshTokenScalarFieldEnum = {
     revokedAt: 'revokedAt',
     createdAt: 'createdAt'
 };
+export const LocatairePasswordResetTokenScalarFieldEnum = {
+    id: 'id',
+    locataireId: 'locataireId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt'
+};
+export const VerificationDocumentsScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    typePiece: 'typePiece',
+    pieceIdentiteRecto: 'pieceIdentiteRecto',
+    pieceIdentiteVerso: 'pieceIdentiteVerso',
+    selfie: 'selfie',
+    conditionsAcceptees: 'conditionsAcceptees',
+    motifRejet: 'motifRejet',
+    traitePar: 'traitePar',
+    dateTraitement: 'dateTraitement',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 export const ProprietaireScalarFieldEnum = {
     id: 'id',
     prenom: 'prenom',
@@ -301,8 +547,46 @@ export const ProprietaireScalarFieldEnum = {
     telephone: 'telephone',
     email: 'email',
     password: 'password',
+    statutVerification: 'statutVerification',
+    verifiedAt: 'verifiedAt',
+    telephoneVerifie: 'telephoneVerifie',
+    telephoneOtp: 'telephoneOtp',
+    telephoneOtpExpiresAt: 'telephoneOtpExpiresAt',
+    estSuspendu: 'estSuspendu',
+    motifSuspension: 'motifSuspension',
+    dateSuspension: 'dateSuspension',
+    suspenduPar: 'suspenduPar',
+    nbAvertissements: 'nbAvertissements',
+    nbSignalementsValides: 'nbSignalementsValides',
+    estRestreint: 'estRestreint',
+    dateFinRestriction: 'dateFinRestriction',
+    dateFinSuspension: 'dateFinSuspension',
+    estBanni: 'estBanni',
+    dateBannissement: 'dateBannissement',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const MessageInterneScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    titre: 'titre',
+    corps: 'corps',
+    type: 'type',
+    lu: 'lu',
+    createdAt: 'createdAt'
+};
+export const MessageInterneLocataireScalarFieldEnum = {
+    id: 'id',
+    locataireId: 'locataireId',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    titre: 'titre',
+    corps: 'corps',
+    type: 'type',
+    lu: 'lu',
+    createdAt: 'createdAt'
 };
 export const ProprietaireRefreshTokenScalarFieldEnum = {
     id: 'id',
@@ -310,6 +594,14 @@ export const ProprietaireRefreshTokenScalarFieldEnum = {
     tokenHash: 'tokenHash',
     expiresAt: 'expiresAt',
     revokedAt: 'revokedAt',
+    createdAt: 'createdAt'
+};
+export const PasswordResetTokenScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
     createdAt: 'createdAt'
 };
 export const AdminScalarFieldEnum = {
@@ -327,12 +619,172 @@ export const RefreshTokenScalarFieldEnum = {
     revokedAt: 'revokedAt',
     createdAt: 'createdAt'
 };
+export const AlerteScalarFieldEnum = {
+    id: 'id',
+    telephone: 'telephone',
+    ville: 'ville',
+    quartier: 'quartier',
+    typeLogement: 'typeLogement',
+    typeTransaction: 'typeTransaction',
+    prixMin: 'prixMin',
+    prixMax: 'prixMax',
+    canalPrefere: 'canalPrefere',
+    statut: 'statut',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const TransactionScalarFieldEnum = {
+    id: 'id',
+    proprietaireId: 'proprietaireId',
+    type: 'type',
+    statut: 'statut',
+    montant: 'montant',
+    devise: 'devise',
+    modePaiement: 'modePaiement',
+    provider: 'provider',
+    reference: 'reference',
+    transactionId: 'transactionId',
+    dateInitiation: 'dateInitiation',
+    dateConfirmation: 'dateConfirmation',
+    dateEcheance: 'dateEcheance',
+    bienId: 'bienId',
+    bailId: 'bailId',
+    echeanceId: 'echeanceId',
+    locataireId: 'locataireId',
+    note: 'note',
+    instructions: 'instructions',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const TemoignageScalarFieldEnum = {
+    id: 'id',
+    nom: 'nom',
+    temoignage: 'temoignage',
+    actif: 'actif',
+    ordre: 'ordre',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const PromotionHistoryScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    transactionId: 'transactionId',
+    formuleId: 'formuleId',
+    formuleNom: 'formuleNom',
+    dureeJours: 'dureeJours',
+    montant: 'montant',
+    dateDebut: 'dateDebut',
+    dateFin: 'dateFin',
+    dateFinReelle: 'dateFinReelle',
+    modePaiement: 'modePaiement',
+    reference: 'reference',
+    note: 'note',
+    confirmeParAdmin: 'confirmeParAdmin',
+    dateConfirmation: 'dateConfirmation',
+    statut: 'statut',
+    motifArret: 'motifArret',
+    joursRestants: 'joursRestants',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ConfigMonetisationScalarFieldEnum = {
+    id: 'id',
+    miseEnAvantActive: 'miseEnAvantActive',
+    commissionActive: 'commissionActive',
+    tauxCommission: 'tauxCommission',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ConfigSiteScalarFieldEnum = {
+    id: 'id',
+    contactEmail: 'contactEmail',
+    contactPhone: 'contactPhone',
+    contactAddress: 'contactAddress',
+    serviceClientHours: 'serviceClientHours',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const BailInvitationScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    locataireId: 'locataireId',
+    proprietaireId: 'proprietaireId',
+    typeBail: 'typeBail',
+    dateDebutBail: 'dateDebutBail',
+    dateFinBail: 'dateFinBail',
+    montantLoyer: 'montantLoyer',
+    montantCaution: 'montantCaution',
+    cautionVersee: 'cautionVersee',
+    jourLimitePaiement: 'jourLimitePaiement',
+    renouvellement: 'renouvellement',
+    frequencePaiement: 'frequencePaiement',
+    token: 'token',
+    statut: 'statut',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SignalementScalarFieldEnum = {
+    id: 'id',
+    bienId: 'bienId',
+    comptePublicId: 'comptePublicId',
+    nom: 'nom',
+    telephone: 'telephone',
+    motif: 'motif',
+    commentaire: 'commentaire',
+    statut: 'statut',
+    traitePar: 'traitePar',
+    dateTraitement: 'dateTraitement',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const EtatDesLieuxScalarFieldEnum = {
+    id: 'id',
+    bailId: 'bailId',
+    bienId: 'bienId',
+    proprietaireId: 'proprietaireId',
+    locataireId: 'locataireId',
+    type: 'type',
+    statut: 'statut',
+    dateRealisation: 'dateRealisation',
+    dateValidation: 'dateValidation',
+    documentPdf: 'documentPdf',
+    nbCles: 'nbCles',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const PieceEtatDesLieuxScalarFieldEnum = {
+    id: 'id',
+    etatDesLieuxId: 'etatDesLieuxId',
+    nom: 'nom',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ElementEtatDesLieuxScalarFieldEnum = {
+    id: 'id',
+    pieceId: 'pieceId',
+    nom: 'nom',
+    etat: 'etat',
+    commentaire: 'commentaire',
+    photos: 'photos',
+    estConteste: 'estConteste',
+    motifContestation: 'motifContestation',
+    photoContestation: 'photoContestation',
+    statutContestation: 'statutContestation',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 export const SortOrder = {
     asc: 'asc',
     desc: 'desc'
 };
 export const NullableJsonNullValueInput = {
     DbNull: DbNull,
+    JsonNull: JsonNull
+};
+export const JsonNullValueInput = {
     JsonNull: JsonNull
 };
 export const QueryMode = {

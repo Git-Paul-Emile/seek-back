@@ -1,0 +1,231 @@
+import { Prisma } from "../generated/prisma/client.js";
+export declare const getSignalements: (filter?: {
+    statut?: string;
+    search?: string;
+}) => Promise<({
+    bien: {
+        id: string;
+        titre: string | null;
+        proprietaire: {
+            id: string;
+            telephone: string;
+            nom: string;
+            prenom: string;
+            estSuspendu: boolean;
+            nbSignalementsValides: number;
+        };
+    };
+} & {
+    statut: import("../generated/prisma/enums.js").StatutSignalement;
+    id: string;
+    telephone: string;
+    createdAt: Date;
+    updatedAt: Date;
+    nom: string;
+    traitePar: string | null;
+    dateTraitement: Date | null;
+    bienId: string;
+    motif: import("../generated/prisma/enums.js").MotifSignalement;
+    comptePublicId: string | null;
+    commentaire: string | null;
+})[]>;
+export declare const getSignalementById: (id: string) => Promise<{
+    bien: {
+        typeLogement: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            actif: boolean;
+            nom: string;
+            slug: string;
+            ordre: number;
+            image: string | null;
+        } | null;
+        typeTransaction: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            actif: boolean;
+            nom: string;
+            slug: string;
+            ordre: number;
+        } | null;
+        proprietaire: {
+            id: string;
+            telephone: string;
+            createdAt: Date;
+            updatedAt: Date;
+            nom: string;
+            email: string | null;
+            prenom: string;
+            sexe: string | null;
+            password: string;
+            statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+            verifiedAt: Date | null;
+            telephoneVerifie: boolean;
+            telephoneOtp: string | null;
+            telephoneOtpExpiresAt: Date | null;
+            estSuspendu: boolean;
+            motifSuspension: string | null;
+            dateSuspension: Date | null;
+            suspenduPar: string | null;
+            nbAvertissements: number;
+            nbSignalementsValides: number;
+            estRestreint: boolean;
+            dateFinRestriction: Date | null;
+            dateFinSuspension: Date | null;
+            estBanni: boolean;
+            dateBannissement: Date | null;
+        };
+        quartierRel: ({
+            ville: {
+                pays: {
+                    id: string;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    nom: string;
+                    code: string;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                nom: string;
+                paysId: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            latitude: number;
+            longitude: number;
+            nom: string;
+            villeId: string;
+        }) | null;
+    } & {
+        description: string | null;
+        proprietaireId: string;
+        id: string;
+        ville: string | null;
+        quartier: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        titre: string | null;
+        typeLogementId: string | null;
+        typeTransactionId: string | null;
+        statutBienId: string | null;
+        pays: string | null;
+        region: string | null;
+        quartierId: string | null;
+        adresse: string | null;
+        pointRepere: string | null;
+        latitude: number | null;
+        longitude: number | null;
+        surface: number | null;
+        surfaceParcelle: number | null;
+        nbChambres: number | null;
+        nbSdb: number | null;
+        nbSalons: number | null;
+        nbCuisines: number | null;
+        etage: number | null;
+        nbEtages: number | null;
+        nbAppartements: number | null;
+        nbPieces: number | null;
+        nbWc: number | null;
+        typeTerrain: string | null;
+        cloture: boolean;
+        typeBureau: string | null;
+        rideauMetallique: boolean;
+        meuble: boolean;
+        fumeurs: boolean;
+        animaux: boolean;
+        parking: boolean;
+        ascenseur: boolean;
+        prix: number | null;
+        prixAncien: number | null;
+        dateDerniereModificationPrix: Date | null;
+        frequencePaiement: string | null;
+        chargesIncluses: boolean;
+        caution: number | null;
+        disponibleLe: Date | null;
+        photos: string[];
+        nbVues: number;
+        nbFavoris: number;
+        actif: boolean;
+        statutAnnonce: import("../generated/prisma/enums.js").StatutAnnonce;
+        noteAdmin: string | null;
+        publishedAt: Date | null;
+        estPremium: boolean;
+        estMisEnAvant: boolean;
+        dateDebutPromotion: Date | null;
+        dateFinPromotion: Date | null;
+        positionRotation: number;
+        dernierAffichage: Date | null;
+    };
+    comptePublic: {
+        id: string;
+        telephone: string;
+        createdAt: Date;
+        updatedAt: Date;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        password: string;
+    } | null;
+} & {
+    statut: import("../generated/prisma/enums.js").StatutSignalement;
+    id: string;
+    telephone: string;
+    createdAt: Date;
+    updatedAt: Date;
+    nom: string;
+    traitePar: string | null;
+    dateTraitement: Date | null;
+    bienId: string;
+    motif: import("../generated/prisma/enums.js").MotifSignalement;
+    comptePublicId: string | null;
+    commentaire: string | null;
+}>;
+export declare const createSignalement: (data: Prisma.SignalementUncheckedCreateInput) => Promise<{
+    statut: import("../generated/prisma/enums.js").StatutSignalement;
+    id: string;
+    telephone: string;
+    createdAt: Date;
+    updatedAt: Date;
+    nom: string;
+    traitePar: string | null;
+    dateTraitement: Date | null;
+    bienId: string;
+    motif: import("../generated/prisma/enums.js").MotifSignalement;
+    comptePublicId: string | null;
+    commentaire: string | null;
+}>;
+export declare const validerSignalement: (id: string, adminId: string) => Promise<{
+    statut: import("../generated/prisma/enums.js").StatutSignalement;
+    id: string;
+    telephone: string;
+    createdAt: Date;
+    updatedAt: Date;
+    nom: string;
+    traitePar: string | null;
+    dateTraitement: Date | null;
+    bienId: string;
+    motif: import("../generated/prisma/enums.js").MotifSignalement;
+    comptePublicId: string | null;
+    commentaire: string | null;
+}>;
+export declare const rejeterSignalement: (id: string, adminId: string) => Promise<{
+    statut: import("../generated/prisma/enums.js").StatutSignalement;
+    id: string;
+    telephone: string;
+    createdAt: Date;
+    updatedAt: Date;
+    nom: string;
+    traitePar: string | null;
+    dateTraitement: Date | null;
+    bienId: string;
+    motif: import("../generated/prisma/enums.js").MotifSignalement;
+    comptePublicId: string | null;
+    commentaire: string | null;
+}>;
+//# sourceMappingURL=signalement.service.d.ts.map

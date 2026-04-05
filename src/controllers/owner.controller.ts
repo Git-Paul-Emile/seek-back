@@ -7,6 +7,7 @@ import {
   envoyerResetPasswordProprietaire,
   envoyerOtpTelephone,
 } from "../services/notification.service.js";
+import * as ComptePublicService from "../services/comptePublicAuth.service.js";
 
 const REFRESH_COOKIE = "ownerRefreshToken";
 const ACCESS_COOKIE = "ownerAccessToken";
@@ -40,7 +41,7 @@ const clearTokenCookies = (res: Response) => {
   const isProduction = process.env.NODE_ENV === "production";
   const cookieDomain = process.env.COOKIE_DOMAIN;
   const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  
+
   const baseOptions: CookieOptions = {
     path: "/",
     httpOnly: true,
@@ -48,9 +49,40 @@ const clearTokenCookies = (res: Response) => {
     sameSite,
     ...(cookieDomain && { domain: cookieDomain }),
   };
-  
+
   res.clearCookie(ACCESS_COOKIE, baseOptions);
   res.clearCookie(REFRESH_COOKIE, { ...baseOptions, path: "/api/owner/auth/refresh" });
+};
+
+const setComptePublicCookies = (
+  res: Response,
+  accessToken: string,
+  refreshToken: string,
+  refreshTokenExpiresAt: Date
+) => {
+  const isProduction = process.env.NODE_ENV === "production";
+  res.cookie("comptePublicAccessToken", accessToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/",
+    maxAge: 15 * 60 * 1000,
+  });
+  res.cookie("comptePublicRefreshToken", refreshToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/api/public/auth/refresh",
+    expires: refreshTokenExpiresAt,
+  });
+};
+
+const clearComptePublicCookies = (res: Response) => {
+  const isProduction = process.env.NODE_ENV === "production";
+  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
+  const base: CookieOptions = { path: "/", httpOnly: true, secure: isProduction, sameSite };
+  res.clearCookie("comptePublicAccessToken", base);
+  res.clearCookie("comptePublicRefreshToken", { ...base, path: "/api/public/auth/refresh" });
 };
 
 // ─── POST /api/owner/auth/register ───────────────────────────────────────────
@@ -88,6 +120,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
   setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
 
+  // Compte public automatique
+  try {
+    const { tokens: cpTokens } = await ComptePublicService.getOrCreateForProprietaire(proprietaire.id);
+    setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+  } catch (err) {
+    console.error("[Owner login] Erreur création compte public :", err);
+  }
+
   res.status(StatusCodes.OK).json(
     jsonResponse({
       status: "success",
@@ -109,10 +149,19 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const { accessToken, refreshToken, refreshTokenExpiresAt } =
+  const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaireId } =
     await OwnerService.refresh(oldRefreshToken);
 
   setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
+
+  // Renouveler aussi le token du compte public lié
+  try {
+    const { tokens: cpTokens } = await ComptePublicService.getOrCreateForProprietaire(proprietaireId);
+    setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+  } catch (err) {
+    console.error("[Owner refresh] Erreur renouvellement compte public :", err);
+  }
+
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Token renouvelé" })
   );
@@ -122,8 +171,18 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
   const refreshToken = req.cookies?.[REFRESH_COOKIE] as string | undefined;
-  if (refreshToken) await OwnerService.logout(refreshToken);
+  if (refreshToken) {
+    const proprietaireId = await OwnerService.logout(refreshToken);
+    if (proprietaireId) {
+      try {
+        await ComptePublicService.revokePublicTokensForProprietaire(proprietaireId);
+      } catch (err) {
+        console.error("[Owner logout] Erreur révocation compte public :", err);
+      }
+    }
+  }
   clearTokenCookies(res);
+  clearComptePublicCookies(res);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Déconnexion réussie" })
   );
@@ -249,6 +308,53 @@ export const marquerMessagesLus = async (req: Request, res: Response): Promise<v
   res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Messages marqués comme lus" }));
 };
 
+export const getBiensSansEdl = async (req: Request, res: Response): Promise<void> => {
+  const proprietaireId = req.owner?.id;
+  if (!proprietaireId) {
+    res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "fail", message: "Non authentifié" }));
+    return;
+  }
+
+  const bails = await prisma.bailLocation.findMany({
+    where: {
+      proprietaireId,
+      statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"] as any[] },
+      etatsDesLieux: {
+        none: { type: "ENTREE" as any },
+      },
+    },
+    select: {
+      id: true,
+      bienId: true,
+      locataireId: true,
+      dateDebutBail: true,
+      bien: {
+        select: {
+          titre: true,
+          ville: true,
+          region: true,
+        },
+      },
+      locataire: {
+        select: {
+          prenom: true,
+          nom: true,
+        },
+      },
+    },
+    orderBy: { dateDebutBail: "desc" },
+  });
+
+  res.status(StatusCodes.OK).json(jsonResponse({
+    status: "success",
+    message: "Biens sans état des lieux récupérés",
+    data: {
+      count: bails.length,
+      items: bails,
+    },
+  }));
+};
+
 // ─── POST /api/owner/auth/verifier-telephone ─────────────────────────────────
 
 export const verifierTelephone = async (req: Request, res: Response): Promise<void> => {
@@ -263,10 +369,17 @@ export const verifierTelephone = async (req: Request, res: Response): Promise<vo
     return;
   }
   const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaire } = await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
-  
-  // Définir les cookies après vérification réussie
+
   setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
-  
+
+  // Compte public automatique (première connexion après inscription)
+  try {
+    const { tokens: cpTokens } = await ComptePublicService.getOrCreateForProprietaire(proprietaireId);
+    setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+  } catch (err) {
+    console.error("[Owner verifierTelephone] Erreur création compte public :", err);
+  }
+
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès.", data: proprietaire })
   );
@@ -312,10 +425,16 @@ export const verifierTelephonePublic = async (req: Request, res: Response): Prom
     return;
   }
   const { accessToken, refreshToken, refreshTokenExpiresAt, proprietaire } = await OwnerService.verifyOtpTelephone(proprietaireId, String(otp));
-  
-  // Définir les cookies après vérification réussie
+
   setTokenCookies(res, accessToken, refreshToken, refreshTokenExpiresAt);
-  
+
+  try {
+    const { tokens: cpTokens } = await ComptePublicService.getOrCreateForProprietaire(proprietaireId);
+    setComptePublicCookies(res, cpTokens.accessToken, cpTokens.refreshToken, cpTokens.refreshTokenExpiresAt);
+  } catch (err) {
+    console.error("[Owner verifierTelephonePublic] Erreur création compte public :", err);
+  }
+
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Numéro de téléphone vérifié avec succès.", data: proprietaire })
   );

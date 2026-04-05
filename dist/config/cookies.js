@@ -4,7 +4,7 @@ import {} from "express";
  */
 export const cookieOptions = {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
     secure: process.env.NODE_ENV === "production",
     maxAge: 24 * 60 * 60 * 1000, // 24 heures par défaut
@@ -34,7 +34,7 @@ export const getCookieDomain = () => {
 export const clearAuthCookies = (res) => {
     const cookieDomain = getCookieDomain();
     const secure = process.env.NODE_ENV === "production";
-    const sameSite = process.env.NODE_ENV === "production" ? "strict" : "lax";
+    const sameSite = process.env.NODE_ENV === "production" ? "none" : "lax";
     res.clearCookie("access_token", {
         httpOnly: true,
         sameSite,

@@ -10,5 +10,5 @@ declare global {
         }
     }
 }
-export declare const authenticateLocataire: (req: Request, res: Response, next: NextFunction) => void;
+export declare const authenticateLocataire: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 //# sourceMappingURL=locataireAuth.middleware.d.ts.map

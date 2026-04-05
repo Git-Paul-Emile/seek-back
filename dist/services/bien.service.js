@@ -2,6 +2,10 @@ import * as BienRepository from "../repositories/bien.repository.js";
 import * as CloudinaryService from "./cloudinary.service.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
+import { prisma } from "../config/database.js";
+import { computeScoreForProprietaire } from "./trustScore.service.js";
+import { emitPropertyAlert, fetchAndEmitStatsGlobales } from "./socket.service.js";
+import { envoyerNotification } from "./notification.service.js";
 const ETABLISSEMENT_QUERIES = [
     { type: "hopital", label: "Hôpital", query: '["amenity"="hospital"]' },
     { type: "pharmacie", label: "Pharmacie", query: '["amenity"="pharmacy"]' },
@@ -32,48 +36,70 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
             Math.sin(dLon / 2) ** 2;
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-async function fetchNearestEtablissements(lat, lon) {
-    const radius = 5000;
-    const results = [];
-    const unionParts = ETABLISSEMENT_QUERIES.map(({ query }) => `node${query}(around:${radius},${lat},${lon});`).join("\n");
+async function queryOverpass(lat, lon, queries, radius) {
+    const unionParts = queries
+        .map(({ query }) => `node${query}(around:${radius},${lat},${lon});`)
+        .join("\n");
     const overpassQuery = `[out:json][timeout:25];\n(\n${unionParts}\n);\nout body;`;
-    try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
-        const response = await fetch("https://overpass-api.de/api/interpreter", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `data=${encodeURIComponent(overpassQuery)}`,
-            signal: controller.signal,
-        });
-        clearTimeout(timeoutId);
-        if (!response.ok)
-            return results;
-        const json = await response.json();
-        const elements = json.elements ?? [];
-        for (const { type, label } of ETABLISSEMENT_QUERIES) {
-            let nearest = null;
-            let nearestDist = Infinity;
-            for (const el of elements) {
-                if (!matchesType(el, type))
-                    continue;
-                const dist = haversineDistance(lat, lon, el.lat, el.lon);
-                if (dist < nearestDist) {
-                    nearestDist = dist;
-                    nearest = el;
-                }
-            }
-            if (nearest) {
-                results.push({
-                    bienId: "",
-                    type,
-                    nom: nearest.tags?.name ?? label,
-                    latitude: nearest.lat,
-                    longitude: nearest.lon,
-                    distance: Math.round(nearestDist),
-                });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const response = await fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `data=${encodeURIComponent(overpassQuery)}`,
+        signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok)
+        return { elements: [], ok: false };
+    const json = await response.json();
+    return { elements: json.elements ?? [], ok: true };
+}
+function pickNearest(elements, lat, lon, queries) {
+    const found = new Map();
+    for (const { type, label } of queries) {
+        let nearest = null;
+        let nearestDist = Infinity;
+        for (const el of elements) {
+            if (!matchesType(el, type))
+                continue;
+            const dist = haversineDistance(lat, lon, el.lat, el.lon);
+            if (dist < nearestDist) {
+                nearestDist = dist;
+                nearest = el;
             }
         }
+        if (nearest)
+            found.set(type, { node: nearest, dist: nearestDist, label });
+    }
+    return found;
+}
+async function fetchNearestEtablissements(lat, lon) {
+    const results = [];
+    try {
+        // 1st pass — 5 km
+        const { elements, ok } = await queryOverpass(lat, lon, ETABLISSEMENT_QUERIES, 5000);
+        if (!ok)
+            return results;
+        const found = pickNearest(elements, lat, lon, ETABLISSEMENT_QUERIES);
+        // Types absent from the 5 km radius
+        const missing = ETABLISSEMENT_QUERIES.filter(({ type }) => !found.has(type));
+        // 2nd pass — 50 km for missing types only
+        if (missing.length > 0) {
+            const { elements: elemsFar } = await queryOverpass(lat, lon, missing, 50000);
+            const foundFar = pickNearest(elemsFar, lat, lon, missing);
+            foundFar.forEach((v, type) => found.set(type, v));
+        }
+        found.forEach(({ node, dist, label }, type) => {
+            results.push({
+                bienId: "",
+                type,
+                nom: node.tags?.name ?? label,
+                latitude: node.lat,
+                longitude: node.lon,
+                distance: Math.round(dist),
+            });
+        });
     }
     catch {
         // Overpass unavailable - silently skip
@@ -119,14 +145,10 @@ export const saveDraft = async (input, proprietaireId, files) => {
         if (bien.proprietaireId !== proprietaireId) {
             throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
         }
-        // Upload new photos if provided
-        let newPhotoUrls = [];
-        if (files.length > 0) {
-            for (const file of files) {
-                const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
-                newPhotoUrls.push(result.url);
-            }
-        }
+        // Upload new photos in parallel
+        const newPhotoUrls = files.length > 0
+            ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+            : [];
         const photos = [...(existingPhotos || []), ...newPhotoUrls];
         const data = {
             ...rest,
@@ -134,18 +156,22 @@ export const saveDraft = async (input, proprietaireId, files) => {
             photos,
             disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
         };
+        // Gérer la logique de baisse de prix (bien déjà chargé plus haut)
+        if (rest.prix !== undefined && bien.prix && rest.prix !== null && rest.prix < bien.prix) {
+            const pourcentageBaisse = ((bien.prix - rest.prix) / bien.prix) * 100;
+            if (pourcentageBaisse >= 5) {
+                data.prixAncien = bien.prix;
+                data.dateDerniereModificationPrix = new Date();
+            }
+        }
         return await BienRepository.updateBien(input.id, data);
     }
     // Sinon, utiliser le comportement existant (brouillon)
     const existing = await BienRepository.getDraftByProprietaire(proprietaireId);
-    // Upload new photos if provided
-    let newPhotoUrls = [];
-    if (files.length > 0) {
-        for (const file of files) {
-            const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
-            newPhotoUrls.push(result.url);
-        }
-    }
+    // Upload new photos in parallel
+    const newPhotoUrls = files.length > 0
+        ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+        : [];
     const photos = [...existingPhotos, ...newPhotoUrls];
     const data = {
         ...rest,
@@ -175,6 +201,17 @@ export const soumettreAnnonce = async (bienId, proprietaireId) => {
     if (bien.statutAnnonce !== "BROUILLON" && bien.statutAnnonce !== "REJETE") {
         throw new AppError("Cette annonce ne peut pas être soumise dans son état actuel", StatusCodes.BAD_REQUEST);
     }
+    // Vérifier si le compte est restreint (3 avertissements)
+    const proprietaire = await prisma.proprietaire.findUnique({
+        where: { id: proprietaireId },
+        select: { estRestreint: true, dateFinRestriction: true },
+    });
+    if (proprietaire?.estRestreint) {
+        const dateFin = proprietaire.dateFinRestriction
+            ? new Date(proprietaire.dateFinRestriction).toLocaleDateString("fr-FR")
+            : "sous peu";
+        throw new AppError(`Votre compte est restreint suite à des avertissements. Publication désactivée jusqu'au ${dateFin}.`, StatusCodes.FORBIDDEN);
+    }
     // Validate required fields
     const missing = [];
     if (!bien.titre?.trim())
@@ -195,6 +232,8 @@ export const soumettreAnnonce = async (bienId, proprietaireId) => {
         throw new AppError(`Champs requis manquants pour la publication : ${missing.join(", ")}`, StatusCodes.BAD_REQUEST);
     }
     const updated = await BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
+    // Stats admin temps réel
+    fetchAndEmitStatsGlobales().catch(() => null);
     // Register nearby establishments asynchronously
     if (bien.latitude && bien.longitude) {
         fetchNearestEtablissements(bien.latitude, bien.longitude)
@@ -208,10 +247,26 @@ export const soumettreAnnonce = async (bienId, proprietaireId) => {
 };
 // ─── Biens du propriétaire ────────────────────────────────────────────────────
 export const getBiensByProprietaire = async (proprietaireId) => {
-    return BienRepository.getBiensByProprietaire(proprietaireId);
+    const biens = await BienRepository.getBiensByProprietaire(proprietaireId);
+    return biens.map(({ bails, ...bien }) => ({
+        ...bien,
+        hasBailActif: bails.length > 0,
+    }));
 };
 export const getBienById = async (id) => {
     return BienRepository.getBienById(id);
+};
+// ─── Nettoyage Cloudinary d'un bien (photos + documents + photos état des lieux) ──
+const deleteCloudinaryForBien = async (bienId) => {
+    const [bien, docs] = await Promise.all([
+        prisma.bien.findUnique({ where: { id: bienId }, select: { photos: true } }),
+        prisma.documentBien.findMany({ where: { bienId }, select: { url: true } }),
+    ]);
+    const urls = [
+        ...(bien?.photos ?? []),
+        ...docs.map((d) => d.url),
+    ];
+    await CloudinaryService.deleteUrls(urls);
 };
 export const deleteBien = async (bienId, proprietaireId) => {
     const bien = await BienRepository.getBienById(bienId);
@@ -219,9 +274,14 @@ export const deleteBien = async (bienId, proprietaireId) => {
         throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
     if (bien.proprietaireId !== proprietaireId)
         throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
-    if (bien.statutAnnonce === "EN_ATTENTE" || bien.statutAnnonce === "PUBLIE") {
-        throw new AppError("Annulez ou dépubliez l'annonce avant de la supprimer", StatusCodes.BAD_REQUEST);
+    const activeBail = await prisma.bailLocation.findFirst({
+        where: { bienId, statut: "ACTIF" },
+        select: { id: true },
+    });
+    if (activeBail) {
+        throw new AppError("Ce bien est associé à un locataire actif. Terminez ou résiliez le bail avant de supprimer.", StatusCodes.BAD_REQUEST);
     }
+    await deleteCloudinaryForBien(bienId);
     return BienRepository.deleteBienById(bienId);
 };
 export const retourBrouillon = async (bienId, proprietaireId) => {
@@ -235,138 +295,26 @@ export const retourBrouillon = async (bienId, proprietaireId) => {
     }
     return BienRepository.updateStatutAnnonce(bienId, "BROUILLON");
 };
-// ─── Soumettre une révision (modification d'une annonce publiée) ──────────────
-export const soumettreRevision = async (bienId, proprietaireId, input, files) => {
-    const bien = await BienRepository.getBienById(bienId);
-    if (!bien)
-        throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
-    if (bien.proprietaireId !== proprietaireId)
-        throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
-    if (bien.statutAnnonce !== "PUBLIE") {
-        throw new AppError("Seules les annonces publiées peuvent faire l'objet d'une révision", StatusCodes.BAD_REQUEST);
-    }
-    if (bien.hasPendingRevision) {
-        throw new AppError("Une révision est déjà en attente de validation", StatusCodes.BAD_REQUEST);
-    }
-    // Upload new photos if provided
-    let newPhotoUrls = [];
-    if (files.length > 0) {
-        for (const file of files) {
-            const result = await CloudinaryService.uploadImage(file.buffer, "seek/biens");
-            newPhotoUrls.push(result.url);
-        }
-    }
-    const { existingPhotos = [], disponibleLe, equipementIds, meubles, ...rest } = input;
-    const photos = [...existingPhotos, ...newPhotoUrls];
-    const normalizeString = (value) => {
-        const trimmed = value?.trim();
-        return trimmed ? trimmed : null;
-    };
-    const normalizeNumber = (value) => typeof value === "number" && Number.isFinite(value) ? value : null;
-    const sortStrings = (values) => [...(values ?? [])].sort();
-    const sortMeubles = (values) => [...(values ?? [])]
-        .map((item) => ({ meubleId: item.meubleId, quantite: item.quantite ?? 1 }))
-        .sort((a, b) => a.meubleId === b.meubleId
-        ? a.quantite - b.quantite
-        : a.meubleId.localeCompare(b.meubleId));
-    const currentComparable = {
-        titre: normalizeString(bien.titre),
-        description: normalizeString(bien.description),
-        typeLogementId: bien.typeLogementId ?? null,
-        typeTransactionId: bien.typeTransactionId ?? null,
-        statutBienId: bien.statutBienId ?? null,
-        pays: normalizeString(bien.pays),
-        region: normalizeString(bien.region),
-        ville: normalizeString(bien.ville),
-        quartier: normalizeString(bien.quartier),
-        adresse: normalizeString(bien.adresse),
-        latitude: normalizeNumber(bien.latitude),
-        longitude: normalizeNumber(bien.longitude),
-        surface: normalizeNumber(bien.surface),
-        nbChambres: normalizeNumber(bien.nbChambres),
-        nbSdb: normalizeNumber(bien.nbSdb),
-        nbSalons: normalizeNumber(bien.nbSalons),
-        nbCuisines: normalizeNumber(bien.nbCuisines),
-        nbWc: normalizeNumber(bien.nbWc),
-        etage: normalizeNumber(bien.etage),
-        meuble: !!bien.meuble,
-        fumeurs: !!bien.fumeurs,
-        animaux: !!bien.animaux,
-        parking: !!bien.parking,
-        ascenseur: !!bien.ascenseur,
-        prix: normalizeNumber(bien.prix),
-        frequencePaiement: normalizeString(bien.frequencePaiement),
-        chargesIncluses: !!bien.chargesIncluses,
-        caution: normalizeNumber(bien.caution),
-        disponibleLe: bien.disponibleLe ? bien.disponibleLe.toISOString().split("T")[0] : null,
-        photos,
-        equipementIds: sortStrings(bien.equipements?.map((e) => e.equipementId)),
-        meubles: sortMeubles(bien.meubles?.map((m) => ({ meubleId: m.meubleId, quantite: m.quantite }))),
-    };
-    const nextComparable = {
-        titre: normalizeString(rest.titre),
-        description: normalizeString(rest.description),
-        typeLogementId: rest.typeLogementId ?? null,
-        typeTransactionId: rest.typeTransactionId ?? null,
-        statutBienId: rest.statutBienId ?? null,
-        pays: normalizeString(rest.pays),
-        region: normalizeString(rest.region),
-        ville: normalizeString(rest.ville),
-        quartier: normalizeString(rest.quartier),
-        adresse: normalizeString(rest.adresse),
-        latitude: normalizeNumber(rest.latitude),
-        longitude: normalizeNumber(rest.longitude),
-        surface: normalizeNumber(rest.surface),
-        nbChambres: normalizeNumber(rest.nbChambres),
-        nbSdb: normalizeNumber(rest.nbSdb),
-        nbSalons: normalizeNumber(rest.nbSalons),
-        nbCuisines: normalizeNumber(rest.nbCuisines),
-        nbWc: normalizeNumber(rest.nbWc),
-        etage: normalizeNumber(rest.etage),
-        meuble: !!rest.meuble,
-        fumeurs: !!rest.fumeurs,
-        animaux: !!rest.animaux,
-        parking: !!rest.parking,
-        ascenseur: !!rest.ascenseur,
-        prix: normalizeNumber(rest.prix),
-        frequencePaiement: normalizeString(rest.frequencePaiement),
-        chargesIncluses: !!rest.chargesIncluses,
-        caution: normalizeNumber(rest.caution),
-        disponibleLe: disponibleLe ?? null,
-        photos,
-        equipementIds: sortStrings(equipementIds),
-        meubles: sortMeubles(meubles),
-    };
-    if (JSON.stringify(currentComparable) === JSON.stringify(nextComparable)) {
-        throw new AppError("Aucune modification détectée. Modifiez au moins un élément avant de soumettre.", StatusCodes.BAD_REQUEST);
-    }
-    // Build revision data with resolved labels for display in admin
-    const revisionData = {
-        ...rest,
-        photos,
-        disponibleLe: disponibleLe ?? null,
-        equipementIds: equipementIds ?? [],
-        meubles: meubles ?? [],
-        typeLogement: bien.typeLogement ? { nom: bien.typeLogement.nom, slug: bien.typeLogement.slug } : null,
-        typeTransaction: bien.typeTransaction ? { nom: bien.typeTransaction.nom, slug: bien.typeTransaction.slug } : null,
-        statutBien: bien.statutBien ? { nom: bien.statutBien.nom, slug: bien.statutBien.slug } : null,
-    };
-    return BienRepository.soumettreRevision(bienId, revisionData);
-};
-// ─── Annuler une annonce ───────────────────────────────────────────────────────
+// ─── Annuler une annonce (= suppression définitive) ──────────────────────────
 export const annulerAnnonce = async (bienId, proprietaireId) => {
     const bien = await BienRepository.getBienById(bienId);
     if (!bien)
         throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
     if (bien.proprietaireId !== proprietaireId)
         throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
-    // On peut annuler une annonce si elle est en attente, publiée ou en brouillon
-    if (bien.statutAnnonce === "ANNULE") {
-        throw new AppError("Cette annonce est déjà annulée", StatusCodes.BAD_REQUEST);
+    if (bien.statutAnnonce !== "BROUILLON" && bien.statutAnnonce !== "REJETE") {
+        throw new AppError("Seules les annonces en brouillon ou rejetées peuvent être supprimées via cette action", StatusCodes.BAD_REQUEST);
     }
-    return BienRepository.updateStatutAnnonce(bienId, "ANNULE");
+    const activeBail = await prisma.bailLocation.findFirst({
+        where: { bienId, statut: "ACTIF" },
+        select: { id: true },
+    });
+    if (activeBail) {
+        throw new AppError("Ce bien est associé à un locataire actif. Terminez ou résiliez le bail avant de supprimer.", StatusCodes.BAD_REQUEST);
+    }
+    return BienRepository.deleteBienById(bienId);
 };
-// ─── Admin — annonces ─────────────────────────────────────────────────────────
+// ─── Admin - annonces ─────────────────────────────────────────────────────────
 export const countAnnoncesPending = async () => {
     return BienRepository.countAnnoncesPending();
 };
@@ -380,68 +328,75 @@ export const validerAnnonce = async (bienId, action, note) => {
     const bien = await BienRepository.getBienById(bienId);
     if (!bien)
         throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
-    // Cas REVISION (action admin manuelle - legacy)
-    if (action === "REVISION") {
-        if (bien.statutAnnonce !== "PUBLIE") {
-            throw new AppError("Seules les annonces publiées peuvent être mises en révision", StatusCodes.BAD_REQUEST);
-        }
-        return BienRepository.updateStatutAnnonce(bienId, "EN_ATTENTE");
-    }
-    // Cas : révision en attente sur un bien PUBLIE
-    if (bien.statutAnnonce === "PUBLIE" && bien.hasPendingRevision) {
-        if (action === "APPROUVER") {
-            // Supprimer de Cloudinary les photos retirées dans la révision
-            const rev = bien.pendingRevision;
-            const newPhotos = rev?.photos ?? [];
-            const oldPhotos = bien.photos ?? [];
-            const orphaned = oldPhotos.filter((url) => !newPhotos.includes(url));
-            await Promise.allSettled(orphaned.map((url) => {
-                const publicId = CloudinaryService.extractPublicId(url);
-                return publicId ? CloudinaryService.deleteImage(publicId) : Promise.resolve();
-            }));
-            return BienRepository.approuverRevision(bienId);
-        }
-        else {
-            // REJETER : on conserve l'ancienne version publiée, on efface la révision
-            return BienRepository.rejeterRevision(bienId, note);
-        }
-    }
-    // Cas normal : annonce EN_ATTENTE (nouvelle soumission)
     if (bien.statutAnnonce !== "EN_ATTENTE") {
         throw new AppError("Cette annonce n'est pas en attente de validation", StatusCodes.BAD_REQUEST);
     }
     const newStatut = action === "APPROUVER" ? "PUBLIE" : "REJETE";
-    return BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+    const result = await BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+    // Notification in-app au propriétaire
+    const proprietaire = result.proprietaire;
+    if (proprietaire) {
+        const bienTitre = result.titre ?? "votre annonce";
+        if (action === "APPROUVER") {
+            envoyerNotification({
+                type: "ANNONCE_VALIDEE",
+                telephone: proprietaire.telephone,
+                email: proprietaire.email,
+                sujet: "Annonce validée",
+                contenu: `Votre annonce "${bienTitre}" a été validée et est maintenant publiée sur SEEK Immobilier.`,
+                bienId,
+                proprietaireId: proprietaire.id,
+                noSmsEmail: true,
+            }).catch(() => null);
+        }
+        else {
+            envoyerNotification({
+                type: "ANNONCE_REJETEE",
+                telephone: proprietaire.telephone,
+                email: proprietaire.email,
+                sujet: "Annonce rejetée",
+                contenu: `Votre annonce "${bienTitre}" a été rejetée${note ? ` : ${note}` : "."}`,
+                bienId,
+                proprietaireId: proprietaire.id,
+                noSmsEmail: true,
+            }).catch(() => null);
+        }
+    }
+    // Alertes temps réel aux utilisateurs qui ont sauvegardé des critères
+    if (action === "APPROUVER") {
+        emitPropertyAlert(bienId).catch(() => null);
+    }
+    return result;
 };
 export const adminDeleteBien = async (bienId) => {
     const bien = await BienRepository.getBienById(bienId);
     if (!bien)
         throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
+    await deleteCloudinaryForBien(bienId);
     return BienRepository.deleteBienById(bienId);
 };
-// ─── Public — dernières annonces (pour page d'accueil) ───────────────────────────
-export const getDernieresAnnonces = async (limit = 8) => {
+// ─── Public - dernières annonces (pour page d'accueil) ───────────────────────────
+export const getDernieresAnnonces = async (limit = 10) => {
     return BienRepository.getDernieresAnnonces(limit);
 };
-// ─── Public — annonce publiée par ID ─────────────────────────────────────────────
+// ─── Public - lieux distincts ────────────────────────────────────────────────
+export const getDistinctLieux = async () => {
+    return BienRepository.getDistinctLieux();
+};
+// ─── Public - recherche avec filtres ──────────────────────────────────────────
+export const searchAnnoncePubliques = async (params) => {
+    return BienRepository.searchAnnoncePubliques(params);
+};
+// ─── Public - annonce publiée par ID ─────────────────────────────────────────────
 export const getAnnoncePublieById = async (id) => {
     const bien = await BienRepository.getAnnoncePublieById(id);
     if (!bien) {
         throw new AppError("Annonce introuvable ou non publiée", StatusCodes.NOT_FOUND);
     }
-    return bien;
+    const scoreProprietaire = await computeScoreForProprietaire(bien.proprietaireId).catch(() => null);
+    return { ...bien, scoreProprietaire };
 };
-// ─── Signalement d'annonce ─────────────────────────────────────────────────────
-export const signalerAnnonce = async (bienId, motif, description) => {
-    const bien = await BienRepository.getBienById(bienId);
-    if (!bien) {
-        throw new AppError("Annonce introuvable", StatusCodes.NOT_FOUND);
-    }
-    // Log the report - in production you would create a Signalement model
-    console.log(`Signalement d'annonce ${bienId}: ${motif} - ${description || "sans description"}`);
-    return { success: true, message: "Signalement enregistré. Merci de votre vigilance." };
-};
-// ─── Public — annonces similaires avec système de score ─────────────────────
+// ─── Public - annonces similaires avec système de score ─────────────────────
 export const getAnnoncesSimilaires = async (bienId, limit = 4) => {
     // Récupérer le bien de référence pour avoir les infos complètes
     const bien = await BienRepository.getBienById(bienId);

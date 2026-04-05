@@ -134,6 +134,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.quartier`: Exposes CRUD operations for the **Quartier** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Quartiers
+      * const quartiers = await prisma.quartier.findMany()
+      * ```
+      */
+    get quartier(): Prisma.QuartierDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.typeLogement`: Exposes CRUD operations for the **TypeLogement** model.
       * Example usage:
       * ```ts
@@ -211,6 +222,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.formulePremium`: Exposes CRUD operations for the **FormulePremium** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more FormulePremiums
+      * const formulePremiums = await prisma.formulePremium.findMany()
+      * ```
+      */
+    get formulePremium(): Prisma.FormulePremiumDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.bien`: Exposes CRUD operations for the **Bien** model.
       * Example usage:
       * ```ts
@@ -219,6 +241,50 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get bien(): Prisma.BienDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.comptePublic`: Exposes CRUD operations for the **ComptePublic** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ComptePublics
+      * const comptePublics = await prisma.comptePublic.findMany()
+      * ```
+      */
+    get comptePublic(): Prisma.ComptePublicDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.comptePublicRefreshToken`: Exposes CRUD operations for the **ComptePublicRefreshToken** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ComptePublicRefreshTokens
+      * const comptePublicRefreshTokens = await prisma.comptePublicRefreshToken.findMany()
+      * ```
+      */
+    get comptePublicRefreshToken(): Prisma.ComptePublicRefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.favori`: Exposes CRUD operations for the **Favori** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Favoris
+      * const favoris = await prisma.favori.findMany()
+      * ```
+      */
+    get favori(): Prisma.FavoriDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.vueBien`: Exposes CRUD operations for the **VueBien** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more VueBiens
+      * const vueBiens = await prisma.vueBien.findMany()
+      * ```
+      */
+    get vueBien(): Prisma.VueBienDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**
@@ -244,6 +310,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.documentBien`: Exposes CRUD operations for the **DocumentBien** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DocumentBiens
+      * const documentBiens = await prisma.documentBien.findMany()
+      * ```
+      */
+    get documentBien(): Prisma.DocumentBienDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.etablissement`: Exposes CRUD operations for the **Etablissement** model.
       * Example usage:
       * ```ts
@@ -266,6 +343,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.locataireVerification`: Exposes CRUD operations for the **LocataireVerification** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more LocataireVerifications
+      * const locataireVerifications = await prisma.locataireVerification.findMany()
+      * ```
+      */
+    get locataireVerification(): Prisma.LocataireVerificationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.bailLocation`: Exposes CRUD operations for the **BailLocation** model.
       * Example usage:
       * ```ts
@@ -274,6 +362,72 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get bailLocation(): Prisma.BailLocationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.echeancierLoyer`: Exposes CRUD operations for the **EcheancierLoyer** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more EcheancierLoyers
+      * const echeancierLoyers = await prisma.echeancierLoyer.findMany()
+      * ```
+      */
+    get echeancierLoyer(): Prisma.EcheancierLoyerDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.quittance`: Exposes CRUD operations for the **Quittance** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Quittances
+      * const quittances = await prisma.quittance.findMany()
+      * ```
+      */
+    get quittance(): Prisma.QuittanceDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Notifications
+      * const notifications = await prisma.notification.findMany()
+      * ```
+      */
+    get notification(): Prisma.NotificationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.depotCaution`: Exposes CRUD operations for the **DepotCaution** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DepotCautions
+      * const depotCautions = await prisma.depotCaution.findMany()
+      * ```
+      */
+    get depotCaution(): Prisma.DepotCautionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.modeleContrat`: Exposes CRUD operations for the **ModeleContrat** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ModeleContrats
+      * const modeleContrats = await prisma.modeleContrat.findMany()
+      * ```
+      */
+    get modeleContrat(): Prisma.ModeleContratDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.contrat`: Exposes CRUD operations for the **Contrat** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Contrats
+      * const contrats = await prisma.contrat.findMany()
+      * ```
+      */
+    get contrat(): Prisma.ContratDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**
@@ -288,6 +442,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.locatairePasswordResetToken`: Exposes CRUD operations for the **LocatairePasswordResetToken** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more LocatairePasswordResetTokens
+      * const locatairePasswordResetTokens = await prisma.locatairePasswordResetToken.findMany()
+      * ```
+      */
+    get locatairePasswordResetToken(): Prisma.LocatairePasswordResetTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.verificationDocuments`: Exposes CRUD operations for the **VerificationDocuments** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more VerificationDocuments
+      * const verificationDocuments = await prisma.verificationDocuments.findMany()
+      * ```
+      */
+    get verificationDocuments(): Prisma.VerificationDocumentsDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.proprietaire`: Exposes CRUD operations for the **Proprietaire** model.
       * Example usage:
       * ```ts
@@ -299,6 +475,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.messageInterne`: Exposes CRUD operations for the **MessageInterne** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more MessageInternes
+      * const messageInternes = await prisma.messageInterne.findMany()
+      * ```
+      */
+    get messageInterne(): Prisma.MessageInterneDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.messageInterneLocataire`: Exposes CRUD operations for the **MessageInterneLocataire** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more MessageInterneLocataires
+      * const messageInterneLocataires = await prisma.messageInterneLocataire.findMany()
+      * ```
+      */
+    get messageInterneLocataire(): Prisma.MessageInterneLocataireDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.proprietaireRefreshToken`: Exposes CRUD operations for the **ProprietaireRefreshToken** model.
       * Example usage:
       * ```ts
@@ -307,6 +505,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get proprietaireRefreshToken(): Prisma.ProprietaireRefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.passwordResetToken`: Exposes CRUD operations for the **PasswordResetToken** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more PasswordResetTokens
+      * const passwordResetTokens = await prisma.passwordResetToken.findMany()
+      * ```
+      */
+    get passwordResetToken(): Prisma.PasswordResetTokenDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**
@@ -329,6 +538,127 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.alerte`: Exposes CRUD operations for the **Alerte** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Alertes
+      * const alertes = await prisma.alerte.findMany()
+      * ```
+      */
+    get alerte(): Prisma.AlerteDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Transactions
+      * const transactions = await prisma.transaction.findMany()
+      * ```
+      */
+    get transaction(): Prisma.TransactionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.temoignage`: Exposes CRUD operations for the **Temoignage** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Temoignages
+      * const temoignages = await prisma.temoignage.findMany()
+      * ```
+      */
+    get temoignage(): Prisma.TemoignageDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.promotionHistory`: Exposes CRUD operations for the **PromotionHistory** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more PromotionHistories
+      * const promotionHistories = await prisma.promotionHistory.findMany()
+      * ```
+      */
+    get promotionHistory(): Prisma.PromotionHistoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.configMonetisation`: Exposes CRUD operations for the **ConfigMonetisation** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ConfigMonetisations
+      * const configMonetisations = await prisma.configMonetisation.findMany()
+      * ```
+      */
+    get configMonetisation(): Prisma.ConfigMonetisationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.configSite`: Exposes CRUD operations for the **ConfigSite** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ConfigSites
+      * const configSites = await prisma.configSite.findMany()
+      * ```
+      */
+    get configSite(): Prisma.ConfigSiteDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.bailInvitation`: Exposes CRUD operations for the **BailInvitation** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more BailInvitations
+      * const bailInvitations = await prisma.bailInvitation.findMany()
+      * ```
+      */
+    get bailInvitation(): Prisma.BailInvitationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.signalement`: Exposes CRUD operations for the **Signalement** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Signalements
+      * const signalements = await prisma.signalement.findMany()
+      * ```
+      */
+    get signalement(): Prisma.SignalementDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.etatDesLieux`: Exposes CRUD operations for the **EtatDesLieux** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more EtatDesLieuxes
+      * const etatDesLieuxes = await prisma.etatDesLieux.findMany()
+      * ```
+      */
+    get etatDesLieux(): Prisma.EtatDesLieuxDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.pieceEtatDesLieux`: Exposes CRUD operations for the **PieceEtatDesLieux** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more PieceEtatDesLieuxes
+      * const pieceEtatDesLieuxes = await prisma.pieceEtatDesLieux.findMany()
+      * ```
+      */
+    get pieceEtatDesLieux(): Prisma.PieceEtatDesLieuxDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.elementEtatDesLieux`: Exposes CRUD operations for the **ElementEtatDesLieux** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ElementEtatDesLieuxes
+      * const elementEtatDesLieuxes = await prisma.elementEtatDesLieux.findMany()
+      * ```
+      */
+    get elementEtatDesLieux(): Prisma.ElementEtatDesLieuxDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

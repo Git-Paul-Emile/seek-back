@@ -1,7 +1,25 @@
 import type { Request, Response } from "express";
 export declare const getBailActif: (req: Request, res: Response) => Promise<void>;
+export declare const getHistoriqueBails: (req: Request, res: Response) => Promise<void>;
 export declare const creerBail: (req: Request, res: Response) => Promise<void>;
+export declare const annulerBail: (req: Request, res: Response) => Promise<void>;
+export declare const mettreEnPreavis: (req: Request, res: Response) => Promise<void>;
+export declare const mettreEnRenouvellement: (req: Request, res: Response) => Promise<void>;
+export declare const archiverBail: (req: Request, res: Response) => Promise<void>;
+export declare const getBailAArchiver: (req: Request, res: Response) => Promise<void>;
 export declare const terminerBail: (req: Request, res: Response) => Promise<void>;
 export declare const resilierBail: (req: Request, res: Response) => Promise<void>;
 export declare const prolongerBail: (req: Request, res: Response) => Promise<void>;
+export declare const getEcheancier: (req: Request, res: Response) => Promise<void>;
+export declare const payerEcheance: (req: Request, res: Response) => Promise<void>;
+export declare const prolongerEcheancesAnnee: (req: Request, res: Response) => Promise<void>;
+export declare const confirmerReception: (req: Request, res: Response) => Promise<void>;
+export declare const enregistrerPaiementEspeces: (req: Request, res: Response) => Promise<void>;
+export declare const getCaution: (req: Request, res: Response) => Promise<void>;
+export declare const getMobileMoney: (req: Request, res: Response) => Promise<void>;
+export declare const getSolde: (req: Request, res: Response) => Promise<void>;
+export declare const restituerCaution: (req: Request, res: Response) => Promise<void>;
+export declare const payerMoisMultiples: (req: Request, res: Response) => Promise<void>;
+export declare const getBiensAvecBailActif: (req: Request, res: Response) => Promise<void>;
+export declare const getBiensEnRetard: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=bail.controller.d.ts.map

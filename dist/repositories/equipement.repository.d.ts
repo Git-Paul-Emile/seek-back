@@ -8,8 +8,8 @@ export declare const findAll: () => import("../generated/prisma/internal/prismaN
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const findAllAdmin: () => import("../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
@@ -22,8 +22,8 @@ export declare const findAllAdmin: () => import("../generated/prisma/internal/pr
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const findById: (id: string) => import("../generated/prisma/models.js").Prisma__EquipementClient<({
@@ -36,8 +36,8 @@ export declare const findById: (id: string) => import("../generated/prisma/model
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, {
     omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -52,8 +52,8 @@ export declare const findByNomAndCategorie: (nom: string, categorieId: string) =
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, {
     omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -71,8 +71,8 @@ export declare const createMany: (items: {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const update: (id: string, data: Partial<{
@@ -89,8 +89,8 @@ export declare const update: (id: string, data: Partial<{
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 }, never, import("@prisma/client/runtime/library").DefaultArgs, {
     omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -99,8 +99,8 @@ export declare const remove: (id: string) => import("../generated/prisma/models.
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 }, never, import("@prisma/client/runtime/library").DefaultArgs, {
     omit: import("../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;

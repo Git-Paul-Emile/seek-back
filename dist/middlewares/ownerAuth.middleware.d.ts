@@ -10,5 +10,6 @@ declare global {
         }
     }
 }
-export declare const authenticateOwner: (req: Request, res: Response, next: NextFunction) => void;
+export declare const optionalAuthOwner: (req: Request, _res: Response, next: NextFunction) => Promise<void>;
+export declare const authenticateOwner: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 //# sourceMappingURL=ownerAuth.middleware.d.ts.map

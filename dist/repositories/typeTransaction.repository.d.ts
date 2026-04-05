@@ -1,4 +1,4 @@
-import type { TypeTransaction } from "../generated/prisma/index.js";
+import type { TypeTransaction } from "../generated/prisma/client.js";
 export declare const findAll: () => Promise<TypeTransaction[]>;
 export declare const findAllAdmin: () => Promise<TypeTransaction[]>;
 export declare const findById: (id: string) => Promise<TypeTransaction | null>;

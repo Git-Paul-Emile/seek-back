@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import * as LocataireService from "../services/locataire.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
+import { z } from "zod";
 import { createLocataireSchema, updateLocataireSchema, } from "../validators/locataire.validator.js";
 const getOwner = (req) => {
     if (!req.owner?.id)
@@ -75,11 +76,74 @@ export const deleteLocataire = async (req, res) => {
 // ─── Lien d'activation ────────────────────────────────────────────────────────
 export const getLienActivation = async (req, res) => {
     const proprietaireId = getOwner(req);
-    const result = await LocataireService.getLien(req.params.id, proprietaireId);
+    const { lien: _hidden, ...result } = await LocataireService.getLien(req.params.id, proprietaireId);
+    // lien masqué intentionnellement : envoyé automatiquement au locataire par SMS/email
     res.status(StatusCodes.OK).json(jsonResponse({
         status: "success",
-        message: "Lien d'activation récupéré",
+        message: "Demande traitée avec succès",
         data: result,
+    }));
+};
+// ─── Validation de la vérification du locataire ───────────────────────────────────
+const approveVerificationSchema = z.object({});
+export const approveLocataireVerification = async (req, res) => {
+    const proprietaireId = getOwner(req);
+    const id = req.params.id;
+    if (!id || Array.isArray(id)) {
+        throw new AppError("ID invalide", StatusCodes.BAD_REQUEST);
+    }
+    const result = await LocataireService.approveLocataireVerification(id, proprietaireId);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Vérification du locataire approuvée",
+        data: result,
+    }));
+};
+const rejectVerificationSchema = z.object({
+    motif: z.string().min(1, "Le motif de rejet est obligatoire"),
+});
+export const rejectLocataireVerification = async (req, res) => {
+    const proprietaireId = getOwner(req);
+    const id = req.params.id;
+    if (!id || Array.isArray(id)) {
+        throw new AppError("ID invalide", StatusCodes.BAD_REQUEST);
+    }
+    const parsed = rejectVerificationSchema.safeParse(req.body);
+    if (!parsed.success) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({
+            status: "fail",
+            message: parsed.error.issues[0]?.message ?? "Données invalides",
+            data: parsed.error.flatten(),
+        }));
+        return;
+    }
+    const { motif } = parsed.data;
+    const result = await LocataireService.rejectLocataireVerification(id, proprietaireId, motif);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Vérification du locataire rejetée",
+        data: result,
+    }));
+};
+// ─── Recherche globale par téléphone/email ────────────────────────────────────
+export const searchLocataireByContact = async (req, res) => {
+    const proprietaireId = getOwner(req);
+    const { telephone, email } = req.query;
+    if (!telephone && !email) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Fournissez un téléphone ou un email", data: null }));
+        return;
+    }
+    const result = await LocataireService.searchByContact(proprietaireId, { telephone, email });
+    res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Recherche effectuée", data: result }));
+};
+// ─── Nombre de vérifications en attente ───────────────────────────────────
+export const getPendingVerificationsCount = async (req, res) => {
+    const proprietaireId = getOwner(req);
+    const count = await LocataireService.getPendingVerificationsCount(proprietaireId);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Nombre de vérifications en attente",
+        data: { count },
     }));
 };
 //# sourceMappingURL=locataire.controller.js.map

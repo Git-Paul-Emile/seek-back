@@ -1,0 +1,1172 @@
+import type * as runtime from "@prisma/client/runtime/library";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model VueBien
+ *
+ */
+export type VueBienModel = runtime.Types.Result.DefaultSelection<Prisma.$VueBienPayload>;
+export type AggregateVueBien = {
+    _count: VueBienCountAggregateOutputType | null;
+    _min: VueBienMinAggregateOutputType | null;
+    _max: VueBienMaxAggregateOutputType | null;
+};
+export type VueBienMinAggregateOutputType = {
+    id: string | null;
+    bienId: string | null;
+    userId: string | null;
+    ipAddress: string | null;
+    createdAt: Date | null;
+};
+export type VueBienMaxAggregateOutputType = {
+    id: string | null;
+    bienId: string | null;
+    userId: string | null;
+    ipAddress: string | null;
+    createdAt: Date | null;
+};
+export type VueBienCountAggregateOutputType = {
+    id: number;
+    bienId: number;
+    userId: number;
+    ipAddress: number;
+    createdAt: number;
+    _all: number;
+};
+export type VueBienMinAggregateInputType = {
+    id?: true;
+    bienId?: true;
+    userId?: true;
+    ipAddress?: true;
+    createdAt?: true;
+};
+export type VueBienMaxAggregateInputType = {
+    id?: true;
+    bienId?: true;
+    userId?: true;
+    ipAddress?: true;
+    createdAt?: true;
+};
+export type VueBienCountAggregateInputType = {
+    id?: true;
+    bienId?: true;
+    userId?: true;
+    ipAddress?: true;
+    createdAt?: true;
+    _all?: true;
+};
+export type VueBienAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which VueBien to aggregate.
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of VueBiens to fetch.
+     */
+    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.VueBienWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` VueBiens from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` VueBiens.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned VueBiens
+    **/
+    _count?: true | VueBienCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: VueBienMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: VueBienMaxAggregateInputType;
+};
+export type GetVueBienAggregateType<T extends VueBienAggregateArgs> = {
+    [P in keyof T & keyof AggregateVueBien]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateVueBien[P]> : Prisma.GetScalarType<T[P], AggregateVueBien[P]>;
+};
+export type VueBienGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.VueBienWhereInput;
+    orderBy?: Prisma.VueBienOrderByWithAggregationInput | Prisma.VueBienOrderByWithAggregationInput[];
+    by: Prisma.VueBienScalarFieldEnum[] | Prisma.VueBienScalarFieldEnum;
+    having?: Prisma.VueBienScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: VueBienCountAggregateInputType | true;
+    _min?: VueBienMinAggregateInputType;
+    _max?: VueBienMaxAggregateInputType;
+};
+export type VueBienGroupByOutputType = {
+    id: string;
+    bienId: string;
+    userId: string | null;
+    ipAddress: string;
+    createdAt: Date;
+    _count: VueBienCountAggregateOutputType | null;
+    _min: VueBienMinAggregateOutputType | null;
+    _max: VueBienMaxAggregateOutputType | null;
+};
+type GetVueBienGroupByPayload<T extends VueBienGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<VueBienGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof VueBienGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], VueBienGroupByOutputType[P]> : Prisma.GetScalarType<T[P], VueBienGroupByOutputType[P]>;
+}>>;
+export type VueBienWhereInput = {
+    AND?: Prisma.VueBienWhereInput | Prisma.VueBienWhereInput[];
+    OR?: Prisma.VueBienWhereInput[];
+    NOT?: Prisma.VueBienWhereInput | Prisma.VueBienWhereInput[];
+    id?: Prisma.StringFilter<"VueBien"> | string;
+    bienId?: Prisma.StringFilter<"VueBien"> | string;
+    userId?: Prisma.StringNullableFilter<"VueBien"> | string | null;
+    ipAddress?: Prisma.StringFilter<"VueBien"> | string;
+    createdAt?: Prisma.DateTimeFilter<"VueBien"> | Date | string;
+    bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+};
+export type VueBienOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    ipAddress?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    bien?: Prisma.BienOrderByWithRelationInput;
+};
+export type VueBienWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.VueBienWhereInput | Prisma.VueBienWhereInput[];
+    OR?: Prisma.VueBienWhereInput[];
+    NOT?: Prisma.VueBienWhereInput | Prisma.VueBienWhereInput[];
+    bienId?: Prisma.StringFilter<"VueBien"> | string;
+    userId?: Prisma.StringNullableFilter<"VueBien"> | string | null;
+    ipAddress?: Prisma.StringFilter<"VueBien"> | string;
+    createdAt?: Prisma.DateTimeFilter<"VueBien"> | Date | string;
+    bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+}, "id">;
+export type VueBienOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    ipAddress?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    _count?: Prisma.VueBienCountOrderByAggregateInput;
+    _max?: Prisma.VueBienMaxOrderByAggregateInput;
+    _min?: Prisma.VueBienMinOrderByAggregateInput;
+};
+export type VueBienScalarWhereWithAggregatesInput = {
+    AND?: Prisma.VueBienScalarWhereWithAggregatesInput | Prisma.VueBienScalarWhereWithAggregatesInput[];
+    OR?: Prisma.VueBienScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.VueBienScalarWhereWithAggregatesInput | Prisma.VueBienScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"VueBien"> | string;
+    bienId?: Prisma.StringWithAggregatesFilter<"VueBien"> | string;
+    userId?: Prisma.StringNullableWithAggregatesFilter<"VueBien"> | string | null;
+    ipAddress?: Prisma.StringWithAggregatesFilter<"VueBien"> | string;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"VueBien"> | Date | string;
+};
+export type VueBienCreateInput = {
+    id?: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutVuesInput;
+};
+export type VueBienUncheckedCreateInput = {
+    id?: string;
+    bienId: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+};
+export type VueBienUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutVuesNestedInput;
+};
+export type VueBienUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienCreateManyInput = {
+    id?: string;
+    bienId: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+};
+export type VueBienUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienListRelationFilter = {
+    every?: Prisma.VueBienWhereInput;
+    some?: Prisma.VueBienWhereInput;
+    none?: Prisma.VueBienWhereInput;
+};
+export type VueBienOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type VueBienCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    ipAddress?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type VueBienMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    ipAddress?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type VueBienMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    ipAddress?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type VueBienCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput> | Prisma.VueBienCreateWithoutBienInput[] | Prisma.VueBienUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.VueBienCreateOrConnectWithoutBienInput | Prisma.VueBienCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.VueBienCreateManyBienInputEnvelope;
+    connect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+};
+export type VueBienUncheckedCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput> | Prisma.VueBienCreateWithoutBienInput[] | Prisma.VueBienUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.VueBienCreateOrConnectWithoutBienInput | Prisma.VueBienCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.VueBienCreateManyBienInputEnvelope;
+    connect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+};
+export type VueBienUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput> | Prisma.VueBienCreateWithoutBienInput[] | Prisma.VueBienUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.VueBienCreateOrConnectWithoutBienInput | Prisma.VueBienCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.VueBienUpsertWithWhereUniqueWithoutBienInput | Prisma.VueBienUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.VueBienCreateManyBienInputEnvelope;
+    set?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    disconnect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    delete?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    connect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    update?: Prisma.VueBienUpdateWithWhereUniqueWithoutBienInput | Prisma.VueBienUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.VueBienUpdateManyWithWhereWithoutBienInput | Prisma.VueBienUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.VueBienScalarWhereInput | Prisma.VueBienScalarWhereInput[];
+};
+export type VueBienUncheckedUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput> | Prisma.VueBienCreateWithoutBienInput[] | Prisma.VueBienUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.VueBienCreateOrConnectWithoutBienInput | Prisma.VueBienCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.VueBienUpsertWithWhereUniqueWithoutBienInput | Prisma.VueBienUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.VueBienCreateManyBienInputEnvelope;
+    set?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    disconnect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    delete?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    connect?: Prisma.VueBienWhereUniqueInput | Prisma.VueBienWhereUniqueInput[];
+    update?: Prisma.VueBienUpdateWithWhereUniqueWithoutBienInput | Prisma.VueBienUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.VueBienUpdateManyWithWhereWithoutBienInput | Prisma.VueBienUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.VueBienScalarWhereInput | Prisma.VueBienScalarWhereInput[];
+};
+export type VueBienCreateWithoutBienInput = {
+    id?: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+};
+export type VueBienUncheckedCreateWithoutBienInput = {
+    id?: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+};
+export type VueBienCreateOrConnectWithoutBienInput = {
+    where: Prisma.VueBienWhereUniqueInput;
+    create: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput>;
+};
+export type VueBienCreateManyBienInputEnvelope = {
+    data: Prisma.VueBienCreateManyBienInput | Prisma.VueBienCreateManyBienInput[];
+    skipDuplicates?: boolean;
+};
+export type VueBienUpsertWithWhereUniqueWithoutBienInput = {
+    where: Prisma.VueBienWhereUniqueInput;
+    update: Prisma.XOR<Prisma.VueBienUpdateWithoutBienInput, Prisma.VueBienUncheckedUpdateWithoutBienInput>;
+    create: Prisma.XOR<Prisma.VueBienCreateWithoutBienInput, Prisma.VueBienUncheckedCreateWithoutBienInput>;
+};
+export type VueBienUpdateWithWhereUniqueWithoutBienInput = {
+    where: Prisma.VueBienWhereUniqueInput;
+    data: Prisma.XOR<Prisma.VueBienUpdateWithoutBienInput, Prisma.VueBienUncheckedUpdateWithoutBienInput>;
+};
+export type VueBienUpdateManyWithWhereWithoutBienInput = {
+    where: Prisma.VueBienScalarWhereInput;
+    data: Prisma.XOR<Prisma.VueBienUpdateManyMutationInput, Prisma.VueBienUncheckedUpdateManyWithoutBienInput>;
+};
+export type VueBienScalarWhereInput = {
+    AND?: Prisma.VueBienScalarWhereInput | Prisma.VueBienScalarWhereInput[];
+    OR?: Prisma.VueBienScalarWhereInput[];
+    NOT?: Prisma.VueBienScalarWhereInput | Prisma.VueBienScalarWhereInput[];
+    id?: Prisma.StringFilter<"VueBien"> | string;
+    bienId?: Prisma.StringFilter<"VueBien"> | string;
+    userId?: Prisma.StringNullableFilter<"VueBien"> | string | null;
+    ipAddress?: Prisma.StringFilter<"VueBien"> | string;
+    createdAt?: Prisma.DateTimeFilter<"VueBien"> | Date | string;
+};
+export type VueBienCreateManyBienInput = {
+    id?: string;
+    userId?: string | null;
+    ipAddress: string;
+    createdAt?: Date | string;
+};
+export type VueBienUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienUncheckedUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienUncheckedUpdateManyWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    ipAddress?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type VueBienSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    bienId?: boolean;
+    userId?: boolean;
+    ipAddress?: boolean;
+    createdAt?: boolean;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["vueBien"]>;
+export type VueBienSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    bienId?: boolean;
+    userId?: boolean;
+    ipAddress?: boolean;
+    createdAt?: boolean;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["vueBien"]>;
+export type VueBienSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    bienId?: boolean;
+    userId?: boolean;
+    ipAddress?: boolean;
+    createdAt?: boolean;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["vueBien"]>;
+export type VueBienSelectScalar = {
+    id?: boolean;
+    bienId?: boolean;
+    userId?: boolean;
+    ipAddress?: boolean;
+    createdAt?: boolean;
+};
+export type VueBienOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bienId" | "userId" | "ipAddress" | "createdAt", ExtArgs["result"]["vueBien"]>;
+export type VueBienInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type VueBienIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type VueBienIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type $VueBienPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "VueBien";
+    objects: {
+        bien: Prisma.$BienPayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        bienId: string;
+        userId: string | null;
+        ipAddress: string;
+        createdAt: Date;
+    }, ExtArgs["result"]["vueBien"]>;
+    composites: {};
+};
+export type VueBienGetPayload<S extends boolean | null | undefined | VueBienDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$VueBienPayload, S>;
+export type VueBienCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<VueBienFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: VueBienCountAggregateInputType | true;
+};
+export interface VueBienDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['VueBien'];
+        meta: {
+            name: 'VueBien';
+        };
+    };
+    /**
+     * Find zero or one VueBien that matches the filter.
+     * @param {VueBienFindUniqueArgs} args - Arguments to find a VueBien
+     * @example
+     * // Get one VueBien
+     * const vueBien = await prisma.vueBien.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VueBienFindUniqueArgs>(args: Prisma.SelectSubset<T, VueBienFindUniqueArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one VueBien that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VueBienFindUniqueOrThrowArgs} args - Arguments to find a VueBien
+     * @example
+     * // Get one VueBien
+     * const vueBien = await prisma.vueBien.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VueBienFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, VueBienFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first VueBien that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienFindFirstArgs} args - Arguments to find a VueBien
+     * @example
+     * // Get one VueBien
+     * const vueBien = await prisma.vueBien.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VueBienFindFirstArgs>(args?: Prisma.SelectSubset<T, VueBienFindFirstArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first VueBien that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienFindFirstOrThrowArgs} args - Arguments to find a VueBien
+     * @example
+     * // Get one VueBien
+     * const vueBien = await prisma.vueBien.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VueBienFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, VueBienFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more VueBiens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VueBiens
+     * const vueBiens = await prisma.vueBien.findMany()
+     *
+     * // Get first 10 VueBiens
+     * const vueBiens = await prisma.vueBien.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const vueBienWithIdOnly = await prisma.vueBien.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends VueBienFindManyArgs>(args?: Prisma.SelectSubset<T, VueBienFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a VueBien.
+     * @param {VueBienCreateArgs} args - Arguments to create a VueBien.
+     * @example
+     * // Create one VueBien
+     * const VueBien = await prisma.vueBien.create({
+     *   data: {
+     *     // ... data to create a VueBien
+     *   }
+     * })
+     *
+     */
+    create<T extends VueBienCreateArgs>(args: Prisma.SelectSubset<T, VueBienCreateArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many VueBiens.
+     * @param {VueBienCreateManyArgs} args - Arguments to create many VueBiens.
+     * @example
+     * // Create many VueBiens
+     * const vueBien = await prisma.vueBien.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends VueBienCreateManyArgs>(args?: Prisma.SelectSubset<T, VueBienCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many VueBiens and returns the data saved in the database.
+     * @param {VueBienCreateManyAndReturnArgs} args - Arguments to create many VueBiens.
+     * @example
+     * // Create many VueBiens
+     * const vueBien = await prisma.vueBien.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many VueBiens and only return the `id`
+     * const vueBienWithIdOnly = await prisma.vueBien.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends VueBienCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, VueBienCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a VueBien.
+     * @param {VueBienDeleteArgs} args - Arguments to delete one VueBien.
+     * @example
+     * // Delete one VueBien
+     * const VueBien = await prisma.vueBien.delete({
+     *   where: {
+     *     // ... filter to delete one VueBien
+     *   }
+     * })
+     *
+     */
+    delete<T extends VueBienDeleteArgs>(args: Prisma.SelectSubset<T, VueBienDeleteArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one VueBien.
+     * @param {VueBienUpdateArgs} args - Arguments to update one VueBien.
+     * @example
+     * // Update one VueBien
+     * const vueBien = await prisma.vueBien.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends VueBienUpdateArgs>(args: Prisma.SelectSubset<T, VueBienUpdateArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more VueBiens.
+     * @param {VueBienDeleteManyArgs} args - Arguments to filter VueBiens to delete.
+     * @example
+     * // Delete a few VueBiens
+     * const { count } = await prisma.vueBien.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends VueBienDeleteManyArgs>(args?: Prisma.SelectSubset<T, VueBienDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more VueBiens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VueBiens
+     * const vueBien = await prisma.vueBien.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends VueBienUpdateManyArgs>(args: Prisma.SelectSubset<T, VueBienUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more VueBiens and returns the data updated in the database.
+     * @param {VueBienUpdateManyAndReturnArgs} args - Arguments to update many VueBiens.
+     * @example
+     * // Update many VueBiens
+     * const vueBien = await prisma.vueBien.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more VueBiens and only return the `id`
+     * const vueBienWithIdOnly = await prisma.vueBien.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends VueBienUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, VueBienUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one VueBien.
+     * @param {VueBienUpsertArgs} args - Arguments to update or create a VueBien.
+     * @example
+     * // Update or create a VueBien
+     * const vueBien = await prisma.vueBien.upsert({
+     *   create: {
+     *     // ... data to create a VueBien
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VueBien we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VueBienUpsertArgs>(args: Prisma.SelectSubset<T, VueBienUpsertArgs<ExtArgs>>): Prisma.Prisma__VueBienClient<runtime.Types.Result.GetResult<Prisma.$VueBienPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of VueBiens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienCountArgs} args - Arguments to filter VueBiens to count.
+     * @example
+     * // Count the number of VueBiens
+     * const count = await prisma.vueBien.count({
+     *   where: {
+     *     // ... the filter for the VueBiens we want to count
+     *   }
+     * })
+    **/
+    count<T extends VueBienCountArgs>(args?: Prisma.Subset<T, VueBienCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], VueBienCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a VueBien.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VueBienAggregateArgs>(args: Prisma.Subset<T, VueBienAggregateArgs>): Prisma.PrismaPromise<GetVueBienAggregateType<T>>;
+    /**
+     * Group by VueBien.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VueBienGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends VueBienGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: VueBienGroupByArgs['orderBy'];
+    } : {
+        orderBy?: VueBienGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, VueBienGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVueBienGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the VueBien model
+     */
+    readonly fields: VueBienFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for VueBien.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__VueBienClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    bien<T extends Prisma.BienDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BienDefaultArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the VueBien model
+ */
+export interface VueBienFieldRefs {
+    readonly id: Prisma.FieldRef<"VueBien", 'String'>;
+    readonly bienId: Prisma.FieldRef<"VueBien", 'String'>;
+    readonly userId: Prisma.FieldRef<"VueBien", 'String'>;
+    readonly ipAddress: Prisma.FieldRef<"VueBien", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"VueBien", 'DateTime'>;
+}
+/**
+ * VueBien findUnique
+ */
+export type VueBienFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter, which VueBien to fetch.
+     */
+    where: Prisma.VueBienWhereUniqueInput;
+};
+/**
+ * VueBien findUniqueOrThrow
+ */
+export type VueBienFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter, which VueBien to fetch.
+     */
+    where: Prisma.VueBienWhereUniqueInput;
+};
+/**
+ * VueBien findFirst
+ */
+export type VueBienFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter, which VueBien to fetch.
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of VueBiens to fetch.
+     */
+    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for VueBiens.
+     */
+    cursor?: Prisma.VueBienWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` VueBiens from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` VueBiens.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of VueBiens.
+     */
+    distinct?: Prisma.VueBienScalarFieldEnum | Prisma.VueBienScalarFieldEnum[];
+};
+/**
+ * VueBien findFirstOrThrow
+ */
+export type VueBienFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter, which VueBien to fetch.
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of VueBiens to fetch.
+     */
+    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for VueBiens.
+     */
+    cursor?: Prisma.VueBienWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` VueBiens from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` VueBiens.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of VueBiens.
+     */
+    distinct?: Prisma.VueBienScalarFieldEnum | Prisma.VueBienScalarFieldEnum[];
+};
+/**
+ * VueBien findMany
+ */
+export type VueBienFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter, which VueBiens to fetch.
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of VueBiens to fetch.
+     */
+    orderBy?: Prisma.VueBienOrderByWithRelationInput | Prisma.VueBienOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing VueBiens.
+     */
+    cursor?: Prisma.VueBienWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` VueBiens from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` VueBiens.
+     */
+    skip?: number;
+    distinct?: Prisma.VueBienScalarFieldEnum | Prisma.VueBienScalarFieldEnum[];
+};
+/**
+ * VueBien create
+ */
+export type VueBienCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a VueBien.
+     */
+    data: Prisma.XOR<Prisma.VueBienCreateInput, Prisma.VueBienUncheckedCreateInput>;
+};
+/**
+ * VueBien createMany
+ */
+export type VueBienCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VueBiens.
+     */
+    data: Prisma.VueBienCreateManyInput | Prisma.VueBienCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * VueBien createManyAndReturn
+ */
+export type VueBienCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * The data used to create many VueBiens.
+     */
+    data: Prisma.VueBienCreateManyInput | Prisma.VueBienCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * VueBien update
+ */
+export type VueBienUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a VueBien.
+     */
+    data: Prisma.XOR<Prisma.VueBienUpdateInput, Prisma.VueBienUncheckedUpdateInput>;
+    /**
+     * Choose, which VueBien to update.
+     */
+    where: Prisma.VueBienWhereUniqueInput;
+};
+/**
+ * VueBien updateMany
+ */
+export type VueBienUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VueBiens.
+     */
+    data: Prisma.XOR<Prisma.VueBienUpdateManyMutationInput, Prisma.VueBienUncheckedUpdateManyInput>;
+    /**
+     * Filter which VueBiens to update
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * Limit how many VueBiens to update.
+     */
+    limit?: number;
+};
+/**
+ * VueBien updateManyAndReturn
+ */
+export type VueBienUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * The data used to update VueBiens.
+     */
+    data: Prisma.XOR<Prisma.VueBienUpdateManyMutationInput, Prisma.VueBienUncheckedUpdateManyInput>;
+    /**
+     * Filter which VueBiens to update
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * Limit how many VueBiens to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * VueBien upsert
+ */
+export type VueBienUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the VueBien to update in case it exists.
+     */
+    where: Prisma.VueBienWhereUniqueInput;
+    /**
+     * In case the VueBien found by the `where` argument doesn't exist, create a new VueBien with this data.
+     */
+    create: Prisma.XOR<Prisma.VueBienCreateInput, Prisma.VueBienUncheckedCreateInput>;
+    /**
+     * In case the VueBien was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.VueBienUpdateInput, Prisma.VueBienUncheckedUpdateInput>;
+};
+/**
+ * VueBien delete
+ */
+export type VueBienDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+    /**
+     * Filter which VueBien to delete.
+     */
+    where: Prisma.VueBienWhereUniqueInput;
+};
+/**
+ * VueBien deleteMany
+ */
+export type VueBienDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which VueBiens to delete
+     */
+    where?: Prisma.VueBienWhereInput;
+    /**
+     * Limit how many VueBiens to delete.
+     */
+    limit?: number;
+};
+/**
+ * VueBien without action
+ */
+export type VueBienDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VueBien
+     */
+    select?: Prisma.VueBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VueBien
+     */
+    omit?: Prisma.VueBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VueBienInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=VueBien.d.ts.map

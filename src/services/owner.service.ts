@@ -239,7 +239,7 @@ export const login = async (data: {
 
 export const refresh = async (
   oldRefreshToken: string
-): Promise<OwnerTokenPair> => {
+): Promise<OwnerTokenPair & { proprietaireId: string }> => {
   let payload: JwtOwnerPayload;
   try {
     payload = jwt.verify(
@@ -286,17 +286,19 @@ export const refresh = async (
     expiresAt: tokens.refreshTokenExpiresAt,
   });
 
-  return tokens;
+  return { ...tokens, proprietaireId: proprietaire.id };
 };
 
 // ─── Logout ───────────────────────────────────────────────────────────────────
 
-export const logout = async (refreshToken: string): Promise<void> => {
+export const logout = async (refreshToken: string): Promise<string | null> => {
   const tokenHash = hashToken(refreshToken);
   const stored = await OwnerRepo.findRefreshToken(tokenHash);
   if (stored && !stored.revokedAt) {
     await OwnerRepo.revokeRefreshToken(tokenHash);
+    return stored.proprietaireId;
   }
+  return null;
 };
 
 // ─── Me ───────────────────────────────────────────────────────────────────────

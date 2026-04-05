@@ -1,0 +1,151 @@
+import { StatusCodes } from "http-status-codes";
+import * as PremiumService from "../services/premium.service.js";
+import { jsonResponse } from "../utils/responseApi.js";
+import { AppError } from "../utils/AppError.js";
+import { ModePaiement, MOYENS_PAIEMENT } from "../types/premium.types.js";
+// ─── Récupérer les formules premium disponibles ─────────────────────────────────
+export const getFormulesPremium = async (_req, res) => {
+    const formules = await PremiumService.getFormulesPremium();
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Formules premium récupérées",
+        data: { formules, moyenPaiement: MOYENS_PAIEMENT },
+    }));
+};
+// ─── Admin CRUD FormulePremium ────────────────────────────────────────────────
+export const adminGetFormules = async (_req, res) => {
+    const formules = await PremiumService.adminGetAllFormules();
+    res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formules récupérées", data: formules }));
+};
+export const adminCreateFormule = async (req, res) => {
+    const { code, nom, dureeJours, prix, accroche, description, idealPour, populer, actif, ordre } = req.body;
+    if (!code || !nom || !dureeJours || !prix || !accroche || !description) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Champs obligatoires manquants" }));
+        return;
+    }
+    const formule = await PremiumService.adminCreateFormule({
+        code, nom,
+        dureeJours: parseInt(dureeJours),
+        prix: parseFloat(prix),
+        accroche, description,
+        idealPour: idealPour ?? [],
+        populer, actif, ordre,
+    });
+    res.status(StatusCodes.CREATED).json(jsonResponse({ status: "success", message: "Formule créée", data: formule }));
+};
+export const adminUpdateFormule = async (req, res) => {
+    const { id } = req.params;
+    const formule = await PremiumService.adminUpdateFormule(id, req.body);
+    res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule mise à jour", data: formule }));
+};
+export const adminDeleteFormule = async (req, res) => {
+    const { id } = req.params;
+    await PremiumService.adminDeleteFormule(id);
+    res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Formule supprimée" }));
+};
+// ─── Initier le paiement et activer la mise en avant (simulation) ─────────────
+export const payerEtActiverPremium = async (req, res) => {
+    const proprietaireId = req.owner.id;
+    const bienId = req.params.id;
+    const { formuleId, modePaiement } = req.body;
+    if (!formuleId) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "L'ID de la formule est requis" }));
+        return;
+    }
+    if (!modePaiement) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: "Le mode de paiement est requis" }));
+        return;
+    }
+    const modesValides = Object.values(ModePaiement);
+    if (!modesValides.includes(modePaiement)) {
+        res.status(StatusCodes.BAD_REQUEST).json(jsonResponse({ status: "fail", message: `Mode de paiement invalide. Modes disponibles: ${modesValides.join(", ")}` }));
+        return;
+    }
+    try {
+        const result = await PremiumService.simulerPaiementEtActiverPromotion(bienId, proprietaireId, formuleId, modePaiement);
+        res.status(StatusCodes.OK).json(jsonResponse({
+            status: "success",
+            message: "Paiement effectué avec succès. Votre annonce est maintenant mise en avant !",
+            data: {
+                paiement: {
+                    transactionId: result.paiement.transactionId,
+                    montant: result.paiement.montant,
+                    modePaiement: result.paiement.modePaiement,
+                    datePaiement: result.paiement.datePaiement,
+                },
+                promotion: result.promotion.data,
+            },
+        }));
+    }
+    catch (error) {
+        if (error instanceof AppError) {
+            res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
+            return;
+        }
+        console.error("[PREMIUM] Erreur lors du paiement:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" }));
+    }
+};
+// ─── Récupérer les moyens de paiement disponibles ───────────────────────────────
+export const getMoyensPaiement = async (_req, res) => {
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: "Moyens de paiement disponibles",
+        data: MOYENS_PAIEMENT,
+    }));
+};
+// ─── Arrêter la mise en avant d'un bien ─────────────────────────────────────────
+export const arreterPremium = async (req, res) => {
+    const proprietaireId = req.owner.id;
+    const bienId = req.params.id;
+    try {
+        const result = await PremiumService.arreterMiseEnAvant(bienId, proprietaireId);
+        res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: result.message, data: result }));
+    }
+    catch (error) {
+        if (error instanceof AppError) {
+            res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
+            return;
+        }
+        console.error("[PREMIUM] Erreur lors de l'arrêt de la mise en avant:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" }));
+    }
+};
+// ─── Récupérer l'historique des mises en avant d'un bien ───────────────────────
+export const getHistoriqueBien = async (req, res) => {
+    const proprietaireId = req.owner.id;
+    const bienId = req.params.id;
+    try {
+        const historique = await PremiumService.getHistoriqueMisesEnAvant(bienId, proprietaireId);
+        res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Historique des mises en avant récupéré", data: historique }));
+    }
+    catch (error) {
+        if (error instanceof AppError) {
+            res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
+            return;
+        }
+        console.error("[PREMIUM] Erreur lors de la récupération de l'historique:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" }));
+    }
+};
+// ─── Récupérer l'historique de tous les paiements premium du propriétaire ────────
+export const getHistoriquePaiements = async (req, res) => {
+    const proprietaireId = req.owner.id;
+    const { page, limit } = req.query;
+    try {
+        const result = await PremiumService.getHistoriqueMisesEnAvantProprietaire(proprietaireId, {
+            page: page ? parseInt(page) : undefined,
+            limit: limit ? parseInt(limit) : undefined,
+        });
+        res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Historique des paiements premium récupéré", data: result }));
+    }
+    catch (error) {
+        if (error instanceof AppError) {
+            res.status(error.statusCode).json(jsonResponse({ status: "fail", message: error.message }));
+            return;
+        }
+        console.error("[PREMIUM] Erreur lors de la récupération de l'historique:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(jsonResponse({ status: "error", message: "Une erreur inattendue s'est produite" }));
+    }
+};
+//# sourceMappingURL=premium.controller.js.map

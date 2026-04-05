@@ -8,8 +8,8 @@ export declare const getAll: () => import("../generated/prisma/internal/prismaNa
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const getAllAdmin: () => import("../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
@@ -22,8 +22,8 @@ export declare const getAllAdmin: () => import("../generated/prisma/internal/pri
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const createMany: (items: {
@@ -39,8 +39,8 @@ export declare const createMany: (items: {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 })[]>;
 export declare const update: (id: string, data: Partial<{
@@ -57,8 +57,8 @@ export declare const update: (id: string, data: Partial<{
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    nom: string;
     actif: boolean;
+    nom: string;
     categorieId: string;
 }>;
 export declare const remove: (id: string) => Promise<void>;

@@ -2,6 +2,9 @@ import { randomUUID } from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
+import { prisma } from "../config/database.js";
+import * as CloudinaryService from "./cloudinary.service.js";
+import { envoyerLienActivationLocataire } from "./notification.service.js";
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
 const TOKEN_EXPIRY_HOURS = 72;
 // ─── Liste ────────────────────────────────────────────────────────────────────
@@ -10,12 +13,10 @@ export const getByProprietaire = async (proprietaireId) => {
 };
 // ─── Détail ───────────────────────────────────────────────────────────────────
 export const getById = async (id, proprietaireId) => {
-    const locataire = await LocataireRepo.findById(id);
+    // Accès autorisé si créateur OU si bail lié (locataire d'un autre proprio avec bail actif/passé)
+    const locataire = await LocataireRepo.findById(id, proprietaireId);
     if (!locataire) {
-        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-    }
-    if (locataire.proprietaireId !== proprietaireId) {
-        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+        throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
     }
     return locataire;
 };
@@ -24,7 +25,7 @@ export const create = async (proprietaireId, data) => {
     const telephone = data.telephone.replace(/\s/g, "");
     const activationToken = randomUUID();
     const tokenExpiresAt = new Date(Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000);
-    return LocataireRepo.create({
+    const locataire = await LocataireRepo.create({
         proprietaireId,
         nom: data.nom.trim(),
         prenom: data.prenom.trim(),
@@ -35,15 +36,22 @@ export const create = async (proprietaireId, data) => {
         activationToken,
         tokenExpiresAt,
     });
+    // Envoi automatique du lien d'activation par SMS uniquement
+    const lien = `${FRONTEND_URL}/locataire/activer?token=${activationToken}`;
+    envoyerLienActivationLocataire({
+        locataireTelephone: telephone,
+        locataireNom: `${data.prenom.trim()} ${data.nom.trim()}`,
+        lien,
+        locataireId: locataire.id,
+        proprietaireId,
+    }).catch((err) => console.error("[Locataire] Erreur envoi lien activation :", err));
+    return locataire;
 };
 // ─── Modification (partie owner) ──────────────────────────────────────────────
 export const updateOwner = async (id, proprietaireId, data) => {
-    const existing = await LocataireRepo.findById(id);
+    const existing = await LocataireRepo.findById(id, proprietaireId);
     if (!existing) {
-        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
-    }
-    if (existing.proprietaireId !== proprietaireId) {
-        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+        throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
     }
     const updateData = {};
     if (data.nom !== undefined)
@@ -62,27 +70,40 @@ export const updateOwner = async (id, proprietaireId, data) => {
 };
 // ─── Suppression ──────────────────────────────────────────────────────────────
 export const remove = async (id, proprietaireId) => {
-    const locataire = await LocataireRepo.findById(id);
+    const locataire = await LocataireRepo.findById(id, proprietaireId);
     if (!locataire) {
-        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+        throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
     }
-    if (locataire.proprietaireId !== proprietaireId) {
-        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
-    }
-    const bailActif = locataire.bails?.find((b) => b.statut === "ACTIF");
+    const bailActif = locataire.bails?.find((b) => ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"].includes(b.statut));
     if (bailActif) {
-        throw new AppError("Ce locataire a un bail actif. Terminez ou résiliez le bail avant de supprimer.", StatusCodes.CONFLICT);
+        throw new AppError("Ce locataire a un bail actif ou en cours. Terminez ou résiliez le bail avant de supprimer.", StatusCodes.CONFLICT);
+    }
+    // Vérifier si le locataire est associé à un logement actif
+    const logementActif = locataire.bails?.find((b) => b.bien && b.bien.actif === true);
+    if (logementActif) {
+        throw new AppError("Ce locataire est associé à un logement actif. Vous ne pouvez pas supprimer ce compte.", StatusCodes.CONFLICT);
+    }
+    const verif = await prisma.locataireVerification.findUnique({
+        where: { locataireId: id },
+        select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true },
+    });
+    if (verif) {
+        await CloudinaryService.deleteUrls([verif.pieceIdentiteRecto, verif.pieceIdentiteVerso, verif.selfie]);
     }
     await LocataireRepo.remove(id);
 };
 // ─── Lien d'activation ────────────────────────────────────────────────────────
 export const getLien = async (id, proprietaireId) => {
-    const locataire = await LocataireRepo.findById(id);
+    const locataire = await LocataireRepo.findById(id, proprietaireId);
     if (!locataire) {
-        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+        throw new AppError("Locataire introuvable ou accès refusé", StatusCodes.NOT_FOUND);
     }
-    if (locataire.proprietaireId !== proprietaireId) {
-        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    if (locataire.statut === "ACTIF") {
+        return {
+            lien: null,
+            statut: locataire.statut,
+            envoye: false,
+        };
     }
     // Regénérer le token si expiré ou absent
     let token = locataire.activationToken;
@@ -92,15 +113,101 @@ export const getLien = async (id, proprietaireId) => {
         await LocataireRepo.update(id, { activationToken: token, tokenExpiresAt });
     }
     const lien = `${FRONTEND_URL}/locataire/activer?token=${token}`;
+    // Renvoi du lien par SMS uniquement en arrière-plan
+    envoyerLienActivationLocataire({
+        locataireTelephone: locataire.telephone,
+        locataireNom: `${locataire.prenom} ${locataire.nom}`,
+        lien,
+        locataireId: locataire.id,
+        proprietaireId,
+    }).catch((err) => console.error("[Locataire] Erreur renvoi lien activation :", err));
     return {
+        // Le lien est retourné pour usage interne (ex: email contrat via contrat.service.ts)
+        // mais n'est PAS exposé dans la réponse API du contrôleur locataire.
         lien,
         statut: locataire.statut,
-        // Placeholders pour les services d'envoi
-        services: {
-            email: null, // TODO: intégrer service email
-            whatsapp: null, // TODO: intégrer service WhatsApp
-            sms: null, // TODO: intégrer service SMS
+        envoye: true,
+    };
+};
+// ─── Validation de la vérification par le propriétaire ────────────────────────────
+export const approveLocataireVerification = async (locataireId, proprietaireId) => {
+    // Vérifier que le locataire existe et appartient au propriétaire
+    const locataire = await LocataireRepo.findById(locataireId);
+    if (!locataire) {
+        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+    }
+    if (locataire.proprietaireId !== proprietaireId) {
+        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    }
+    // Vérifier qu'il y a une vérification en cours
+    const verification = await LocataireRepo.getVerificationByLocataireId(locataireId);
+    if (!verification) {
+        throw new AppError("Aucune demande de vérification trouvée pour ce locataire", StatusCodes.NOT_FOUND);
+    }
+    if (verification.statut !== "PENDING") {
+        throw new AppError("Cette demande de vérification n'est pas en attente", StatusCodes.BAD_REQUEST);
+    }
+    // Approuver la vérification
+    const updated = await LocataireRepo.approveVerification(locataireId, proprietaireId);
+    if (!updated) {
+        throw new AppError("Erreur lors de l'approbation", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    return updated;
+};
+export const rejectLocataireVerification = async (locataireId, proprietaireId, motifRejet) => {
+    // Vérifier que le locataire existe et appartient au propriétaire
+    const locataire = await LocataireRepo.findById(locataireId);
+    if (!locataire) {
+        throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+    }
+    if (locataire.proprietaireId !== proprietaireId) {
+        throw new AppError("Accès refusé", StatusCodes.FORBIDDEN);
+    }
+    if (!motifRejet || motifRejet.trim().length === 0) {
+        throw new AppError("Le motif de rejet est obligatoire", StatusCodes.BAD_REQUEST);
+    }
+    // Vérifier qu'il y a une vérification en cours
+    const verification = await LocataireRepo.getVerificationByLocataireId(locataireId);
+    if (!verification) {
+        throw new AppError("Aucune demande de vérification trouvée pour ce locataire", StatusCodes.NOT_FOUND);
+    }
+    if (verification.statut !== "PENDING") {
+        throw new AppError("Cette demande de vérification n'est pas en attente", StatusCodes.BAD_REQUEST);
+    }
+    // Rejeter la vérification
+    const updated = await LocataireRepo.rejectVerification(locataireId, proprietaireId, motifRejet);
+    if (!updated) {
+        throw new AppError("Erreur lors du rejet", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    return updated;
+};
+// ─── Recherche globale par téléphone/email ────────────────────────────────────
+export const searchByContact = async (proprietaireId, params) => {
+    const locataire = await LocataireRepo.searchByContact(params);
+    if (!locataire)
+        return { found: false, locataire: null };
+    // Vérifier si ce locataire est déjà dans la liste de CE propriétaire
+    let estDansMaListe = locataire.proprietaireId === proprietaireId;
+    if (!estDansMaListe) {
+        const bailCommun = await prisma.bailLocation.findFirst({
+            where: { locataireId: locataire.id, proprietaireId },
+        });
+        estDansMaListe = !!bailCommun;
+    }
+    return {
+        found: true,
+        locataire: {
+            id: locataire.id,
+            nom: locataire.nom,
+            prenom: locataire.prenom,
+            telephone: locataire.telephone,
+            statut: locataire.statut,
+            estDansMaListe,
         },
     };
+};
+// ─── Nombre de vérifications en attente ─────────────────────────────────────
+export const getPendingVerificationsCount = async (proprietaireId) => {
+    return LocataireRepo.getPendingVerificationsCount(proprietaireId);
 };
 //# sourceMappingURL=locataire.service.js.map

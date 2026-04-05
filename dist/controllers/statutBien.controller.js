@@ -1,17 +1,17 @@
 import { StatusCodes } from "http-status-codes";
 import * as StatutBienService from "../services/statutBien.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
-// GET /api/statuts-bien — public
+// GET /api/statuts-bien - public
 export const getAll = async (_req, res) => {
     const statuts = await StatutBienService.getAll();
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Statuts récupérés", data: statuts }));
 };
-// GET /api/statuts-bien/admin — admin
+// GET /api/statuts-bien/admin - admin
 export const getAllAdmin = async (_req, res) => {
     const statuts = await StatutBienService.getAllAdmin();
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Statuts récupérés", data: statuts }));
 };
-// POST /api/statuts-bien — admin
+// POST /api/statuts-bien - admin
 export const create = async (req, res) => {
     const statut = await StatutBienService.create({
         nom: req.body.nom,
@@ -19,7 +19,7 @@ export const create = async (req, res) => {
     });
     res.status(StatusCodes.CREATED).json(jsonResponse({ status: "success", message: "Statut créé", data: statut }));
 };
-// PUT /api/statuts-bien/:id — admin
+// PUT /api/statuts-bien/:id - admin
 export const update = async (req, res) => {
     const id = req.params.id;
     const updatePayload = {};
@@ -33,7 +33,7 @@ export const update = async (req, res) => {
     const statut = await StatutBienService.update(id, updatePayload);
     res.status(StatusCodes.OK).json(jsonResponse({ status: "success", message: "Statut mis à jour", data: statut }));
 };
-// DELETE /api/statuts-bien/:id — admin
+// DELETE /api/statuts-bien/:id - admin
 export const remove = async (req, res) => {
     const id = req.params.id;
     await StatutBienService.remove(id);

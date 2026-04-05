@@ -1,0 +1,1443 @@
+import type * as runtime from "@prisma/client/runtime/library";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model Favori
+ *
+ */
+export type FavoriModel = runtime.Types.Result.DefaultSelection<Prisma.$FavoriPayload>;
+export type AggregateFavori = {
+    _count: FavoriCountAggregateOutputType | null;
+    _avg: FavoriAvgAggregateOutputType | null;
+    _sum: FavoriSumAggregateOutputType | null;
+    _min: FavoriMinAggregateOutputType | null;
+    _max: FavoriMaxAggregateOutputType | null;
+};
+export type FavoriAvgAggregateOutputType = {
+    prixSnapshot: number | null;
+};
+export type FavoriSumAggregateOutputType = {
+    prixSnapshot: number | null;
+};
+export type FavoriMinAggregateOutputType = {
+    id: string | null;
+    comptePublicId: string | null;
+    bienId: string | null;
+    prixSnapshot: number | null;
+    statutSnapshot: string | null;
+    actifSnapshot: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type FavoriMaxAggregateOutputType = {
+    id: string | null;
+    comptePublicId: string | null;
+    bienId: string | null;
+    prixSnapshot: number | null;
+    statutSnapshot: string | null;
+    actifSnapshot: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type FavoriCountAggregateOutputType = {
+    id: number;
+    comptePublicId: number;
+    bienId: number;
+    prixSnapshot: number;
+    statutSnapshot: number;
+    actifSnapshot: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+};
+export type FavoriAvgAggregateInputType = {
+    prixSnapshot?: true;
+};
+export type FavoriSumAggregateInputType = {
+    prixSnapshot?: true;
+};
+export type FavoriMinAggregateInputType = {
+    id?: true;
+    comptePublicId?: true;
+    bienId?: true;
+    prixSnapshot?: true;
+    statutSnapshot?: true;
+    actifSnapshot?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type FavoriMaxAggregateInputType = {
+    id?: true;
+    comptePublicId?: true;
+    bienId?: true;
+    prixSnapshot?: true;
+    statutSnapshot?: true;
+    actifSnapshot?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type FavoriCountAggregateInputType = {
+    id?: true;
+    comptePublicId?: true;
+    bienId?: true;
+    prixSnapshot?: true;
+    statutSnapshot?: true;
+    actifSnapshot?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type FavoriAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Favori to aggregate.
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Favoris to fetch.
+     */
+    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.FavoriWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Favoris from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Favoris.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned Favoris
+    **/
+    _count?: true | FavoriCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: FavoriAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: FavoriSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: FavoriMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: FavoriMaxAggregateInputType;
+};
+export type GetFavoriAggregateType<T extends FavoriAggregateArgs> = {
+    [P in keyof T & keyof AggregateFavori]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateFavori[P]> : Prisma.GetScalarType<T[P], AggregateFavori[P]>;
+};
+export type FavoriGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FavoriWhereInput;
+    orderBy?: Prisma.FavoriOrderByWithAggregationInput | Prisma.FavoriOrderByWithAggregationInput[];
+    by: Prisma.FavoriScalarFieldEnum[] | Prisma.FavoriScalarFieldEnum;
+    having?: Prisma.FavoriScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: FavoriCountAggregateInputType | true;
+    _avg?: FavoriAvgAggregateInputType;
+    _sum?: FavoriSumAggregateInputType;
+    _min?: FavoriMinAggregateInputType;
+    _max?: FavoriMaxAggregateInputType;
+};
+export type FavoriGroupByOutputType = {
+    id: string;
+    comptePublicId: string;
+    bienId: string;
+    prixSnapshot: number | null;
+    statutSnapshot: string | null;
+    actifSnapshot: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: FavoriCountAggregateOutputType | null;
+    _avg: FavoriAvgAggregateOutputType | null;
+    _sum: FavoriSumAggregateOutputType | null;
+    _min: FavoriMinAggregateOutputType | null;
+    _max: FavoriMaxAggregateOutputType | null;
+};
+type GetFavoriGroupByPayload<T extends FavoriGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<FavoriGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof FavoriGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], FavoriGroupByOutputType[P]> : Prisma.GetScalarType<T[P], FavoriGroupByOutputType[P]>;
+}>>;
+export type FavoriWhereInput = {
+    AND?: Prisma.FavoriWhereInput | Prisma.FavoriWhereInput[];
+    OR?: Prisma.FavoriWhereInput[];
+    NOT?: Prisma.FavoriWhereInput | Prisma.FavoriWhereInput[];
+    id?: Prisma.StringFilter<"Favori"> | string;
+    comptePublicId?: Prisma.StringFilter<"Favori"> | string;
+    bienId?: Prisma.StringFilter<"Favori"> | string;
+    prixSnapshot?: Prisma.FloatNullableFilter<"Favori"> | number | null;
+    statutSnapshot?: Prisma.StringNullableFilter<"Favori"> | string | null;
+    actifSnapshot?: Prisma.BoolFilter<"Favori"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
+    bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+};
+export type FavoriOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    prixSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder;
+    statutSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder;
+    actifSnapshot?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    comptePublic?: Prisma.ComptePublicOrderByWithRelationInput;
+    bien?: Prisma.BienOrderByWithRelationInput;
+};
+export type FavoriWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    comptePublicId_bienId?: Prisma.FavoriComptePublicIdBienIdCompoundUniqueInput;
+    AND?: Prisma.FavoriWhereInput | Prisma.FavoriWhereInput[];
+    OR?: Prisma.FavoriWhereInput[];
+    NOT?: Prisma.FavoriWhereInput | Prisma.FavoriWhereInput[];
+    comptePublicId?: Prisma.StringFilter<"Favori"> | string;
+    bienId?: Prisma.StringFilter<"Favori"> | string;
+    prixSnapshot?: Prisma.FloatNullableFilter<"Favori"> | number | null;
+    statutSnapshot?: Prisma.StringNullableFilter<"Favori"> | string | null;
+    actifSnapshot?: Prisma.BoolFilter<"Favori"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+    comptePublic?: Prisma.XOR<Prisma.ComptePublicScalarRelationFilter, Prisma.ComptePublicWhereInput>;
+    bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
+}, "id" | "comptePublicId_bienId">;
+export type FavoriOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    prixSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder;
+    statutSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder;
+    actifSnapshot?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.FavoriCountOrderByAggregateInput;
+    _avg?: Prisma.FavoriAvgOrderByAggregateInput;
+    _max?: Prisma.FavoriMaxOrderByAggregateInput;
+    _min?: Prisma.FavoriMinOrderByAggregateInput;
+    _sum?: Prisma.FavoriSumOrderByAggregateInput;
+};
+export type FavoriScalarWhereWithAggregatesInput = {
+    AND?: Prisma.FavoriScalarWhereWithAggregatesInput | Prisma.FavoriScalarWhereWithAggregatesInput[];
+    OR?: Prisma.FavoriScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.FavoriScalarWhereWithAggregatesInput | Prisma.FavoriScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"Favori"> | string;
+    comptePublicId?: Prisma.StringWithAggregatesFilter<"Favori"> | string;
+    bienId?: Prisma.StringWithAggregatesFilter<"Favori"> | string;
+    prixSnapshot?: Prisma.FloatNullableWithAggregatesFilter<"Favori"> | number | null;
+    statutSnapshot?: Prisma.StringNullableWithAggregatesFilter<"Favori"> | string | null;
+    actifSnapshot?: Prisma.BoolWithAggregatesFilter<"Favori"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Favori"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Favori"> | Date | string;
+};
+export type FavoriCreateInput = {
+    id?: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    comptePublic: Prisma.ComptePublicCreateNestedOneWithoutFavorisInput;
+    bien: Prisma.BienCreateNestedOneWithoutFavorisInput;
+};
+export type FavoriUncheckedCreateInput = {
+    id?: string;
+    comptePublicId: string;
+    bienId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    comptePublic?: Prisma.ComptePublicUpdateOneRequiredWithoutFavorisNestedInput;
+    bien?: Prisma.BienUpdateOneRequiredWithoutFavorisNestedInput;
+};
+export type FavoriUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriCreateManyInput = {
+    id?: string;
+    comptePublicId: string;
+    bienId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriListRelationFilter = {
+    every?: Prisma.FavoriWhereInput;
+    some?: Prisma.FavoriWhereInput;
+    none?: Prisma.FavoriWhereInput;
+};
+export type FavoriOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type FavoriComptePublicIdBienIdCompoundUniqueInput = {
+    comptePublicId: string;
+    bienId: string;
+};
+export type FavoriCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    prixSnapshot?: Prisma.SortOrder;
+    statutSnapshot?: Prisma.SortOrder;
+    actifSnapshot?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type FavoriAvgOrderByAggregateInput = {
+    prixSnapshot?: Prisma.SortOrder;
+};
+export type FavoriMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    prixSnapshot?: Prisma.SortOrder;
+    statutSnapshot?: Prisma.SortOrder;
+    actifSnapshot?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type FavoriMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    comptePublicId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    prixSnapshot?: Prisma.SortOrder;
+    statutSnapshot?: Prisma.SortOrder;
+    actifSnapshot?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type FavoriSumOrderByAggregateInput = {
+    prixSnapshot?: Prisma.SortOrder;
+};
+export type FavoriCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput> | Prisma.FavoriCreateWithoutBienInput[] | Prisma.FavoriUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutBienInput | Prisma.FavoriCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.FavoriCreateManyBienInputEnvelope;
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+};
+export type FavoriUncheckedCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput> | Prisma.FavoriCreateWithoutBienInput[] | Prisma.FavoriUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutBienInput | Prisma.FavoriCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.FavoriCreateManyBienInputEnvelope;
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+};
+export type FavoriUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput> | Prisma.FavoriCreateWithoutBienInput[] | Prisma.FavoriUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutBienInput | Prisma.FavoriCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.FavoriUpsertWithWhereUniqueWithoutBienInput | Prisma.FavoriUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.FavoriCreateManyBienInputEnvelope;
+    set?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    disconnect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    delete?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    update?: Prisma.FavoriUpdateWithWhereUniqueWithoutBienInput | Prisma.FavoriUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.FavoriUpdateManyWithWhereWithoutBienInput | Prisma.FavoriUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+};
+export type FavoriUncheckedUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput> | Prisma.FavoriCreateWithoutBienInput[] | Prisma.FavoriUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutBienInput | Prisma.FavoriCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.FavoriUpsertWithWhereUniqueWithoutBienInput | Prisma.FavoriUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.FavoriCreateManyBienInputEnvelope;
+    set?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    disconnect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    delete?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    update?: Prisma.FavoriUpdateWithWhereUniqueWithoutBienInput | Prisma.FavoriUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.FavoriUpdateManyWithWhereWithoutBienInput | Prisma.FavoriUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+};
+export type FavoriCreateNestedManyWithoutComptePublicInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput> | Prisma.FavoriCreateWithoutComptePublicInput[] | Prisma.FavoriUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutComptePublicInput | Prisma.FavoriCreateOrConnectWithoutComptePublicInput[];
+    createMany?: Prisma.FavoriCreateManyComptePublicInputEnvelope;
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+};
+export type FavoriUncheckedCreateNestedManyWithoutComptePublicInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput> | Prisma.FavoriCreateWithoutComptePublicInput[] | Prisma.FavoriUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutComptePublicInput | Prisma.FavoriCreateOrConnectWithoutComptePublicInput[];
+    createMany?: Prisma.FavoriCreateManyComptePublicInputEnvelope;
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+};
+export type FavoriUpdateManyWithoutComptePublicNestedInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput> | Prisma.FavoriCreateWithoutComptePublicInput[] | Prisma.FavoriUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutComptePublicInput | Prisma.FavoriCreateOrConnectWithoutComptePublicInput[];
+    upsert?: Prisma.FavoriUpsertWithWhereUniqueWithoutComptePublicInput | Prisma.FavoriUpsertWithWhereUniqueWithoutComptePublicInput[];
+    createMany?: Prisma.FavoriCreateManyComptePublicInputEnvelope;
+    set?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    disconnect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    delete?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    update?: Prisma.FavoriUpdateWithWhereUniqueWithoutComptePublicInput | Prisma.FavoriUpdateWithWhereUniqueWithoutComptePublicInput[];
+    updateMany?: Prisma.FavoriUpdateManyWithWhereWithoutComptePublicInput | Prisma.FavoriUpdateManyWithWhereWithoutComptePublicInput[];
+    deleteMany?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+};
+export type FavoriUncheckedUpdateManyWithoutComptePublicNestedInput = {
+    create?: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput> | Prisma.FavoriCreateWithoutComptePublicInput[] | Prisma.FavoriUncheckedCreateWithoutComptePublicInput[];
+    connectOrCreate?: Prisma.FavoriCreateOrConnectWithoutComptePublicInput | Prisma.FavoriCreateOrConnectWithoutComptePublicInput[];
+    upsert?: Prisma.FavoriUpsertWithWhereUniqueWithoutComptePublicInput | Prisma.FavoriUpsertWithWhereUniqueWithoutComptePublicInput[];
+    createMany?: Prisma.FavoriCreateManyComptePublicInputEnvelope;
+    set?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    disconnect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    delete?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    connect?: Prisma.FavoriWhereUniqueInput | Prisma.FavoriWhereUniqueInput[];
+    update?: Prisma.FavoriUpdateWithWhereUniqueWithoutComptePublicInput | Prisma.FavoriUpdateWithWhereUniqueWithoutComptePublicInput[];
+    updateMany?: Prisma.FavoriUpdateManyWithWhereWithoutComptePublicInput | Prisma.FavoriUpdateManyWithWhereWithoutComptePublicInput[];
+    deleteMany?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+};
+export type FavoriCreateWithoutBienInput = {
+    id?: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    comptePublic: Prisma.ComptePublicCreateNestedOneWithoutFavorisInput;
+};
+export type FavoriUncheckedCreateWithoutBienInput = {
+    id?: string;
+    comptePublicId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriCreateOrConnectWithoutBienInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput>;
+};
+export type FavoriCreateManyBienInputEnvelope = {
+    data: Prisma.FavoriCreateManyBienInput | Prisma.FavoriCreateManyBienInput[];
+    skipDuplicates?: boolean;
+};
+export type FavoriUpsertWithWhereUniqueWithoutBienInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    update: Prisma.XOR<Prisma.FavoriUpdateWithoutBienInput, Prisma.FavoriUncheckedUpdateWithoutBienInput>;
+    create: Prisma.XOR<Prisma.FavoriCreateWithoutBienInput, Prisma.FavoriUncheckedCreateWithoutBienInput>;
+};
+export type FavoriUpdateWithWhereUniqueWithoutBienInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    data: Prisma.XOR<Prisma.FavoriUpdateWithoutBienInput, Prisma.FavoriUncheckedUpdateWithoutBienInput>;
+};
+export type FavoriUpdateManyWithWhereWithoutBienInput = {
+    where: Prisma.FavoriScalarWhereInput;
+    data: Prisma.XOR<Prisma.FavoriUpdateManyMutationInput, Prisma.FavoriUncheckedUpdateManyWithoutBienInput>;
+};
+export type FavoriScalarWhereInput = {
+    AND?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+    OR?: Prisma.FavoriScalarWhereInput[];
+    NOT?: Prisma.FavoriScalarWhereInput | Prisma.FavoriScalarWhereInput[];
+    id?: Prisma.StringFilter<"Favori"> | string;
+    comptePublicId?: Prisma.StringFilter<"Favori"> | string;
+    bienId?: Prisma.StringFilter<"Favori"> | string;
+    prixSnapshot?: Prisma.FloatNullableFilter<"Favori"> | number | null;
+    statutSnapshot?: Prisma.StringNullableFilter<"Favori"> | string | null;
+    actifSnapshot?: Prisma.BoolFilter<"Favori"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Favori"> | Date | string;
+};
+export type FavoriCreateWithoutComptePublicInput = {
+    id?: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutFavorisInput;
+};
+export type FavoriUncheckedCreateWithoutComptePublicInput = {
+    id?: string;
+    bienId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriCreateOrConnectWithoutComptePublicInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput>;
+};
+export type FavoriCreateManyComptePublicInputEnvelope = {
+    data: Prisma.FavoriCreateManyComptePublicInput | Prisma.FavoriCreateManyComptePublicInput[];
+    skipDuplicates?: boolean;
+};
+export type FavoriUpsertWithWhereUniqueWithoutComptePublicInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    update: Prisma.XOR<Prisma.FavoriUpdateWithoutComptePublicInput, Prisma.FavoriUncheckedUpdateWithoutComptePublicInput>;
+    create: Prisma.XOR<Prisma.FavoriCreateWithoutComptePublicInput, Prisma.FavoriUncheckedCreateWithoutComptePublicInput>;
+};
+export type FavoriUpdateWithWhereUniqueWithoutComptePublicInput = {
+    where: Prisma.FavoriWhereUniqueInput;
+    data: Prisma.XOR<Prisma.FavoriUpdateWithoutComptePublicInput, Prisma.FavoriUncheckedUpdateWithoutComptePublicInput>;
+};
+export type FavoriUpdateManyWithWhereWithoutComptePublicInput = {
+    where: Prisma.FavoriScalarWhereInput;
+    data: Prisma.XOR<Prisma.FavoriUpdateManyMutationInput, Prisma.FavoriUncheckedUpdateManyWithoutComptePublicInput>;
+};
+export type FavoriCreateManyBienInput = {
+    id?: string;
+    comptePublicId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    comptePublic?: Prisma.ComptePublicUpdateOneRequiredWithoutFavorisNestedInput;
+};
+export type FavoriUncheckedUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriUncheckedUpdateManyWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    comptePublicId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriCreateManyComptePublicInput = {
+    id?: string;
+    bienId: string;
+    prixSnapshot?: number | null;
+    statutSnapshot?: string | null;
+    actifSnapshot?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type FavoriUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutFavorisNestedInput;
+};
+export type FavoriUncheckedUpdateWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriUncheckedUpdateManyWithoutComptePublicInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    prixSnapshot?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    statutSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    actifSnapshot?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FavoriSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    comptePublicId?: boolean;
+    bienId?: boolean;
+    prixSnapshot?: boolean;
+    statutSnapshot?: boolean;
+    actifSnapshot?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["favori"]>;
+export type FavoriSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    comptePublicId?: boolean;
+    bienId?: boolean;
+    prixSnapshot?: boolean;
+    statutSnapshot?: boolean;
+    actifSnapshot?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["favori"]>;
+export type FavoriSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    comptePublicId?: boolean;
+    bienId?: boolean;
+    prixSnapshot?: boolean;
+    statutSnapshot?: boolean;
+    actifSnapshot?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["favori"]>;
+export type FavoriSelectScalar = {
+    id?: boolean;
+    comptePublicId?: boolean;
+    bienId?: boolean;
+    prixSnapshot?: boolean;
+    statutSnapshot?: boolean;
+    actifSnapshot?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+};
+export type FavoriOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "comptePublicId" | "bienId" | "prixSnapshot" | "statutSnapshot" | "actifSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["favori"]>;
+export type FavoriInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type FavoriIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type FavoriIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    comptePublic?: boolean | Prisma.ComptePublicDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
+};
+export type $FavoriPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Favori";
+    objects: {
+        comptePublic: Prisma.$ComptePublicPayload<ExtArgs>;
+        bien: Prisma.$BienPayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        comptePublicId: string;
+        bienId: string;
+        prixSnapshot: number | null;
+        statutSnapshot: string | null;
+        actifSnapshot: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }, ExtArgs["result"]["favori"]>;
+    composites: {};
+};
+export type FavoriGetPayload<S extends boolean | null | undefined | FavoriDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$FavoriPayload, S>;
+export type FavoriCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<FavoriFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: FavoriCountAggregateInputType | true;
+};
+export interface FavoriDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Favori'];
+        meta: {
+            name: 'Favori';
+        };
+    };
+    /**
+     * Find zero or one Favori that matches the filter.
+     * @param {FavoriFindUniqueArgs} args - Arguments to find a Favori
+     * @example
+     * // Get one Favori
+     * const favori = await prisma.favori.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FavoriFindUniqueArgs>(args: Prisma.SelectSubset<T, FavoriFindUniqueArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one Favori that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FavoriFindUniqueOrThrowArgs} args - Arguments to find a Favori
+     * @example
+     * // Get one Favori
+     * const favori = await prisma.favori.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FavoriFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, FavoriFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Favori that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriFindFirstArgs} args - Arguments to find a Favori
+     * @example
+     * // Get one Favori
+     * const favori = await prisma.favori.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FavoriFindFirstArgs>(args?: Prisma.SelectSubset<T, FavoriFindFirstArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Favori that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriFindFirstOrThrowArgs} args - Arguments to find a Favori
+     * @example
+     * // Get one Favori
+     * const favori = await prisma.favori.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FavoriFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, FavoriFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more Favoris that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Favoris
+     * const favoris = await prisma.favori.findMany()
+     *
+     * // Get first 10 Favoris
+     * const favoris = await prisma.favori.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const favoriWithIdOnly = await prisma.favori.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends FavoriFindManyArgs>(args?: Prisma.SelectSubset<T, FavoriFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a Favori.
+     * @param {FavoriCreateArgs} args - Arguments to create a Favori.
+     * @example
+     * // Create one Favori
+     * const Favori = await prisma.favori.create({
+     *   data: {
+     *     // ... data to create a Favori
+     *   }
+     * })
+     *
+     */
+    create<T extends FavoriCreateArgs>(args: Prisma.SelectSubset<T, FavoriCreateArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many Favoris.
+     * @param {FavoriCreateManyArgs} args - Arguments to create many Favoris.
+     * @example
+     * // Create many Favoris
+     * const favori = await prisma.favori.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends FavoriCreateManyArgs>(args?: Prisma.SelectSubset<T, FavoriCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many Favoris and returns the data saved in the database.
+     * @param {FavoriCreateManyAndReturnArgs} args - Arguments to create many Favoris.
+     * @example
+     * // Create many Favoris
+     * const favori = await prisma.favori.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many Favoris and only return the `id`
+     * const favoriWithIdOnly = await prisma.favori.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends FavoriCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, FavoriCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a Favori.
+     * @param {FavoriDeleteArgs} args - Arguments to delete one Favori.
+     * @example
+     * // Delete one Favori
+     * const Favori = await prisma.favori.delete({
+     *   where: {
+     *     // ... filter to delete one Favori
+     *   }
+     * })
+     *
+     */
+    delete<T extends FavoriDeleteArgs>(args: Prisma.SelectSubset<T, FavoriDeleteArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one Favori.
+     * @param {FavoriUpdateArgs} args - Arguments to update one Favori.
+     * @example
+     * // Update one Favori
+     * const favori = await prisma.favori.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends FavoriUpdateArgs>(args: Prisma.SelectSubset<T, FavoriUpdateArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more Favoris.
+     * @param {FavoriDeleteManyArgs} args - Arguments to filter Favoris to delete.
+     * @example
+     * // Delete a few Favoris
+     * const { count } = await prisma.favori.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends FavoriDeleteManyArgs>(args?: Prisma.SelectSubset<T, FavoriDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Favoris.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Favoris
+     * const favori = await prisma.favori.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends FavoriUpdateManyArgs>(args: Prisma.SelectSubset<T, FavoriUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Favoris and returns the data updated in the database.
+     * @param {FavoriUpdateManyAndReturnArgs} args - Arguments to update many Favoris.
+     * @example
+     * // Update many Favoris
+     * const favori = await prisma.favori.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more Favoris and only return the `id`
+     * const favoriWithIdOnly = await prisma.favori.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends FavoriUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, FavoriUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one Favori.
+     * @param {FavoriUpsertArgs} args - Arguments to update or create a Favori.
+     * @example
+     * // Update or create a Favori
+     * const favori = await prisma.favori.upsert({
+     *   create: {
+     *     // ... data to create a Favori
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Favori we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FavoriUpsertArgs>(args: Prisma.SelectSubset<T, FavoriUpsertArgs<ExtArgs>>): Prisma.Prisma__FavoriClient<runtime.Types.Result.GetResult<Prisma.$FavoriPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of Favoris.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriCountArgs} args - Arguments to filter Favoris to count.
+     * @example
+     * // Count the number of Favoris
+     * const count = await prisma.favori.count({
+     *   where: {
+     *     // ... the filter for the Favoris we want to count
+     *   }
+     * })
+    **/
+    count<T extends FavoriCountArgs>(args?: Prisma.Subset<T, FavoriCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], FavoriCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a Favori.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FavoriAggregateArgs>(args: Prisma.Subset<T, FavoriAggregateArgs>): Prisma.PrismaPromise<GetFavoriAggregateType<T>>;
+    /**
+     * Group by Favori.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends FavoriGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: FavoriGroupByArgs['orderBy'];
+    } : {
+        orderBy?: FavoriGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, FavoriGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFavoriGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the Favori model
+     */
+    readonly fields: FavoriFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for Favori.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__FavoriClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    comptePublic<T extends Prisma.ComptePublicDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComptePublicDefaultArgs<ExtArgs>>): Prisma.Prisma__ComptePublicClient<runtime.Types.Result.GetResult<Prisma.$ComptePublicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    bien<T extends Prisma.BienDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BienDefaultArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the Favori model
+ */
+export interface FavoriFieldRefs {
+    readonly id: Prisma.FieldRef<"Favori", 'String'>;
+    readonly comptePublicId: Prisma.FieldRef<"Favori", 'String'>;
+    readonly bienId: Prisma.FieldRef<"Favori", 'String'>;
+    readonly prixSnapshot: Prisma.FieldRef<"Favori", 'Float'>;
+    readonly statutSnapshot: Prisma.FieldRef<"Favori", 'String'>;
+    readonly actifSnapshot: Prisma.FieldRef<"Favori", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"Favori", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Favori", 'DateTime'>;
+}
+/**
+ * Favori findUnique
+ */
+export type FavoriFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter, which Favori to fetch.
+     */
+    where: Prisma.FavoriWhereUniqueInput;
+};
+/**
+ * Favori findUniqueOrThrow
+ */
+export type FavoriFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter, which Favori to fetch.
+     */
+    where: Prisma.FavoriWhereUniqueInput;
+};
+/**
+ * Favori findFirst
+ */
+export type FavoriFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter, which Favori to fetch.
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Favoris to fetch.
+     */
+    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Favoris.
+     */
+    cursor?: Prisma.FavoriWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Favoris from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Favoris.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Favoris.
+     */
+    distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
+};
+/**
+ * Favori findFirstOrThrow
+ */
+export type FavoriFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter, which Favori to fetch.
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Favoris to fetch.
+     */
+    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Favoris.
+     */
+    cursor?: Prisma.FavoriWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Favoris from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Favoris.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Favoris.
+     */
+    distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
+};
+/**
+ * Favori findMany
+ */
+export type FavoriFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter, which Favoris to fetch.
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Favoris to fetch.
+     */
+    orderBy?: Prisma.FavoriOrderByWithRelationInput | Prisma.FavoriOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing Favoris.
+     */
+    cursor?: Prisma.FavoriWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Favoris from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Favoris.
+     */
+    skip?: number;
+    distinct?: Prisma.FavoriScalarFieldEnum | Prisma.FavoriScalarFieldEnum[];
+};
+/**
+ * Favori create
+ */
+export type FavoriCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a Favori.
+     */
+    data: Prisma.XOR<Prisma.FavoriCreateInput, Prisma.FavoriUncheckedCreateInput>;
+};
+/**
+ * Favori createMany
+ */
+export type FavoriCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Favoris.
+     */
+    data: Prisma.FavoriCreateManyInput | Prisma.FavoriCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Favori createManyAndReturn
+ */
+export type FavoriCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * The data used to create many Favoris.
+     */
+    data: Prisma.FavoriCreateManyInput | Prisma.FavoriCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Favori update
+ */
+export type FavoriUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a Favori.
+     */
+    data: Prisma.XOR<Prisma.FavoriUpdateInput, Prisma.FavoriUncheckedUpdateInput>;
+    /**
+     * Choose, which Favori to update.
+     */
+    where: Prisma.FavoriWhereUniqueInput;
+};
+/**
+ * Favori updateMany
+ */
+export type FavoriUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Favoris.
+     */
+    data: Prisma.XOR<Prisma.FavoriUpdateManyMutationInput, Prisma.FavoriUncheckedUpdateManyInput>;
+    /**
+     * Filter which Favoris to update
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * Limit how many Favoris to update.
+     */
+    limit?: number;
+};
+/**
+ * Favori updateManyAndReturn
+ */
+export type FavoriUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * The data used to update Favoris.
+     */
+    data: Prisma.XOR<Prisma.FavoriUpdateManyMutationInput, Prisma.FavoriUncheckedUpdateManyInput>;
+    /**
+     * Filter which Favoris to update
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * Limit how many Favoris to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Favori upsert
+ */
+export type FavoriUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the Favori to update in case it exists.
+     */
+    where: Prisma.FavoriWhereUniqueInput;
+    /**
+     * In case the Favori found by the `where` argument doesn't exist, create a new Favori with this data.
+     */
+    create: Prisma.XOR<Prisma.FavoriCreateInput, Prisma.FavoriUncheckedCreateInput>;
+    /**
+     * In case the Favori was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.FavoriUpdateInput, Prisma.FavoriUncheckedUpdateInput>;
+};
+/**
+ * Favori delete
+ */
+export type FavoriDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+    /**
+     * Filter which Favori to delete.
+     */
+    where: Prisma.FavoriWhereUniqueInput;
+};
+/**
+ * Favori deleteMany
+ */
+export type FavoriDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Favoris to delete
+     */
+    where?: Prisma.FavoriWhereInput;
+    /**
+     * Limit how many Favoris to delete.
+     */
+    limit?: number;
+};
+/**
+ * Favori without action
+ */
+export type FavoriDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Favori
+     */
+    select?: Prisma.FavoriSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Favori
+     */
+    omit?: Prisma.FavoriOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FavoriInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=Favori.d.ts.map

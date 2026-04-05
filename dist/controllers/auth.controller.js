@@ -6,26 +6,36 @@ const REFRESH_COOKIE = "refreshToken";
 const ACCESS_COOKIE = "accessToken";
 const setTokenCookies = (res, accessToken, refreshToken, refreshTokenExpiresAt) => {
     const isProduction = process.env.NODE_ENV === "production";
-    // Access token — HttpOnly, courte durée, toutes les routes
+    // Access token - HttpOnly, courte durée, toutes les routes
     res.cookie(ACCESS_COOKIE, accessToken, {
         httpOnly: true,
         secure: isProduction,
-        sameSite: "strict",
-        path: "/", // Envoyé à toutes les routes de l'API
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
         maxAge: 15 * 60 * 1000, // 15 min
     });
-    // Refresh token — HttpOnly, path restreint à /api/auth/refresh uniquement
+    // Refresh token - HttpOnly, path restreint à /api/auth/refresh uniquement
     res.cookie(REFRESH_COOKIE, refreshToken, {
         httpOnly: true,
         secure: isProduction,
-        sameSite: "strict",
+        sameSite: isProduction ? "none" : "lax",
         path: "/api/auth/refresh",
         expires: refreshTokenExpiresAt,
     });
 };
 const clearTokenCookies = (res) => {
-    res.clearCookie(ACCESS_COOKIE, { path: "/" });
-    res.clearCookie(REFRESH_COOKIE, { path: "/api/auth/refresh" });
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieDomain = process.env.COOKIE_DOMAIN;
+    const sameSite = isProduction ? "none" : "lax";
+    const baseOptions = {
+        path: "/",
+        httpOnly: true,
+        secure: isProduction,
+        sameSite,
+        ...(cookieDomain && { domain: cookieDomain }),
+    };
+    res.clearCookie(ACCESS_COOKIE, baseOptions);
+    res.clearCookie(REFRESH_COOKIE, { ...baseOptions, path: "/api/auth/refresh" });
 };
 // ─── POST /api/auth/login ─────────────────────────────────────────────────────
 export const login = async (req, res) => {
@@ -72,6 +82,18 @@ export const updateProfile = async (req, res) => {
         status: "success",
         message: "Profil mis à jour avec succès",
         data: updated,
+    }));
+};
+// ─── PUT /api/auth/change-password ───────────────────────────────────────────
+export const changePassword = async (req, res) => {
+    const admin = req.admin;
+    const { currentPassword, newPassword } = req.body;
+    const result = await AuthService.changePassword(admin.id, currentPassword, newPassword);
+    // Révoquer les cookies
+    clearTokenCookies(res);
+    res.status(StatusCodes.OK).json(jsonResponse({
+        status: "success",
+        message: result.message,
     }));
 };
 //# sourceMappingURL=auth.controller.js.map

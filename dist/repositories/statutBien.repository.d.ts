@@ -1,4 +1,4 @@
-import type { StatutBien } from "../generated/prisma/index.js";
+import type { StatutBien } from "../generated/prisma/client.js";
 export declare const findAll: () => Promise<StatutBien[]>;
 export declare const findAllAdmin: () => Promise<StatutBien[]>;
 export declare const findById: (id: string) => Promise<StatutBien | null>;

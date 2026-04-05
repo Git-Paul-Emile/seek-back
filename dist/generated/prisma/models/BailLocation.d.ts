@@ -16,10 +16,14 @@ export type AggregateBailLocation = {
 export type BailLocationAvgAggregateOutputType = {
     montantLoyer: number | null;
     montantCaution: number | null;
+    jourLimitePaiement: number | null;
+    delaiGrace: number | null;
 };
 export type BailLocationSumAggregateOutputType = {
     montantLoyer: number | null;
     montantCaution: number | null;
+    jourLimitePaiement: number | null;
+    delaiGrace: number | null;
 };
 export type BailLocationMinAggregateOutputType = {
     id: string | null;
@@ -32,8 +36,13 @@ export type BailLocationMinAggregateOutputType = {
     renouvellement: boolean | null;
     montantLoyer: number | null;
     montantCaution: number | null;
+    cautionVersee: boolean | null;
+    jourLimitePaiement: number | null;
+    delaiGrace: number | null;
     frequencePaiement: string | null;
     statut: $Enums.StatutBail | null;
+    motifResiliation: string | null;
+    initiePar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -48,8 +57,13 @@ export type BailLocationMaxAggregateOutputType = {
     renouvellement: boolean | null;
     montantLoyer: number | null;
     montantCaution: number | null;
+    cautionVersee: boolean | null;
+    jourLimitePaiement: number | null;
+    delaiGrace: number | null;
     frequencePaiement: string | null;
     statut: $Enums.StatutBail | null;
+    motifResiliation: string | null;
+    initiePar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -64,8 +78,13 @@ export type BailLocationCountAggregateOutputType = {
     renouvellement: number;
     montantLoyer: number;
     montantCaution: number;
+    cautionVersee: number;
+    jourLimitePaiement: number;
+    delaiGrace: number;
     frequencePaiement: number;
     statut: number;
+    motifResiliation: number;
+    initiePar: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -73,10 +92,14 @@ export type BailLocationCountAggregateOutputType = {
 export type BailLocationAvgAggregateInputType = {
     montantLoyer?: true;
     montantCaution?: true;
+    jourLimitePaiement?: true;
+    delaiGrace?: true;
 };
 export type BailLocationSumAggregateInputType = {
     montantLoyer?: true;
     montantCaution?: true;
+    jourLimitePaiement?: true;
+    delaiGrace?: true;
 };
 export type BailLocationMinAggregateInputType = {
     id?: true;
@@ -89,8 +112,13 @@ export type BailLocationMinAggregateInputType = {
     renouvellement?: true;
     montantLoyer?: true;
     montantCaution?: true;
+    cautionVersee?: true;
+    jourLimitePaiement?: true;
+    delaiGrace?: true;
     frequencePaiement?: true;
     statut?: true;
+    motifResiliation?: true;
+    initiePar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -105,8 +133,13 @@ export type BailLocationMaxAggregateInputType = {
     renouvellement?: true;
     montantLoyer?: true;
     montantCaution?: true;
+    cautionVersee?: true;
+    jourLimitePaiement?: true;
+    delaiGrace?: true;
     frequencePaiement?: true;
     statut?: true;
+    motifResiliation?: true;
+    initiePar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -121,8 +154,13 @@ export type BailLocationCountAggregateInputType = {
     renouvellement?: true;
     montantLoyer?: true;
     montantCaution?: true;
+    cautionVersee?: true;
+    jourLimitePaiement?: true;
+    delaiGrace?: true;
     frequencePaiement?: true;
     statut?: true;
+    motifResiliation?: true;
+    initiePar?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -214,8 +252,13 @@ export type BailLocationGroupByOutputType = {
     renouvellement: boolean;
     montantLoyer: number;
     montantCaution: number | null;
+    cautionVersee: boolean;
+    jourLimitePaiement: number | null;
+    delaiGrace: number;
     frequencePaiement: string | null;
     statut: $Enums.StatutBail;
+    motifResiliation: string | null;
+    initiePar: string | null;
     createdAt: Date;
     updatedAt: Date;
     _count: BailLocationCountAggregateOutputType | null;
@@ -239,15 +282,25 @@ export type BailLocationWhereInput = {
     dateDebutBail?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     dateFinBail?: Prisma.DateTimeNullableFilter<"BailLocation"> | Date | string | null;
     renouvellement?: Prisma.BoolFilter<"BailLocation"> | boolean;
-    montantLoyer?: Prisma.FloatFilter<"BailLocation"> | number;
-    montantCaution?: Prisma.FloatNullableFilter<"BailLocation"> | number | null;
+    montantLoyer?: Prisma.IntFilter<"BailLocation"> | number;
+    montantCaution?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    cautionVersee?: Prisma.BoolFilter<"BailLocation"> | boolean;
+    jourLimitePaiement?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    delaiGrace?: Prisma.IntFilter<"BailLocation"> | number;
     frequencePaiement?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     statut?: Prisma.EnumStatutBailFilter<"BailLocation"> | $Enums.StatutBail;
+    motifResiliation?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
+    initiePar?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
     locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
+    contrat?: Prisma.XOR<Prisma.ContratNullableScalarRelationFilter, Prisma.ContratWhereInput> | null;
+    echeancier?: Prisma.EcheancierLoyerListRelationFilter;
+    depotCaution?: Prisma.XOR<Prisma.DepotCautionNullableScalarRelationFilter, Prisma.DepotCautionWhereInput> | null;
+    transactions?: Prisma.TransactionListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 };
 export type BailLocationOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -260,13 +313,23 @@ export type BailLocationOrderByWithRelationInput = {
     renouvellement?: Prisma.SortOrder;
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrderInput | Prisma.SortOrder;
+    cautionVersee?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrderInput | Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
     frequencePaiement?: Prisma.SortOrderInput | Prisma.SortOrder;
     statut?: Prisma.SortOrder;
+    motifResiliation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    initiePar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     bien?: Prisma.BienOrderByWithRelationInput;
     locataire?: Prisma.LocataireOrderByWithRelationInput;
     proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
+    contrat?: Prisma.ContratOrderByWithRelationInput;
+    echeancier?: Prisma.EcheancierLoyerOrderByRelationAggregateInput;
+    depotCaution?: Prisma.DepotCautionOrderByWithRelationInput;
+    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxOrderByRelationAggregateInput;
 };
 export type BailLocationWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -280,15 +343,25 @@ export type BailLocationWhereUniqueInput = Prisma.AtLeast<{
     dateDebutBail?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     dateFinBail?: Prisma.DateTimeNullableFilter<"BailLocation"> | Date | string | null;
     renouvellement?: Prisma.BoolFilter<"BailLocation"> | boolean;
-    montantLoyer?: Prisma.FloatFilter<"BailLocation"> | number;
-    montantCaution?: Prisma.FloatNullableFilter<"BailLocation"> | number | null;
+    montantLoyer?: Prisma.IntFilter<"BailLocation"> | number;
+    montantCaution?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    cautionVersee?: Prisma.BoolFilter<"BailLocation"> | boolean;
+    jourLimitePaiement?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    delaiGrace?: Prisma.IntFilter<"BailLocation"> | number;
     frequencePaiement?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     statut?: Prisma.EnumStatutBailFilter<"BailLocation"> | $Enums.StatutBail;
+    motifResiliation?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
+    initiePar?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     bien?: Prisma.XOR<Prisma.BienScalarRelationFilter, Prisma.BienWhereInput>;
     locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
+    contrat?: Prisma.XOR<Prisma.ContratNullableScalarRelationFilter, Prisma.ContratWhereInput> | null;
+    echeancier?: Prisma.EcheancierLoyerListRelationFilter;
+    depotCaution?: Prisma.XOR<Prisma.DepotCautionNullableScalarRelationFilter, Prisma.DepotCautionWhereInput> | null;
+    transactions?: Prisma.TransactionListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 }, "id">;
 export type BailLocationOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -301,8 +374,13 @@ export type BailLocationOrderByWithAggregationInput = {
     renouvellement?: Prisma.SortOrder;
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrderInput | Prisma.SortOrder;
+    cautionVersee?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrderInput | Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
     frequencePaiement?: Prisma.SortOrderInput | Prisma.SortOrder;
     statut?: Prisma.SortOrder;
+    motifResiliation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    initiePar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.BailLocationCountOrderByAggregateInput;
@@ -323,10 +401,15 @@ export type BailLocationScalarWhereWithAggregatesInput = {
     dateDebutBail?: Prisma.DateTimeWithAggregatesFilter<"BailLocation"> | Date | string;
     dateFinBail?: Prisma.DateTimeNullableWithAggregatesFilter<"BailLocation"> | Date | string | null;
     renouvellement?: Prisma.BoolWithAggregatesFilter<"BailLocation"> | boolean;
-    montantLoyer?: Prisma.FloatWithAggregatesFilter<"BailLocation"> | number;
-    montantCaution?: Prisma.FloatNullableWithAggregatesFilter<"BailLocation"> | number | null;
+    montantLoyer?: Prisma.IntWithAggregatesFilter<"BailLocation"> | number;
+    montantCaution?: Prisma.IntNullableWithAggregatesFilter<"BailLocation"> | number | null;
+    cautionVersee?: Prisma.BoolWithAggregatesFilter<"BailLocation"> | boolean;
+    jourLimitePaiement?: Prisma.IntNullableWithAggregatesFilter<"BailLocation"> | number | null;
+    delaiGrace?: Prisma.IntWithAggregatesFilter<"BailLocation"> | number;
     frequencePaiement?: Prisma.StringNullableWithAggregatesFilter<"BailLocation"> | string | null;
     statut?: Prisma.EnumStatutBailWithAggregatesFilter<"BailLocation"> | $Enums.StatutBail;
+    motifResiliation?: Prisma.StringNullableWithAggregatesFilter<"BailLocation"> | string | null;
+    initiePar?: Prisma.StringNullableWithAggregatesFilter<"BailLocation"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"BailLocation"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BailLocation"> | Date | string;
 };
@@ -338,13 +421,23 @@ export type BailLocationCreateInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     bien: Prisma.BienCreateNestedOneWithoutBailsInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
 };
 export type BailLocationUncheckedCreateInput = {
     id?: string;
@@ -357,10 +450,20 @@ export type BailLocationUncheckedCreateInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
 };
 export type BailLocationUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -368,15 +471,25 @@ export type BailLocationUpdateInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -387,12 +500,22 @@ export type BailLocationUncheckedUpdateInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationCreateManyInput = {
     id?: string;
@@ -405,8 +528,13 @@ export type BailLocationCreateManyInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -416,10 +544,15 @@ export type BailLocationUpdateManyMutationInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -432,10 +565,15 @@ export type BailLocationUncheckedUpdateManyInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -458,14 +596,21 @@ export type BailLocationCountOrderByAggregateInput = {
     renouvellement?: Prisma.SortOrder;
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrder;
+    cautionVersee?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
     frequencePaiement?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
+    motifResiliation?: Prisma.SortOrder;
+    initiePar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
 export type BailLocationAvgOrderByAggregateInput = {
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
 };
 export type BailLocationMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -478,8 +623,13 @@ export type BailLocationMaxOrderByAggregateInput = {
     renouvellement?: Prisma.SortOrder;
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrder;
+    cautionVersee?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
     frequencePaiement?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
+    motifResiliation?: Prisma.SortOrder;
+    initiePar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -494,14 +644,29 @@ export type BailLocationMinOrderByAggregateInput = {
     renouvellement?: Prisma.SortOrder;
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrder;
+    cautionVersee?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
     frequencePaiement?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
+    motifResiliation?: Prisma.SortOrder;
+    initiePar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
 export type BailLocationSumOrderByAggregateInput = {
     montantLoyer?: Prisma.SortOrder;
     montantCaution?: Prisma.SortOrder;
+    jourLimitePaiement?: Prisma.SortOrder;
+    delaiGrace?: Prisma.SortOrder;
+};
+export type BailLocationScalarRelationFilter = {
+    is?: Prisma.BailLocationWhereInput;
+    isNot?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationNullableScalarRelationFilter = {
+    is?: Prisma.BailLocationWhereInput | null;
+    isNot?: Prisma.BailLocationWhereInput | null;
 };
 export type BailLocationCreateNestedManyWithoutBienInput = {
     create?: Prisma.XOR<Prisma.BailLocationCreateWithoutBienInput, Prisma.BailLocationUncheckedCreateWithoutBienInput> | Prisma.BailLocationCreateWithoutBienInput[] | Prisma.BailLocationUncheckedCreateWithoutBienInput[];
@@ -582,6 +747,42 @@ export type BailLocationUncheckedUpdateManyWithoutLocataireNestedInput = {
 export type EnumStatutBailFieldUpdateOperationsInput = {
     set?: $Enums.StatutBail;
 };
+export type BailLocationCreateNestedOneWithoutEcheancierInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutEcheancierInput, Prisma.BailLocationUncheckedCreateWithoutEcheancierInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutEcheancierInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+};
+export type BailLocationUpdateOneRequiredWithoutEcheancierNestedInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutEcheancierInput, Prisma.BailLocationUncheckedCreateWithoutEcheancierInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutEcheancierInput;
+    upsert?: Prisma.BailLocationUpsertWithoutEcheancierInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BailLocationUpdateToOneWithWhereWithoutEcheancierInput, Prisma.BailLocationUpdateWithoutEcheancierInput>, Prisma.BailLocationUncheckedUpdateWithoutEcheancierInput>;
+};
+export type BailLocationCreateNestedOneWithoutDepotCautionInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutDepotCautionInput, Prisma.BailLocationUncheckedCreateWithoutDepotCautionInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutDepotCautionInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+};
+export type BailLocationUpdateOneRequiredWithoutDepotCautionNestedInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutDepotCautionInput, Prisma.BailLocationUncheckedCreateWithoutDepotCautionInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutDepotCautionInput;
+    upsert?: Prisma.BailLocationUpsertWithoutDepotCautionInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BailLocationUpdateToOneWithWhereWithoutDepotCautionInput, Prisma.BailLocationUpdateWithoutDepotCautionInput>, Prisma.BailLocationUncheckedUpdateWithoutDepotCautionInput>;
+};
+export type BailLocationCreateNestedOneWithoutContratInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutContratInput, Prisma.BailLocationUncheckedCreateWithoutContratInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutContratInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+};
+export type BailLocationUpdateOneRequiredWithoutContratNestedInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutContratInput, Prisma.BailLocationUncheckedCreateWithoutContratInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutContratInput;
+    upsert?: Prisma.BailLocationUpsertWithoutContratInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BailLocationUpdateToOneWithWhereWithoutContratInput, Prisma.BailLocationUpdateWithoutContratInput>, Prisma.BailLocationUncheckedUpdateWithoutContratInput>;
+};
 export type BailLocationCreateNestedManyWithoutProprietaireInput = {
     create?: Prisma.XOR<Prisma.BailLocationCreateWithoutProprietaireInput, Prisma.BailLocationUncheckedCreateWithoutProprietaireInput> | Prisma.BailLocationCreateWithoutProprietaireInput[] | Prisma.BailLocationUncheckedCreateWithoutProprietaireInput[];
     connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutProprietaireInput | Prisma.BailLocationCreateOrConnectWithoutProprietaireInput[];
@@ -620,6 +821,32 @@ export type BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput = {
     updateMany?: Prisma.BailLocationUpdateManyWithWhereWithoutProprietaireInput | Prisma.BailLocationUpdateManyWithWhereWithoutProprietaireInput[];
     deleteMany?: Prisma.BailLocationScalarWhereInput | Prisma.BailLocationScalarWhereInput[];
 };
+export type BailLocationCreateNestedOneWithoutTransactionsInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutTransactionsInput, Prisma.BailLocationUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutTransactionsInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+};
+export type BailLocationUpdateOneWithoutTransactionsNestedInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutTransactionsInput, Prisma.BailLocationUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutTransactionsInput;
+    upsert?: Prisma.BailLocationUpsertWithoutTransactionsInput;
+    disconnect?: Prisma.BailLocationWhereInput | boolean;
+    delete?: Prisma.BailLocationWhereInput | boolean;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BailLocationUpdateToOneWithWhereWithoutTransactionsInput, Prisma.BailLocationUpdateWithoutTransactionsInput>, Prisma.BailLocationUncheckedUpdateWithoutTransactionsInput>;
+};
+export type BailLocationCreateNestedOneWithoutEtatsDesLieuxInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutEtatsDesLieuxInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+};
+export type BailLocationUpdateOneRequiredWithoutEtatsDesLieuxNestedInput = {
+    create?: Prisma.XOR<Prisma.BailLocationCreateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.BailLocationCreateOrConnectWithoutEtatsDesLieuxInput;
+    upsert?: Prisma.BailLocationUpsertWithoutEtatsDesLieuxInput;
+    connect?: Prisma.BailLocationWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.BailLocationUpdateToOneWithWhereWithoutEtatsDesLieuxInput, Prisma.BailLocationUpdateWithoutEtatsDesLieuxInput>, Prisma.BailLocationUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
 export type BailLocationCreateWithoutBienInput = {
     id?: string;
     typeBail?: string | null;
@@ -628,12 +855,22 @@ export type BailLocationCreateWithoutBienInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
 };
 export type BailLocationUncheckedCreateWithoutBienInput = {
     id?: string;
@@ -645,10 +882,20 @@ export type BailLocationUncheckedCreateWithoutBienInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
 };
 export type BailLocationCreateOrConnectWithoutBienInput = {
     where: Prisma.BailLocationWhereUniqueInput;
@@ -683,10 +930,15 @@ export type BailLocationScalarWhereInput = {
     dateDebutBail?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     dateFinBail?: Prisma.DateTimeNullableFilter<"BailLocation"> | Date | string | null;
     renouvellement?: Prisma.BoolFilter<"BailLocation"> | boolean;
-    montantLoyer?: Prisma.FloatFilter<"BailLocation"> | number;
-    montantCaution?: Prisma.FloatNullableFilter<"BailLocation"> | number | null;
+    montantLoyer?: Prisma.IntFilter<"BailLocation"> | number;
+    montantCaution?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    cautionVersee?: Prisma.BoolFilter<"BailLocation"> | boolean;
+    jourLimitePaiement?: Prisma.IntNullableFilter<"BailLocation"> | number | null;
+    delaiGrace?: Prisma.IntFilter<"BailLocation"> | number;
     frequencePaiement?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     statut?: Prisma.EnumStatutBailFilter<"BailLocation"> | $Enums.StatutBail;
+    motifResiliation?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
+    initiePar?: Prisma.StringNullableFilter<"BailLocation"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"BailLocation"> | Date | string;
 };
@@ -698,12 +950,22 @@ export type BailLocationCreateWithoutLocataireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     bien: Prisma.BienCreateNestedOneWithoutBailsInput;
     proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
 };
 export type BailLocationUncheckedCreateWithoutLocataireInput = {
     id?: string;
@@ -715,10 +977,20 @@ export type BailLocationUncheckedCreateWithoutLocataireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
 };
 export type BailLocationCreateOrConnectWithoutLocataireInput = {
     where: Prisma.BailLocationWhereUniqueInput;
@@ -741,6 +1013,345 @@ export type BailLocationUpdateManyWithWhereWithoutLocataireInput = {
     where: Prisma.BailLocationScalarWhereInput;
     data: Prisma.XOR<Prisma.BailLocationUpdateManyMutationInput, Prisma.BailLocationUncheckedUpdateManyWithoutLocataireInput>;
 };
+export type BailLocationCreateWithoutEcheancierInput = {
+    id?: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutBailsInput;
+    locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
+};
+export type BailLocationUncheckedCreateWithoutEcheancierInput = {
+    id?: string;
+    bienId: string;
+    locataireId: string;
+    proprietaireId: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
+};
+export type BailLocationCreateOrConnectWithoutEcheancierInput = {
+    where: Prisma.BailLocationWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutEcheancierInput, Prisma.BailLocationUncheckedCreateWithoutEcheancierInput>;
+};
+export type BailLocationUpsertWithoutEcheancierInput = {
+    update: Prisma.XOR<Prisma.BailLocationUpdateWithoutEcheancierInput, Prisma.BailLocationUncheckedUpdateWithoutEcheancierInput>;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutEcheancierInput, Prisma.BailLocationUncheckedCreateWithoutEcheancierInput>;
+    where?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationUpdateToOneWithWhereWithoutEcheancierInput = {
+    where?: Prisma.BailLocationWhereInput;
+    data: Prisma.XOR<Prisma.BailLocationUpdateWithoutEcheancierInput, Prisma.BailLocationUncheckedUpdateWithoutEcheancierInput>;
+};
+export type BailLocationUpdateWithoutEcheancierInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationUncheckedUpdateWithoutEcheancierInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationCreateWithoutDepotCautionInput = {
+    id?: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutBailsInput;
+    locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
+};
+export type BailLocationUncheckedCreateWithoutDepotCautionInput = {
+    id?: string;
+    bienId: string;
+    locataireId: string;
+    proprietaireId: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
+};
+export type BailLocationCreateOrConnectWithoutDepotCautionInput = {
+    where: Prisma.BailLocationWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutDepotCautionInput, Prisma.BailLocationUncheckedCreateWithoutDepotCautionInput>;
+};
+export type BailLocationUpsertWithoutDepotCautionInput = {
+    update: Prisma.XOR<Prisma.BailLocationUpdateWithoutDepotCautionInput, Prisma.BailLocationUncheckedUpdateWithoutDepotCautionInput>;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutDepotCautionInput, Prisma.BailLocationUncheckedCreateWithoutDepotCautionInput>;
+    where?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationUpdateToOneWithWhereWithoutDepotCautionInput = {
+    where?: Prisma.BailLocationWhereInput;
+    data: Prisma.XOR<Prisma.BailLocationUpdateWithoutDepotCautionInput, Prisma.BailLocationUncheckedUpdateWithoutDepotCautionInput>;
+};
+export type BailLocationUpdateWithoutDepotCautionInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationUncheckedUpdateWithoutDepotCautionInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationCreateWithoutContratInput = {
+    id?: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutBailsInput;
+    locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
+};
+export type BailLocationUncheckedCreateWithoutContratInput = {
+    id?: string;
+    bienId: string;
+    locataireId: string;
+    proprietaireId: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
+};
+export type BailLocationCreateOrConnectWithoutContratInput = {
+    where: Prisma.BailLocationWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutContratInput, Prisma.BailLocationUncheckedCreateWithoutContratInput>;
+};
+export type BailLocationUpsertWithoutContratInput = {
+    update: Prisma.XOR<Prisma.BailLocationUpdateWithoutContratInput, Prisma.BailLocationUncheckedUpdateWithoutContratInput>;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutContratInput, Prisma.BailLocationUncheckedCreateWithoutContratInput>;
+    where?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationUpdateToOneWithWhereWithoutContratInput = {
+    where?: Prisma.BailLocationWhereInput;
+    data: Prisma.XOR<Prisma.BailLocationUpdateWithoutContratInput, Prisma.BailLocationUncheckedUpdateWithoutContratInput>;
+};
+export type BailLocationUpdateWithoutContratInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationUncheckedUpdateWithoutContratInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
+};
 export type BailLocationCreateWithoutProprietaireInput = {
     id?: string;
     typeBail?: string | null;
@@ -749,12 +1360,22 @@ export type BailLocationCreateWithoutProprietaireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     bien: Prisma.BienCreateNestedOneWithoutBailsInput;
     locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
 };
 export type BailLocationUncheckedCreateWithoutProprietaireInput = {
     id?: string;
@@ -766,10 +1387,20 @@ export type BailLocationUncheckedCreateWithoutProprietaireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
 };
 export type BailLocationCreateOrConnectWithoutProprietaireInput = {
     where: Prisma.BailLocationWhereUniqueInput;
@@ -792,6 +1423,232 @@ export type BailLocationUpdateManyWithWhereWithoutProprietaireInput = {
     where: Prisma.BailLocationScalarWhereInput;
     data: Prisma.XOR<Prisma.BailLocationUpdateManyMutationInput, Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireInput>;
 };
+export type BailLocationCreateWithoutTransactionsInput = {
+    id?: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutBailsInput;
+    locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutBailInput;
+};
+export type BailLocationUncheckedCreateWithoutTransactionsInput = {
+    id?: string;
+    bienId: string;
+    locataireId: string;
+    proprietaireId: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutBailInput;
+};
+export type BailLocationCreateOrConnectWithoutTransactionsInput = {
+    where: Prisma.BailLocationWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutTransactionsInput, Prisma.BailLocationUncheckedCreateWithoutTransactionsInput>;
+};
+export type BailLocationUpsertWithoutTransactionsInput = {
+    update: Prisma.XOR<Prisma.BailLocationUpdateWithoutTransactionsInput, Prisma.BailLocationUncheckedUpdateWithoutTransactionsInput>;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutTransactionsInput, Prisma.BailLocationUncheckedCreateWithoutTransactionsInput>;
+    where?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: Prisma.BailLocationWhereInput;
+    data: Prisma.XOR<Prisma.BailLocationUpdateWithoutTransactionsInput, Prisma.BailLocationUncheckedUpdateWithoutTransactionsInput>;
+};
+export type BailLocationUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationUncheckedUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien: Prisma.BienCreateNestedOneWithoutBailsInput;
+    locataire: Prisma.LocataireCreateNestedOneWithoutBailsInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutBailsInput;
+    contrat?: Prisma.ContratCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutBailInput;
+};
+export type BailLocationUncheckedCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    bienId: string;
+    locataireId: string;
+    proprietaireId: string;
+    typeBail?: string | null;
+    dateDebutBail: Date | string;
+    dateFinBail?: Date | string | null;
+    renouvellement?: boolean;
+    montantLoyer: number;
+    montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
+    frequencePaiement?: string | null;
+    statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    contrat?: Prisma.ContratUncheckedCreateNestedOneWithoutBailInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedCreateNestedManyWithoutBailInput;
+    depotCaution?: Prisma.DepotCautionUncheckedCreateNestedOneWithoutBailInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutBailInput;
+};
+export type BailLocationCreateOrConnectWithoutEtatsDesLieuxInput = {
+    where: Prisma.BailLocationWhereUniqueInput;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedCreateWithoutEtatsDesLieuxInput>;
+};
+export type BailLocationUpsertWithoutEtatsDesLieuxInput = {
+    update: Prisma.XOR<Prisma.BailLocationUpdateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedUpdateWithoutEtatsDesLieuxInput>;
+    create: Prisma.XOR<Prisma.BailLocationCreateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedCreateWithoutEtatsDesLieuxInput>;
+    where?: Prisma.BailLocationWhereInput;
+};
+export type BailLocationUpdateToOneWithWhereWithoutEtatsDesLieuxInput = {
+    where?: Prisma.BailLocationWhereInput;
+    data: Prisma.XOR<Prisma.BailLocationUpdateWithoutEtatsDesLieuxInput, Prisma.BailLocationUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
+export type BailLocationUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+};
+export type BailLocationUncheckedUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bienId?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    typeBail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
+    frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+};
 export type BailLocationCreateManyBienInput = {
     id?: string;
     locataireId: string;
@@ -802,8 +1659,13 @@ export type BailLocationCreateManyBienInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -813,14 +1675,24 @@ export type BailLocationUpdateWithoutBienInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateWithoutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -830,12 +1702,22 @@ export type BailLocationUncheckedUpdateWithoutBienInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateManyWithoutBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -845,10 +1727,15 @@ export type BailLocationUncheckedUpdateManyWithoutBienInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -862,8 +1749,13 @@ export type BailLocationCreateManyLocataireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -873,14 +1765,24 @@ export type BailLocationUpdateWithoutLocataireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
     proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateWithoutLocataireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -890,12 +1792,22 @@ export type BailLocationUncheckedUpdateWithoutLocataireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateManyWithoutLocataireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -905,10 +1817,15 @@ export type BailLocationUncheckedUpdateManyWithoutLocataireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -922,8 +1839,13 @@ export type BailLocationCreateManyProprietaireInput = {
     renouvellement?: boolean;
     montantLoyer: number;
     montantCaution?: number | null;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: number | null;
+    delaiGrace?: number;
     frequencePaiement?: string | null;
     statut?: $Enums.StatutBail;
+    motifResiliation?: string | null;
+    initiePar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -933,14 +1855,24 @@ export type BailLocationUpdateWithoutProprietaireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     bien?: Prisma.BienUpdateOneRequiredWithoutBailsNestedInput;
     locataire?: Prisma.LocataireUpdateOneRequiredWithoutBailsNestedInput;
+    contrat?: Prisma.ContratUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -950,12 +1882,22 @@ export type BailLocationUncheckedUpdateWithoutProprietaireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    contrat?: Prisma.ContratUncheckedUpdateOneWithoutBailNestedInput;
+    echeancier?: Prisma.EcheancierLoyerUncheckedUpdateManyWithoutBailNestedInput;
+    depotCaution?: Prisma.DepotCautionUncheckedUpdateOneWithoutBailNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutBailNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutBailNestedInput;
 };
 export type BailLocationUncheckedUpdateManyWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -965,12 +1907,57 @@ export type BailLocationUncheckedUpdateManyWithoutProprietaireInput = {
     dateDebutBail?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     dateFinBail?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     renouvellement?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    montantLoyer?: Prisma.FloatFieldUpdateOperationsInput | number;
-    montantCaution?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    montantLoyer?: Prisma.IntFieldUpdateOperationsInput | number;
+    montantCaution?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    cautionVersee?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    jourLimitePaiement?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    delaiGrace?: Prisma.IntFieldUpdateOperationsInput | number;
     frequencePaiement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     statut?: Prisma.EnumStatutBailFieldUpdateOperationsInput | $Enums.StatutBail;
+    motifResiliation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    initiePar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type BailLocationCountOutputType
+ */
+export type BailLocationCountOutputType = {
+    echeancier: number;
+    transactions: number;
+    etatsDesLieux: number;
+};
+export type BailLocationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    echeancier?: boolean | BailLocationCountOutputTypeCountEcheancierArgs;
+    transactions?: boolean | BailLocationCountOutputTypeCountTransactionsArgs;
+    etatsDesLieux?: boolean | BailLocationCountOutputTypeCountEtatsDesLieuxArgs;
+};
+/**
+ * BailLocationCountOutputType without action
+ */
+export type BailLocationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailLocationCountOutputType
+     */
+    select?: Prisma.BailLocationCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * BailLocationCountOutputType without action
+ */
+export type BailLocationCountOutputTypeCountEcheancierArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EcheancierLoyerWhereInput;
+};
+/**
+ * BailLocationCountOutputType without action
+ */
+export type BailLocationCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
+};
+/**
+ * BailLocationCountOutputType without action
+ */
+export type BailLocationCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EtatDesLieuxWhereInput;
 };
 export type BailLocationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -983,13 +1970,24 @@ export type BailLocationSelect<ExtArgs extends runtime.Types.Extensions.Internal
     renouvellement?: boolean;
     montantLoyer?: boolean;
     montantCaution?: boolean;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: boolean;
+    delaiGrace?: boolean;
     frequencePaiement?: boolean;
     statut?: boolean;
+    motifResiliation?: boolean;
+    initiePar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    contrat?: boolean | Prisma.BailLocation$contratArgs<ExtArgs>;
+    echeancier?: boolean | Prisma.BailLocation$echeancierArgs<ExtArgs>;
+    depotCaution?: boolean | Prisma.BailLocation$depotCautionArgs<ExtArgs>;
+    transactions?: boolean | Prisma.BailLocation$transactionsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.BailLocation$etatsDesLieuxArgs<ExtArgs>;
+    _count?: boolean | Prisma.BailLocationCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["bailLocation"]>;
 export type BailLocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1002,8 +2000,13 @@ export type BailLocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     renouvellement?: boolean;
     montantLoyer?: boolean;
     montantCaution?: boolean;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: boolean;
+    delaiGrace?: boolean;
     frequencePaiement?: boolean;
     statut?: boolean;
+    motifResiliation?: boolean;
+    initiePar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
@@ -1021,8 +2024,13 @@ export type BailLocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     renouvellement?: boolean;
     montantLoyer?: boolean;
     montantCaution?: boolean;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: boolean;
+    delaiGrace?: boolean;
     frequencePaiement?: boolean;
     statut?: boolean;
+    motifResiliation?: boolean;
+    initiePar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
@@ -1040,16 +2048,27 @@ export type BailLocationSelectScalar = {
     renouvellement?: boolean;
     montantLoyer?: boolean;
     montantCaution?: boolean;
+    cautionVersee?: boolean;
+    jourLimitePaiement?: boolean;
+    delaiGrace?: boolean;
     frequencePaiement?: boolean;
     statut?: boolean;
+    motifResiliation?: boolean;
+    initiePar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type BailLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bienId" | "locataireId" | "proprietaireId" | "typeBail" | "dateDebutBail" | "dateFinBail" | "renouvellement" | "montantLoyer" | "montantCaution" | "frequencePaiement" | "statut" | "createdAt" | "updatedAt", ExtArgs["result"]["bailLocation"]>;
+export type BailLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "bienId" | "locataireId" | "proprietaireId" | "typeBail" | "dateDebutBail" | "dateFinBail" | "renouvellement" | "montantLoyer" | "montantCaution" | "cautionVersee" | "jourLimitePaiement" | "delaiGrace" | "frequencePaiement" | "statut" | "motifResiliation" | "initiePar" | "createdAt" | "updatedAt", ExtArgs["result"]["bailLocation"]>;
 export type BailLocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
     locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    contrat?: boolean | Prisma.BailLocation$contratArgs<ExtArgs>;
+    echeancier?: boolean | Prisma.BailLocation$echeancierArgs<ExtArgs>;
+    depotCaution?: boolean | Prisma.BailLocation$depotCautionArgs<ExtArgs>;
+    transactions?: boolean | Prisma.BailLocation$transactionsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.BailLocation$etatsDesLieuxArgs<ExtArgs>;
+    _count?: boolean | Prisma.BailLocationCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type BailLocationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bien?: boolean | Prisma.BienDefaultArgs<ExtArgs>;
@@ -1067,6 +2086,11 @@ export type $BailLocationPayload<ExtArgs extends runtime.Types.Extensions.Intern
         bien: Prisma.$BienPayload<ExtArgs>;
         locataire: Prisma.$LocatairePayload<ExtArgs>;
         proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
+        contrat: Prisma.$ContratPayload<ExtArgs> | null;
+        echeancier: Prisma.$EcheancierLoyerPayload<ExtArgs>[];
+        depotCaution: Prisma.$DepotCautionPayload<ExtArgs> | null;
+        transactions: Prisma.$TransactionPayload<ExtArgs>[];
+        etatsDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1079,8 +2103,13 @@ export type $BailLocationPayload<ExtArgs extends runtime.Types.Extensions.Intern
         renouvellement: boolean;
         montantLoyer: number;
         montantCaution: number | null;
+        cautionVersee: boolean;
+        jourLimitePaiement: number | null;
+        delaiGrace: number;
         frequencePaiement: string | null;
         statut: $Enums.StatutBail;
+        motifResiliation: string | null;
+        initiePar: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["bailLocation"]>;
@@ -1415,6 +2444,11 @@ export interface Prisma__BailLocationClient<T, Null = never, ExtArgs extends run
     bien<T extends Prisma.BienDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BienDefaultArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     locataire<T extends Prisma.LocataireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LocataireDefaultArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    contrat<T extends Prisma.BailLocation$contratArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocation$contratArgs<ExtArgs>>): Prisma.Prisma__ContratClient<runtime.Types.Result.GetResult<Prisma.$ContratPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    echeancier<T extends Prisma.BailLocation$echeancierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocation$echeancierArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EcheancierLoyerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    depotCaution<T extends Prisma.BailLocation$depotCautionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocation$depotCautionArgs<ExtArgs>>): Prisma.Prisma__DepotCautionClient<runtime.Types.Result.GetResult<Prisma.$DepotCautionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    transactions<T extends Prisma.BailLocation$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocation$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    etatsDesLieux<T extends Prisma.BailLocation$etatsDesLieuxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BailLocation$etatsDesLieuxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1448,10 +2482,15 @@ export interface BailLocationFieldRefs {
     readonly dateDebutBail: Prisma.FieldRef<"BailLocation", 'DateTime'>;
     readonly dateFinBail: Prisma.FieldRef<"BailLocation", 'DateTime'>;
     readonly renouvellement: Prisma.FieldRef<"BailLocation", 'Boolean'>;
-    readonly montantLoyer: Prisma.FieldRef<"BailLocation", 'Float'>;
-    readonly montantCaution: Prisma.FieldRef<"BailLocation", 'Float'>;
+    readonly montantLoyer: Prisma.FieldRef<"BailLocation", 'Int'>;
+    readonly montantCaution: Prisma.FieldRef<"BailLocation", 'Int'>;
+    readonly cautionVersee: Prisma.FieldRef<"BailLocation", 'Boolean'>;
+    readonly jourLimitePaiement: Prisma.FieldRef<"BailLocation", 'Int'>;
+    readonly delaiGrace: Prisma.FieldRef<"BailLocation", 'Int'>;
     readonly frequencePaiement: Prisma.FieldRef<"BailLocation", 'String'>;
     readonly statut: Prisma.FieldRef<"BailLocation", 'StatutBail'>;
+    readonly motifResiliation: Prisma.FieldRef<"BailLocation", 'String'>;
+    readonly initiePar: Prisma.FieldRef<"BailLocation", 'String'>;
     readonly createdAt: Prisma.FieldRef<"BailLocation", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"BailLocation", 'DateTime'>;
 }
@@ -1831,6 +2870,111 @@ export type BailLocationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
      * Limit how many BailLocations to delete.
      */
     limit?: number;
+};
+/**
+ * BailLocation.contrat
+ */
+export type BailLocation$contratArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contrat
+     */
+    select?: Prisma.ContratSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Contrat
+     */
+    omit?: Prisma.ContratOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ContratInclude<ExtArgs> | null;
+    where?: Prisma.ContratWhereInput;
+};
+/**
+ * BailLocation.echeancier
+ */
+export type BailLocation$echeancierArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EcheancierLoyer
+     */
+    select?: Prisma.EcheancierLoyerSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EcheancierLoyer
+     */
+    omit?: Prisma.EcheancierLoyerOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EcheancierLoyerInclude<ExtArgs> | null;
+    where?: Prisma.EcheancierLoyerWhereInput;
+    orderBy?: Prisma.EcheancierLoyerOrderByWithRelationInput | Prisma.EcheancierLoyerOrderByWithRelationInput[];
+    cursor?: Prisma.EcheancierLoyerWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EcheancierLoyerScalarFieldEnum | Prisma.EcheancierLoyerScalarFieldEnum[];
+};
+/**
+ * BailLocation.depotCaution
+ */
+export type BailLocation$depotCautionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepotCaution
+     */
+    select?: Prisma.DepotCautionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DepotCaution
+     */
+    omit?: Prisma.DepotCautionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DepotCautionInclude<ExtArgs> | null;
+    where?: Prisma.DepotCautionWhereInput;
+};
+/**
+ * BailLocation.transactions
+ */
+export type BailLocation$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * BailLocation.etatsDesLieux
+ */
+export type BailLocation$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EtatDesLieux
+     */
+    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EtatDesLieux
+     */
+    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
+    where?: Prisma.EtatDesLieuxWhereInput;
+    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
+    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
 };
 /**
  * BailLocation without action

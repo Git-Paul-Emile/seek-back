@@ -77,6 +77,7 @@ const BIEN_INCLUDE = {
   proprietaire: {
     select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
   },
+  etablissements: { select: { id: true } },
 } as const;
 
 // ─── Fonctions CRUD ───────────────────────────────────────────────────────────
@@ -147,7 +148,11 @@ export const updateStatutAnnonce = async (
 ) => {
   return prisma.bien.update({
     where: { id },
-    data: { statutAnnonce, ...(noteAdmin !== undefined ? { noteAdmin } : {}) },
+    data: {
+      statutAnnonce,
+      ...(noteAdmin !== undefined ? { noteAdmin } : {}),
+      ...(statutAnnonce === "PUBLIE" ? { publishedAt: new Date() } : {}),
+    },
     include: BIEN_INCLUDE,
   });
 };

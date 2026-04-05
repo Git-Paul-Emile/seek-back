@@ -36,7 +36,8 @@ export enum WebSocketEvents {
 // Types de données pour les événements
 export interface NotificationPayload {
   id: string;
-  proprietaireId: string;
+  proprietaireId?: string;
+  locataireId?: string;
   type: string;
   titre: string;
   message: string;
@@ -120,16 +121,31 @@ export const initializeWebSocket = (httpServer: HTTPServer): SocketIOServer => {
       console.log(`👤 Propriétaire ${proprietaireId} a rejoint la room`);
     });
 
+    socket.on("leave:owner", (proprietaireId: string) => {
+      socket.leave(`owner:${proprietaireId}`);
+      console.log(`👤 Propriétaire ${proprietaireId} a quitté la room`);
+    });
+
     // Room pour les locataires
     socket.on("join:locataire", (locataireId: string) => {
       socket.join(`locataire:${locataireId}`);
       console.log(`🏠 Locataire ${locataireId} a rejoint la room`);
     });
 
+    socket.on("leave:locataire", (locataireId: string) => {
+      socket.leave(`locataire:${locataireId}`);
+      console.log(`🏠 Locataire ${locataireId} a quitté la room`);
+    });
+
     // Room pour les admins
     socket.on("join:admin", () => {
       socket.join("admin");
       console.log(`⚡ Admin ${socket.id} a rejoint la room admin`);
+    });
+
+    socket.on("leave:admin", () => {
+      socket.leave("admin");
+      console.log(`⚡ Admin ${socket.id} a quitté la room admin`);
     });
 
     // Room pour les alertes (par téléphone utilisateur)
@@ -165,8 +181,13 @@ export const getIO = (): SocketIOServer => {
  */
 export const emitNotification = (payload: NotificationPayload): void => {
   if (!io) return;
-  io.to(`owner:${payload.proprietaireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
-  emitBadgeUpdate(payload.proprietaireId);
+  if (payload.proprietaireId) {
+    io.to(`owner:${payload.proprietaireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
+    emitBadgeUpdate(payload.proprietaireId);
+  }
+  if (payload.locataireId) {
+    io.to(`locataire:${payload.locataireId}`).emit(WebSocketEvents.NOTIFICATION_NEW, payload);
+  }
 };
 
 /**

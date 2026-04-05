@@ -122,6 +122,20 @@ export const login = async (data: { telephone: string; password: string }) => {
     throw new AppError("Numéro de téléphone ou mot de passe incorrect", StatusCodes.UNAUTHORIZED);
   }
 
+  // Les comptes liés doivent se connecter via leur propre interface (owner / locataire)
+  if (compte.proprietaireId) {
+    throw new AppError(
+      "Ce numéro est associé à un compte propriétaire. Connectez-vous via l'espace propriétaire.",
+      StatusCodes.FORBIDDEN
+    );
+  }
+  if (compte.locataireId) {
+    throw new AppError(
+      "Ce numéro est associé à un compte locataire. Connectez-vous via l'espace locataire.",
+      StatusCodes.FORBIDDEN
+    );
+  }
+
   const tokens = generateTokenPair(compte.id, compte.nom, compte.prenom);
   await saveRefreshToken(compte.id, tokens.refreshToken, tokens.refreshTokenExpiresAt);
 
@@ -241,3 +255,136 @@ async function saveRefreshToken(comptePublicId: string, rawToken: string, expire
     data: { comptePublicId, tokenHash: hashToken(rawToken), expiresAt },
   });
 }
+
+// ─── Liaison automatique : owner ──────────────────────────────────────────────
+
+export const getOrCreateForProprietaire = async (
+  proprietaireId: string
+): Promise<{ compte: { id: string; nom: string; prenom: string }; tokens: TokenPair }> => {
+  // Chercher un ComptePublic déjà lié
+  let compte = await prisma.comptePublic.findUnique({
+    where: { proprietaireId },
+  });
+
+  if (!compte) {
+    const proprietaire = await prisma.proprietaire.findUnique({
+      where: { id: proprietaireId },
+      select: { id: true, nom: true, prenom: true, telephone: true, email: true, password: true },
+    });
+    if (!proprietaire) throw new AppError("Propriétaire introuvable", StatusCodes.NOT_FOUND);
+
+    // Si un ComptePublic indépendant existe avec le même téléphone → le lier
+    const existing = await prisma.comptePublic.findUnique({
+      where: { telephone: proprietaire.telephone },
+    });
+    if (existing && !existing.proprietaireId && !existing.locataireId) {
+      compte = await prisma.comptePublic.update({
+        where: { id: existing.id },
+        data: {
+          nom: proprietaire.nom,
+          prenom: proprietaire.prenom,
+          email: proprietaire.email,
+          password: proprietaire.password,
+          proprietaireId: proprietaire.id,
+        },
+      });
+    } else {
+      compte = await prisma.comptePublic.create({
+        data: {
+          nom: proprietaire.nom,
+          prenom: proprietaire.prenom,
+          telephone: proprietaire.telephone,
+          email: proprietaire.email,
+          password: proprietaire.password,
+          proprietaireId: proprietaire.id,
+        },
+      });
+    }
+  }
+
+  const tokens = generateTokenPair(compte.id, compte.nom, compte.prenom);
+  await saveRefreshToken(compte.id, tokens.refreshToken, tokens.refreshTokenExpiresAt);
+
+  return { compte: { id: compte.id, nom: compte.nom, prenom: compte.prenom }, tokens };
+};
+
+// ─── Liaison automatique : locataire ──────────────────────────────────────────
+
+export const getOrCreateForLocataire = async (
+  locataireId: string
+): Promise<{ compte: { id: string; nom: string; prenom: string }; tokens: TokenPair }> => {
+  let compte = await prisma.comptePublic.findUnique({
+    where: { locataireId },
+  });
+
+  if (!compte) {
+    const locataire = await prisma.locataire.findUnique({
+      where: { id: locataireId },
+      select: { id: true, nom: true, prenom: true, telephone: true, email: true, password: true },
+    });
+    if (!locataire) throw new AppError("Locataire introuvable", StatusCodes.NOT_FOUND);
+    if (!locataire.password) throw new AppError("Locataire non activé", StatusCodes.BAD_REQUEST);
+
+    const existing = await prisma.comptePublic.findUnique({
+      where: { telephone: locataire.telephone },
+    });
+    if (existing && !existing.locataireId) {
+      // Compte trouvé par téléphone (libre ou lié à un proprio) → on y rattache le locataire
+      compte = await prisma.comptePublic.update({
+        where: { id: existing.id },
+        data: {
+          nom: locataire.nom,
+          prenom: locataire.prenom,
+          email: locataire.email,
+          password: locataire.password,
+          locataireId: locataire.id,
+        },
+      });
+    } else if (!existing) {
+      // Aucun compte avec ce téléphone → on en crée un nouveau
+      compte = await prisma.comptePublic.create({
+        data: {
+          nom: locataire.nom,
+          prenom: locataire.prenom,
+          telephone: locataire.telephone,
+          email: locataire.email,
+          password: locataire.password,
+          locataireId: locataire.id,
+        },
+      });
+    } else {
+      // Le téléphone est déjà pris par un autre locataire — ne devrait pas arriver
+      throw new AppError(
+        "Ce numéro est déjà lié à un autre compte locataire",
+        StatusCodes.CONFLICT
+      );
+    }
+  }
+
+  const tokens = generateTokenPair(compte.id, compte.nom, compte.prenom);
+  await saveRefreshToken(compte.id, tokens.refreshToken, tokens.refreshTokenExpiresAt);
+
+  return { compte: { id: compte.id, nom: compte.nom, prenom: compte.prenom }, tokens };
+};
+
+// ─── Révoquer tous les tokens publics d'un compte lié ─────────────────────────
+
+export const revokePublicTokensForProprietaire = async (proprietaireId: string): Promise<void> => {
+  const compte = await prisma.comptePublic.findUnique({ where: { proprietaireId } });
+  if (compte) {
+    await prisma.comptePublicRefreshToken.updateMany({
+      where: { comptePublicId: compte.id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+  }
+};
+
+export const revokePublicTokensForLocataire = async (locataireId: string): Promise<void> => {
+  const compte = await prisma.comptePublic.findUnique({ where: { locataireId } });
+  if (compte) {
+    await prisma.comptePublicRefreshToken.updateMany({
+      where: { comptePublicId: compte.id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+  }
+};

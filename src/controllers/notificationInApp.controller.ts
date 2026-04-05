@@ -11,8 +11,17 @@ export const getOwnerNotifications = async (req: Request, res: Response): Promis
   const proprietaireId = req.owner?.id;
   if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const owner = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [owner?.telephone, owner?.email].filter(Boolean) as string[];
+
   const notifications = await prisma.notification.findMany({
-    where: { proprietaireId },
+    where: {
+      proprietaireId,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     orderBy: { createdAt: "desc" },
     take: 50,
     select: {
@@ -29,7 +38,11 @@ export const getOwnerNotifications = async (req: Request, res: Response): Promis
   });
 
   const unreadCount = await prisma.notification.count({
-    where: { proprietaireId, lu: false },
+    where: {
+      proprietaireId,
+      lu: false,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
   });
 
   res.status(StatusCodes.OK).json(
@@ -42,8 +55,18 @@ export const markOwnerNotificationsRead = async (req: Request, res: Response): P
   const proprietaireId = req.owner?.id;
   if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const owner = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [owner?.telephone, owner?.email].filter(Boolean) as string[];
+
   await prisma.notification.updateMany({
-    where: { proprietaireId, lu: false },
+    where: {
+      proprietaireId,
+      lu: false,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     data: { lu: true },
   });
 
@@ -57,8 +80,18 @@ export const markOwnerOneNotificationRead = async (req: Request, res: Response):
   const proprietaireId = req.owner?.id;
   if (!proprietaireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const owner = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [owner?.telephone, owner?.email].filter(Boolean) as string[];
+
   await prisma.notification.updateMany({
-    where: { id: String(req.params.id), proprietaireId },
+    where: {
+      id: String(req.params.id),
+      proprietaireId,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     data: { lu: true },
   });
 
@@ -74,8 +107,17 @@ export const getLocataireNotifications = async (req: Request, res: Response): Pr
   const locataireId = req.locataire?.id;
   if (!locataireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const locataire = await prisma.locataire.findUnique({
+    where: { id: locataireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [locataire?.telephone, locataire?.email].filter(Boolean) as string[];
+
   const notifications = await prisma.notification.findMany({
-    where: { locataireId },
+    where: {
+      locataireId,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     orderBy: { createdAt: "desc" },
     take: 50,
     select: {
@@ -91,7 +133,11 @@ export const getLocataireNotifications = async (req: Request, res: Response): Pr
   });
 
   const unreadCount = await prisma.notification.count({
-    where: { locataireId, lu: false },
+    where: {
+      locataireId,
+      lu: false,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
   });
 
   res.status(StatusCodes.OK).json(
@@ -104,8 +150,18 @@ export const markLocataireNotificationsRead = async (req: Request, res: Response
   const locataireId = req.locataire?.id;
   if (!locataireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const locataire = await prisma.locataire.findUnique({
+    where: { id: locataireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [locataire?.telephone, locataire?.email].filter(Boolean) as string[];
+
   await prisma.notification.updateMany({
-    where: { locataireId, lu: false },
+    where: {
+      locataireId,
+      lu: false,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     data: { lu: true },
   });
 
@@ -119,8 +175,18 @@ export const markLocataireOneNotificationRead = async (req: Request, res: Respon
   const locataireId = req.locataire?.id;
   if (!locataireId) throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
 
+  const locataire = await prisma.locataire.findUnique({
+    where: { id: locataireId },
+    select: { telephone: true, email: true },
+  });
+  const destinataires = [locataire?.telephone, locataire?.email].filter(Boolean) as string[];
+
   await prisma.notification.updateMany({
-    where: { id: String(req.params.id), locataireId },
+    where: {
+      id: String(req.params.id),
+      locataireId,
+      ...(destinataires.length > 0 ? { destinataire: { in: destinataires } } : {}),
+    },
     data: { lu: true },
   });
 

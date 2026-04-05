@@ -1,0 +1,1312 @@
+import type * as runtime from "@prisma/client/runtime/library";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model MessageInterneLocataire
+ *
+ */
+export type MessageInterneLocataireModel = runtime.Types.Result.DefaultSelection<Prisma.$MessageInterneLocatairePayload>;
+export type AggregateMessageInterneLocataire = {
+    _count: MessageInterneLocataireCountAggregateOutputType | null;
+    _min: MessageInterneLocataireMinAggregateOutputType | null;
+    _max: MessageInterneLocataireMaxAggregateOutputType | null;
+};
+export type MessageInterneLocataireMinAggregateOutputType = {
+    id: string | null;
+    locataireId: string | null;
+    bailId: string | null;
+    bienId: string | null;
+    titre: string | null;
+    corps: string | null;
+    type: string | null;
+    lu: boolean | null;
+    createdAt: Date | null;
+};
+export type MessageInterneLocataireMaxAggregateOutputType = {
+    id: string | null;
+    locataireId: string | null;
+    bailId: string | null;
+    bienId: string | null;
+    titre: string | null;
+    corps: string | null;
+    type: string | null;
+    lu: boolean | null;
+    createdAt: Date | null;
+};
+export type MessageInterneLocataireCountAggregateOutputType = {
+    id: number;
+    locataireId: number;
+    bailId: number;
+    bienId: number;
+    titre: number;
+    corps: number;
+    type: number;
+    lu: number;
+    createdAt: number;
+    _all: number;
+};
+export type MessageInterneLocataireMinAggregateInputType = {
+    id?: true;
+    locataireId?: true;
+    bailId?: true;
+    bienId?: true;
+    titre?: true;
+    corps?: true;
+    type?: true;
+    lu?: true;
+    createdAt?: true;
+};
+export type MessageInterneLocataireMaxAggregateInputType = {
+    id?: true;
+    locataireId?: true;
+    bailId?: true;
+    bienId?: true;
+    titre?: true;
+    corps?: true;
+    type?: true;
+    lu?: true;
+    createdAt?: true;
+};
+export type MessageInterneLocataireCountAggregateInputType = {
+    id?: true;
+    locataireId?: true;
+    bailId?: true;
+    bienId?: true;
+    titre?: true;
+    corps?: true;
+    type?: true;
+    lu?: true;
+    createdAt?: true;
+    _all?: true;
+};
+export type MessageInterneLocataireAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which MessageInterneLocataire to aggregate.
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MessageInterneLocataires to fetch.
+     */
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithRelationInput | Prisma.MessageInterneLocataireOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.MessageInterneLocataireWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MessageInterneLocataires from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MessageInterneLocataires.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned MessageInterneLocataires
+    **/
+    _count?: true | MessageInterneLocataireCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: MessageInterneLocataireMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: MessageInterneLocataireMaxAggregateInputType;
+};
+export type GetMessageInterneLocataireAggregateType<T extends MessageInterneLocataireAggregateArgs> = {
+    [P in keyof T & keyof AggregateMessageInterneLocataire]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateMessageInterneLocataire[P]> : Prisma.GetScalarType<T[P], AggregateMessageInterneLocataire[P]>;
+};
+export type MessageInterneLocataireGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithAggregationInput | Prisma.MessageInterneLocataireOrderByWithAggregationInput[];
+    by: Prisma.MessageInterneLocataireScalarFieldEnum[] | Prisma.MessageInterneLocataireScalarFieldEnum;
+    having?: Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: MessageInterneLocataireCountAggregateInputType | true;
+    _min?: MessageInterneLocataireMinAggregateInputType;
+    _max?: MessageInterneLocataireMaxAggregateInputType;
+};
+export type MessageInterneLocataireGroupByOutputType = {
+    id: string;
+    locataireId: string;
+    bailId: string | null;
+    bienId: string | null;
+    titre: string;
+    corps: string;
+    type: string;
+    lu: boolean;
+    createdAt: Date;
+    _count: MessageInterneLocataireCountAggregateOutputType | null;
+    _min: MessageInterneLocataireMinAggregateOutputType | null;
+    _max: MessageInterneLocataireMaxAggregateOutputType | null;
+};
+type GetMessageInterneLocataireGroupByPayload<T extends MessageInterneLocataireGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<MessageInterneLocataireGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof MessageInterneLocataireGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], MessageInterneLocataireGroupByOutputType[P]> : Prisma.GetScalarType<T[P], MessageInterneLocataireGroupByOutputType[P]>;
+}>>;
+export type MessageInterneLocataireWhereInput = {
+    AND?: Prisma.MessageInterneLocataireWhereInput | Prisma.MessageInterneLocataireWhereInput[];
+    OR?: Prisma.MessageInterneLocataireWhereInput[];
+    NOT?: Prisma.MessageInterneLocataireWhereInput | Prisma.MessageInterneLocataireWhereInput[];
+    id?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    locataireId?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    bailId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    bienId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    titre?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    corps?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    type?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    lu?: Prisma.BoolFilter<"MessageInterneLocataire"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"MessageInterneLocataire"> | Date | string;
+    locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
+};
+export type MessageInterneLocataireOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    titre?: Prisma.SortOrder;
+    corps?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    locataire?: Prisma.LocataireOrderByWithRelationInput;
+};
+export type MessageInterneLocataireWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.MessageInterneLocataireWhereInput | Prisma.MessageInterneLocataireWhereInput[];
+    OR?: Prisma.MessageInterneLocataireWhereInput[];
+    NOT?: Prisma.MessageInterneLocataireWhereInput | Prisma.MessageInterneLocataireWhereInput[];
+    locataireId?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    bailId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    bienId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    titre?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    corps?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    type?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    lu?: Prisma.BoolFilter<"MessageInterneLocataire"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"MessageInterneLocataire"> | Date | string;
+    locataire?: Prisma.XOR<Prisma.LocataireScalarRelationFilter, Prisma.LocataireWhereInput>;
+}, "id">;
+export type MessageInterneLocataireOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    titre?: Prisma.SortOrder;
+    corps?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    _count?: Prisma.MessageInterneLocataireCountOrderByAggregateInput;
+    _max?: Prisma.MessageInterneLocataireMaxOrderByAggregateInput;
+    _min?: Prisma.MessageInterneLocataireMinOrderByAggregateInput;
+};
+export type MessageInterneLocataireScalarWhereWithAggregatesInput = {
+    AND?: Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput | Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput[];
+    OR?: Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput | Prisma.MessageInterneLocataireScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"MessageInterneLocataire"> | string;
+    locataireId?: Prisma.StringWithAggregatesFilter<"MessageInterneLocataire"> | string;
+    bailId?: Prisma.StringNullableWithAggregatesFilter<"MessageInterneLocataire"> | string | null;
+    bienId?: Prisma.StringNullableWithAggregatesFilter<"MessageInterneLocataire"> | string | null;
+    titre?: Prisma.StringWithAggregatesFilter<"MessageInterneLocataire"> | string;
+    corps?: Prisma.StringWithAggregatesFilter<"MessageInterneLocataire"> | string;
+    type?: Prisma.StringWithAggregatesFilter<"MessageInterneLocataire"> | string;
+    lu?: Prisma.BoolWithAggregatesFilter<"MessageInterneLocataire"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"MessageInterneLocataire"> | Date | string;
+};
+export type MessageInterneLocataireCreateInput = {
+    id?: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+    locataire: Prisma.LocataireCreateNestedOneWithoutMessagesInternesInput;
+};
+export type MessageInterneLocataireUncheckedCreateInput = {
+    id?: string;
+    locataireId: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+};
+export type MessageInterneLocataireUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    locataire?: Prisma.LocataireUpdateOneRequiredWithoutMessagesInternesNestedInput;
+};
+export type MessageInterneLocataireUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireCreateManyInput = {
+    id?: string;
+    locataireId: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+};
+export type MessageInterneLocataireUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    locataireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireListRelationFilter = {
+    every?: Prisma.MessageInterneLocataireWhereInput;
+    some?: Prisma.MessageInterneLocataireWhereInput;
+    none?: Prisma.MessageInterneLocataireWhereInput;
+};
+export type MessageInterneLocataireOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type MessageInterneLocataireCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    titre?: Prisma.SortOrder;
+    corps?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type MessageInterneLocataireMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    titre?: Prisma.SortOrder;
+    corps?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type MessageInterneLocataireMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    titre?: Prisma.SortOrder;
+    corps?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    lu?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type MessageInterneLocataireCreateNestedManyWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput> | Prisma.MessageInterneLocataireCreateWithoutLocataireInput[] | Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput | Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput[];
+    createMany?: Prisma.MessageInterneLocataireCreateManyLocataireInputEnvelope;
+    connect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+};
+export type MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput> | Prisma.MessageInterneLocataireCreateWithoutLocataireInput[] | Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput | Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput[];
+    createMany?: Prisma.MessageInterneLocataireCreateManyLocataireInputEnvelope;
+    connect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+};
+export type MessageInterneLocataireUpdateManyWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput> | Prisma.MessageInterneLocataireCreateWithoutLocataireInput[] | Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput | Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput[];
+    upsert?: Prisma.MessageInterneLocataireUpsertWithWhereUniqueWithoutLocataireInput | Prisma.MessageInterneLocataireUpsertWithWhereUniqueWithoutLocataireInput[];
+    createMany?: Prisma.MessageInterneLocataireCreateManyLocataireInputEnvelope;
+    set?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    disconnect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    delete?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    connect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    update?: Prisma.MessageInterneLocataireUpdateWithWhereUniqueWithoutLocataireInput | Prisma.MessageInterneLocataireUpdateWithWhereUniqueWithoutLocataireInput[];
+    updateMany?: Prisma.MessageInterneLocataireUpdateManyWithWhereWithoutLocataireInput | Prisma.MessageInterneLocataireUpdateManyWithWhereWithoutLocataireInput[];
+    deleteMany?: Prisma.MessageInterneLocataireScalarWhereInput | Prisma.MessageInterneLocataireScalarWhereInput[];
+};
+export type MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput> | Prisma.MessageInterneLocataireCreateWithoutLocataireInput[] | Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput | Prisma.MessageInterneLocataireCreateOrConnectWithoutLocataireInput[];
+    upsert?: Prisma.MessageInterneLocataireUpsertWithWhereUniqueWithoutLocataireInput | Prisma.MessageInterneLocataireUpsertWithWhereUniqueWithoutLocataireInput[];
+    createMany?: Prisma.MessageInterneLocataireCreateManyLocataireInputEnvelope;
+    set?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    disconnect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    delete?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    connect?: Prisma.MessageInterneLocataireWhereUniqueInput | Prisma.MessageInterneLocataireWhereUniqueInput[];
+    update?: Prisma.MessageInterneLocataireUpdateWithWhereUniqueWithoutLocataireInput | Prisma.MessageInterneLocataireUpdateWithWhereUniqueWithoutLocataireInput[];
+    updateMany?: Prisma.MessageInterneLocataireUpdateManyWithWhereWithoutLocataireInput | Prisma.MessageInterneLocataireUpdateManyWithWhereWithoutLocataireInput[];
+    deleteMany?: Prisma.MessageInterneLocataireScalarWhereInput | Prisma.MessageInterneLocataireScalarWhereInput[];
+};
+export type MessageInterneLocataireCreateWithoutLocataireInput = {
+    id?: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+};
+export type MessageInterneLocataireUncheckedCreateWithoutLocataireInput = {
+    id?: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+};
+export type MessageInterneLocataireCreateOrConnectWithoutLocataireInput = {
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput>;
+};
+export type MessageInterneLocataireCreateManyLocataireInputEnvelope = {
+    data: Prisma.MessageInterneLocataireCreateManyLocataireInput | Prisma.MessageInterneLocataireCreateManyLocataireInput[];
+    skipDuplicates?: boolean;
+};
+export type MessageInterneLocataireUpsertWithWhereUniqueWithoutLocataireInput = {
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+    update: Prisma.XOR<Prisma.MessageInterneLocataireUpdateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedUpdateWithoutLocataireInput>;
+    create: Prisma.XOR<Prisma.MessageInterneLocataireCreateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedCreateWithoutLocataireInput>;
+};
+export type MessageInterneLocataireUpdateWithWhereUniqueWithoutLocataireInput = {
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+    data: Prisma.XOR<Prisma.MessageInterneLocataireUpdateWithoutLocataireInput, Prisma.MessageInterneLocataireUncheckedUpdateWithoutLocataireInput>;
+};
+export type MessageInterneLocataireUpdateManyWithWhereWithoutLocataireInput = {
+    where: Prisma.MessageInterneLocataireScalarWhereInput;
+    data: Prisma.XOR<Prisma.MessageInterneLocataireUpdateManyMutationInput, Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireInput>;
+};
+export type MessageInterneLocataireScalarWhereInput = {
+    AND?: Prisma.MessageInterneLocataireScalarWhereInput | Prisma.MessageInterneLocataireScalarWhereInput[];
+    OR?: Prisma.MessageInterneLocataireScalarWhereInput[];
+    NOT?: Prisma.MessageInterneLocataireScalarWhereInput | Prisma.MessageInterneLocataireScalarWhereInput[];
+    id?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    locataireId?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    bailId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    bienId?: Prisma.StringNullableFilter<"MessageInterneLocataire"> | string | null;
+    titre?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    corps?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    type?: Prisma.StringFilter<"MessageInterneLocataire"> | string;
+    lu?: Prisma.BoolFilter<"MessageInterneLocataire"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"MessageInterneLocataire"> | Date | string;
+};
+export type MessageInterneLocataireCreateManyLocataireInput = {
+    id?: string;
+    bailId?: string | null;
+    bienId?: string | null;
+    titre: string;
+    corps: string;
+    type?: string;
+    lu?: boolean;
+    createdAt?: Date | string;
+};
+export type MessageInterneLocataireUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireUncheckedUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireUncheckedUpdateManyWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    titre?: Prisma.StringFieldUpdateOperationsInput | string;
+    corps?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.StringFieldUpdateOperationsInput | string;
+    lu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type MessageInterneLocataireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    locataireId?: boolean;
+    bailId?: boolean;
+    bienId?: boolean;
+    titre?: boolean;
+    corps?: boolean;
+    type?: boolean;
+    lu?: boolean;
+    createdAt?: boolean;
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["messageInterneLocataire"]>;
+export type MessageInterneLocataireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    locataireId?: boolean;
+    bailId?: boolean;
+    bienId?: boolean;
+    titre?: boolean;
+    corps?: boolean;
+    type?: boolean;
+    lu?: boolean;
+    createdAt?: boolean;
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["messageInterneLocataire"]>;
+export type MessageInterneLocataireSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    locataireId?: boolean;
+    bailId?: boolean;
+    bienId?: boolean;
+    titre?: boolean;
+    corps?: boolean;
+    type?: boolean;
+    lu?: boolean;
+    createdAt?: boolean;
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["messageInterneLocataire"]>;
+export type MessageInterneLocataireSelectScalar = {
+    id?: boolean;
+    locataireId?: boolean;
+    bailId?: boolean;
+    bienId?: boolean;
+    titre?: boolean;
+    corps?: boolean;
+    type?: boolean;
+    lu?: boolean;
+    createdAt?: boolean;
+};
+export type MessageInterneLocataireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "locataireId" | "bailId" | "bienId" | "titre" | "corps" | "type" | "lu" | "createdAt", ExtArgs["result"]["messageInterneLocataire"]>;
+export type MessageInterneLocataireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+};
+export type MessageInterneLocataireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+};
+export type MessageInterneLocataireIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    locataire?: boolean | Prisma.LocataireDefaultArgs<ExtArgs>;
+};
+export type $MessageInterneLocatairePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "MessageInterneLocataire";
+    objects: {
+        locataire: Prisma.$LocatairePayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        locataireId: string;
+        bailId: string | null;
+        bienId: string | null;
+        titre: string;
+        corps: string;
+        type: string;
+        lu: boolean;
+        createdAt: Date;
+    }, ExtArgs["result"]["messageInterneLocataire"]>;
+    composites: {};
+};
+export type MessageInterneLocataireGetPayload<S extends boolean | null | undefined | MessageInterneLocataireDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload, S>;
+export type MessageInterneLocataireCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<MessageInterneLocataireFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: MessageInterneLocataireCountAggregateInputType | true;
+};
+export interface MessageInterneLocataireDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['MessageInterneLocataire'];
+        meta: {
+            name: 'MessageInterneLocataire';
+        };
+    };
+    /**
+     * Find zero or one MessageInterneLocataire that matches the filter.
+     * @param {MessageInterneLocataireFindUniqueArgs} args - Arguments to find a MessageInterneLocataire
+     * @example
+     * // Get one MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MessageInterneLocataireFindUniqueArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireFindUniqueArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one MessageInterneLocataire that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MessageInterneLocataireFindUniqueOrThrowArgs} args - Arguments to find a MessageInterneLocataire
+     * @example
+     * // Get one MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MessageInterneLocataireFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first MessageInterneLocataire that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireFindFirstArgs} args - Arguments to find a MessageInterneLocataire
+     * @example
+     * // Get one MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MessageInterneLocataireFindFirstArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireFindFirstArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first MessageInterneLocataire that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireFindFirstOrThrowArgs} args - Arguments to find a MessageInterneLocataire
+     * @example
+     * // Get one MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MessageInterneLocataireFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more MessageInterneLocataires that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MessageInterneLocataires
+     * const messageInterneLocataires = await prisma.messageInterneLocataire.findMany()
+     *
+     * // Get first 10 MessageInterneLocataires
+     * const messageInterneLocataires = await prisma.messageInterneLocataire.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const messageInterneLocataireWithIdOnly = await prisma.messageInterneLocataire.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends MessageInterneLocataireFindManyArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a MessageInterneLocataire.
+     * @param {MessageInterneLocataireCreateArgs} args - Arguments to create a MessageInterneLocataire.
+     * @example
+     * // Create one MessageInterneLocataire
+     * const MessageInterneLocataire = await prisma.messageInterneLocataire.create({
+     *   data: {
+     *     // ... data to create a MessageInterneLocataire
+     *   }
+     * })
+     *
+     */
+    create<T extends MessageInterneLocataireCreateArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireCreateArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many MessageInterneLocataires.
+     * @param {MessageInterneLocataireCreateManyArgs} args - Arguments to create many MessageInterneLocataires.
+     * @example
+     * // Create many MessageInterneLocataires
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends MessageInterneLocataireCreateManyArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many MessageInterneLocataires and returns the data saved in the database.
+     * @param {MessageInterneLocataireCreateManyAndReturnArgs} args - Arguments to create many MessageInterneLocataires.
+     * @example
+     * // Create many MessageInterneLocataires
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many MessageInterneLocataires and only return the `id`
+     * const messageInterneLocataireWithIdOnly = await prisma.messageInterneLocataire.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends MessageInterneLocataireCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a MessageInterneLocataire.
+     * @param {MessageInterneLocataireDeleteArgs} args - Arguments to delete one MessageInterneLocataire.
+     * @example
+     * // Delete one MessageInterneLocataire
+     * const MessageInterneLocataire = await prisma.messageInterneLocataire.delete({
+     *   where: {
+     *     // ... filter to delete one MessageInterneLocataire
+     *   }
+     * })
+     *
+     */
+    delete<T extends MessageInterneLocataireDeleteArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireDeleteArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one MessageInterneLocataire.
+     * @param {MessageInterneLocataireUpdateArgs} args - Arguments to update one MessageInterneLocataire.
+     * @example
+     * // Update one MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends MessageInterneLocataireUpdateArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireUpdateArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more MessageInterneLocataires.
+     * @param {MessageInterneLocataireDeleteManyArgs} args - Arguments to filter MessageInterneLocataires to delete.
+     * @example
+     * // Delete a few MessageInterneLocataires
+     * const { count } = await prisma.messageInterneLocataire.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends MessageInterneLocataireDeleteManyArgs>(args?: Prisma.SelectSubset<T, MessageInterneLocataireDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more MessageInterneLocataires.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MessageInterneLocataires
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends MessageInterneLocataireUpdateManyArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more MessageInterneLocataires and returns the data updated in the database.
+     * @param {MessageInterneLocataireUpdateManyAndReturnArgs} args - Arguments to update many MessageInterneLocataires.
+     * @example
+     * // Update many MessageInterneLocataires
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more MessageInterneLocataires and only return the `id`
+     * const messageInterneLocataireWithIdOnly = await prisma.messageInterneLocataire.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends MessageInterneLocataireUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one MessageInterneLocataire.
+     * @param {MessageInterneLocataireUpsertArgs} args - Arguments to update or create a MessageInterneLocataire.
+     * @example
+     * // Update or create a MessageInterneLocataire
+     * const messageInterneLocataire = await prisma.messageInterneLocataire.upsert({
+     *   create: {
+     *     // ... data to create a MessageInterneLocataire
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MessageInterneLocataire we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MessageInterneLocataireUpsertArgs>(args: Prisma.SelectSubset<T, MessageInterneLocataireUpsertArgs<ExtArgs>>): Prisma.Prisma__MessageInterneLocataireClient<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of MessageInterneLocataires.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireCountArgs} args - Arguments to filter MessageInterneLocataires to count.
+     * @example
+     * // Count the number of MessageInterneLocataires
+     * const count = await prisma.messageInterneLocataire.count({
+     *   where: {
+     *     // ... the filter for the MessageInterneLocataires we want to count
+     *   }
+     * })
+    **/
+    count<T extends MessageInterneLocataireCountArgs>(args?: Prisma.Subset<T, MessageInterneLocataireCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], MessageInterneLocataireCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a MessageInterneLocataire.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MessageInterneLocataireAggregateArgs>(args: Prisma.Subset<T, MessageInterneLocataireAggregateArgs>): Prisma.PrismaPromise<GetMessageInterneLocataireAggregateType<T>>;
+    /**
+     * Group by MessageInterneLocataire.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MessageInterneLocataireGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends MessageInterneLocataireGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: MessageInterneLocataireGroupByArgs['orderBy'];
+    } : {
+        orderBy?: MessageInterneLocataireGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, MessageInterneLocataireGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMessageInterneLocataireGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the MessageInterneLocataire model
+     */
+    readonly fields: MessageInterneLocataireFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for MessageInterneLocataire.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__MessageInterneLocataireClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    locataire<T extends Prisma.LocataireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LocataireDefaultArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the MessageInterneLocataire model
+ */
+export interface MessageInterneLocataireFieldRefs {
+    readonly id: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly locataireId: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly bailId: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly bienId: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly titre: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly corps: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly type: Prisma.FieldRef<"MessageInterneLocataire", 'String'>;
+    readonly lu: Prisma.FieldRef<"MessageInterneLocataire", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"MessageInterneLocataire", 'DateTime'>;
+}
+/**
+ * MessageInterneLocataire findUnique
+ */
+export type MessageInterneLocataireFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter, which MessageInterneLocataire to fetch.
+     */
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+};
+/**
+ * MessageInterneLocataire findUniqueOrThrow
+ */
+export type MessageInterneLocataireFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter, which MessageInterneLocataire to fetch.
+     */
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+};
+/**
+ * MessageInterneLocataire findFirst
+ */
+export type MessageInterneLocataireFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter, which MessageInterneLocataire to fetch.
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MessageInterneLocataires to fetch.
+     */
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithRelationInput | Prisma.MessageInterneLocataireOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for MessageInterneLocataires.
+     */
+    cursor?: Prisma.MessageInterneLocataireWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MessageInterneLocataires from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MessageInterneLocataires.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of MessageInterneLocataires.
+     */
+    distinct?: Prisma.MessageInterneLocataireScalarFieldEnum | Prisma.MessageInterneLocataireScalarFieldEnum[];
+};
+/**
+ * MessageInterneLocataire findFirstOrThrow
+ */
+export type MessageInterneLocataireFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter, which MessageInterneLocataire to fetch.
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MessageInterneLocataires to fetch.
+     */
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithRelationInput | Prisma.MessageInterneLocataireOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for MessageInterneLocataires.
+     */
+    cursor?: Prisma.MessageInterneLocataireWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MessageInterneLocataires from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MessageInterneLocataires.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of MessageInterneLocataires.
+     */
+    distinct?: Prisma.MessageInterneLocataireScalarFieldEnum | Prisma.MessageInterneLocataireScalarFieldEnum[];
+};
+/**
+ * MessageInterneLocataire findMany
+ */
+export type MessageInterneLocataireFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter, which MessageInterneLocataires to fetch.
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MessageInterneLocataires to fetch.
+     */
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithRelationInput | Prisma.MessageInterneLocataireOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing MessageInterneLocataires.
+     */
+    cursor?: Prisma.MessageInterneLocataireWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MessageInterneLocataires from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MessageInterneLocataires.
+     */
+    skip?: number;
+    distinct?: Prisma.MessageInterneLocataireScalarFieldEnum | Prisma.MessageInterneLocataireScalarFieldEnum[];
+};
+/**
+ * MessageInterneLocataire create
+ */
+export type MessageInterneLocataireCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a MessageInterneLocataire.
+     */
+    data: Prisma.XOR<Prisma.MessageInterneLocataireCreateInput, Prisma.MessageInterneLocataireUncheckedCreateInput>;
+};
+/**
+ * MessageInterneLocataire createMany
+ */
+export type MessageInterneLocataireCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MessageInterneLocataires.
+     */
+    data: Prisma.MessageInterneLocataireCreateManyInput | Prisma.MessageInterneLocataireCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * MessageInterneLocataire createManyAndReturn
+ */
+export type MessageInterneLocataireCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * The data used to create many MessageInterneLocataires.
+     */
+    data: Prisma.MessageInterneLocataireCreateManyInput | Prisma.MessageInterneLocataireCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * MessageInterneLocataire update
+ */
+export type MessageInterneLocataireUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a MessageInterneLocataire.
+     */
+    data: Prisma.XOR<Prisma.MessageInterneLocataireUpdateInput, Prisma.MessageInterneLocataireUncheckedUpdateInput>;
+    /**
+     * Choose, which MessageInterneLocataire to update.
+     */
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+};
+/**
+ * MessageInterneLocataire updateMany
+ */
+export type MessageInterneLocataireUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MessageInterneLocataires.
+     */
+    data: Prisma.XOR<Prisma.MessageInterneLocataireUpdateManyMutationInput, Prisma.MessageInterneLocataireUncheckedUpdateManyInput>;
+    /**
+     * Filter which MessageInterneLocataires to update
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * Limit how many MessageInterneLocataires to update.
+     */
+    limit?: number;
+};
+/**
+ * MessageInterneLocataire updateManyAndReturn
+ */
+export type MessageInterneLocataireUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * The data used to update MessageInterneLocataires.
+     */
+    data: Prisma.XOR<Prisma.MessageInterneLocataireUpdateManyMutationInput, Prisma.MessageInterneLocataireUncheckedUpdateManyInput>;
+    /**
+     * Filter which MessageInterneLocataires to update
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * Limit how many MessageInterneLocataires to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * MessageInterneLocataire upsert
+ */
+export type MessageInterneLocataireUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the MessageInterneLocataire to update in case it exists.
+     */
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+    /**
+     * In case the MessageInterneLocataire found by the `where` argument doesn't exist, create a new MessageInterneLocataire with this data.
+     */
+    create: Prisma.XOR<Prisma.MessageInterneLocataireCreateInput, Prisma.MessageInterneLocataireUncheckedCreateInput>;
+    /**
+     * In case the MessageInterneLocataire was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.MessageInterneLocataireUpdateInput, Prisma.MessageInterneLocataireUncheckedUpdateInput>;
+};
+/**
+ * MessageInterneLocataire delete
+ */
+export type MessageInterneLocataireDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    /**
+     * Filter which MessageInterneLocataire to delete.
+     */
+    where: Prisma.MessageInterneLocataireWhereUniqueInput;
+};
+/**
+ * MessageInterneLocataire deleteMany
+ */
+export type MessageInterneLocataireDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which MessageInterneLocataires to delete
+     */
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    /**
+     * Limit how many MessageInterneLocataires to delete.
+     */
+    limit?: number;
+};
+/**
+ * MessageInterneLocataire without action
+ */
+export type MessageInterneLocataireDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=MessageInterneLocataire.d.ts.map

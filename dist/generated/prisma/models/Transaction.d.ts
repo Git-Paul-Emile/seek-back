@@ -1,0 +1,2706 @@
+import type * as runtime from "@prisma/client/runtime/library";
+import type * as $Enums from "../enums.js";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model Transaction
+ *
+ */
+export type TransactionModel = runtime.Types.Result.DefaultSelection<Prisma.$TransactionPayload>;
+export type AggregateTransaction = {
+    _count: TransactionCountAggregateOutputType | null;
+    _avg: TransactionAvgAggregateOutputType | null;
+    _sum: TransactionSumAggregateOutputType | null;
+    _min: TransactionMinAggregateOutputType | null;
+    _max: TransactionMaxAggregateOutputType | null;
+};
+export type TransactionAvgAggregateOutputType = {
+    montant: number | null;
+};
+export type TransactionSumAggregateOutputType = {
+    montant: number | null;
+};
+export type TransactionMinAggregateOutputType = {
+    id: string | null;
+    proprietaireId: string | null;
+    type: $Enums.TypePaiement | null;
+    statut: $Enums.StatutTransaction | null;
+    montant: number | null;
+    devise: string | null;
+    modePaiement: string | null;
+    provider: string | null;
+    reference: string | null;
+    transactionId: string | null;
+    dateInitiation: Date | null;
+    dateConfirmation: Date | null;
+    dateEcheance: Date | null;
+    bienId: string | null;
+    bailId: string | null;
+    echeanceId: string | null;
+    locataireId: string | null;
+    note: string | null;
+    instructions: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type TransactionMaxAggregateOutputType = {
+    id: string | null;
+    proprietaireId: string | null;
+    type: $Enums.TypePaiement | null;
+    statut: $Enums.StatutTransaction | null;
+    montant: number | null;
+    devise: string | null;
+    modePaiement: string | null;
+    provider: string | null;
+    reference: string | null;
+    transactionId: string | null;
+    dateInitiation: Date | null;
+    dateConfirmation: Date | null;
+    dateEcheance: Date | null;
+    bienId: string | null;
+    bailId: string | null;
+    echeanceId: string | null;
+    locataireId: string | null;
+    note: string | null;
+    instructions: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
+export type TransactionCountAggregateOutputType = {
+    id: number;
+    proprietaireId: number;
+    type: number;
+    statut: number;
+    montant: number;
+    devise: number;
+    modePaiement: number;
+    provider: number;
+    reference: number;
+    transactionId: number;
+    dateInitiation: number;
+    dateConfirmation: number;
+    dateEcheance: number;
+    bienId: number;
+    bailId: number;
+    echeanceId: number;
+    locataireId: number;
+    note: number;
+    instructions: number;
+    metadata: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+};
+export type TransactionAvgAggregateInputType = {
+    montant?: true;
+};
+export type TransactionSumAggregateInputType = {
+    montant?: true;
+};
+export type TransactionMinAggregateInputType = {
+    id?: true;
+    proprietaireId?: true;
+    type?: true;
+    statut?: true;
+    montant?: true;
+    devise?: true;
+    modePaiement?: true;
+    provider?: true;
+    reference?: true;
+    transactionId?: true;
+    dateInitiation?: true;
+    dateConfirmation?: true;
+    dateEcheance?: true;
+    bienId?: true;
+    bailId?: true;
+    echeanceId?: true;
+    locataireId?: true;
+    note?: true;
+    instructions?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type TransactionMaxAggregateInputType = {
+    id?: true;
+    proprietaireId?: true;
+    type?: true;
+    statut?: true;
+    montant?: true;
+    devise?: true;
+    modePaiement?: true;
+    provider?: true;
+    reference?: true;
+    transactionId?: true;
+    dateInitiation?: true;
+    dateConfirmation?: true;
+    dateEcheance?: true;
+    bienId?: true;
+    bailId?: true;
+    echeanceId?: true;
+    locataireId?: true;
+    note?: true;
+    instructions?: true;
+    createdAt?: true;
+    updatedAt?: true;
+};
+export type TransactionCountAggregateInputType = {
+    id?: true;
+    proprietaireId?: true;
+    type?: true;
+    statut?: true;
+    montant?: true;
+    devise?: true;
+    modePaiement?: true;
+    provider?: true;
+    reference?: true;
+    transactionId?: true;
+    dateInitiation?: true;
+    dateConfirmation?: true;
+    dateEcheance?: true;
+    bienId?: true;
+    bailId?: true;
+    echeanceId?: true;
+    locataireId?: true;
+    note?: true;
+    instructions?: true;
+    metadata?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+};
+export type TransactionAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transaction to aggregate.
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Transactions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned Transactions
+    **/
+    _count?: true | TransactionCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: TransactionAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: TransactionSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: TransactionMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: TransactionMaxAggregateInputType;
+};
+export type GetTransactionAggregateType<T extends TransactionAggregateArgs> = {
+    [P in keyof T & keyof AggregateTransaction]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateTransaction[P]> : Prisma.GetScalarType<T[P], AggregateTransaction[P]>;
+};
+export type TransactionGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithAggregationInput | Prisma.TransactionOrderByWithAggregationInput[];
+    by: Prisma.TransactionScalarFieldEnum[] | Prisma.TransactionScalarFieldEnum;
+    having?: Prisma.TransactionScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: TransactionCountAggregateInputType | true;
+    _avg?: TransactionAvgAggregateInputType;
+    _sum?: TransactionSumAggregateInputType;
+    _min?: TransactionMinAggregateInputType;
+    _max?: TransactionMaxAggregateInputType;
+};
+export type TransactionGroupByOutputType = {
+    id: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut: $Enums.StatutTransaction;
+    montant: number;
+    devise: string;
+    modePaiement: string;
+    provider: string | null;
+    reference: string | null;
+    transactionId: string | null;
+    dateInitiation: Date;
+    dateConfirmation: Date | null;
+    dateEcheance: Date | null;
+    bienId: string | null;
+    bailId: string | null;
+    echeanceId: string | null;
+    locataireId: string | null;
+    note: string | null;
+    instructions: string | null;
+    metadata: runtime.JsonValue | null;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: TransactionCountAggregateOutputType | null;
+    _avg: TransactionAvgAggregateOutputType | null;
+    _sum: TransactionSumAggregateOutputType | null;
+    _min: TransactionMinAggregateOutputType | null;
+    _max: TransactionMaxAggregateOutputType | null;
+};
+type GetTransactionGroupByPayload<T extends TransactionGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<TransactionGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof TransactionGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], TransactionGroupByOutputType[P]> : Prisma.GetScalarType<T[P], TransactionGroupByOutputType[P]>;
+}>>;
+export type TransactionWhereInput = {
+    AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[];
+    OR?: Prisma.TransactionWhereInput[];
+    NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[];
+    id?: Prisma.StringFilter<"Transaction"> | string;
+    proprietaireId?: Prisma.StringFilter<"Transaction"> | string;
+    type?: Prisma.EnumTypePaiementFilter<"Transaction"> | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFilter<"Transaction"> | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFilter<"Transaction"> | number;
+    devise?: Prisma.StringFilter<"Transaction"> | string;
+    modePaiement?: Prisma.StringFilter<"Transaction"> | string;
+    provider?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    reference?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    transactionId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    dateInitiation?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    dateConfirmation?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    dateEcheance?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    bienId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    bailId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    echeanceId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    locataireId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    note?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    instructions?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    metadata?: Prisma.JsonNullableFilter<"Transaction">;
+    createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
+    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
+    bail?: Prisma.XOR<Prisma.BailLocationNullableScalarRelationFilter, Prisma.BailLocationWhereInput> | null;
+    echeance?: Prisma.XOR<Prisma.EcheancierLoyerNullableScalarRelationFilter, Prisma.EcheancierLoyerWhereInput> | null;
+    locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+};
+export type TransactionOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    statut?: Prisma.SortOrder;
+    montant?: Prisma.SortOrder;
+    devise?: Prisma.SortOrder;
+    modePaiement?: Prisma.SortOrder;
+    provider?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reference?: Prisma.SortOrderInput | Prisma.SortOrder;
+    transactionId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateInitiation?: Prisma.SortOrder;
+    dateConfirmation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateEcheance?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bailId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    echeanceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    note?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instructions?: Prisma.SortOrderInput | Prisma.SortOrder;
+    metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
+    bien?: Prisma.BienOrderByWithRelationInput;
+    bail?: Prisma.BailLocationOrderByWithRelationInput;
+    echeance?: Prisma.EcheancierLoyerOrderByWithRelationInput;
+    locataire?: Prisma.LocataireOrderByWithRelationInput;
+};
+export type TransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    AND?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[];
+    OR?: Prisma.TransactionWhereInput[];
+    NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[];
+    proprietaireId?: Prisma.StringFilter<"Transaction"> | string;
+    type?: Prisma.EnumTypePaiementFilter<"Transaction"> | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFilter<"Transaction"> | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFilter<"Transaction"> | number;
+    devise?: Prisma.StringFilter<"Transaction"> | string;
+    modePaiement?: Prisma.StringFilter<"Transaction"> | string;
+    provider?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    reference?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    transactionId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    dateInitiation?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    dateConfirmation?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    dateEcheance?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    bienId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    bailId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    echeanceId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    locataireId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    note?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    instructions?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    metadata?: Prisma.JsonNullableFilter<"Transaction">;
+    createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
+    bien?: Prisma.XOR<Prisma.BienNullableScalarRelationFilter, Prisma.BienWhereInput> | null;
+    bail?: Prisma.XOR<Prisma.BailLocationNullableScalarRelationFilter, Prisma.BailLocationWhereInput> | null;
+    echeance?: Prisma.XOR<Prisma.EcheancierLoyerNullableScalarRelationFilter, Prisma.EcheancierLoyerWhereInput> | null;
+    locataire?: Prisma.XOR<Prisma.LocataireNullableScalarRelationFilter, Prisma.LocataireWhereInput> | null;
+}, "id">;
+export type TransactionOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    statut?: Prisma.SortOrder;
+    montant?: Prisma.SortOrder;
+    devise?: Prisma.SortOrder;
+    modePaiement?: Prisma.SortOrder;
+    provider?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reference?: Prisma.SortOrderInput | Prisma.SortOrder;
+    transactionId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateInitiation?: Prisma.SortOrder;
+    dateConfirmation?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateEcheance?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bienId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    bailId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    echeanceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    locataireId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    note?: Prisma.SortOrderInput | Prisma.SortOrder;
+    instructions?: Prisma.SortOrderInput | Prisma.SortOrder;
+    metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    _count?: Prisma.TransactionCountOrderByAggregateInput;
+    _avg?: Prisma.TransactionAvgOrderByAggregateInput;
+    _max?: Prisma.TransactionMaxOrderByAggregateInput;
+    _min?: Prisma.TransactionMinOrderByAggregateInput;
+    _sum?: Prisma.TransactionSumOrderByAggregateInput;
+};
+export type TransactionScalarWhereWithAggregatesInput = {
+    AND?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[];
+    OR?: Prisma.TransactionScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.TransactionScalarWhereWithAggregatesInput | Prisma.TransactionScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string;
+    proprietaireId?: Prisma.StringWithAggregatesFilter<"Transaction"> | string;
+    type?: Prisma.EnumTypePaiementWithAggregatesFilter<"Transaction"> | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionWithAggregatesFilter<"Transaction"> | $Enums.StatutTransaction;
+    montant?: Prisma.FloatWithAggregatesFilter<"Transaction"> | number;
+    devise?: Prisma.StringWithAggregatesFilter<"Transaction"> | string;
+    modePaiement?: Prisma.StringWithAggregatesFilter<"Transaction"> | string;
+    provider?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    reference?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    transactionId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    dateInitiation?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string;
+    dateConfirmation?: Prisma.DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null;
+    dateEcheance?: Prisma.DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null;
+    bienId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    bailId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    echeanceId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    locataireId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    note?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    instructions?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null;
+    metadata?: Prisma.JsonNullableWithAggregatesFilter<"Transaction">;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string;
+};
+export type TransactionCreateInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
+    bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
+    bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionCreateManyInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionListRelationFilter = {
+    every?: Prisma.TransactionWhereInput;
+    some?: Prisma.TransactionWhereInput;
+    none?: Prisma.TransactionWhereInput;
+};
+export type TransactionOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type TransactionCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    statut?: Prisma.SortOrder;
+    montant?: Prisma.SortOrder;
+    devise?: Prisma.SortOrder;
+    modePaiement?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    reference?: Prisma.SortOrder;
+    transactionId?: Prisma.SortOrder;
+    dateInitiation?: Prisma.SortOrder;
+    dateConfirmation?: Prisma.SortOrder;
+    dateEcheance?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    echeanceId?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    note?: Prisma.SortOrder;
+    instructions?: Prisma.SortOrder;
+    metadata?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type TransactionAvgOrderByAggregateInput = {
+    montant?: Prisma.SortOrder;
+};
+export type TransactionMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    statut?: Prisma.SortOrder;
+    montant?: Prisma.SortOrder;
+    devise?: Prisma.SortOrder;
+    modePaiement?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    reference?: Prisma.SortOrder;
+    transactionId?: Prisma.SortOrder;
+    dateInitiation?: Prisma.SortOrder;
+    dateConfirmation?: Prisma.SortOrder;
+    dateEcheance?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    echeanceId?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    note?: Prisma.SortOrder;
+    instructions?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type TransactionMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    proprietaireId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    statut?: Prisma.SortOrder;
+    montant?: Prisma.SortOrder;
+    devise?: Prisma.SortOrder;
+    modePaiement?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    reference?: Prisma.SortOrder;
+    transactionId?: Prisma.SortOrder;
+    dateInitiation?: Prisma.SortOrder;
+    dateConfirmation?: Prisma.SortOrder;
+    dateEcheance?: Prisma.SortOrder;
+    bienId?: Prisma.SortOrder;
+    bailId?: Prisma.SortOrder;
+    echeanceId?: Prisma.SortOrder;
+    locataireId?: Prisma.SortOrder;
+    note?: Prisma.SortOrder;
+    instructions?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+};
+export type TransactionSumOrderByAggregateInput = {
+    montant?: Prisma.SortOrder;
+};
+export type TransactionCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput> | Prisma.TransactionCreateWithoutBienInput[] | Prisma.TransactionUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBienInput | Prisma.TransactionCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.TransactionCreateManyBienInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUncheckedCreateNestedManyWithoutBienInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput> | Prisma.TransactionCreateWithoutBienInput[] | Prisma.TransactionUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBienInput | Prisma.TransactionCreateOrConnectWithoutBienInput[];
+    createMany?: Prisma.TransactionCreateManyBienInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput> | Prisma.TransactionCreateWithoutBienInput[] | Prisma.TransactionUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBienInput | Prisma.TransactionCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutBienInput | Prisma.TransactionUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.TransactionCreateManyBienInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutBienInput | Prisma.TransactionUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutBienInput | Prisma.TransactionUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionUncheckedUpdateManyWithoutBienNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput> | Prisma.TransactionCreateWithoutBienInput[] | Prisma.TransactionUncheckedCreateWithoutBienInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBienInput | Prisma.TransactionCreateOrConnectWithoutBienInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutBienInput | Prisma.TransactionUpsertWithWhereUniqueWithoutBienInput[];
+    createMany?: Prisma.TransactionCreateManyBienInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutBienInput | Prisma.TransactionUpdateWithWhereUniqueWithoutBienInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutBienInput | Prisma.TransactionUpdateManyWithWhereWithoutBienInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionCreateNestedManyWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput> | Prisma.TransactionCreateWithoutLocataireInput[] | Prisma.TransactionUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutLocataireInput | Prisma.TransactionCreateOrConnectWithoutLocataireInput[];
+    createMany?: Prisma.TransactionCreateManyLocataireInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUncheckedCreateNestedManyWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput> | Prisma.TransactionCreateWithoutLocataireInput[] | Prisma.TransactionUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutLocataireInput | Prisma.TransactionCreateOrConnectWithoutLocataireInput[];
+    createMany?: Prisma.TransactionCreateManyLocataireInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUpdateManyWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput> | Prisma.TransactionCreateWithoutLocataireInput[] | Prisma.TransactionUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutLocataireInput | Prisma.TransactionCreateOrConnectWithoutLocataireInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutLocataireInput | Prisma.TransactionUpsertWithWhereUniqueWithoutLocataireInput[];
+    createMany?: Prisma.TransactionCreateManyLocataireInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutLocataireInput | Prisma.TransactionUpdateWithWhereUniqueWithoutLocataireInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutLocataireInput | Prisma.TransactionUpdateManyWithWhereWithoutLocataireInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionUncheckedUpdateManyWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput> | Prisma.TransactionCreateWithoutLocataireInput[] | Prisma.TransactionUncheckedCreateWithoutLocataireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutLocataireInput | Prisma.TransactionCreateOrConnectWithoutLocataireInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutLocataireInput | Prisma.TransactionUpsertWithWhereUniqueWithoutLocataireInput[];
+    createMany?: Prisma.TransactionCreateManyLocataireInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutLocataireInput | Prisma.TransactionUpdateWithWhereUniqueWithoutLocataireInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutLocataireInput | Prisma.TransactionUpdateManyWithWhereWithoutLocataireInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionCreateNestedManyWithoutBailInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput> | Prisma.TransactionCreateWithoutBailInput[] | Prisma.TransactionUncheckedCreateWithoutBailInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBailInput | Prisma.TransactionCreateOrConnectWithoutBailInput[];
+    createMany?: Prisma.TransactionCreateManyBailInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUncheckedCreateNestedManyWithoutBailInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput> | Prisma.TransactionCreateWithoutBailInput[] | Prisma.TransactionUncheckedCreateWithoutBailInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBailInput | Prisma.TransactionCreateOrConnectWithoutBailInput[];
+    createMany?: Prisma.TransactionCreateManyBailInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUpdateManyWithoutBailNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput> | Prisma.TransactionCreateWithoutBailInput[] | Prisma.TransactionUncheckedCreateWithoutBailInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBailInput | Prisma.TransactionCreateOrConnectWithoutBailInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutBailInput | Prisma.TransactionUpsertWithWhereUniqueWithoutBailInput[];
+    createMany?: Prisma.TransactionCreateManyBailInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutBailInput | Prisma.TransactionUpdateWithWhereUniqueWithoutBailInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutBailInput | Prisma.TransactionUpdateManyWithWhereWithoutBailInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionUncheckedUpdateManyWithoutBailNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput> | Prisma.TransactionCreateWithoutBailInput[] | Prisma.TransactionUncheckedCreateWithoutBailInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutBailInput | Prisma.TransactionCreateOrConnectWithoutBailInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutBailInput | Prisma.TransactionUpsertWithWhereUniqueWithoutBailInput[];
+    createMany?: Prisma.TransactionCreateManyBailInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutBailInput | Prisma.TransactionUpdateWithWhereUniqueWithoutBailInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutBailInput | Prisma.TransactionUpdateManyWithWhereWithoutBailInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionCreateNestedManyWithoutEcheanceInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput> | Prisma.TransactionCreateWithoutEcheanceInput[] | Prisma.TransactionUncheckedCreateWithoutEcheanceInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutEcheanceInput | Prisma.TransactionCreateOrConnectWithoutEcheanceInput[];
+    createMany?: Prisma.TransactionCreateManyEcheanceInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUncheckedCreateNestedManyWithoutEcheanceInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput> | Prisma.TransactionCreateWithoutEcheanceInput[] | Prisma.TransactionUncheckedCreateWithoutEcheanceInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutEcheanceInput | Prisma.TransactionCreateOrConnectWithoutEcheanceInput[];
+    createMany?: Prisma.TransactionCreateManyEcheanceInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUpdateManyWithoutEcheanceNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput> | Prisma.TransactionCreateWithoutEcheanceInput[] | Prisma.TransactionUncheckedCreateWithoutEcheanceInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutEcheanceInput | Prisma.TransactionCreateOrConnectWithoutEcheanceInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutEcheanceInput | Prisma.TransactionUpsertWithWhereUniqueWithoutEcheanceInput[];
+    createMany?: Prisma.TransactionCreateManyEcheanceInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutEcheanceInput | Prisma.TransactionUpdateWithWhereUniqueWithoutEcheanceInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutEcheanceInput | Prisma.TransactionUpdateManyWithWhereWithoutEcheanceInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionUncheckedUpdateManyWithoutEcheanceNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput> | Prisma.TransactionCreateWithoutEcheanceInput[] | Prisma.TransactionUncheckedCreateWithoutEcheanceInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutEcheanceInput | Prisma.TransactionCreateOrConnectWithoutEcheanceInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutEcheanceInput | Prisma.TransactionUpsertWithWhereUniqueWithoutEcheanceInput[];
+    createMany?: Prisma.TransactionCreateManyEcheanceInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutEcheanceInput | Prisma.TransactionUpdateWithWhereUniqueWithoutEcheanceInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutEcheanceInput | Prisma.TransactionUpdateManyWithWhereWithoutEcheanceInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionCreateNestedManyWithoutProprietaireInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput> | Prisma.TransactionCreateWithoutProprietaireInput[] | Prisma.TransactionUncheckedCreateWithoutProprietaireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutProprietaireInput | Prisma.TransactionCreateOrConnectWithoutProprietaireInput[];
+    createMany?: Prisma.TransactionCreateManyProprietaireInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUncheckedCreateNestedManyWithoutProprietaireInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput> | Prisma.TransactionCreateWithoutProprietaireInput[] | Prisma.TransactionUncheckedCreateWithoutProprietaireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutProprietaireInput | Prisma.TransactionCreateOrConnectWithoutProprietaireInput[];
+    createMany?: Prisma.TransactionCreateManyProprietaireInputEnvelope;
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+};
+export type TransactionUpdateManyWithoutProprietaireNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput> | Prisma.TransactionCreateWithoutProprietaireInput[] | Prisma.TransactionUncheckedCreateWithoutProprietaireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutProprietaireInput | Prisma.TransactionCreateOrConnectWithoutProprietaireInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutProprietaireInput | Prisma.TransactionUpsertWithWhereUniqueWithoutProprietaireInput[];
+    createMany?: Prisma.TransactionCreateManyProprietaireInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutProprietaireInput | Prisma.TransactionUpdateWithWhereUniqueWithoutProprietaireInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutProprietaireInput | Prisma.TransactionUpdateManyWithWhereWithoutProprietaireInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type TransactionUncheckedUpdateManyWithoutProprietaireNestedInput = {
+    create?: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput> | Prisma.TransactionCreateWithoutProprietaireInput[] | Prisma.TransactionUncheckedCreateWithoutProprietaireInput[];
+    connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutProprietaireInput | Prisma.TransactionCreateOrConnectWithoutProprietaireInput[];
+    upsert?: Prisma.TransactionUpsertWithWhereUniqueWithoutProprietaireInput | Prisma.TransactionUpsertWithWhereUniqueWithoutProprietaireInput[];
+    createMany?: Prisma.TransactionCreateManyProprietaireInputEnvelope;
+    set?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    disconnect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    delete?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    connect?: Prisma.TransactionWhereUniqueInput | Prisma.TransactionWhereUniqueInput[];
+    update?: Prisma.TransactionUpdateWithWhereUniqueWithoutProprietaireInput | Prisma.TransactionUpdateWithWhereUniqueWithoutProprietaireInput[];
+    updateMany?: Prisma.TransactionUpdateManyWithWhereWithoutProprietaireInput | Prisma.TransactionUpdateManyWithWhereWithoutProprietaireInput[];
+    deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+};
+export type EnumTypePaiementFieldUpdateOperationsInput = {
+    set?: $Enums.TypePaiement;
+};
+export type EnumStatutTransactionFieldUpdateOperationsInput = {
+    set?: $Enums.StatutTransaction;
+};
+export type TransactionCreateWithoutBienInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
+    bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateWithoutBienInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionCreateOrConnectWithoutBienInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput>;
+};
+export type TransactionCreateManyBienInputEnvelope = {
+    data: Prisma.TransactionCreateManyBienInput | Prisma.TransactionCreateManyBienInput[];
+    skipDuplicates?: boolean;
+};
+export type TransactionUpsertWithWhereUniqueWithoutBienInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TransactionUpdateWithoutBienInput, Prisma.TransactionUncheckedUpdateWithoutBienInput>;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutBienInput, Prisma.TransactionUncheckedCreateWithoutBienInput>;
+};
+export type TransactionUpdateWithWhereUniqueWithoutBienInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateWithoutBienInput, Prisma.TransactionUncheckedUpdateWithoutBienInput>;
+};
+export type TransactionUpdateManyWithWhereWithoutBienInput = {
+    where: Prisma.TransactionScalarWhereInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutBienInput>;
+};
+export type TransactionScalarWhereInput = {
+    AND?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+    OR?: Prisma.TransactionScalarWhereInput[];
+    NOT?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[];
+    id?: Prisma.StringFilter<"Transaction"> | string;
+    proprietaireId?: Prisma.StringFilter<"Transaction"> | string;
+    type?: Prisma.EnumTypePaiementFilter<"Transaction"> | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFilter<"Transaction"> | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFilter<"Transaction"> | number;
+    devise?: Prisma.StringFilter<"Transaction"> | string;
+    modePaiement?: Prisma.StringFilter<"Transaction"> | string;
+    provider?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    reference?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    transactionId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    dateInitiation?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    dateConfirmation?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    dateEcheance?: Prisma.DateTimeNullableFilter<"Transaction"> | Date | string | null;
+    bienId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    bailId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    echeanceId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    locataireId?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    note?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    instructions?: Prisma.StringNullableFilter<"Transaction"> | string | null;
+    metadata?: Prisma.JsonNullableFilter<"Transaction">;
+    createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string;
+};
+export type TransactionCreateWithoutLocataireInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
+    bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateWithoutLocataireInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionCreateOrConnectWithoutLocataireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput>;
+};
+export type TransactionCreateManyLocataireInputEnvelope = {
+    data: Prisma.TransactionCreateManyLocataireInput | Prisma.TransactionCreateManyLocataireInput[];
+    skipDuplicates?: boolean;
+};
+export type TransactionUpsertWithWhereUniqueWithoutLocataireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TransactionUpdateWithoutLocataireInput, Prisma.TransactionUncheckedUpdateWithoutLocataireInput>;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutLocataireInput, Prisma.TransactionUncheckedCreateWithoutLocataireInput>;
+};
+export type TransactionUpdateWithWhereUniqueWithoutLocataireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateWithoutLocataireInput, Prisma.TransactionUncheckedUpdateWithoutLocataireInput>;
+};
+export type TransactionUpdateManyWithWhereWithoutLocataireInput = {
+    where: Prisma.TransactionScalarWhereInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutLocataireInput>;
+};
+export type TransactionCreateWithoutBailInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
+    echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateWithoutBailInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionCreateOrConnectWithoutBailInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput>;
+};
+export type TransactionCreateManyBailInputEnvelope = {
+    data: Prisma.TransactionCreateManyBailInput | Prisma.TransactionCreateManyBailInput[];
+    skipDuplicates?: boolean;
+};
+export type TransactionUpsertWithWhereUniqueWithoutBailInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TransactionUpdateWithoutBailInput, Prisma.TransactionUncheckedUpdateWithoutBailInput>;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutBailInput, Prisma.TransactionUncheckedCreateWithoutBailInput>;
+};
+export type TransactionUpdateWithWhereUniqueWithoutBailInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateWithoutBailInput, Prisma.TransactionUncheckedUpdateWithoutBailInput>;
+};
+export type TransactionUpdateManyWithWhereWithoutBailInput = {
+    where: Prisma.TransactionScalarWhereInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutBailInput>;
+};
+export type TransactionCreateWithoutEcheanceInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutTransactionsInput;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
+    bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateWithoutEcheanceInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionCreateOrConnectWithoutEcheanceInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput>;
+};
+export type TransactionCreateManyEcheanceInputEnvelope = {
+    data: Prisma.TransactionCreateManyEcheanceInput | Prisma.TransactionCreateManyEcheanceInput[];
+    skipDuplicates?: boolean;
+};
+export type TransactionUpsertWithWhereUniqueWithoutEcheanceInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TransactionUpdateWithoutEcheanceInput, Prisma.TransactionUncheckedUpdateWithoutEcheanceInput>;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutEcheanceInput, Prisma.TransactionUncheckedCreateWithoutEcheanceInput>;
+};
+export type TransactionUpdateWithWhereUniqueWithoutEcheanceInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateWithoutEcheanceInput, Prisma.TransactionUncheckedUpdateWithoutEcheanceInput>;
+};
+export type TransactionUpdateManyWithWhereWithoutEcheanceInput = {
+    where: Prisma.TransactionScalarWhereInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutEcheanceInput>;
+};
+export type TransactionCreateWithoutProprietaireInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bien?: Prisma.BienCreateNestedOneWithoutTransactionsInput;
+    bail?: Prisma.BailLocationCreateNestedOneWithoutTransactionsInput;
+    echeance?: Prisma.EcheancierLoyerCreateNestedOneWithoutTransactionsInput;
+    locataire?: Prisma.LocataireCreateNestedOneWithoutTransactionsInput;
+};
+export type TransactionUncheckedCreateWithoutProprietaireInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionCreateOrConnectWithoutProprietaireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput>;
+};
+export type TransactionCreateManyProprietaireInputEnvelope = {
+    data: Prisma.TransactionCreateManyProprietaireInput | Prisma.TransactionCreateManyProprietaireInput[];
+    skipDuplicates?: boolean;
+};
+export type TransactionUpsertWithWhereUniqueWithoutProprietaireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.TransactionUpdateWithoutProprietaireInput, Prisma.TransactionUncheckedUpdateWithoutProprietaireInput>;
+    create: Prisma.XOR<Prisma.TransactionCreateWithoutProprietaireInput, Prisma.TransactionUncheckedCreateWithoutProprietaireInput>;
+};
+export type TransactionUpdateWithWhereUniqueWithoutProprietaireInput = {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateWithoutProprietaireInput, Prisma.TransactionUncheckedUpdateWithoutProprietaireInput>;
+};
+export type TransactionUpdateManyWithWhereWithoutProprietaireInput = {
+    where: Prisma.TransactionScalarWhereInput;
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyWithoutProprietaireInput>;
+};
+export type TransactionCreateManyBienInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
+    bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyWithoutBienInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionCreateManyLocataireInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
+    bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionCreateManyBailInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateWithoutBailInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
+    echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateWithoutBailInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyWithoutBailInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionCreateManyEcheanceInput = {
+    id?: string;
+    proprietaireId: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateWithoutEcheanceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
+    bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateWithoutEcheanceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyWithoutEcheanceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionCreateManyProprietaireInput = {
+    id?: string;
+    type: $Enums.TypePaiement;
+    statut?: $Enums.StatutTransaction;
+    montant: number;
+    devise?: string;
+    modePaiement: string;
+    provider?: string | null;
+    reference?: string | null;
+    transactionId?: string | null;
+    dateInitiation?: Date | string;
+    dateConfirmation?: Date | string | null;
+    dateEcheance?: Date | string | null;
+    bienId?: string | null;
+    bailId?: string | null;
+    echeanceId?: string | null;
+    locataireId?: string | null;
+    note?: string | null;
+    instructions?: string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type TransactionUpdateWithoutProprietaireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bien?: Prisma.BienUpdateOneWithoutTransactionsNestedInput;
+    bail?: Prisma.BailLocationUpdateOneWithoutTransactionsNestedInput;
+    echeance?: Prisma.EcheancierLoyerUpdateOneWithoutTransactionsNestedInput;
+    locataire?: Prisma.LocataireUpdateOneWithoutTransactionsNestedInput;
+};
+export type TransactionUncheckedUpdateWithoutProprietaireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionUncheckedUpdateManyWithoutProprietaireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTypePaiementFieldUpdateOperationsInput | $Enums.TypePaiement;
+    statut?: Prisma.EnumStatutTransactionFieldUpdateOperationsInput | $Enums.StatutTransaction;
+    montant?: Prisma.FloatFieldUpdateOperationsInput | number;
+    devise?: Prisma.StringFieldUpdateOperationsInput | string;
+    modePaiement?: Prisma.StringFieldUpdateOperationsInput | string;
+    provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateInitiation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    dateConfirmation?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateEcheance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    bienId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bailId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    echeanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    locataireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    proprietaireId?: boolean;
+    type?: boolean;
+    statut?: boolean;
+    montant?: boolean;
+    devise?: boolean;
+    modePaiement?: boolean;
+    provider?: boolean;
+    reference?: boolean;
+    transactionId?: boolean;
+    dateInitiation?: boolean;
+    dateConfirmation?: boolean;
+    dateEcheance?: boolean;
+    bienId?: boolean;
+    bailId?: boolean;
+    echeanceId?: boolean;
+    locataireId?: boolean;
+    note?: boolean;
+    instructions?: boolean;
+    metadata?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+}, ExtArgs["result"]["transaction"]>;
+export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    proprietaireId?: boolean;
+    type?: boolean;
+    statut?: boolean;
+    montant?: boolean;
+    devise?: boolean;
+    modePaiement?: boolean;
+    provider?: boolean;
+    reference?: boolean;
+    transactionId?: boolean;
+    dateInitiation?: boolean;
+    dateConfirmation?: boolean;
+    dateEcheance?: boolean;
+    bienId?: boolean;
+    bailId?: boolean;
+    echeanceId?: boolean;
+    locataireId?: boolean;
+    note?: boolean;
+    instructions?: boolean;
+    metadata?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+}, ExtArgs["result"]["transaction"]>;
+export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    proprietaireId?: boolean;
+    type?: boolean;
+    statut?: boolean;
+    montant?: boolean;
+    devise?: boolean;
+    modePaiement?: boolean;
+    provider?: boolean;
+    reference?: boolean;
+    transactionId?: boolean;
+    dateInitiation?: boolean;
+    dateConfirmation?: boolean;
+    dateEcheance?: boolean;
+    bienId?: boolean;
+    bailId?: boolean;
+    echeanceId?: boolean;
+    locataireId?: boolean;
+    note?: boolean;
+    instructions?: boolean;
+    metadata?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+}, ExtArgs["result"]["transaction"]>;
+export type TransactionSelectScalar = {
+    id?: boolean;
+    proprietaireId?: boolean;
+    type?: boolean;
+    statut?: boolean;
+    montant?: boolean;
+    devise?: boolean;
+    modePaiement?: boolean;
+    provider?: boolean;
+    reference?: boolean;
+    transactionId?: boolean;
+    dateInitiation?: boolean;
+    dateConfirmation?: boolean;
+    dateEcheance?: boolean;
+    bienId?: boolean;
+    bailId?: boolean;
+    echeanceId?: boolean;
+    locataireId?: boolean;
+    note?: boolean;
+    instructions?: boolean;
+    metadata?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+};
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "proprietaireId" | "type" | "statut" | "montant" | "devise" | "modePaiement" | "provider" | "reference" | "transactionId" | "dateInitiation" | "dateConfirmation" | "dateEcheance" | "bienId" | "bailId" | "echeanceId" | "locataireId" | "note" | "instructions" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>;
+export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+};
+export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+};
+export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
+    bien?: boolean | Prisma.Transaction$bienArgs<ExtArgs>;
+    bail?: boolean | Prisma.Transaction$bailArgs<ExtArgs>;
+    echeance?: boolean | Prisma.Transaction$echeanceArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Transaction$locataireArgs<ExtArgs>;
+};
+export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "Transaction";
+    objects: {
+        proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
+        bien: Prisma.$BienPayload<ExtArgs> | null;
+        bail: Prisma.$BailLocationPayload<ExtArgs> | null;
+        echeance: Prisma.$EcheancierLoyerPayload<ExtArgs> | null;
+        locataire: Prisma.$LocatairePayload<ExtArgs> | null;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        proprietaireId: string;
+        type: $Enums.TypePaiement;
+        statut: $Enums.StatutTransaction;
+        montant: number;
+        devise: string;
+        modePaiement: string;
+        provider: string | null;
+        reference: string | null;
+        transactionId: string | null;
+        dateInitiation: Date;
+        dateConfirmation: Date | null;
+        dateEcheance: Date | null;
+        bienId: string | null;
+        bailId: string | null;
+        echeanceId: string | null;
+        locataireId: string | null;
+        note: string | null;
+        instructions: string | null;
+        metadata: runtime.JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }, ExtArgs["result"]["transaction"]>;
+    composites: {};
+};
+export type TransactionGetPayload<S extends boolean | null | undefined | TransactionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$TransactionPayload, S>;
+export type TransactionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<TransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: TransactionCountAggregateInputType | true;
+};
+export interface TransactionDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['Transaction'];
+        meta: {
+            name: 'Transaction';
+        };
+    };
+    /**
+     * Find zero or one Transaction that matches the filter.
+     * @param {TransactionFindUniqueArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TransactionFindUniqueArgs>(args: Prisma.SelectSubset<T, TransactionFindUniqueArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one Transaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TransactionFindUniqueOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TransactionFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, TransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Transaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TransactionFindFirstArgs>(args?: Prisma.SelectSubset<T, TransactionFindFirstArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first Transaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TransactionFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, TransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more Transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Transactions
+     * const transactions = await prisma.transaction.findMany()
+     *
+     * // Get first 10 Transactions
+     * const transactions = await prisma.transaction.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const transactionWithIdOnly = await prisma.transaction.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends TransactionFindManyArgs>(args?: Prisma.SelectSubset<T, TransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a Transaction.
+     * @param {TransactionCreateArgs} args - Arguments to create a Transaction.
+     * @example
+     * // Create one Transaction
+     * const Transaction = await prisma.transaction.create({
+     *   data: {
+     *     // ... data to create a Transaction
+     *   }
+     * })
+     *
+     */
+    create<T extends TransactionCreateArgs>(args: Prisma.SelectSubset<T, TransactionCreateArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many Transactions.
+     * @param {TransactionCreateManyArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends TransactionCreateManyArgs>(args?: Prisma.SelectSubset<T, TransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many Transactions and returns the data saved in the database.
+     * @param {TransactionCreateManyAndReturnArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends TransactionCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, TransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a Transaction.
+     * @param {TransactionDeleteArgs} args - Arguments to delete one Transaction.
+     * @example
+     * // Delete one Transaction
+     * const Transaction = await prisma.transaction.delete({
+     *   where: {
+     *     // ... filter to delete one Transaction
+     *   }
+     * })
+     *
+     */
+    delete<T extends TransactionDeleteArgs>(args: Prisma.SelectSubset<T, TransactionDeleteArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one Transaction.
+     * @param {TransactionUpdateArgs} args - Arguments to update one Transaction.
+     * @example
+     * // Update one Transaction
+     * const transaction = await prisma.transaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends TransactionUpdateArgs>(args: Prisma.SelectSubset<T, TransactionUpdateArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more Transactions.
+     * @param {TransactionDeleteManyArgs} args - Arguments to filter Transactions to delete.
+     * @example
+     * // Delete a few Transactions
+     * const { count } = await prisma.transaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends TransactionDeleteManyArgs>(args?: Prisma.SelectSubset<T, TransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends TransactionUpdateManyArgs>(args: Prisma.SelectSubset<T, TransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more Transactions and returns the data updated in the database.
+     * @param {TransactionUpdateManyAndReturnArgs} args - Arguments to update many Transactions.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends TransactionUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, TransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one Transaction.
+     * @param {TransactionUpsertArgs} args - Arguments to update or create a Transaction.
+     * @example
+     * // Update or create a Transaction
+     * const transaction = await prisma.transaction.upsert({
+     *   create: {
+     *     // ... data to create a Transaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Transaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TransactionUpsertArgs>(args: Prisma.SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionCountArgs} args - Arguments to filter Transactions to count.
+     * @example
+     * // Count the number of Transactions
+     * const count = await prisma.transaction.count({
+     *   where: {
+     *     // ... the filter for the Transactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends TransactionCountArgs>(args?: Prisma.Subset<T, TransactionCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], TransactionCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TransactionAggregateArgs>(args: Prisma.Subset<T, TransactionAggregateArgs>): Prisma.PrismaPromise<GetTransactionAggregateType<T>>;
+    /**
+     * Group by Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends TransactionGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: TransactionGroupByArgs['orderBy'];
+    } : {
+        orderBy?: TransactionGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, TransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the Transaction model
+     */
+    readonly fields: TransactionFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for Transaction.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    bien<T extends Prisma.Transaction$bienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$bienArgs<ExtArgs>>): Prisma.Prisma__BienClient<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    bail<T extends Prisma.Transaction$bailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$bailArgs<ExtArgs>>): Prisma.Prisma__BailLocationClient<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    echeance<T extends Prisma.Transaction$echeanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$echeanceArgs<ExtArgs>>): Prisma.Prisma__EcheancierLoyerClient<runtime.Types.Result.GetResult<Prisma.$EcheancierLoyerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    locataire<T extends Prisma.Transaction$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$locataireArgs<ExtArgs>>): Prisma.Prisma__LocataireClient<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the Transaction model
+ */
+export interface TransactionFieldRefs {
+    readonly id: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly proprietaireId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly type: Prisma.FieldRef<"Transaction", 'TypePaiement'>;
+    readonly statut: Prisma.FieldRef<"Transaction", 'StatutTransaction'>;
+    readonly montant: Prisma.FieldRef<"Transaction", 'Float'>;
+    readonly devise: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly modePaiement: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly provider: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly reference: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly transactionId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly dateInitiation: Prisma.FieldRef<"Transaction", 'DateTime'>;
+    readonly dateConfirmation: Prisma.FieldRef<"Transaction", 'DateTime'>;
+    readonly dateEcheance: Prisma.FieldRef<"Transaction", 'DateTime'>;
+    readonly bienId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly bailId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly echeanceId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly locataireId: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly note: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly instructions: Prisma.FieldRef<"Transaction", 'String'>;
+    readonly metadata: Prisma.FieldRef<"Transaction", 'Json'>;
+    readonly createdAt: Prisma.FieldRef<"Transaction", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"Transaction", 'DateTime'>;
+}
+/**
+ * Transaction findUnique
+ */
+export type TransactionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: Prisma.TransactionWhereUniqueInput;
+};
+/**
+ * Transaction findUniqueOrThrow
+ */
+export type TransactionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: Prisma.TransactionWhereUniqueInput;
+};
+/**
+ * Transaction findFirst
+ */
+export type TransactionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Transactions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Transaction findFirstOrThrow
+ */
+export type TransactionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Transactions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Transaction findMany
+ */
+export type TransactionFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter, which Transactions to fetch.
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing Transactions.
+     */
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` Transactions.
+     */
+    skip?: number;
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Transaction create
+ */
+export type TransactionCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a Transaction.
+     */
+    data: Prisma.XOR<Prisma.TransactionCreateInput, Prisma.TransactionUncheckedCreateInput>;
+};
+/**
+ * Transaction createMany
+ */
+export type TransactionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Transactions.
+     */
+    data: Prisma.TransactionCreateManyInput | Prisma.TransactionCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * Transaction createManyAndReturn
+ */
+export type TransactionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * The data used to create many Transactions.
+     */
+    data: Prisma.TransactionCreateManyInput | Prisma.TransactionCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Transaction update
+ */
+export type TransactionUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a Transaction.
+     */
+    data: Prisma.XOR<Prisma.TransactionUpdateInput, Prisma.TransactionUncheckedUpdateInput>;
+    /**
+     * Choose, which Transaction to update.
+     */
+    where: Prisma.TransactionWhereUniqueInput;
+};
+/**
+ * Transaction updateMany
+ */
+export type TransactionUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Transactions.
+     */
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyInput>;
+    /**
+     * Filter which Transactions to update
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number;
+};
+/**
+ * Transaction updateManyAndReturn
+ */
+export type TransactionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * The data used to update Transactions.
+     */
+    data: Prisma.XOR<Prisma.TransactionUpdateManyMutationInput, Prisma.TransactionUncheckedUpdateManyInput>;
+    /**
+     * Filter which Transactions to update
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * Transaction upsert
+ */
+export type TransactionUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the Transaction to update in case it exists.
+     */
+    where: Prisma.TransactionWhereUniqueInput;
+    /**
+     * In case the Transaction found by the `where` argument doesn't exist, create a new Transaction with this data.
+     */
+    create: Prisma.XOR<Prisma.TransactionCreateInput, Prisma.TransactionUncheckedCreateInput>;
+    /**
+     * In case the Transaction was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.TransactionUpdateInput, Prisma.TransactionUncheckedUpdateInput>;
+};
+/**
+ * Transaction delete
+ */
+export type TransactionDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    /**
+     * Filter which Transaction to delete.
+     */
+    where: Prisma.TransactionWhereUniqueInput;
+};
+/**
+ * Transaction deleteMany
+ */
+export type TransactionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transactions to delete
+     */
+    where?: Prisma.TransactionWhereInput;
+    /**
+     * Limit how many Transactions to delete.
+     */
+    limit?: number;
+};
+/**
+ * Transaction.bien
+ */
+export type Transaction$bienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Bien
+     */
+    select?: Prisma.BienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Bien
+     */
+    omit?: Prisma.BienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BienInclude<ExtArgs> | null;
+    where?: Prisma.BienWhereInput;
+};
+/**
+ * Transaction.bail
+ */
+export type Transaction$bailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailLocation
+     */
+    select?: Prisma.BailLocationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BailLocation
+     */
+    omit?: Prisma.BailLocationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BailLocationInclude<ExtArgs> | null;
+    where?: Prisma.BailLocationWhereInput;
+};
+/**
+ * Transaction.echeance
+ */
+export type Transaction$echeanceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EcheancierLoyer
+     */
+    select?: Prisma.EcheancierLoyerSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EcheancierLoyer
+     */
+    omit?: Prisma.EcheancierLoyerOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EcheancierLoyerInclude<ExtArgs> | null;
+    where?: Prisma.EcheancierLoyerWhereInput;
+};
+/**
+ * Transaction.locataire
+ */
+export type Transaction$locataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Locataire
+     */
+    select?: Prisma.LocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Locataire
+     */
+    omit?: Prisma.LocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.LocataireInclude<ExtArgs> | null;
+    where?: Prisma.LocataireWhereInput;
+};
+/**
+ * Transaction without action
+ */
+export type TransactionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=Transaction.d.ts.map

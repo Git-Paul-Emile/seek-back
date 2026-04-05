@@ -1,5 +1,5 @@
 /**
- * Rate limiter global - 100 requêtes par 15 minutes
+ * Rate limiter global - 500 requêtes par 15 minutes
  */
 export declare const limiteurGlobal: import("express-rate-limit").RateLimitRequestHandler;
 /**

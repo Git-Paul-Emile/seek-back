@@ -1,11 +1,11 @@
 import { z } from "zod";
 export declare const saveDraftSchema: z.ZodObject<{
-    id: z.ZodOptional<z.ZodString>;
+    id: z.ZodOptional<z.ZodUUID>;
     titre: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     description: z.ZodNullable<z.ZodOptional<z.ZodString>>;
-    typeLogementId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
-    typeTransactionId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
-    statutBienId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    typeLogementId: z.ZodNullable<z.ZodOptional<z.ZodUUID>>;
+    typeTransactionId: z.ZodNullable<z.ZodOptional<z.ZodUUID>>;
+    statutBienId: z.ZodNullable<z.ZodOptional<z.ZodUUID>>;
     pays: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     region: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     ville: z.ZodNullable<z.ZodOptional<z.ZodString>>;
@@ -100,7 +100,6 @@ export declare const validerAnnonceSchema: z.ZodObject<{
     action: z.ZodEnum<{
         APPROUVER: "APPROUVER";
         REJETER: "REJETER";
-        REVISION: "REVISION";
     }>;
     note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;

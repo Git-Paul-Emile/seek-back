@@ -1,4 +1,4 @@
-import type { CategorieEquipementModel as CategorieEquipement } from "../generated/prisma/index.js";
+import type { CategorieEquipement } from "../generated/prisma/client.js";
 export declare const findAll: () => Promise<CategorieEquipement[]>;
 export declare const findActive: () => Promise<CategorieEquipement[]>;
 export declare const findById: (id: string) => Promise<CategorieEquipement | null>;

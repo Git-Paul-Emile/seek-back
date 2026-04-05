@@ -6,6 +6,7 @@ import type { EcheancierLoyerCreateManyInput } from "../generated/prisma/models/
 import { genererQuittanceInterne } from "./quittance.service.js";
 import {
   envoyerConfirmationPaiement,
+  envoyerConfirmationPaiementProprietaire,
   envoyerPaiementLocataire,
   envoyerPreavisLocataire,
   envoyerPreavisProprietaire,
@@ -85,6 +86,88 @@ const msgProprietaire = (p: MsgInterneParams) =>
 
 const msgLocataire = (p: MsgInterneParams) =>
   prisma.messageInterneLocataire.create({ data: { locataireId: p.userId, bailId: p.bailId, bienId: p.bienId, titre: p.titre, corps: p.corps, type: p.type } });
+
+const ensurePreviousUnpaidCleared = async (bailId: string, dateEcheance: Date) => {
+  const precedente = await prisma.echeancierLoyer.findFirst({
+    where: {
+      bailId,
+      dateEcheance: { lt: dateEcheance },
+      statut: { notIn: ["PAYE", "ANNULE"] },
+    },
+    orderBy: { dateEcheance: "desc" },
+  });
+  if (!precedente) return;
+
+  const dateStr = new Date(precedente.dateEcheance).toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
+  throw new AppError(`Veuillez d'abord payer l'échéance de ${dateStr}`, StatusCodes.BAD_REQUEST);
+};
+
+const syncTransactionLoyer = async (params: {
+  proprietaireId: string;
+  bienId: string;
+  bailId: string;
+  echeanceId: string;
+  locataireId: string;
+  dateEcheance?: Date | null;
+  montant: number;
+  statut: "EN_ATTENTE" | "CONFIRME";
+  modePaiement?: string | null;
+  provider?: string | null;
+  reference?: string | null;
+  note?: string | null;
+  instructions?: string | null;
+  metadata?: Record<string, unknown>;
+}) => {
+  const existing = await prisma.transaction.findFirst({
+    where: {
+      proprietaireId: params.proprietaireId,
+      echeanceId: params.echeanceId,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      type: "PAIEMENT_LOYER" as any,
+    },
+  });
+
+  const mergedMetadata: Record<string, unknown> = {
+    ...(existing?.metadata && typeof existing.metadata === "object"
+      ? existing.metadata as Record<string, unknown>
+      : {}),
+    ...(params.metadata ?? {}),
+  };
+
+  const data = {
+    proprietaireId: params.proprietaireId,
+    bienId: params.bienId,
+    bailId: params.bailId,
+    echeanceId: params.echeanceId,
+    locataireId: params.locataireId,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type: "PAIEMENT_LOYER" as any,
+    statut: params.statut,
+    montant: params.montant,
+    devise: "XOF",
+    modePaiement: params.modePaiement ?? existing?.modePaiement ?? "Paiement manuel",
+    provider: params.provider ?? existing?.provider ?? null,
+    reference: params.reference ?? existing?.reference ?? null,
+    note: params.note ?? existing?.note ?? null,
+    instructions: params.instructions ?? existing?.instructions ?? null,
+    dateEcheance: params.dateEcheance ?? existing?.dateEcheance ?? null,
+    dateConfirmation: params.statut === "CONFIRME" ? new Date() : null,
+    // Prisma attend un type JSON d'entrée ici.
+    metadata: mergedMetadata as any,
+  };
+
+  if (existing) {
+    return prisma.transaction.update({
+      where: { id: existing.id },
+      data,
+    });
+  }
+
+  return prisma.transaction.create({ data });
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -667,24 +750,7 @@ export const payerEcheance = async (
     throw new AppError("Cette échéance est déjà soldée ou annulée", StatusCodes.BAD_REQUEST);
 
   // Vérifier la séquentialité : aucune échéance antérieure ne doit être impayée
-  const precedente = await prisma.echeancierLoyer.findFirst({
-    where: {
-      bailId,
-      dateEcheance: { lt: echeance.dateEcheance },
-      statut: { notIn: ["PAYE", "ANNULE"] },
-    },
-    orderBy: { dateEcheance: "desc" },
-  });
-  if (precedente) {
-    const dateStr = new Date(precedente.dateEcheance).toLocaleDateString("fr-FR", {
-      month: "long",
-      year: "numeric",
-    });
-    throw new AppError(
-      `Veuillez d'abord payer l'échéance de ${dateStr}`,
-      StatusCodes.BAD_REQUEST
-    );
-  }
+  await ensurePreviousUnpaidCleared(bailId, echeance.dateEcheance);
 
   // Commission
   const config = await getConfig();
@@ -712,6 +778,24 @@ export const payerEcheance = async (
         commissionMontant,
         montantNet,
       }),
+    },
+  });
+
+  await syncTransactionLoyer({
+    proprietaireId,
+    bienId,
+    bailId,
+    echeanceId,
+    locataireId: echeance.locataireId,
+    dateEcheance: echeance.dateEcheance,
+    montant: echeance.montant,
+    statut: "CONFIRME",
+    modePaiement: data.modePaiement,
+    provider: data.modePaiement,
+    reference: data.reference,
+    note: data.note,
+    metadata: {
+      sourceEnregistrement: "PROPRIETAIRE",
     },
   });
 
@@ -807,6 +891,7 @@ export const payerMoisMultiples = async (
   });
 
   if (unpaid.length === 0) throw new AppError("Aucune échéance à payer", StatusCodes.BAD_REQUEST);
+  await ensurePreviousUnpaidCleared(bailId, unpaid[0]!.dateEcheance);
 
   const ids = unpaid.map(e => e.id);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -821,6 +906,28 @@ export const payerMoisMultiples = async (
       sourceEnregistrement: "PROPRIETAIRE",
     },
   });
+
+  await Promise.all(
+    unpaid.map((item) =>
+      syncTransactionLoyer({
+        proprietaireId,
+        bienId,
+        bailId,
+        echeanceId: item.id,
+        locataireId: item.locataireId,
+        dateEcheance: item.dateEcheance,
+        montant: item.montant,
+        statut: "CONFIRME",
+        modePaiement: data.modePaiement,
+        provider: data.modePaiement,
+        reference: data.reference,
+        note: data.note,
+        metadata: {
+          sourceEnregistrement: "PROPRIETAIRE",
+        },
+      })
+    )
+  );
 
   // Auto-génération quittances pour chaque échéance (fire-and-forget)
   for (const id of ids) {
@@ -873,6 +980,28 @@ export const payerEcheancesLocataire = async (
       sourceEnregistrement: "LOCATAIRE",
     },
   });
+
+  await Promise.all(
+    unpaid.map((item) =>
+      syncTransactionLoyer({
+        proprietaireId: bail.proprietaireId,
+        bienId: bail.bienId,
+        bailId: bail.id,
+        echeanceId: item.id,
+        locataireId,
+        dateEcheance: item.dateEcheance,
+        montant: item.montant,
+        statut: "EN_ATTENTE",
+        modePaiement: data.modePaiement,
+        provider: data.modePaiement,
+        reference: data.reference ?? null,
+        note: data.note ?? null,
+        metadata: {
+          sourceEnregistrement: "LOCATAIRE",
+        },
+      })
+    )
+  );
 
   // Notification au propriétaire — paiement en attente de confirmation (fire-and-forget)
   prisma.bailLocation.findUnique({
@@ -945,30 +1074,50 @@ export const confirmerReceptionPaiement = async (
     },
   });
 
+  await syncTransactionLoyer({
+    proprietaireId,
+    bienId,
+    bailId,
+    echeanceId,
+    locataireId: echeance.locataireId,
+    dateEcheance: echeance.dateEcheance,
+    montant: echeance.montant,
+    statut: "CONFIRME",
+    modePaiement: echeance.modePaiement,
+    provider: echeance.modePaiement,
+    reference: echeance.reference,
+    note: echeance.note,
+    metadata: {
+      sourceEnregistrement: echeance.sourceEnregistrement ?? "LOCATAIRE",
+      confirmeParProprietaire: true,
+    },
+  });
+
   // Si l'échéance vient de passer à PAYE, générer la quittance
   if (needsValidation) {
     genererQuittanceInterne(echeanceId).catch(() => null);
   }
 
-  // SMS de confirmation au propriétaire (fire-and-forget)
+  // Notification au locataire après validation par le propriétaire (fire-and-forget)
   prisma.bailLocation.findUnique({
     where: { id: bailId },
     include: {
-      locataire: { select: { nom: true, prenom: true } },
-      proprietaire: { select: { telephone: true, email: true } },
+      locataire: { select: { telephone: true, email: true, nom: true, prenom: true } },
+      proprietaire: { select: { nom: true, prenom: true } },
       bien: { select: { titre: true } },
     },
   }).then(bailFull => {
-    if (!bailFull?.proprietaire?.telephone) return;
-    const locataireNom = bailFull.locataire
-      ? `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`
-      : "Locataire";
-    envoyerConfirmationEspecesProprietaire({
-      proprietaireTelephone: bailFull.proprietaire.telephone,
-      proprietaireEmail: bailFull.proprietaire.email,
-      locataireNom,
+    if (!bailFull?.locataire?.telephone) return;
+    const proprietaireLabel = bailFull.proprietaire
+      ? `Votre propriétaire ${bailFull.proprietaire.prenom} ${bailFull.proprietaire.nom}`
+      : "Votre propriétaire";
+    envoyerConfirmationPaiementProprietaire({
+      locataireTelephone: bailFull.locataire.telephone,
+      locataireEmail: bailFull.locataire.email,
+      proprietaireLabel,
       montant: echeance.montant,
       datePaiement: (echeance.datePaiement ?? new Date()).toISOString(),
+      modePaiement: echeance.modePaiement,
       bienTitre: bailFull.bien?.titre,
       echeanceId,
       bailId,
@@ -992,7 +1141,7 @@ export const enregistrerPaiementEspeces = async (
   bailId: string,
   echeanceId: string,
   proprietaireId: string,
-  data: { datePaiement: Date; note?: string }
+  data: { datePaiement: Date; note?: string; nombreMois?: number }
 ) => {
   await assertBienOwner(bienId, proprietaireId);
 
@@ -1002,10 +1151,30 @@ export const enregistrerPaiementEspeces = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((["PAYE", "ANNULE", "EN_ATTENTE_CONFIRMATION"] as any[]).includes(echeance.statut))
     throw new AppError("Cette échéance n'est pas éligible à un enregistrement espèces", StatusCodes.BAD_REQUEST);
+  await ensurePreviousUnpaidCleared(bailId, echeance.dateEcheance);
+
+  const nombreMois = Math.max(1, data.nombreMois ?? 1);
+  const echeances = await prisma.echeancierLoyer.findMany({
+    where: {
+      bailId,
+      statut: { notIn: ["PAYE", "ANNULE", "EN_ATTENTE_CONFIRMATION"] },
+      dateEcheance: { gte: echeance.dateEcheance },
+    },
+    orderBy: { dateEcheance: "asc" },
+    take: nombreMois,
+  });
+  if (echeances.length === 0) {
+    throw new AppError("Aucune échéance éligible à un enregistrement espèces", StatusCodes.BAD_REQUEST);
+  }
+  if (echeances[0]?.id !== echeanceId) {
+    throw new AppError("Veuillez commencer par la première échéance impayée", StatusCodes.BAD_REQUEST);
+  }
+  const ids = echeances.map((item) => item.id);
+  const montantTotal = echeances.reduce((sum, item) => sum + item.montant, 0);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updated = await (prisma.echeancierLoyer.update as any)({
-    where: { id: echeanceId },
+  await (prisma.echeancierLoyer.updateMany as any)({
+    where: { id: { in: ids } },
     data: {
       statut: "EN_ATTENTE_CONFIRMATION",
       datePaiement: data.datePaiement,
@@ -1014,6 +1183,27 @@ export const enregistrerPaiementEspeces = async (
       sourceEnregistrement: "PROPRIETAIRE",
     },
   });
+
+  await Promise.all(
+    echeances.map((item) =>
+      syncTransactionLoyer({
+        proprietaireId,
+        bienId,
+        bailId,
+        echeanceId: item.id,
+        locataireId: item.locataireId,
+        dateEcheance: item.dateEcheance,
+        montant: item.montant,
+        statut: "EN_ATTENTE",
+        modePaiement: "Espèces",
+        provider: "Espèces",
+        note: data.note ?? null,
+        metadata: {
+          sourceEnregistrement: "PROPRIETAIRE",
+        },
+      })
+    )
+  );
 
   // Notification locataire (fire-and-forget)
   prisma.bailLocation.findUnique({
@@ -1028,7 +1218,7 @@ export const enregistrerPaiementEspeces = async (
       locataireTelephone: bailFull.locataire.telephone,
       locataireEmail: bailFull.locataire.email,
       locataireNom: `${bailFull.locataire.prenom} ${bailFull.locataire.nom}`,
-      montant: echeance.montant,
+      montant: montantTotal,
       datePaiement: data.datePaiement.toISOString(),
       bienTitre: bailFull.bien?.titre,
       echeanceId,
@@ -1036,6 +1226,7 @@ export const enregistrerPaiementEspeces = async (
       bienId,
       proprietaireId,
       locataireId: echeance.locataireId,
+      nombreMois: echeances.length,
     }).catch(() => null);
 
     // Message interne au locataire
@@ -1043,11 +1234,11 @@ export const enregistrerPaiementEspeces = async (
       userId: echeance.locataireId, bailId, bienId,
       type: "PAIEMENT_ESPECES",
       titre: "Paiement espèces à confirmer",
-      corps: `Votre propriétaire a enregistré un paiement en espèces de ${echeance.montant.toLocaleString("fr-FR")} FCFA. Veuillez confirmer ce paiement.`,
+      corps: `Votre propriétaire a enregistré un paiement en espèces de ${montantTotal.toLocaleString("fr-FR")} FCFA${echeances.length > 1 ? ` pour ${echeances.length} mois` : ""}. Veuillez confirmer ce paiement.`,
     }).catch(() => null);
   }).catch(() => null);
 
-  return updated;
+  return prisma.echeancierLoyer.findUnique({ where: { id: echeanceId } });
 };
 
 /**
@@ -1076,6 +1267,25 @@ export const confirmerPaiementEspacesLocataire = async (
       statut: "PAYE",
       confirmeParLocataire: true,
       dateConfirmationLocataire: new Date(),
+    },
+  });
+
+  await syncTransactionLoyer({
+    proprietaireId: echeance.proprietaireId,
+    bienId: echeance.bienId,
+    bailId: echeance.bailId,
+    echeanceId,
+    locataireId,
+    dateEcheance: echeance.dateEcheance,
+    montant: echeance.montant,
+    statut: "CONFIRME",
+    modePaiement: echeance.modePaiement,
+    provider: echeance.modePaiement,
+    reference: echeance.reference,
+    note: echeance.note,
+    metadata: {
+      sourceEnregistrement: "PROPRIETAIRE",
+      confirmeParLocataire: true,
     },
   });
 
@@ -1157,6 +1367,23 @@ export const restituerCaution = async (
   await assertBienOwner(bienId, proprietaireId);
   const depot = await prisma.depotCaution.findUnique({ where: { bailId } });
   if (!depot) throw new AppError("Dépôt de caution introuvable", StatusCodes.NOT_FOUND);
+
+  const [edlEntree, edlSortie] = await Promise.all([
+    prisma.etatDesLieux.findUnique({
+      where: { bailId_type: { bailId, type: "ENTREE" as any } },
+      select: { id: true, statut: true },
+    }),
+    prisma.etatDesLieux.findUnique({
+      where: { bailId_type: { bailId, type: "SORTIE" as any } },
+      select: { id: true, statut: true },
+    }),
+  ]);
+  if (!edlEntree || edlEntree.statut !== "VALIDE" || !edlSortie || edlSortie.statut !== "VALIDE") {
+    throw new AppError(
+      "La caution ne peut être restituée qu'après des états des lieux d'entrée et de sortie validés.",
+      StatusCodes.BAD_REQUEST
+    );
+  }
 
   const statut = data.montantRestitue >= depot.montant
     ? "RESTITUE"

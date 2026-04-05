@@ -8,6 +8,7 @@ import type { StatutAnnonce } from "../generated/prisma/enums.js";
 import { prisma } from "../config/database.js";
 import { computeScoreForProprietaire } from "./trustScore.service.js";
 import { emitPropertyAlert, fetchAndEmitStatsGlobales } from "./socket.service.js";
+import { envoyerNotification } from "./notification.service.js";
 
 // ─── Types établissements ─────────────────────────────────────────────────────
 
@@ -336,12 +337,6 @@ export const deleteBien = async (bienId: string, proprietaireId: string) => {
   const bien = await BienRepository.getBienById(bienId);
   if (!bien) throw new AppError("Bien introuvable", StatusCodes.NOT_FOUND);
   if (bien.proprietaireId !== proprietaireId) throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
-  if (bien.statutAnnonce === "EN_ATTENTE" || bien.statutAnnonce === "PUBLIE") {
-    throw new AppError(
-      "Annulez ou dépubliez l'annonce avant de la supprimer",
-      StatusCodes.BAD_REQUEST
-    );
-  }
   const activeBail = await prisma.bailLocation.findFirst({
     where: { bienId, statut: "ACTIF" },
     select: { id: true },
@@ -427,9 +422,49 @@ export const validerAnnonce = async (
   const newStatut: StatutAnnonce = action === "APPROUVER" ? "PUBLIE" : "REJETE";
   const result = await BienRepository.updateStatutAnnonce(bienId, newStatut, note);
 
+  // Notification in-app au propriétaire
+  const proprietaire = result.proprietaire;
+  if (proprietaire) {
+    const bienTitre = result.titre ?? "votre annonce";
+    if (action === "APPROUVER") {
+      envoyerNotification({
+        type: "ANNONCE_VALIDEE",
+        telephone: proprietaire.telephone,
+        email: proprietaire.email,
+        sujet: "Annonce validée",
+        contenu: `Votre annonce "${bienTitre}" a été validée et est maintenant publiée sur SEEK Immobilier.`,
+        bienId,
+        proprietaireId: proprietaire.id,
+        noSmsEmail: true,
+      }).catch(() => null);
+    } else {
+      envoyerNotification({
+        type: "ANNONCE_REJETEE",
+        telephone: proprietaire.telephone,
+        email: proprietaire.email,
+        sujet: "Annonce rejetée",
+        contenu: `Votre annonce "${bienTitre}" a été rejetée${note ? ` : ${note}` : "."}`,
+        bienId,
+        proprietaireId: proprietaire.id,
+        noSmsEmail: true,
+      }).catch(() => null);
+    }
+  }
+
   // Alertes temps réel aux utilisateurs qui ont sauvegardé des critères
   if (action === "APPROUVER") {
     emitPropertyAlert(bienId).catch(() => null);
+
+    // Re-fetch établissements si la 1ère tentative (soumission) avait échoué
+    if (result.latitude && result.longitude && result.etablissements?.length === 0) {
+      fetchNearestEtablissements(result.latitude, result.longitude)
+        .then(async (etablissements) => {
+          if (etablissements.length === 0) return;
+          const withBienId = etablissements.map((e) => ({ ...e, bienId }));
+          await BienRepository.createEtablissements(withBienId);
+        })
+        .catch(() => {});
+    }
   }
 
   return result;

@@ -2,7 +2,7 @@ import { prisma } from "../config/database.js";
 export const findAll = async () => {
     const types = await prisma.typeLogement.findMany({
         where: { actif: true },
-        orderBy: { ordre: "asc" },
+        orderBy: { nom: "asc" },
     });
     // Pour chaque type, compter les biens publiés
     const typesWithCount = await Promise.all(types.map(async (type) => {

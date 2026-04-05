@@ -1,4 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/library";
+import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model Proprietaire
@@ -7,8 +8,18 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type ProprietaireModel = runtime.Types.Result.DefaultSelection<Prisma.$ProprietairePayload>;
 export type AggregateProprietaire = {
     _count: ProprietaireCountAggregateOutputType | null;
+    _avg: ProprietaireAvgAggregateOutputType | null;
+    _sum: ProprietaireSumAggregateOutputType | null;
     _min: ProprietaireMinAggregateOutputType | null;
     _max: ProprietaireMaxAggregateOutputType | null;
+};
+export type ProprietaireAvgAggregateOutputType = {
+    nbAvertissements: number | null;
+    nbSignalementsValides: number | null;
+};
+export type ProprietaireSumAggregateOutputType = {
+    nbAvertissements: number | null;
+    nbSignalementsValides: number | null;
 };
 export type ProprietaireMinAggregateOutputType = {
     id: string | null;
@@ -18,6 +29,22 @@ export type ProprietaireMinAggregateOutputType = {
     telephone: string | null;
     email: string | null;
     password: string | null;
+    statutVerification: $Enums.StatutVerification | null;
+    verifiedAt: Date | null;
+    telephoneVerifie: boolean | null;
+    telephoneOtp: string | null;
+    telephoneOtpExpiresAt: Date | null;
+    estSuspendu: boolean | null;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
+    nbAvertissements: number | null;
+    nbSignalementsValides: number | null;
+    estRestreint: boolean | null;
+    dateFinRestriction: Date | null;
+    dateFinSuspension: Date | null;
+    estBanni: boolean | null;
+    dateBannissement: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -29,6 +56,22 @@ export type ProprietaireMaxAggregateOutputType = {
     telephone: string | null;
     email: string | null;
     password: string | null;
+    statutVerification: $Enums.StatutVerification | null;
+    verifiedAt: Date | null;
+    telephoneVerifie: boolean | null;
+    telephoneOtp: string | null;
+    telephoneOtpExpiresAt: Date | null;
+    estSuspendu: boolean | null;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
+    nbAvertissements: number | null;
+    nbSignalementsValides: number | null;
+    estRestreint: boolean | null;
+    dateFinRestriction: Date | null;
+    dateFinSuspension: Date | null;
+    estBanni: boolean | null;
+    dateBannissement: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -40,9 +83,33 @@ export type ProprietaireCountAggregateOutputType = {
     telephone: number;
     email: number;
     password: number;
+    statutVerification: number;
+    verifiedAt: number;
+    telephoneVerifie: number;
+    telephoneOtp: number;
+    telephoneOtpExpiresAt: number;
+    estSuspendu: number;
+    motifSuspension: number;
+    dateSuspension: number;
+    suspenduPar: number;
+    nbAvertissements: number;
+    nbSignalementsValides: number;
+    estRestreint: number;
+    dateFinRestriction: number;
+    dateFinSuspension: number;
+    estBanni: number;
+    dateBannissement: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
+};
+export type ProprietaireAvgAggregateInputType = {
+    nbAvertissements?: true;
+    nbSignalementsValides?: true;
+};
+export type ProprietaireSumAggregateInputType = {
+    nbAvertissements?: true;
+    nbSignalementsValides?: true;
 };
 export type ProprietaireMinAggregateInputType = {
     id?: true;
@@ -52,6 +119,22 @@ export type ProprietaireMinAggregateInputType = {
     telephone?: true;
     email?: true;
     password?: true;
+    statutVerification?: true;
+    verifiedAt?: true;
+    telephoneVerifie?: true;
+    telephoneOtp?: true;
+    telephoneOtpExpiresAt?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
+    nbAvertissements?: true;
+    nbSignalementsValides?: true;
+    estRestreint?: true;
+    dateFinRestriction?: true;
+    dateFinSuspension?: true;
+    estBanni?: true;
+    dateBannissement?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -63,6 +146,22 @@ export type ProprietaireMaxAggregateInputType = {
     telephone?: true;
     email?: true;
     password?: true;
+    statutVerification?: true;
+    verifiedAt?: true;
+    telephoneVerifie?: true;
+    telephoneOtp?: true;
+    telephoneOtpExpiresAt?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
+    nbAvertissements?: true;
+    nbSignalementsValides?: true;
+    estRestreint?: true;
+    dateFinRestriction?: true;
+    dateFinSuspension?: true;
+    estBanni?: true;
+    dateBannissement?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -74,6 +173,22 @@ export type ProprietaireCountAggregateInputType = {
     telephone?: true;
     email?: true;
     password?: true;
+    statutVerification?: true;
+    verifiedAt?: true;
+    telephoneVerifie?: true;
+    telephoneOtp?: true;
+    telephoneOtpExpiresAt?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
+    nbAvertissements?: true;
+    nbSignalementsValides?: true;
+    estRestreint?: true;
+    dateFinRestriction?: true;
+    dateFinSuspension?: true;
+    estBanni?: true;
+    dateBannissement?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -116,6 +231,18 @@ export type ProprietaireAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: ProprietaireAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: ProprietaireSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ProprietaireMinAggregateInputType;
@@ -137,6 +264,8 @@ export type ProprietaireGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
     take?: number;
     skip?: number;
     _count?: ProprietaireCountAggregateInputType | true;
+    _avg?: ProprietaireAvgAggregateInputType;
+    _sum?: ProprietaireSumAggregateInputType;
     _min?: ProprietaireMinAggregateInputType;
     _max?: ProprietaireMaxAggregateInputType;
 };
@@ -148,9 +277,27 @@ export type ProprietaireGroupByOutputType = {
     telephone: string;
     email: string | null;
     password: string;
+    statutVerification: $Enums.StatutVerification;
+    verifiedAt: Date | null;
+    telephoneVerifie: boolean;
+    telephoneOtp: string | null;
+    telephoneOtpExpiresAt: Date | null;
+    estSuspendu: boolean;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
+    nbAvertissements: number;
+    nbSignalementsValides: number;
+    estRestreint: boolean;
+    dateFinRestriction: Date | null;
+    dateFinSuspension: Date | null;
+    estBanni: boolean;
+    dateBannissement: Date | null;
     createdAt: Date;
     updatedAt: Date;
     _count: ProprietaireCountAggregateOutputType | null;
+    _avg: ProprietaireAvgAggregateOutputType | null;
+    _sum: ProprietaireSumAggregateOutputType | null;
     _min: ProprietaireMinAggregateOutputType | null;
     _max: ProprietaireMaxAggregateOutputType | null;
 };
@@ -168,12 +315,36 @@ export type ProprietaireWhereInput = {
     telephone?: Prisma.StringFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
     password?: Prisma.StringFilter<"Proprietaire"> | string;
+    statutVerification?: Prisma.EnumStatutVerificationFilter<"Proprietaire"> | $Enums.StatutVerification;
+    verifiedAt?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    telephoneOtp?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    telephoneOtpExpiresAt?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    estSuspendu?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    motifSuspension?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    nbAvertissements?: Prisma.IntFilter<"Proprietaire"> | number;
+    nbSignalementsValides?: Prisma.IntFilter<"Proprietaire"> | number;
+    estRestreint?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    dateFinRestriction?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    dateFinSuspension?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    estBanni?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    dateBannissement?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
+    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
     biens?: Prisma.BienListRelationFilter;
-    locataires?: Prisma.LocataireListRelationFilter;
+    locataire?: Prisma.LocataireListRelationFilter;
     bails?: Prisma.BailLocationListRelationFilter;
+    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
+    transactions?: Prisma.TransactionListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    documentsBien?: Prisma.DocumentBienListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneListRelationFilter;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 };
 export type ProprietaireOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -183,12 +354,36 @@ export type ProprietaireOrderByWithRelationInput = {
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    statutVerification?: Prisma.SortOrder;
+    verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    telephoneVerifie?: Prisma.SortOrder;
+    telephoneOtp?: Prisma.SortOrderInput | Prisma.SortOrder;
+    telephoneOtpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrderInput | Prisma.SortOrder;
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
+    estRestreint?: Prisma.SortOrder;
+    dateFinRestriction?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateFinSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estBanni?: Prisma.SortOrder;
+    dateBannissement?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     refreshTokens?: Prisma.ProprietaireRefreshTokenOrderByRelationAggregateInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput;
     biens?: Prisma.BienOrderByRelationAggregateInput;
-    locataires?: Prisma.LocataireOrderByRelationAggregateInput;
+    locataire?: Prisma.LocataireOrderByRelationAggregateInput;
     bails?: Prisma.BailLocationOrderByRelationAggregateInput;
+    verification?: Prisma.VerificationDocumentsOrderByWithRelationInput;
+    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
+    promotionHistories?: Prisma.PromotionHistoryOrderByRelationAggregateInput;
+    documentsBien?: Prisma.DocumentBienOrderByRelationAggregateInput;
+    messagesInternes?: Prisma.MessageInterneOrderByRelationAggregateInput;
+    bailInvitations?: Prisma.BailInvitationOrderByRelationAggregateInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxOrderByRelationAggregateInput;
 };
 export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -201,12 +396,36 @@ export type ProprietaireWhereUniqueInput = Prisma.AtLeast<{
     nom?: Prisma.StringFilter<"Proprietaire"> | string;
     sexe?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
     password?: Prisma.StringFilter<"Proprietaire"> | string;
+    statutVerification?: Prisma.EnumStatutVerificationFilter<"Proprietaire"> | $Enums.StatutVerification;
+    verifiedAt?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    telephoneOtp?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    telephoneOtpExpiresAt?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    estSuspendu?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    motifSuspension?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableFilter<"Proprietaire"> | string | null;
+    nbAvertissements?: Prisma.IntFilter<"Proprietaire"> | number;
+    nbSignalementsValides?: Prisma.IntFilter<"Proprietaire"> | number;
+    estRestreint?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    dateFinRestriction?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    dateFinSuspension?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
+    estBanni?: Prisma.BoolFilter<"Proprietaire"> | boolean;
+    dateBannissement?: Prisma.DateTimeNullableFilter<"Proprietaire"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Proprietaire"> | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenListRelationFilter;
+    passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter;
     biens?: Prisma.BienListRelationFilter;
-    locataires?: Prisma.LocataireListRelationFilter;
+    locataire?: Prisma.LocataireListRelationFilter;
     bails?: Prisma.BailLocationListRelationFilter;
+    verification?: Prisma.XOR<Prisma.VerificationDocumentsNullableScalarRelationFilter, Prisma.VerificationDocumentsWhereInput> | null;
+    transactions?: Prisma.TransactionListRelationFilter;
+    promotionHistories?: Prisma.PromotionHistoryListRelationFilter;
+    documentsBien?: Prisma.DocumentBienListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneListRelationFilter;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 }, "id" | "telephone" | "email">;
 export type ProprietaireOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -216,11 +435,29 @@ export type ProprietaireOrderByWithAggregationInput = {
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrderInput | Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    statutVerification?: Prisma.SortOrder;
+    verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    telephoneVerifie?: Prisma.SortOrder;
+    telephoneOtp?: Prisma.SortOrderInput | Prisma.SortOrder;
+    telephoneOtpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrderInput | Prisma.SortOrder;
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
+    estRestreint?: Prisma.SortOrder;
+    dateFinRestriction?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateFinSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estBanni?: Prisma.SortOrder;
+    dateBannissement?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.ProprietaireCountOrderByAggregateInput;
+    _avg?: Prisma.ProprietaireAvgOrderByAggregateInput;
     _max?: Prisma.ProprietaireMaxOrderByAggregateInput;
     _min?: Prisma.ProprietaireMinOrderByAggregateInput;
+    _sum?: Prisma.ProprietaireSumOrderByAggregateInput;
 };
 export type ProprietaireScalarWhereWithAggregatesInput = {
     AND?: Prisma.ProprietaireScalarWhereWithAggregatesInput | Prisma.ProprietaireScalarWhereWithAggregatesInput[];
@@ -233,6 +470,22 @@ export type ProprietaireScalarWhereWithAggregatesInput = {
     telephone?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
     email?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
     password?: Prisma.StringWithAggregatesFilter<"Proprietaire"> | string;
+    statutVerification?: Prisma.EnumStatutVerificationWithAggregatesFilter<"Proprietaire"> | $Enums.StatutVerification;
+    verifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
+    telephoneVerifie?: Prisma.BoolWithAggregatesFilter<"Proprietaire"> | boolean;
+    telephoneOtp?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
+    telephoneOtpExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
+    estSuspendu?: Prisma.BoolWithAggregatesFilter<"Proprietaire"> | boolean;
+    motifSuspension?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableWithAggregatesFilter<"Proprietaire"> | string | null;
+    nbAvertissements?: Prisma.IntWithAggregatesFilter<"Proprietaire"> | number;
+    nbSignalementsValides?: Prisma.IntWithAggregatesFilter<"Proprietaire"> | number;
+    estRestreint?: Prisma.BoolWithAggregatesFilter<"Proprietaire"> | boolean;
+    dateFinRestriction?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
+    dateFinSuspension?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
+    estBanni?: Prisma.BoolWithAggregatesFilter<"Proprietaire"> | boolean;
+    dateBannissement?: Prisma.DateTimeNullableWithAggregatesFilter<"Proprietaire"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Proprietaire"> | Date | string;
 };
@@ -244,12 +497,36 @@ export type ProprietaireCreateInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateInput = {
     id?: string;
@@ -259,12 +536,36 @@ export type ProprietaireUncheckedCreateInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -274,12 +575,36 @@ export type ProprietaireUpdateInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -289,12 +614,36 @@ export type ProprietaireUncheckedUpdateInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateManyInput = {
     id?: string;
@@ -304,6 +653,22 @@ export type ProprietaireCreateManyInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -315,6 +680,22 @@ export type ProprietaireUpdateManyMutationInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -326,6 +707,22 @@ export type ProprietaireUncheckedUpdateManyInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -341,8 +738,28 @@ export type ProprietaireCountOrderByAggregateInput = {
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    statutVerification?: Prisma.SortOrder;
+    verifiedAt?: Prisma.SortOrder;
+    telephoneVerifie?: Prisma.SortOrder;
+    telephoneOtp?: Prisma.SortOrder;
+    telephoneOtpExpiresAt?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
+    estRestreint?: Prisma.SortOrder;
+    dateFinRestriction?: Prisma.SortOrder;
+    dateFinSuspension?: Prisma.SortOrder;
+    estBanni?: Prisma.SortOrder;
+    dateBannissement?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+};
+export type ProprietaireAvgOrderByAggregateInput = {
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
 };
 export type ProprietaireMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -352,6 +769,22 @@ export type ProprietaireMaxOrderByAggregateInput = {
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    statutVerification?: Prisma.SortOrder;
+    verifiedAt?: Prisma.SortOrder;
+    telephoneVerifie?: Prisma.SortOrder;
+    telephoneOtp?: Prisma.SortOrder;
+    telephoneOtpExpiresAt?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
+    estRestreint?: Prisma.SortOrder;
+    dateFinRestriction?: Prisma.SortOrder;
+    dateFinSuspension?: Prisma.SortOrder;
+    estBanni?: Prisma.SortOrder;
+    dateBannissement?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -363,8 +796,28 @@ export type ProprietaireMinOrderByAggregateInput = {
     telephone?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    statutVerification?: Prisma.SortOrder;
+    verifiedAt?: Prisma.SortOrder;
+    telephoneVerifie?: Prisma.SortOrder;
+    telephoneOtp?: Prisma.SortOrder;
+    telephoneOtpExpiresAt?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
+    estRestreint?: Prisma.SortOrder;
+    dateFinRestriction?: Prisma.SortOrder;
+    dateFinSuspension?: Prisma.SortOrder;
+    estBanni?: Prisma.SortOrder;
+    dateBannissement?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+};
+export type ProprietaireSumOrderByAggregateInput = {
+    nbAvertissements?: Prisma.SortOrder;
+    nbSignalementsValides?: Prisma.SortOrder;
 };
 export type ProprietaireCreateNestedOneWithoutBiensInput = {
     create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBiensInput, Prisma.ProprietaireUncheckedCreateWithoutBiensInput>;
@@ -378,17 +831,29 @@ export type ProprietaireUpdateOneRequiredWithoutBiensNestedInput = {
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutBiensInput, Prisma.ProprietaireUpdateWithoutBiensInput>, Prisma.ProprietaireUncheckedUpdateWithoutBiensInput>;
 };
-export type ProprietaireCreateNestedOneWithoutLocatairesInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocatairesInput, Prisma.ProprietaireUncheckedCreateWithoutLocatairesInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutLocatairesInput;
+export type ProprietaireCreateNestedOneWithoutDocumentsBienInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedCreateWithoutDocumentsBienInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutDocumentsBienInput;
     connect?: Prisma.ProprietaireWhereUniqueInput;
 };
-export type ProprietaireUpdateOneRequiredWithoutLocatairesNestedInput = {
-    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocatairesInput, Prisma.ProprietaireUncheckedCreateWithoutLocatairesInput>;
-    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutLocatairesInput;
-    upsert?: Prisma.ProprietaireUpsertWithoutLocatairesInput;
+export type ProprietaireUpdateOneRequiredWithoutDocumentsBienNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedCreateWithoutDocumentsBienInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutDocumentsBienInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutDocumentsBienInput;
     connect?: Prisma.ProprietaireWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutLocatairesInput, Prisma.ProprietaireUpdateWithoutLocatairesInput>, Prisma.ProprietaireUncheckedUpdateWithoutLocatairesInput>;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutDocumentsBienInput, Prisma.ProprietaireUpdateWithoutDocumentsBienInput>, Prisma.ProprietaireUncheckedUpdateWithoutDocumentsBienInput>;
+};
+export type ProprietaireCreateNestedOneWithoutLocataireInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocataireInput, Prisma.ProprietaireUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutLocataireInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutLocataireNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocataireInput, Prisma.ProprietaireUncheckedCreateWithoutLocataireInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutLocataireInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutLocataireInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutLocataireInput, Prisma.ProprietaireUpdateWithoutLocataireInput>, Prisma.ProprietaireUncheckedUpdateWithoutLocataireInput>;
 };
 export type ProprietaireCreateNestedOneWithoutBailsInput = {
     create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBailsInput, Prisma.ProprietaireUncheckedCreateWithoutBailsInput>;
@@ -402,6 +867,33 @@ export type ProprietaireUpdateOneRequiredWithoutBailsNestedInput = {
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutBailsInput, Prisma.ProprietaireUpdateWithoutBailsInput>, Prisma.ProprietaireUncheckedUpdateWithoutBailsInput>;
 };
+export type ProprietaireCreateNestedOneWithoutVerificationInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutVerificationInput, Prisma.ProprietaireUncheckedCreateWithoutVerificationInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutVerificationInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutVerificationNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutVerificationInput, Prisma.ProprietaireUncheckedCreateWithoutVerificationInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutVerificationInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutVerificationInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutVerificationInput, Prisma.ProprietaireUpdateWithoutVerificationInput>, Prisma.ProprietaireUncheckedUpdateWithoutVerificationInput>;
+};
+export type EnumStatutVerificationFieldUpdateOperationsInput = {
+    set?: $Enums.StatutVerification;
+};
+export type ProprietaireCreateNestedOneWithoutMessagesInternesInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedCreateWithoutMessagesInternesInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutMessagesInternesInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutMessagesInternesNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedCreateWithoutMessagesInternesInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutMessagesInternesInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutMessagesInternesInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutMessagesInternesInput, Prisma.ProprietaireUpdateWithoutMessagesInternesInput>, Prisma.ProprietaireUncheckedUpdateWithoutMessagesInternesInput>;
+};
 export type ProprietaireCreateNestedOneWithoutRefreshTokensInput = {
     create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutRefreshTokensInput, Prisma.ProprietaireUncheckedCreateWithoutRefreshTokensInput>;
     connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutRefreshTokensInput;
@@ -414,6 +906,66 @@ export type ProprietaireUpdateOneRequiredWithoutRefreshTokensNestedInput = {
     connect?: Prisma.ProprietaireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.ProprietaireUpdateWithoutRefreshTokensInput>, Prisma.ProprietaireUncheckedUpdateWithoutRefreshTokensInput>;
 };
+export type ProprietaireCreateNestedOneWithoutPasswordResetTokensInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetTokensInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPasswordResetTokensInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetTokensInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPasswordResetTokensInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutPasswordResetTokensInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.ProprietaireUpdateWithoutPasswordResetTokensInput>, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput>;
+};
+export type ProprietaireCreateNestedOneWithoutTransactionsInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutTransactionsInput, Prisma.ProprietaireUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutTransactionsInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutTransactionsInput, Prisma.ProprietaireUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutTransactionsInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutTransactionsInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutTransactionsInput, Prisma.ProprietaireUpdateWithoutTransactionsInput>, Prisma.ProprietaireUncheckedUpdateWithoutTransactionsInput>;
+};
+export type ProprietaireCreateNestedOneWithoutPromotionHistoriesInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedCreateWithoutPromotionHistoriesInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPromotionHistoriesInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutPromotionHistoriesNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedCreateWithoutPromotionHistoriesInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutPromotionHistoriesInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutPromotionHistoriesInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutPromotionHistoriesInput, Prisma.ProprietaireUpdateWithoutPromotionHistoriesInput>, Prisma.ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput>;
+};
+export type ProprietaireCreateNestedOneWithoutBailInvitationsInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedCreateWithoutBailInvitationsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutBailInvitationsInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutBailInvitationsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedCreateWithoutBailInvitationsInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutBailInvitationsInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutBailInvitationsInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutBailInvitationsInput, Prisma.ProprietaireUpdateWithoutBailInvitationsInput>, Prisma.ProprietaireUncheckedUpdateWithoutBailInvitationsInput>;
+};
+export type ProprietaireCreateNestedOneWithoutEtatsDesLieuxInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutEtatsDesLieuxInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+};
+export type ProprietaireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput = {
+    create?: Prisma.XOR<Prisma.ProprietaireCreateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.ProprietaireCreateOrConnectWithoutEtatsDesLieuxInput;
+    upsert?: Prisma.ProprietaireUpsertWithoutEtatsDesLieuxInput;
+    connect?: Prisma.ProprietaireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProprietaireUpdateToOneWithWhereWithoutEtatsDesLieuxInput, Prisma.ProprietaireUpdateWithoutEtatsDesLieuxInput>, Prisma.ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
 export type ProprietaireCreateWithoutBiensInput = {
     id?: string;
     prenom: string;
@@ -422,11 +974,35 @@ export type ProprietaireCreateWithoutBiensInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutBiensInput = {
     id?: string;
@@ -436,11 +1012,35 @@ export type ProprietaireUncheckedCreateWithoutBiensInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutBiensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -463,11 +1063,35 @@ export type ProprietaireUpdateWithoutBiensInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutBiensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -477,13 +1101,37 @@ export type ProprietaireUncheckedUpdateWithoutBiensInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
-export type ProprietaireCreateWithoutLocatairesInput = {
+export type ProprietaireCreateWithoutDocumentsBienInput = {
     id?: string;
     prenom: string;
     nom: string;
@@ -491,13 +1139,37 @@ export type ProprietaireCreateWithoutLocatairesInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
 };
-export type ProprietaireUncheckedCreateWithoutLocatairesInput = {
+export type ProprietaireUncheckedCreateWithoutDocumentsBienInput = {
     id?: string;
     prenom: string;
     nom: string;
@@ -505,26 +1177,50 @@ export type ProprietaireUncheckedCreateWithoutLocatairesInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
 };
-export type ProprietaireCreateOrConnectWithoutLocatairesInput = {
+export type ProprietaireCreateOrConnectWithoutDocumentsBienInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocatairesInput, Prisma.ProprietaireUncheckedCreateWithoutLocatairesInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedCreateWithoutDocumentsBienInput>;
 };
-export type ProprietaireUpsertWithoutLocatairesInput = {
-    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutLocatairesInput, Prisma.ProprietaireUncheckedUpdateWithoutLocatairesInput>;
-    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocatairesInput, Prisma.ProprietaireUncheckedCreateWithoutLocatairesInput>;
+export type ProprietaireUpsertWithoutDocumentsBienInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedUpdateWithoutDocumentsBienInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedCreateWithoutDocumentsBienInput>;
     where?: Prisma.ProprietaireWhereInput;
 };
-export type ProprietaireUpdateToOneWithWhereWithoutLocatairesInput = {
+export type ProprietaireUpdateToOneWithWhereWithoutDocumentsBienInput = {
     where?: Prisma.ProprietaireWhereInput;
-    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutLocatairesInput, Prisma.ProprietaireUncheckedUpdateWithoutLocatairesInput>;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutDocumentsBienInput, Prisma.ProprietaireUncheckedUpdateWithoutDocumentsBienInput>;
 };
-export type ProprietaireUpdateWithoutLocatairesInput = {
+export type ProprietaireUpdateWithoutDocumentsBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     prenom?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -532,13 +1228,37 @@ export type ProprietaireUpdateWithoutLocatairesInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
 };
-export type ProprietaireUncheckedUpdateWithoutLocatairesInput = {
+export type ProprietaireUncheckedUpdateWithoutDocumentsBienInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     prenom?: Prisma.StringFieldUpdateOperationsInput | string;
     nom?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -546,11 +1266,200 @@ export type ProprietaireUncheckedUpdateWithoutLocatairesInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutLocataireInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutLocataireInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutLocataireInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocataireInput, Prisma.ProprietaireUncheckedCreateWithoutLocataireInput>;
+};
+export type ProprietaireUpsertWithoutLocataireInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutLocataireInput, Prisma.ProprietaireUncheckedUpdateWithoutLocataireInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutLocataireInput, Prisma.ProprietaireUncheckedCreateWithoutLocataireInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutLocataireInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutLocataireInput, Prisma.ProprietaireUncheckedUpdateWithoutLocataireInput>;
+};
+export type ProprietaireUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutLocataireInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutBailsInput = {
     id?: string;
@@ -560,11 +1469,35 @@ export type ProprietaireCreateWithoutBailsInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutBailsInput = {
     id?: string;
@@ -574,11 +1507,35 @@ export type ProprietaireUncheckedCreateWithoutBailsInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutBailsInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -601,11 +1558,35 @@ export type ProprietaireUpdateWithoutBailsInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutBailsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -615,11 +1596,365 @@ export type ProprietaireUncheckedUpdateWithoutBailsInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutVerificationInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutVerificationInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutVerificationInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutVerificationInput, Prisma.ProprietaireUncheckedCreateWithoutVerificationInput>;
+};
+export type ProprietaireUpsertWithoutVerificationInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutVerificationInput, Prisma.ProprietaireUncheckedUpdateWithoutVerificationInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutVerificationInput, Prisma.ProprietaireUncheckedCreateWithoutVerificationInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutVerificationInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutVerificationInput, Prisma.ProprietaireUncheckedUpdateWithoutVerificationInput>;
+};
+export type ProprietaireUpdateWithoutVerificationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutVerificationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutMessagesInternesInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutMessagesInternesInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutMessagesInternesInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedCreateWithoutMessagesInternesInput>;
+};
+export type ProprietaireUpsertWithoutMessagesInternesInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedUpdateWithoutMessagesInternesInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedCreateWithoutMessagesInternesInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutMessagesInternesInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutMessagesInternesInput, Prisma.ProprietaireUncheckedUpdateWithoutMessagesInternesInput>;
+};
+export type ProprietaireUpdateWithoutMessagesInternesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutMessagesInternesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -629,11 +1964,35 @@ export type ProprietaireCreateWithoutRefreshTokensInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -643,11 +2002,35 @@ export type ProprietaireUncheckedCreateWithoutRefreshTokensInput = {
     telephone: string;
     email?: string | null;
     password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
     biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
-    locataires?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
 };
 export type ProprietaireCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.ProprietaireWhereUniqueInput;
@@ -670,11 +2053,35 @@ export type ProprietaireUpdateWithoutRefreshTokensInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
 };
 export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -684,26 +2091,889 @@ export type ProprietaireUncheckedUpdateWithoutRefreshTokensInput = {
     telephone?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
     biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
-    locataires?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutPasswordResetTokensInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutPasswordResetTokensInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutPasswordResetTokensInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetTokensInput>;
+};
+export type ProprietaireUpsertWithoutPasswordResetTokensInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedCreateWithoutPasswordResetTokensInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPasswordResetTokensInput, Prisma.ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput>;
+};
+export type ProprietaireUpdateWithoutPasswordResetTokensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutPasswordResetTokensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutTransactionsInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutTransactionsInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutTransactionsInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutTransactionsInput, Prisma.ProprietaireUncheckedCreateWithoutTransactionsInput>;
+};
+export type ProprietaireUpsertWithoutTransactionsInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutTransactionsInput, Prisma.ProprietaireUncheckedUpdateWithoutTransactionsInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutTransactionsInput, Prisma.ProprietaireUncheckedCreateWithoutTransactionsInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutTransactionsInput, Prisma.ProprietaireUncheckedUpdateWithoutTransactionsInput>;
+};
+export type ProprietaireUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutPromotionHistoriesInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutPromotionHistoriesInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutPromotionHistoriesInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedCreateWithoutPromotionHistoriesInput>;
+};
+export type ProprietaireUpsertWithoutPromotionHistoriesInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedCreateWithoutPromotionHistoriesInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutPromotionHistoriesInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutPromotionHistoriesInput, Prisma.ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput>;
+};
+export type ProprietaireUpdateWithoutPromotionHistoriesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutPromotionHistoriesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutBailInvitationsInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutBailInvitationsInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutBailInvitationsInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedCreateWithoutBailInvitationsInput>;
+};
+export type ProprietaireUpsertWithoutBailInvitationsInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedUpdateWithoutBailInvitationsInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedCreateWithoutBailInvitationsInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutBailInvitationsInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutBailInvitationsInput, Prisma.ProprietaireUncheckedUpdateWithoutBailInvitationsInput>;
+};
+export type ProprietaireUpdateWithoutBailInvitationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutBailInvitationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    prenom: string;
+    nom: string;
+    sexe?: string | null;
+    telephone: string;
+    email?: string | null;
+    password: string;
+    statutVerification?: $Enums.StatutVerification;
+    verifiedAt?: Date | string | null;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: string | null;
+    telephoneOtpExpiresAt?: Date | string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    nbAvertissements?: number;
+    nbSignalementsValides?: number;
+    estRestreint?: boolean;
+    dateFinRestriction?: Date | string | null;
+    dateFinSuspension?: Date | string | null;
+    estBanni?: boolean;
+    dateBannissement?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutProprietaireInput;
+    biens?: Prisma.BienUncheckedCreateNestedManyWithoutProprietaireInput;
+    locataire?: Prisma.LocataireUncheckedCreateNestedManyWithoutProprietaireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutProprietaireInput;
+    verification?: Prisma.VerificationDocumentsUncheckedCreateNestedOneWithoutProprietaireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutProprietaireInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedCreateNestedManyWithoutProprietaireInput;
+    documentsBien?: Prisma.DocumentBienUncheckedCreateNestedManyWithoutProprietaireInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedCreateNestedManyWithoutProprietaireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutProprietaireInput;
+};
+export type ProprietaireCreateOrConnectWithoutEtatsDesLieuxInput = {
+    where: Prisma.ProprietaireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput>;
+};
+export type ProprietaireUpsertWithoutEtatsDesLieuxInput = {
+    update: Prisma.XOR<Prisma.ProprietaireUpdateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+    create: Prisma.XOR<Prisma.ProprietaireCreateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    where?: Prisma.ProprietaireWhereInput;
+};
+export type ProprietaireUpdateToOneWithWhereWithoutEtatsDesLieuxInput = {
+    where?: Prisma.ProprietaireWhereInput;
+    data: Prisma.XOR<Prisma.ProprietaireUpdateWithoutEtatsDesLieuxInput, Prisma.ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
+export type ProprietaireUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutProprietaireNestedInput;
+};
+export type ProprietaireUncheckedUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    statutVerification?: Prisma.EnumStatutVerificationFieldUpdateOperationsInput | $Enums.StatutVerification;
+    verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    telephoneVerifie?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    telephoneOtp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    telephoneOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbAvertissements?: Prisma.IntFieldUpdateOperationsInput | number;
+    nbSignalementsValides?: Prisma.IntFieldUpdateOperationsInput | number;
+    estRestreint?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateFinRestriction?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateFinSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    estBanni?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateBannissement?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    refreshTokens?: Prisma.ProprietaireRefreshTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutProprietaireNestedInput;
+    biens?: Prisma.BienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    locataire?: Prisma.LocataireUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutProprietaireNestedInput;
+    verification?: Prisma.VerificationDocumentsUncheckedUpdateOneWithoutProprietaireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutProprietaireNestedInput;
+    promotionHistories?: Prisma.PromotionHistoryUncheckedUpdateManyWithoutProprietaireNestedInput;
+    documentsBien?: Prisma.DocumentBienUncheckedUpdateManyWithoutProprietaireNestedInput;
+    messagesInternes?: Prisma.MessageInterneUncheckedUpdateManyWithoutProprietaireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutProprietaireNestedInput;
 };
 /**
  * Count Type ProprietaireCountOutputType
  */
 export type ProprietaireCountOutputType = {
     refreshTokens: number;
+    passwordResetTokens: number;
     biens: number;
-    locataires: number;
+    locataire: number;
     bails: number;
+    transactions: number;
+    promotionHistories: number;
+    documentsBien: number;
+    messagesInternes: number;
+    bailInvitations: number;
+    etatsDesLieux: number;
 };
 export type ProprietaireCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | ProprietaireCountOutputTypeCountRefreshTokensArgs;
+    passwordResetTokens?: boolean | ProprietaireCountOutputTypeCountPasswordResetTokensArgs;
     biens?: boolean | ProprietaireCountOutputTypeCountBiensArgs;
-    locataires?: boolean | ProprietaireCountOutputTypeCountLocatairesArgs;
+    locataire?: boolean | ProprietaireCountOutputTypeCountLocataireArgs;
     bails?: boolean | ProprietaireCountOutputTypeCountBailsArgs;
+    transactions?: boolean | ProprietaireCountOutputTypeCountTransactionsArgs;
+    promotionHistories?: boolean | ProprietaireCountOutputTypeCountPromotionHistoriesArgs;
+    documentsBien?: boolean | ProprietaireCountOutputTypeCountDocumentsBienArgs;
+    messagesInternes?: boolean | ProprietaireCountOutputTypeCountMessagesInternesArgs;
+    bailInvitations?: boolean | ProprietaireCountOutputTypeCountBailInvitationsArgs;
+    etatsDesLieux?: boolean | ProprietaireCountOutputTypeCountEtatsDesLieuxArgs;
 };
 /**
  * ProprietaireCountOutputType without action
@@ -723,13 +2993,19 @@ export type ProprietaireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends ru
 /**
  * ProprietaireCountOutputType without action
  */
+export type ProprietaireCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PasswordResetTokenWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
 export type ProprietaireCountOutputTypeCountBiensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.BienWhereInput;
 };
 /**
  * ProprietaireCountOutputType without action
  */
-export type ProprietaireCountOutputTypeCountLocatairesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ProprietaireCountOutputTypeCountLocataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.LocataireWhereInput;
 };
 /**
@@ -737,6 +3013,42 @@ export type ProprietaireCountOutputTypeCountLocatairesArgs<ExtArgs extends runti
  */
 export type ProprietaireCountOutputTypeCountBailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.BailLocationWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountPromotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PromotionHistoryWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountDocumentsBienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.DocumentBienWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountMessagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MessageInterneWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BailInvitationWhereInput;
+};
+/**
+ * ProprietaireCountOutputType without action
+ */
+export type ProprietaireCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EtatDesLieuxWhereInput;
 };
 export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -746,12 +3058,36 @@ export type ProprietaireSelect<ExtArgs extends runtime.Types.Extensions.Internal
     telephone?: boolean;
     email?: boolean;
     password?: boolean;
+    statutVerification?: boolean;
+    verifiedAt?: boolean;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: boolean;
+    telephoneOtpExpiresAt?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
+    nbAvertissements?: boolean;
+    nbSignalementsValides?: boolean;
+    estRestreint?: boolean;
+    dateFinRestriction?: boolean;
+    dateFinSuspension?: boolean;
+    estBanni?: boolean;
+    dateBannissement?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
     biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
-    locataires?: boolean | Prisma.Proprietaire$locatairesArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
     bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
+    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
+    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
+    bailInvitations?: boolean | Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -762,6 +3098,22 @@ export type ProprietaireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
     telephone?: boolean;
     email?: boolean;
     password?: boolean;
+    statutVerification?: boolean;
+    verifiedAt?: boolean;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: boolean;
+    telephoneOtpExpiresAt?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
+    nbAvertissements?: boolean;
+    nbSignalementsValides?: boolean;
+    estRestreint?: boolean;
+    dateFinRestriction?: boolean;
+    dateFinSuspension?: boolean;
+    estBanni?: boolean;
+    dateBannissement?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["proprietaire"]>;
@@ -773,6 +3125,22 @@ export type ProprietaireSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
     telephone?: boolean;
     email?: boolean;
     password?: boolean;
+    statutVerification?: boolean;
+    verifiedAt?: boolean;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: boolean;
+    telephoneOtpExpiresAt?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
+    nbAvertissements?: boolean;
+    nbSignalementsValides?: boolean;
+    estRestreint?: boolean;
+    dateFinRestriction?: boolean;
+    dateFinSuspension?: boolean;
+    estBanni?: boolean;
+    dateBannissement?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["proprietaire"]>;
@@ -784,15 +3152,39 @@ export type ProprietaireSelectScalar = {
     telephone?: boolean;
     email?: boolean;
     password?: boolean;
+    statutVerification?: boolean;
+    verifiedAt?: boolean;
+    telephoneVerifie?: boolean;
+    telephoneOtp?: boolean;
+    telephoneOtpExpiresAt?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
+    nbAvertissements?: boolean;
+    nbSignalementsValides?: boolean;
+    estRestreint?: boolean;
+    dateFinRestriction?: boolean;
+    dateFinSuspension?: boolean;
+    estBanni?: boolean;
+    dateBannissement?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "prenom" | "nom" | "sexe" | "telephone" | "email" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["proprietaire"]>;
+export type ProprietaireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "prenom" | "nom" | "sexe" | "telephone" | "email" | "password" | "statutVerification" | "verifiedAt" | "telephoneVerifie" | "telephoneOtp" | "telephoneOtpExpiresAt" | "estSuspendu" | "motifSuspension" | "dateSuspension" | "suspenduPar" | "nbAvertissements" | "nbSignalementsValides" | "estRestreint" | "dateFinRestriction" | "dateFinSuspension" | "estBanni" | "dateBannissement" | "createdAt" | "updatedAt", ExtArgs["result"]["proprietaire"]>;
 export type ProprietaireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     refreshTokens?: boolean | Prisma.Proprietaire$refreshTokensArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>;
     biens?: boolean | Prisma.Proprietaire$biensArgs<ExtArgs>;
-    locataires?: boolean | Prisma.Proprietaire$locatairesArgs<ExtArgs>;
+    locataire?: boolean | Prisma.Proprietaire$locataireArgs<ExtArgs>;
     bails?: boolean | Prisma.Proprietaire$bailsArgs<ExtArgs>;
+    verification?: boolean | Prisma.Proprietaire$verificationArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Proprietaire$transactionsArgs<ExtArgs>;
+    promotionHistories?: boolean | Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>;
+    documentsBien?: boolean | Prisma.Proprietaire$documentsBienArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Proprietaire$messagesInternesArgs<ExtArgs>;
+    bailInvitations?: boolean | Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>;
     _count?: boolean | Prisma.ProprietaireCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProprietaireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -801,9 +3193,17 @@ export type $ProprietairePayload<ExtArgs extends runtime.Types.Extensions.Intern
     name: "Proprietaire";
     objects: {
         refreshTokens: Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>[];
+        passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[];
         biens: Prisma.$BienPayload<ExtArgs>[];
-        locataires: Prisma.$LocatairePayload<ExtArgs>[];
+        locataire: Prisma.$LocatairePayload<ExtArgs>[];
         bails: Prisma.$BailLocationPayload<ExtArgs>[];
+        verification: Prisma.$VerificationDocumentsPayload<ExtArgs> | null;
+        transactions: Prisma.$TransactionPayload<ExtArgs>[];
+        promotionHistories: Prisma.$PromotionHistoryPayload<ExtArgs>[];
+        documentsBien: Prisma.$DocumentBienPayload<ExtArgs>[];
+        messagesInternes: Prisma.$MessageInternePayload<ExtArgs>[];
+        bailInvitations: Prisma.$BailInvitationPayload<ExtArgs>[];
+        etatsDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -813,6 +3213,22 @@ export type $ProprietairePayload<ExtArgs extends runtime.Types.Extensions.Intern
         telephone: string;
         email: string | null;
         password: string;
+        statutVerification: $Enums.StatutVerification;
+        verifiedAt: Date | null;
+        telephoneVerifie: boolean;
+        telephoneOtp: string | null;
+        telephoneOtpExpiresAt: Date | null;
+        estSuspendu: boolean;
+        motifSuspension: string | null;
+        dateSuspension: Date | null;
+        suspenduPar: string | null;
+        nbAvertissements: number;
+        nbSignalementsValides: number;
+        estRestreint: boolean;
+        dateFinRestriction: Date | null;
+        dateFinSuspension: Date | null;
+        estBanni: boolean;
+        dateBannissement: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["proprietaire"]>;
@@ -1145,9 +3561,17 @@ export interface ProprietaireDelegate<ExtArgs extends runtime.Types.Extensions.I
 export interface Prisma__ProprietaireClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     refreshTokens<T extends Prisma.Proprietaire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProprietaireRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    passwordResetTokens<T extends Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     biens<T extends Prisma.Proprietaire$biensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$biensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    locataires<T extends Prisma.Proprietaire$locatairesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$locatairesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    locataire<T extends Prisma.Proprietaire$locataireArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$locataireArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     bails<T extends Prisma.Proprietaire$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    verification<T extends Prisma.Proprietaire$verificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$verificationArgs<ExtArgs>>): Prisma.Prisma__VerificationDocumentsClient<runtime.Types.Result.GetResult<Prisma.$VerificationDocumentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    transactions<T extends Prisma.Proprietaire$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    promotionHistories<T extends Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$promotionHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    documentsBien<T extends Prisma.Proprietaire$documentsBienArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$documentsBienArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentBienPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    messagesInternes<T extends Prisma.Proprietaire$messagesInternesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$messagesInternesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInternePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    bailInvitations<T extends Prisma.Proprietaire$bailInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$bailInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    etatsDesLieux<T extends Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Proprietaire$etatsDesLieuxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1180,6 +3604,22 @@ export interface ProprietaireFieldRefs {
     readonly telephone: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly email: Prisma.FieldRef<"Proprietaire", 'String'>;
     readonly password: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly statutVerification: Prisma.FieldRef<"Proprietaire", 'StatutVerification'>;
+    readonly verifiedAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly telephoneVerifie: Prisma.FieldRef<"Proprietaire", 'Boolean'>;
+    readonly telephoneOtp: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly telephoneOtpExpiresAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly estSuspendu: Prisma.FieldRef<"Proprietaire", 'Boolean'>;
+    readonly motifSuspension: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly dateSuspension: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly suspenduPar: Prisma.FieldRef<"Proprietaire", 'String'>;
+    readonly nbAvertissements: Prisma.FieldRef<"Proprietaire", 'Int'>;
+    readonly nbSignalementsValides: Prisma.FieldRef<"Proprietaire", 'Int'>;
+    readonly estRestreint: Prisma.FieldRef<"Proprietaire", 'Boolean'>;
+    readonly dateFinRestriction: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly dateFinSuspension: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
+    readonly estBanni: Prisma.FieldRef<"Proprietaire", 'Boolean'>;
+    readonly dateBannissement: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Proprietaire", 'DateTime'>;
 }
@@ -1576,6 +4016,29 @@ export type Proprietaire$refreshTokensArgs<ExtArgs extends runtime.Types.Extensi
     distinct?: Prisma.ProprietaireRefreshTokenScalarFieldEnum | Prisma.ProprietaireRefreshTokenScalarFieldEnum[];
 };
 /**
+ * Proprietaire.passwordResetTokens
+ */
+export type Proprietaire$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null;
+    where?: Prisma.PasswordResetTokenWhereInput;
+    orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[];
+    cursor?: Prisma.PasswordResetTokenWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[];
+};
+/**
  * Proprietaire.biens
  */
 export type Proprietaire$biensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1599,9 +4062,9 @@ export type Proprietaire$biensArgs<ExtArgs extends runtime.Types.Extensions.Inte
     distinct?: Prisma.BienScalarFieldEnum | Prisma.BienScalarFieldEnum[];
 };
 /**
- * Proprietaire.locataires
+ * Proprietaire.locataire
  */
-export type Proprietaire$locatairesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Proprietaire$locataireArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Locataire
      */
@@ -1643,6 +4106,162 @@ export type Proprietaire$bailsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.BailLocationScalarFieldEnum | Prisma.BailLocationScalarFieldEnum[];
+};
+/**
+ * Proprietaire.verification
+ */
+export type Proprietaire$verificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationDocuments
+     */
+    select?: Prisma.VerificationDocumentsSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VerificationDocuments
+     */
+    omit?: Prisma.VerificationDocumentsOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VerificationDocumentsInclude<ExtArgs> | null;
+    where?: Prisma.VerificationDocumentsWhereInput;
+};
+/**
+ * Proprietaire.transactions
+ */
+export type Proprietaire$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Proprietaire.promotionHistories
+ */
+export type Proprietaire$promotionHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PromotionHistory
+     */
+    select?: Prisma.PromotionHistorySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the PromotionHistory
+     */
+    omit?: Prisma.PromotionHistoryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.PromotionHistoryInclude<ExtArgs> | null;
+    where?: Prisma.PromotionHistoryWhereInput;
+    orderBy?: Prisma.PromotionHistoryOrderByWithRelationInput | Prisma.PromotionHistoryOrderByWithRelationInput[];
+    cursor?: Prisma.PromotionHistoryWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PromotionHistoryScalarFieldEnum | Prisma.PromotionHistoryScalarFieldEnum[];
+};
+/**
+ * Proprietaire.documentsBien
+ */
+export type Proprietaire$documentsBienArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocumentBien
+     */
+    select?: Prisma.DocumentBienSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DocumentBien
+     */
+    omit?: Prisma.DocumentBienOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DocumentBienInclude<ExtArgs> | null;
+    where?: Prisma.DocumentBienWhereInput;
+    orderBy?: Prisma.DocumentBienOrderByWithRelationInput | Prisma.DocumentBienOrderByWithRelationInput[];
+    cursor?: Prisma.DocumentBienWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.DocumentBienScalarFieldEnum | Prisma.DocumentBienScalarFieldEnum[];
+};
+/**
+ * Proprietaire.messagesInternes
+ */
+export type Proprietaire$messagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterne
+     */
+    select?: Prisma.MessageInterneSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterne
+     */
+    omit?: Prisma.MessageInterneOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneInclude<ExtArgs> | null;
+    where?: Prisma.MessageInterneWhereInput;
+    orderBy?: Prisma.MessageInterneOrderByWithRelationInput | Prisma.MessageInterneOrderByWithRelationInput[];
+    cursor?: Prisma.MessageInterneWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.MessageInterneScalarFieldEnum | Prisma.MessageInterneScalarFieldEnum[];
+};
+/**
+ * Proprietaire.bailInvitations
+ */
+export type Proprietaire$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailInvitation
+     */
+    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BailInvitation
+     */
+    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
+    where?: Prisma.BailInvitationWhereInput;
+    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
+    cursor?: Prisma.BailInvitationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
+};
+/**
+ * Proprietaire.etatsDesLieux
+ */
+export type Proprietaire$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EtatDesLieux
+     */
+    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EtatDesLieux
+     */
+    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
+    where?: Prisma.EtatDesLieuxWhereInput;
+    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
+    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
 };
 /**
  * Proprietaire without action

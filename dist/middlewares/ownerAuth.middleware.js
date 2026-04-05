@@ -1,7 +1,28 @@
 import { StatusCodes } from "http-status-codes";
 import { verifyOwnerAccessToken } from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
-export const authenticateOwner = (req, res, next) => {
+import * as OwnerRepo from "../repositories/owner.repository.js";
+// Middleware optionnel - ne rejette pas si pas de token
+export const optionalAuthOwner = async (req, _res, next) => {
+    let token = req.cookies?.ownerAccessToken;
+    if (!token) {
+        const authHeader = req.headers.authorization;
+        if (authHeader?.startsWith("Bearer "))
+            token = authHeader.slice(7);
+    }
+    if (token) {
+        try {
+            const payload = verifyOwnerAccessToken(token);
+            const proprietaire = await OwnerRepo.findById(payload.sub);
+            if (proprietaire && !proprietaire.estSuspendu) {
+                req.owner = { id: payload.sub, prenom: payload.prenom, nom: payload.nom };
+            }
+        }
+        catch { /* token invalide, on continue sans auth */ }
+    }
+    next();
+};
+export const authenticateOwner = async (req, res, next) => {
     let token = req.cookies?.ownerAccessToken;
     if (!token) {
         const authHeader = req.headers.authorization;
@@ -15,6 +36,24 @@ export const authenticateOwner = (req, res, next) => {
     }
     try {
         const payload = verifyOwnerAccessToken(token);
+        // Vérifier si le compte n'est pas suspendu
+        const proprietaire = await OwnerRepo.findById(payload.sub);
+        if (!proprietaire) {
+            res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "unauthorized", message: "Compte introuvable" }));
+            return;
+        }
+        if (proprietaire.estSuspendu) {
+            res.status(StatusCodes.FORBIDDEN).json(jsonResponse({
+                status: "error",
+                message: "Votre compte a été suspendu",
+                data: {
+                    suspendu: true,
+                    motif: proprietaire.motifSuspension,
+                    dateSuspension: proprietaire.dateSuspension,
+                },
+            }));
+            return;
+        }
         req.owner = { id: payload.sub, prenom: payload.prenom, nom: payload.nom };
         next();
     }

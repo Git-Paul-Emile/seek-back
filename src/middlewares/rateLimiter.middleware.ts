@@ -1,5 +1,7 @@
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 
+const shouldSkipSensitiveRateLimit = () => process.env.NODE_ENV !== "production";
+
 /**
  * Rate limiter global - 500 requêtes par 15 minutes
  */
@@ -21,6 +23,7 @@ export const limiteurGlobal = rateLimit({
 export const limiteurAuth = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 10,
+  skip: shouldSkipSensitiveRateLimit,
   message: {
     success: false,
     message: "Trop de tentatives, veuillez réessayer dans 15 minutes",
@@ -41,6 +44,7 @@ export const limiteurAuth = rateLimit({
 export const limiteurOtp = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 heure
   max: 5,
+  skip: shouldSkipSensitiveRateLimit,
   message: {
     success: false,
     message: "Trop de demandes de code, veuillez réessayer dans une heure",
@@ -61,6 +65,7 @@ export const limiteurOtp = rateLimit({
 export const limiteurStrict = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,
+  skip: shouldSkipSensitiveRateLimit,
   message: {
     success: false,
     message: "Opération trop fréquente, veuillez réessayer plus tard",
@@ -76,6 +81,7 @@ export const limiteurStrict = rateLimit({
 export const limiteurRefresh = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 heure
   max: 30,
+  skip: shouldSkipSensitiveRateLimit,
   message: {
     success: false,
     message: "Trop de renouvellements de token",

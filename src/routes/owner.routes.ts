@@ -98,4 +98,10 @@ router.post(
   controllerWrapper(OwnerController.marquerMessagesLus)
 );
 
+router.get(
+  "/edl-manquants",
+  authenticateOwner,
+  controllerWrapper(OwnerController.getBiensSansEdl)
+);
+
 export default router;

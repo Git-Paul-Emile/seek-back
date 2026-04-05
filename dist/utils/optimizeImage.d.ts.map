@@ -1,0 +1,1 @@
+{"version":3,"file":"optimizeImage.d.ts","sourceRoot":"","sources":["../../src/utils/optimizeImage.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,eAAe;IAC9B,8DAA8D;IAC9D,YAAY,CAAC,EAAE,MAAM,CAAC;IACtB,sCAAsC;IACtC,OAAO,CAAC,EAAE,MAAM,CAAC;CAClB;AAED;;;;;GAKG;AACH,eAAO,MAAM,aAAa,GACxB,QAAQ,MAAM,EACd,UAAS,eAAoB,KAC5B,OAAO,CAAC,MAAM,CAYhB,CAAC"}

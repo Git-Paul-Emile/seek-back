@@ -28,6 +28,8 @@ export interface BienData {
     parking?: boolean;
     ascenseur?: boolean;
     prix?: number | null;
+    prixAncien?: number | null;
+    dateDerniereModificationPrix?: Date | null;
     frequencePaiement?: string | null;
     chargesIncluses?: boolean;
     caution?: number | null;
@@ -50,13 +52,6 @@ export interface EtablissementData {
     distance?: number | null;
 }
 export declare const createBien: (data: BienData) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         nom: string;
@@ -72,6 +67,23 @@ export declare const createBien: (data: BienData) => Promise<{
         nom: string;
         slug: string;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
+    equipements: ({
+        equipement: {
+            id: string;
+            nom: string;
+        };
+    } & {
+        bienId: string;
+        equipementId: string;
+    })[];
     meubles: ({
         meuble: {
             id: string;
@@ -82,32 +94,21 @@ export declare const createBien: (data: BienData) => Promise<{
         meubleId: string;
         quantite: number;
     })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -127,28 +128,33 @@ export declare const createBien: (data: BienData) => Promise<{
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }>;
 export declare const updateBien: (id: string, data: Partial<BienData>) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         nom: string;
@@ -164,6 +170,23 @@ export declare const updateBien: (id: string, data: Partial<BienData>) => Promis
         nom: string;
         slug: string;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
+    equipements: ({
+        equipement: {
+            id: string;
+            nom: string;
+        };
+    } & {
+        bienId: string;
+        equipementId: string;
+    })[];
     meubles: ({
         meuble: {
             id: string;
@@ -174,32 +197,21 @@ export declare const updateBien: (id: string, data: Partial<BienData>) => Promis
         meubleId: string;
         quantite: number;
     })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -219,37 +231,47 @@ export declare const updateBien: (id: string, data: Partial<BienData>) => Promis
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }>;
 export declare const deleteBienById: (id: string) => Promise<{
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -269,28 +291,33 @@ export declare const deleteBienById: (id: string) => Promise<{
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }>;
 export declare const getDraftByProprietaire: (proprietaireId: string) => Promise<({
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         nom: string;
@@ -306,6 +333,23 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
         nom: string;
         slug: string;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
+    equipements: ({
+        equipement: {
+            id: string;
+            nom: string;
+        };
+    } & {
+        bienId: string;
+        equipementId: string;
+    })[];
     meubles: ({
         meuble: {
             id: string;
@@ -316,32 +360,21 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
         meubleId: string;
         quantite: number;
     })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -361,28 +394,33 @@ export declare const getDraftByProprietaire: (proprietaireId: string) => Promise
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }) | null>;
 export declare const updateStatutAnnonce: (id: string, statutAnnonce: StatutAnnonce, noteAdmin?: string) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         nom: string;
@@ -398,6 +436,23 @@ export declare const updateStatutAnnonce: (id: string, statutAnnonce: StatutAnno
         nom: string;
         slug: string;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
+    equipements: ({
+        equipement: {
+            id: string;
+            nom: string;
+        };
+    } & {
+        bienId: string;
+        equipementId: string;
+    })[];
     meubles: ({
         meuble: {
             id: string;
@@ -408,32 +463,21 @@ export declare const updateStatutAnnonce: (id: string, statutAnnonce: StatutAnno
         meubleId: string;
         quantite: number;
     })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -453,358 +497,34 @@ export declare const updateStatutAnnonce: (id: string, statutAnnonce: StatutAnno
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
-    fumeurs: boolean;
-    animaux: boolean;
-    parking: boolean;
-    ascenseur: boolean;
-    prix: number | null;
-    frequencePaiement: string | null;
-    chargesIncluses: boolean;
-    caution: number | null;
-    disponibleLe: Date | null;
-    photos: string[];
-    noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
-}>;
-export interface PendingRevisionData {
-    titre?: string | null;
-    description?: string | null;
-    typeLogementId?: string | null;
-    typeTransactionId?: string | null;
-    statutBienId?: string | null;
-    pays?: string | null;
-    region?: string | null;
-    ville?: string | null;
-    quartier?: string | null;
-    adresse?: string | null;
-    latitude?: number | null;
-    longitude?: number | null;
-    surface?: number | null;
-    nbChambres?: number | null;
-    nbSdb?: number | null;
-    nbSalons?: number | null;
-    nbCuisines?: number | null;
-    nbWc?: number | null;
-    etage?: number | null;
-    nbEtages?: number | null;
-    meuble?: boolean;
-    fumeurs?: boolean;
-    animaux?: boolean;
-    parking?: boolean;
-    ascenseur?: boolean;
-    prix?: number | null;
-    frequencePaiement?: string | null;
-    chargesIncluses?: boolean;
-    caution?: number | null;
-    disponibleLe?: string | null;
-    photos?: string[];
-    equipementIds?: string[];
-    meubles?: {
-        meubleId: string;
-        quantite: number;
-    }[];
-    typeLogement?: {
-        nom: string;
-        slug: string;
-    } | null;
-    typeTransaction?: {
-        nom: string;
-        slug: string;
-    } | null;
-    statutBien?: {
-        nom: string;
-        slug: string;
-    } | null;
-}
-/** Saves a pending revision on a PUBLIE bien without changing the public-facing data */
-export declare const soumettreRevision: (id: string, revisionData: PendingRevisionData) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
-    typeLogement: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    typeTransaction: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    meubles: ({
-        meuble: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        meubleId: string;
-        quantite: number;
-    })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
-} & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    description: string | null;
-    proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
     meuble: boolean;
-    titre: string | null;
-    typeTransactionId: string | null;
-    statutBienId: string | null;
-    pays: string | null;
-    region: string | null;
-    ville: string | null;
-    quartier: string | null;
-    adresse: string | null;
-    pointRepere: string | null;
-    latitude: number | null;
-    longitude: number | null;
-    surface: number | null;
-    surfaceParcelle: number | null;
-    nbChambres: number | null;
-    nbSdb: number | null;
-    nbSalons: number | null;
-    nbCuisines: number | null;
-    etage: number | null;
-    nbEtages: number | null;
-    nbAppartements: number | null;
-    nbPieces: number | null;
-    nbWc: number | null;
-    typeTerrain: string | null;
-    cloture: boolean;
-    typeBureau: string | null;
-    rideauMetallique: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
-    noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
-}>;
-/** Admin approves a pending revision — applies revision data to main fields */
-export declare const approuverRevision: (id: string) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
-    typeLogement: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    typeTransaction: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    meubles: ({
-        meuble: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        meubleId: string;
-        quantite: number;
-    })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
-} & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    description: string | null;
-    proprietaireId: string;
+    nbVues: number;
+    nbFavoris: number;
     actif: boolean;
-    typeLogementId: string | null;
     statutAnnonce: StatutAnnonce;
-    meuble: boolean;
-    titre: string | null;
-    typeTransactionId: string | null;
-    statutBienId: string | null;
-    pays: string | null;
-    region: string | null;
-    ville: string | null;
-    quartier: string | null;
-    adresse: string | null;
-    pointRepere: string | null;
-    latitude: number | null;
-    longitude: number | null;
-    surface: number | null;
-    surfaceParcelle: number | null;
-    nbChambres: number | null;
-    nbSdb: number | null;
-    nbSalons: number | null;
-    nbCuisines: number | null;
-    etage: number | null;
-    nbEtages: number | null;
-    nbAppartements: number | null;
-    nbPieces: number | null;
-    nbWc: number | null;
-    typeTerrain: string | null;
-    cloture: boolean;
-    typeBureau: string | null;
-    rideauMetallique: boolean;
-    fumeurs: boolean;
-    animaux: boolean;
-    parking: boolean;
-    ascenseur: boolean;
-    prix: number | null;
-    frequencePaiement: string | null;
-    chargesIncluses: boolean;
-    caution: number | null;
-    disponibleLe: Date | null;
-    photos: string[];
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
-}>;
-/** Admin rejects a pending revision — discards revision, keeps current PUBLIE data */
-export declare const rejeterRevision: (id: string, noteAdmin?: string) => Promise<{
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
-    typeLogement: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    typeTransaction: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    statutBien: {
-        id: string;
-        nom: string;
-        slug: string;
-    } | null;
-    meubles: ({
-        meuble: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        meubleId: string;
-        quantite: number;
-    })[];
-    equipements: ({
-        equipement: {
-            id: string;
-            nom: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
-} & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    description: string | null;
-    proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
-    titre: string | null;
-    typeTransactionId: string | null;
-    statutBienId: string | null;
-    pays: string | null;
-    region: string | null;
-    ville: string | null;
-    quartier: string | null;
-    adresse: string | null;
-    pointRepere: string | null;
-    latitude: number | null;
-    longitude: number | null;
-    surface: number | null;
-    surfaceParcelle: number | null;
-    nbChambres: number | null;
-    nbSdb: number | null;
-    nbSalons: number | null;
-    nbCuisines: number | null;
-    etage: number | null;
-    nbEtages: number | null;
-    nbAppartements: number | null;
-    nbPieces: number | null;
-    nbWc: number | null;
-    typeTerrain: string | null;
-    cloture: boolean;
-    typeBureau: string | null;
-    rideauMetallique: boolean;
-    fumeurs: boolean;
-    animaux: boolean;
-    parking: boolean;
-    ascenseur: boolean;
-    prix: number | null;
-    frequencePaiement: string | null;
-    chargesIncluses: boolean;
-    caution: number | null;
-    disponibleLe: Date | null;
-    photos: string[];
-    noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }>;
 export declare const createEtablissements: (items: EtablissementData[]) => Promise<import("../generated/prisma/internal/prismaNamespace.js").BatchPayload | undefined>;
 export declare const getBiensByProprietaire: (proprietaireId: string) => Promise<({
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         nom: string;
@@ -820,23 +540,32 @@ export declare const getBiensByProprietaire: (proprietaireId: string) => Promise
         nom: string;
         slug: string;
     } | null;
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
+    bails: {
+        id: string;
+    }[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -856,130 +585,141 @@ export declare const getBiensByProprietaire: (proprietaireId: string) => Promise
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 })[]>;
 export declare const getBienById: (id: string) => Promise<({
-    proprietaire: {
-        id: string;
-        email: string | null;
-        telephone: string;
-        prenom: string;
-        nom: string;
-    };
     typeLogement: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
-        image: string | null;
-        actif: boolean;
         ordre: number;
+        image: string | null;
     } | null;
     typeTransaction: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
-        actif: boolean;
         ordre: number;
     } | null;
     statutBien: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
-        actif: boolean;
         ordre: number;
     } | null;
-    meubles: ({
-        meuble: {
-            categorie: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                nom: string;
-                slug: string;
-                actif: boolean;
-                ordre: number;
-            };
-        } & {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            nom: string;
-            actif: boolean;
-            categorieId: string;
-        };
-    } & {
-        bienId: string;
-        meubleId: string;
-        quantite: number;
-    })[];
+    proprietaire: {
+        id: string;
+        telephone: string;
+        nom: string;
+        email: string | null;
+        prenom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+    };
     equipements: ({
         equipement: {
             categorie: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                actif: boolean;
                 nom: string;
                 slug: string;
-                actif: boolean;
                 ordre: number;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             actif: boolean;
+            nom: string;
             categorieId: string;
         };
     } & {
         bienId: string;
         equipementId: string;
+    })[];
+    meubles: ({
+        meuble: {
+            categorie: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                actif: boolean;
+                nom: string;
+                slug: string;
+                ordre: number;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            actif: boolean;
+            nom: string;
+            categorieId: string;
+        };
+    } & {
+        bienId: string;
+        meubleId: string;
+        quantite: number;
     })[];
     etablissements: {
         id: string;
         createdAt: Date;
-        type: string;
-        nom: string | null;
         latitude: number;
         longitude: number;
+        nom: string | null;
+        type: string;
         bienId: string;
         distance: number | null;
     }[];
 } & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -999,19 +739,31 @@ export declare const getBienById: (id: string) => Promise<({
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
 }) | null>;
 export declare const countAnnoncesPending: () => Promise<number>;
 export declare const getAnnoncesCounts: () => Promise<{
@@ -1028,13 +780,6 @@ export declare const getAnnonces: (params: {
     includeBrouillon?: boolean;
 }) => Promise<{
     items: ({
-        proprietaire: {
-            id: string;
-            email: string | null;
-            telephone: string;
-            prenom: string;
-            nom: string;
-        };
         typeLogement: {
             id: string;
             nom: string;
@@ -1050,23 +795,29 @@ export declare const getAnnonces: (params: {
             nom: string;
             slug: string;
         } | null;
+        proprietaire: {
+            id: string;
+            telephone: string;
+            nom: string;
+            email: string | null;
+            prenom: string;
+            statutVerification: import("../generated/prisma/enums.js").StatutVerification;
+        };
     } & {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         description: string | null;
         proprietaireId: string;
-        actif: boolean;
-        typeLogementId: string | null;
-        statutAnnonce: StatutAnnonce;
-        meuble: boolean;
+        id: string;
+        ville: string | null;
+        quartier: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         titre: string | null;
+        typeLogementId: string | null;
         typeTransactionId: string | null;
         statutBienId: string | null;
         pays: string | null;
         region: string | null;
-        ville: string | null;
-        quartier: string | null;
+        quartierId: string | null;
         adresse: string | null;
         pointRepere: string | null;
         latitude: number | null;
@@ -1086,144 +837,116 @@ export declare const getAnnonces: (params: {
         cloture: boolean;
         typeBureau: string | null;
         rideauMetallique: boolean;
+        meuble: boolean;
         fumeurs: boolean;
         animaux: boolean;
         parking: boolean;
         ascenseur: boolean;
         prix: number | null;
+        prixAncien: number | null;
+        dateDerniereModificationPrix: Date | null;
         frequencePaiement: string | null;
         chargesIncluses: boolean;
         caution: number | null;
         disponibleLe: Date | null;
         photos: string[];
+        nbVues: number;
+        nbFavoris: number;
+        actif: boolean;
+        statutAnnonce: StatutAnnonce;
         noteAdmin: string | null;
-        hasPendingRevision: boolean;
-        pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
+        publishedAt: Date | null;
+        estPremium: boolean;
+        estMisEnAvant: boolean;
+        dateDebutPromotion: Date | null;
+        dateFinPromotion: Date | null;
+        positionRotation: number;
+        dernierAffichage: Date | null;
     })[];
     total: number;
     page: number;
     limit: number;
     totalPages: number;
 }>;
-export declare const getDernieresAnnonces: (limit?: number) => Promise<{
-    isNew: boolean;
+export declare const getDernieresAnnonces: (limit?: number) => Promise<any[]>;
+export declare const getAnnoncePublieById: (id: string) => Promise<{
+    nombreAnnoncesProprietaire: number;
     typeLogement: {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
+        ordre: number;
+        image: string | null;
     } | null;
     typeTransaction: {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
+        ordre: number;
     } | null;
     statutBien: {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        actif: boolean;
         nom: string;
         slug: string;
+        ordre: number;
     } | null;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    description: string | null;
-    proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
-    titre: string | null;
-    typeTransactionId: string | null;
-    statutBienId: string | null;
-    pays: string | null;
-    region: string | null;
-    ville: string | null;
-    quartier: string | null;
-    adresse: string | null;
-    pointRepere: string | null;
-    latitude: number | null;
-    longitude: number | null;
-    surface: number | null;
-    surfaceParcelle: number | null;
-    nbChambres: number | null;
-    nbSdb: number | null;
-    nbSalons: number | null;
-    nbCuisines: number | null;
-    etage: number | null;
-    nbEtages: number | null;
-    nbAppartements: number | null;
-    nbPieces: number | null;
-    nbWc: number | null;
-    typeTerrain: string | null;
-    cloture: boolean;
-    typeBureau: string | null;
-    rideauMetallique: boolean;
-    fumeurs: boolean;
-    animaux: boolean;
-    parking: boolean;
-    ascenseur: boolean;
-    prix: number | null;
-    frequencePaiement: string | null;
-    chargesIncluses: boolean;
-    caution: number | null;
-    disponibleLe: Date | null;
-    photos: string[];
-    noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
-}[]>;
-export declare const getAnnoncePublieById: (id: string) => Promise<({
     proprietaire: {
         id: string;
-        email: string | null;
         telephone: string;
+        nom: string;
+        email: string | null;
         prenom: string;
-        nom: string;
+        statutVerification: import("../generated/prisma/enums.js").StatutVerification;
     };
-    typeLogement: {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        nom: string;
-        slug: string;
-        image: string | null;
-        actif: boolean;
-        ordre: number;
-    } | null;
-    typeTransaction: {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        nom: string;
-        slug: string;
-        actif: boolean;
-        ordre: number;
-    } | null;
-    statutBien: {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        nom: string;
-        slug: string;
-        actif: boolean;
-        ordre: number;
-    } | null;
-    meubles: ({
-        meuble: {
+    equipements: ({
+        equipement: {
             categorie: {
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
+                actif: boolean;
                 nom: string;
                 slug: string;
-                actif: boolean;
                 ordre: number;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            nom: string;
             actif: boolean;
+            nom: string;
+            categorieId: string;
+        };
+    } & {
+        bienId: string;
+        equipementId: string;
+    })[];
+    meubles: ({
+        meuble: {
+            categorie: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                actif: boolean;
+                nom: string;
+                slug: string;
+                ordre: number;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            actif: boolean;
+            nom: string;
             categorieId: string;
         };
     } & {
@@ -1231,56 +954,30 @@ export declare const getAnnoncePublieById: (id: string) => Promise<({
         meubleId: string;
         quantite: number;
     })[];
-    equipements: ({
-        equipement: {
-            categorie: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                nom: string;
-                slug: string;
-                actif: boolean;
-                ordre: number;
-            };
-        } & {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            nom: string;
-            actif: boolean;
-            categorieId: string;
-        };
-    } & {
-        bienId: string;
-        equipementId: string;
-    })[];
     etablissements: {
         id: string;
         createdAt: Date;
-        type: string;
-        nom: string | null;
         latitude: number;
         longitude: number;
+        nom: string | null;
+        type: string;
         bienId: string;
         distance: number | null;
     }[];
-} & {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
     description: string | null;
     proprietaireId: string;
-    actif: boolean;
-    typeLogementId: string | null;
-    statutAnnonce: StatutAnnonce;
-    meuble: boolean;
+    id: string;
+    ville: string | null;
+    quartier: string | null;
+    createdAt: Date;
+    updatedAt: Date;
     titre: string | null;
+    typeLogementId: string | null;
     typeTransactionId: string | null;
     statutBienId: string | null;
     pays: string | null;
     region: string | null;
-    ville: string | null;
-    quartier: string | null;
+    quartierId: string | null;
     adresse: string | null;
     pointRepere: string | null;
     latitude: number | null;
@@ -1300,20 +997,66 @@ export declare const getAnnoncePublieById: (id: string) => Promise<({
     cloture: boolean;
     typeBureau: string | null;
     rideauMetallique: boolean;
+    meuble: boolean;
     fumeurs: boolean;
     animaux: boolean;
     parking: boolean;
     ascenseur: boolean;
     prix: number | null;
+    prixAncien: number | null;
+    dateDerniereModificationPrix: Date | null;
     frequencePaiement: string | null;
     chargesIncluses: boolean;
     caution: number | null;
     disponibleLe: Date | null;
     photos: string[];
+    nbVues: number;
+    nbFavoris: number;
+    actif: boolean;
+    statutAnnonce: StatutAnnonce;
     noteAdmin: string | null;
-    hasPendingRevision: boolean;
-    pendingRevision: import("@prisma/client/runtime/library").JsonValue | null;
-}) | null>;
+    publishedAt: Date | null;
+    estPremium: boolean;
+    estMisEnAvant: boolean;
+    dateDebutPromotion: Date | null;
+    dateFinPromotion: Date | null;
+    positionRotation: number;
+    dernierAffichage: Date | null;
+} | null>;
+export declare const getDistinctLieux: () => Promise<{
+    quartiers: string[];
+    villes: string[];
+}>;
+export declare const searchAnnoncePubliques: (params: {
+    ville?: string;
+    quartier?: string;
+    typeLogementSlug?: string;
+    typeTransactionSlug?: string;
+    prixMin?: number;
+    prixMax?: number;
+    nbChambresMin?: number;
+    surfaceMin?: number;
+    surfaceMax?: number;
+    meuble?: boolean;
+    parking?: boolean;
+    ascenseur?: boolean;
+    fumeurs?: boolean;
+    animaux?: boolean;
+    equipementIds?: string[];
+    sortBy?: "prix" | "createdAt";
+    sortOrder?: "asc" | "desc";
+    page?: number;
+    limit?: number;
+    lat?: number;
+    lng?: number;
+    radius?: number;
+}) => Promise<{
+    items: any[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}>;
 export interface BienWithRelations {
     id: string;
     titre: string | null;
@@ -1369,8 +1112,69 @@ export interface OwnerStats {
         prix: number | null;
         photos: string[];
         updatedAt: Date;
-        hasPendingRevision: boolean;
     }[];
+    nbLocatairesActifs: number;
+    nbBailsActifs: number;
+    montantMensuelLoyers: number;
+    nbEcheancesEnRetard: number;
 }
 export declare const getOwnerStats: (proprietaireId: string) => Promise<OwnerStats>;
+export interface StatsVuesBien {
+    vuesTotales: number;
+    vuesAujourdhui: number;
+    vuesCetteSemaine: number;
+    evolution: {
+        date: string;
+        count: number;
+    }[];
+}
+export declare const getStatsVuesBien: (bienId: string, proprietaireId: string) => Promise<StatsVuesBien>;
+export interface StatsVuesOwner {
+    vuesTotales: number;
+    vuesAujourdhui: number;
+    vuesCetteSemaine: number;
+    topAnnonces: {
+        id: string;
+        titre: string | null;
+        ville: string | null;
+        nbVues: number;
+        vuesAujourdhui: number;
+        vuesCetteSemaine: number;
+    }[];
+}
+export declare const getStatsVuesOwner: (proprietaireId: string) => Promise<StatsVuesOwner>;
+export interface AdminStatsVues {
+    totalVuesPlateforme: number;
+    vuesAujourdhui: number;
+    vuesCetteSemaine: number;
+    topAnnonces: {
+        id: string;
+        titre: string | null;
+        ville: string | null;
+        nbVues: number;
+    }[];
+    vuesParVille: {
+        ville: string;
+        count: number;
+    }[];
+    vuesParTypeLogement: {
+        typeLogement: string;
+        count: number;
+    }[];
+}
+export declare const getAdminStatsVues: () => Promise<AdminStatsVues>;
+export interface StatsFavorisOwner {
+    favorisTotaux: number;
+    topAnnonces: {
+        id: string;
+        titre: string | null;
+        ville: string | null;
+        nbFavoris: number;
+    }[];
+}
+export declare const getStatsFavorisOwner: (proprietaireId: string) => Promise<StatsFavorisOwner>;
+export interface StatsFavorisBien {
+    favorisTotaux: number;
+}
+export declare const getStatsFavorisBien: (bienId: string, proprietaireId: string) => Promise<StatsFavorisBien>;
 //# sourceMappingURL=bien.repository.d.ts.map

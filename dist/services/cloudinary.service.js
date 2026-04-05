@@ -1,14 +1,31 @@
 import cloudinary from "../config/cloudinary.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
+import { optimizeImage } from "../utils/optimizeImage.js";
 /**
- * Upload un buffer en mémoire (fourni par Multer) vers Cloudinary.
- * @param buffer - Le buffer du fichier (Multer memoryStorage)
- * @param folder - Le dossier Cloudinary cible (ex: "seek/types-logement")
+ * Optimise (compression + resize + WebP) puis upload vers Cloudinary.
+ * @param buffer  - Buffer brut fourni par Multer (memoryStorage)
+ * @param folder  - Dossier Cloudinary cible (ex: "seek/biens")
+ * @param options - Paramètres d'optimisation optionnels (maxDimension, quality)
  */
-export const uploadImage = (buffer, folder) => {
+export const uploadImage = async (buffer, folder, options) => {
+    const optimized = await optimizeImage(buffer, options);
     return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream({ folder, resource_type: "image" }, (error, result) => {
+        const stream = cloudinary.uploader.upload_stream({ folder, resource_type: "image", format: "webp" }, (error, result) => {
+            if (error || !result) {
+                return reject(new AppError("Échec de l'upload vers Cloudinary", StatusCodes.INTERNAL_SERVER_ERROR));
+            }
+            resolve({ url: result.secure_url, publicId: result.public_id });
+        });
+        stream.end(optimized);
+    });
+};
+/**
+ * Upload un fichier quelconque (PDF, image) vers Cloudinary (resource_type: auto)
+ */
+export const uploadFile = (buffer, folder, filename) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({ folder, resource_type: "auto", use_filename: true, public_id: filename }, (error, result) => {
             if (error || !result) {
                 return reject(new AppError("Échec de l'upload vers Cloudinary", StatusCodes.INTERNAL_SERVER_ERROR));
             }
@@ -31,6 +48,19 @@ export const deleteImage = async (publicId) => {
  */
 export const extractPublicId = (url) => {
     const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+$/);
-    return match ? match[1] : null;
+    return match?.[1] ?? null;
+};
+/**
+ * Supprime en masse des ressources Cloudinary à partir d'une liste d'URLs.
+ * Les URLs nulles/undefined et les échecs individuels sont ignorés silencieusement.
+ */
+export const deleteUrls = async (urls) => {
+    const tasks = urls
+        .filter((u) => !!u)
+        .map((url) => {
+        const publicId = extractPublicId(url);
+        return publicId ? deleteImage(publicId) : Promise.resolve();
+    });
+    await Promise.allSettled(tasks);
 };
 //# sourceMappingURL=cloudinary.service.js.map

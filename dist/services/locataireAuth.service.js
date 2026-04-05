@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
+import { prisma } from "../config/database.js";
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const getSecret = (key) => {
     const value = process.env[key];
@@ -64,7 +65,7 @@ export const activer = async (data) => {
         numPieceIdentite: data.numPieceIdentite,
         typePiece: data.typePiece,
         dateDelivrance: data.dateDelivrance,
-        dateExpiration: data.dateExpiration,
+        dateExpirationPiece: data.dateExpirationPiece,
         autoriteDelivrance: data.autoriteDelivrance,
         situationProfessionnelle: data.situationProfessionnelle,
     });
@@ -74,9 +75,12 @@ export const activer = async (data) => {
         tokenHash: hashToken(tokens.refreshToken),
         expiresAt: tokens.refreshTokenExpiresAt,
     });
+    const fullLocataire = await LocataireRepo.findById(locataire.id);
+    if (!fullLocataire)
+        throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
     return {
         ...tokens,
-        locataire: { id: locataire.id, nom: locataire.nom, prenom: locataire.prenom },
+        locataire: fullLocataire,
     };
 };
 // ─── Connexion ────────────────────────────────────────────────────────────────
@@ -112,9 +116,12 @@ export const login = async (data) => {
         tokenHash: hashToken(tokens.refreshToken),
         expiresAt: tokens.refreshTokenExpiresAt,
     });
+    const locataireComplet = await LocataireRepo.findById(full.id);
+    if (!locataireComplet)
+        throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
     return {
         ...tokens,
-        locataire: { id: full.id, nom: full.nom, prenom: full.prenom },
+        locataire: locataireComplet,
     };
 };
 // ─── Refresh ──────────────────────────────────────────────────────────────────
@@ -130,11 +137,11 @@ export const refresh = async (oldRefreshToken) => {
     const stored = await LocataireRepo.findRefreshToken(tokenHash);
     if (!stored) {
         await LocataireRepo.revokeAllRefreshTokens(payload.sub);
-        throw new AppError("Token révoqué ou inconnu — session terminée", StatusCodes.UNAUTHORIZED);
+        throw new AppError("Session expirée ou invalide. Veuillez vous reconnecter.", StatusCodes.UNAUTHORIZED);
     }
     if (stored.revokedAt !== null) {
         await LocataireRepo.revokeAllRefreshTokens(payload.sub);
-        throw new AppError("Token déjà utilisé — compromission détectée", StatusCodes.UNAUTHORIZED);
+        throw new AppError("Token déjà utilisé - compromission détectée", StatusCodes.UNAUTHORIZED);
     }
     if (stored.expiresAt < new Date()) {
         throw new AppError("Refresh token expiré", StatusCodes.UNAUTHORIZED);
@@ -173,5 +180,66 @@ export const updateProfil = async (id, data) => {
     if (!existing)
         throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
     return LocataireRepo.update(id, data);
+};
+// ─── Mot de passe oublié ──────────────────────────────────────────────────────
+export const requestPasswordReset = async (identifiant) => {
+    const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
+    let locataire = await LocataireRepo.findByTelephone(stripped);
+    if (!locataire && !stripped.startsWith("+")) {
+        locataire = await LocataireRepo.findByTelephone(`+221${stripped}`);
+    }
+    if (!locataire) {
+        locataire = await LocataireRepo.findByEmail(identifiant.trim());
+    }
+    if (!locataire) {
+        throw new AppError("Si ce compte existe, un lien a été envoyé.", StatusCodes.OK);
+    }
+    if (!locataire.password) {
+        throw new AppError("Ce compte n'a pas encore été activé.", StatusCodes.BAD_REQUEST);
+    }
+    await LocataireRepo.invalidatePasswordResetTokens(locataire.id);
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1h
+    await LocataireRepo.createPasswordResetToken({ locataireId: locataire.id, tokenHash, expiresAt });
+    return { token: rawToken, email: locataire.email ?? null, telephone: locataire.telephone, prenom: locataire.prenom };
+};
+export const resetPassword = async (rawToken, newPassword) => {
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const stored = await LocataireRepo.findPasswordResetToken(tokenHash);
+    if (!stored)
+        throw new AppError("Token invalide ou expiré", StatusCodes.BAD_REQUEST);
+    if (stored.usedAt)
+        throw new AppError("Ce lien a déjà été utilisé", StatusCodes.BAD_REQUEST);
+    if (stored.expiresAt < new Date())
+        throw new AppError("Ce lien a expiré", StatusCodes.BAD_REQUEST);
+    const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await LocataireRepo.update(stored.locataireId, { password: hashedPassword });
+    await LocataireRepo.markPasswordResetTokenUsed(tokenHash);
+};
+// ─── Suppression du compte (self-delete) ─────────────────────────────────────
+export const supprimerCompte = async (locataireId) => {
+    // Vérifier qu'il n'y a pas de bail actif
+    const bailActif = await prisma.bailLocation.findFirst({
+        where: {
+            locataireId,
+            statut: { in: ["ACTIF", "EN_PREAVIS", "EN_RENOUVELLEMENT", "EN_ATTENTE"] },
+        },
+    });
+    if (bailActif) {
+        throw new AppError("Vous ne pouvez pas supprimer votre compte tant qu'un bail est actif ou en cours.", StatusCodes.CONFLICT);
+    }
+    // Vérifier qu'il n'y a pas de paiement en attente
+    const paiementEnAttente = await prisma.echeancierLoyer.findFirst({
+        where: {
+            locataireId,
+            statut: { in: ["EN_ATTENTE", "EN_RETARD"] },
+        },
+    });
+    if (paiementEnAttente) {
+        throw new AppError("Vous ne pouvez pas supprimer votre compte avec des paiements en attente.", StatusCodes.CONFLICT);
+    }
+    await LocataireRepo.remove(locataireId);
 };
 //# sourceMappingURL=locataireAuth.service.js.map

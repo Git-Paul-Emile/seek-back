@@ -363,6 +363,7 @@ export const confirmerReception = async (req: Request, res: Response): Promise<v
 
 const enregistrerEspecesSchema = z.object({
   datePaiement: z.coerce.date(),
+  nombreMois: z.number().int().min(1).max(36).optional(),
   montant: z.number().positive().optional(),
   note: z.string().optional(),
 });

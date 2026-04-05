@@ -1,14 +1,18 @@
 import express from "express";
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import path from "path";
 import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
+import swaggerUi from "swagger-ui-express";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 import authRouter from "../routes/auth.routes.js";
 import ownerRouter from "../routes/owner.routes.js";
+import verificationRouter from "../routes/verification.routes.js";
+import adminVerificationRouter from "../routes/adminVerification.routes.js";
 import typeLogementRouter from "../routes/typeLogement.routes.js";
 import typeTransactionRouter from "../routes/typeTransaction.routes.js";
 import statutBienRouter from "../routes/statutBien.routes.js";
@@ -23,16 +27,37 @@ import geoRouter from "../routes/geo.routes.js";
 import locataireRouter from "../routes/locataire.routes.js";
 import bailRouter from "../routes/bail.routes.js";
 import locataireAuthRouter from "../routes/locataireAuth.routes.js";
+import modeleContratRouter from "../routes/modeleContrat.routes.js";
+import temoignageRouter from "../routes/temoignage.routes.js";
+import alerteRouter from "../routes/alerte.routes.js";
+import promotionRouter from "../routes/promotion.routes.js";
+import premiumRouter from "../routes/premium.routes.js";
+import transactionRouter from "../routes/transaction.routes.js";
+import suspensionRouter from "../routes/suspension.routes.js";
+import documentBienRouter from "../routes/documentBien.routes.js";
+import favoriRouter from "../routes/favori.routes.js";
+import comptePublicAuthRouter from "../routes/comptePublicAuth.routes.js";
+import proprietairesRouter, { ownerScoreRouter } from "../routes/trustScore.routes.js";
+import monetisationRouter from "../routes/monetisation.routes.js";
+import ownerBailRouter from "../routes/ownerBail.routes.js";
+import signalementRouter from "../routes/signalement.routes.js";
+import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
+import configSiteRouter from "../routes/configSite.routes.js";
+import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const allowedOrigins = [
     process.env.FRONT_URL || 'http://localhost:8080',
+    process.env.FRONT_URL_PROD || 'https://seek-front-plum.vercel.app',
     'http://localhost:5173', // Vite default
     'http://localhost:8080',
     'http://localhost:3000', // React default
     'http://localhost:3001', // React alternative
+    'https://seek-front-plum.vercel.app', // Production Vercel
 ];
+// ============= COMPRESSION =============
+app.use(compression());
 // ============= SÉCURITÉ =============
 // Helmet - Headers de sécurité
 app.use(helmet({
@@ -60,7 +85,7 @@ const corsOptions = {
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-owner-id'],
 };
 app.use(cors(corsOptions));
 // ============= PARSERS =============
@@ -86,6 +111,10 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRouter);
 // Auth propriétaires
 app.use('/api/owner/auth', ownerRouter);
+// Vérification d'identité propriétaire
+app.use('/api/owner/verification', verificationRouter);
+// Vérification admin
+app.use('/api/admin', adminVerificationRouter);
 // Types de logement
 app.use('/api/types-logement', typeLogementRouter);
 // Types de transaction
@@ -108,10 +137,72 @@ app.use('/api/annonces', annonceRouter);
 app.use('/api/geo', geoRouter);
 // Locataires (owner CRUD)
 app.use('/api/owner/locataires', locataireRouter);
+// Bails owner (routes globales sans bienId)
+app.use('/api/owner/biens', ownerBailRouter);
 // Bails (sous /api/biens/:id/bail)
 app.use('/api/biens/:id/bail', bailRouter);
 // Auth espace locataire
 app.use('/api/locataire/auth', locataireAuthRouter);
+// Modèles de contrat (admin CRUD + owner liste)
+app.use('/api/modeles-contrat', modeleContratRouter);
+// Témoignages (public)
+app.use('/api/temoignages', temoignageRouter);
+// Alertes (public)
+app.use('/api/alertes', alerteRouter);
+// Promotion / Mise en avant des annonces
+app.use('/api/promotions', promotionRouter);
+// Premium / Mise en avant payante
+app.use('/api/premium', premiumRouter);
+// Transactions / Historique des paiements
+app.use('/api/transactions', transactionRouter);
+// Suspension de comptes (admin)
+app.use('/api/suspension', suspensionRouter);
+// Signalements (public & admin)
+app.use('/api/signalements', signalementRouter);
+// États des lieux (owner & locataire)
+app.use('/api/etats-des-lieux', etatDesLieuxRouter);
+// Documents des biens (owner)
+app.use('/api/biens/:bienId/documents', documentBienRouter);
+// Auth compte public (visiteurs)
+app.use('/api/public/auth', comptePublicAuthRouter);
+// Favoris (compte public authentifié)
+app.use('/api/public/favoris', favoriRouter);
+// Score de confiance des propriétaires (public)
+app.use('/api/proprietaires', proprietairesRouter);
+// Score de confiance du propriétaire connecté
+app.use('/api/owner', ownerScoreRouter);
+// Monétisation (abonnements, commissions, mises en avant)
+app.use('/api/monetisation', monetisationRouter);
+// Configuration globale du site (Footer, Contact)
+app.use('/api/config-site', configSiteRouter);
+// Notifications in-app
+app.use('/api/owner/notifications', ownerNotifRouter);
+app.use('/api/locataire/notifications', locataireNotifRouter);
+app.use('/api/admin/notifications', adminNotifRouter);
+// ============= SWAGGER UI =============
+// Servir le fichier YAML OpenAPI
+app.get('/api-docs.yaml', (_req, res) => {
+    res.setHeader('Content-Type', 'application/yaml');
+    res.sendFile(path.join(__dirname, 'swagger.yaml'));
+});
+// Alias /api-docs.json vers le YAML
+app.get('/api-docs.json', (_req, res) => {
+    res.redirect('/api-docs.yaml');
+});
+// Interface Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, {
+    swaggerOptions: {
+        url: '/api-docs.yaml',
+    },
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info .title { font-size: 2.5em; }
+      .swagger-ui .info .description { font-size: 1.1em; line-height: 1.5; }
+      .swagger-ui .scheme-container { background: #f5f5f5; padding: 15px; border-radius: 8px; }
+    `,
+    customSiteTitle: "SEEK API - Documentation",
+    customfavIcon: "/favicon.ico",
+}));
 // ============= GESTION DES ERREURS =============
 // Middleware pour routes non trouvées
 app.use((req, res) => {

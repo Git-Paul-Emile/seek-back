@@ -89,6 +89,16 @@ export const compareOwner = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+export const getCreationContextOwner = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bailId = req.params.bailId as string;
+    const result = await EtatDesLieuxService.getOwnerCreationContext(bailId, req.owner!.id);
+    res.status(StatusCodes.OK).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // -- Locataire --
 
 export const contester = async (req: Request, res: Response, next: NextFunction) => {

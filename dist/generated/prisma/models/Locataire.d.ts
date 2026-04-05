@@ -35,13 +35,17 @@ export type LocataireMinAggregateOutputType = {
     numPieceIdentite: string | null;
     typePiece: $Enums.TypePieceIdentite | null;
     dateDelivrance: Date | null;
-    dateExpiration: Date | null;
+    dateExpirationPiece: Date | null;
     autoriteDelivrance: string | null;
     situationProfessionnelle: string | null;
     activationToken: string | null;
     tokenExpiresAt: Date | null;
     statut: $Enums.StatutLocataire | null;
     password: string | null;
+    estSuspendu: boolean | null;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -61,13 +65,17 @@ export type LocataireMaxAggregateOutputType = {
     numPieceIdentite: string | null;
     typePiece: $Enums.TypePieceIdentite | null;
     dateDelivrance: Date | null;
-    dateExpiration: Date | null;
+    dateExpirationPiece: Date | null;
     autoriteDelivrance: string | null;
     situationProfessionnelle: string | null;
     activationToken: string | null;
     tokenExpiresAt: Date | null;
     statut: $Enums.StatutLocataire | null;
     password: string | null;
+    estSuspendu: boolean | null;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -87,13 +95,17 @@ export type LocataireCountAggregateOutputType = {
     numPieceIdentite: number;
     typePiece: number;
     dateDelivrance: number;
-    dateExpiration: number;
+    dateExpirationPiece: number;
     autoriteDelivrance: number;
     situationProfessionnelle: number;
     activationToken: number;
     tokenExpiresAt: number;
     statut: number;
     password: number;
+    estSuspendu: number;
+    motifSuspension: number;
+    dateSuspension: number;
+    suspenduPar: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -120,13 +132,17 @@ export type LocataireMinAggregateInputType = {
     numPieceIdentite?: true;
     typePiece?: true;
     dateDelivrance?: true;
-    dateExpiration?: true;
+    dateExpirationPiece?: true;
     autoriteDelivrance?: true;
     situationProfessionnelle?: true;
     activationToken?: true;
     tokenExpiresAt?: true;
     statut?: true;
     password?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -146,13 +162,17 @@ export type LocataireMaxAggregateInputType = {
     numPieceIdentite?: true;
     typePiece?: true;
     dateDelivrance?: true;
-    dateExpiration?: true;
+    dateExpirationPiece?: true;
     autoriteDelivrance?: true;
     situationProfessionnelle?: true;
     activationToken?: true;
     tokenExpiresAt?: true;
     statut?: true;
     password?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -172,13 +192,17 @@ export type LocataireCountAggregateInputType = {
     numPieceIdentite?: true;
     typePiece?: true;
     dateDelivrance?: true;
-    dateExpiration?: true;
+    dateExpirationPiece?: true;
     autoriteDelivrance?: true;
     situationProfessionnelle?: true;
     activationToken?: true;
     tokenExpiresAt?: true;
     statut?: true;
     password?: true;
+    estSuspendu?: true;
+    motifSuspension?: true;
+    dateSuspension?: true;
+    suspenduPar?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -275,13 +299,17 @@ export type LocataireGroupByOutputType = {
     numPieceIdentite: string | null;
     typePiece: $Enums.TypePieceIdentite | null;
     dateDelivrance: Date | null;
-    dateExpiration: Date | null;
+    dateExpirationPiece: Date | null;
     autoriteDelivrance: string | null;
     situationProfessionnelle: string | null;
     activationToken: string | null;
     tokenExpiresAt: Date | null;
     statut: $Enums.StatutLocataire;
     password: string | null;
+    estSuspendu: boolean;
+    motifSuspension: string | null;
+    dateSuspension: Date | null;
+    suspenduPar: string | null;
     createdAt: Date;
     updatedAt: Date;
     _count: LocataireCountAggregateOutputType | null;
@@ -312,18 +340,28 @@ export type LocataireWhereInput = {
     numPieceIdentite?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     typePiece?: Prisma.EnumTypePieceIdentiteNullableFilter<"Locataire"> | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
-    dateExpiration?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    dateExpirationPiece?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     autoriteDelivrance?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     situationProfessionnelle?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     activationToken?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFilter<"Locataire"> | $Enums.StatutLocataire;
     password?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    estSuspendu?: Prisma.BoolFilter<"Locataire"> | boolean;
+    motifSuspension?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
+    verification?: Prisma.XOR<Prisma.LocataireVerificationNullableScalarRelationFilter, Prisma.LocataireVerificationWhereInput> | null;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     bails?: Prisma.BailLocationListRelationFilter;
     refreshTokens?: Prisma.LocataireRefreshTokenListRelationFilter;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneLocataireListRelationFilter;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 };
 export type LocataireOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -341,18 +379,28 @@ export type LocataireOrderByWithRelationInput = {
     numPieceIdentite?: Prisma.SortOrderInput | Prisma.SortOrder;
     typePiece?: Prisma.SortOrderInput | Prisma.SortOrder;
     dateDelivrance?: Prisma.SortOrderInput | Prisma.SortOrder;
-    dateExpiration?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateExpirationPiece?: Prisma.SortOrderInput | Prisma.SortOrder;
     autoriteDelivrance?: Prisma.SortOrderInput | Prisma.SortOrder;
     situationProfessionnelle?: Prisma.SortOrderInput | Prisma.SortOrder;
     activationToken?: Prisma.SortOrderInput | Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     password?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    verification?: Prisma.LocataireVerificationOrderByWithRelationInput;
     proprietaire?: Prisma.ProprietaireOrderByWithRelationInput;
     bails?: Prisma.BailLocationOrderByRelationAggregateInput;
     refreshTokens?: Prisma.LocataireRefreshTokenOrderByRelationAggregateInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenOrderByRelationAggregateInput;
+    transactions?: Prisma.TransactionOrderByRelationAggregateInput;
+    messagesInternes?: Prisma.MessageInterneLocataireOrderByRelationAggregateInput;
+    bailInvitations?: Prisma.BailInvitationOrderByRelationAggregateInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxOrderByRelationAggregateInput;
 };
 export type LocataireWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -374,17 +422,27 @@ export type LocataireWhereUniqueInput = Prisma.AtLeast<{
     numPieceIdentite?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     typePiece?: Prisma.EnumTypePieceIdentiteNullableFilter<"Locataire"> | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
-    dateExpiration?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    dateExpirationPiece?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     autoriteDelivrance?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     situationProfessionnelle?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFilter<"Locataire"> | $Enums.StatutLocataire;
     password?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    estSuspendu?: Prisma.BoolFilter<"Locataire"> | boolean;
+    motifSuspension?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
+    verification?: Prisma.XOR<Prisma.LocataireVerificationNullableScalarRelationFilter, Prisma.LocataireVerificationWhereInput> | null;
     proprietaire?: Prisma.XOR<Prisma.ProprietaireScalarRelationFilter, Prisma.ProprietaireWhereInput>;
     bails?: Prisma.BailLocationListRelationFilter;
     refreshTokens?: Prisma.LocataireRefreshTokenListRelationFilter;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenListRelationFilter;
+    transactions?: Prisma.TransactionListRelationFilter;
+    messagesInternes?: Prisma.MessageInterneLocataireListRelationFilter;
+    bailInvitations?: Prisma.BailInvitationListRelationFilter;
+    etatsDesLieux?: Prisma.EtatDesLieuxListRelationFilter;
 }, "id" | "activationToken">;
 export type LocataireOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -402,13 +460,17 @@ export type LocataireOrderByWithAggregationInput = {
     numPieceIdentite?: Prisma.SortOrderInput | Prisma.SortOrder;
     typePiece?: Prisma.SortOrderInput | Prisma.SortOrder;
     dateDelivrance?: Prisma.SortOrderInput | Prisma.SortOrder;
-    dateExpiration?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateExpirationPiece?: Prisma.SortOrderInput | Prisma.SortOrder;
     autoriteDelivrance?: Prisma.SortOrderInput | Prisma.SortOrder;
     situationProfessionnelle?: Prisma.SortOrderInput | Prisma.SortOrder;
     activationToken?: Prisma.SortOrderInput | Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     password?: Prisma.SortOrderInput | Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrderInput | Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.LocataireCountOrderByAggregateInput;
@@ -436,13 +498,17 @@ export type LocataireScalarWhereWithAggregatesInput = {
     numPieceIdentite?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
     typePiece?: Prisma.EnumTypePieceIdentiteNullableWithAggregatesFilter<"Locataire"> | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.DateTimeNullableWithAggregatesFilter<"Locataire"> | Date | string | null;
-    dateExpiration?: Prisma.DateTimeNullableWithAggregatesFilter<"Locataire"> | Date | string | null;
+    dateExpirationPiece?: Prisma.DateTimeNullableWithAggregatesFilter<"Locataire"> | Date | string | null;
     autoriteDelivrance?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
     situationProfessionnelle?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
     activationToken?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Locataire"> | Date | string | null;
     statut?: Prisma.EnumStatutLocataireWithAggregatesFilter<"Locataire"> | $Enums.StatutLocataire;
     password?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
+    estSuspendu?: Prisma.BoolWithAggregatesFilter<"Locataire"> | boolean;
+    motifSuspension?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableWithAggregatesFilter<"Locataire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableWithAggregatesFilter<"Locataire"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Locataire"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Locataire"> | Date | string;
 };
@@ -461,18 +527,28 @@ export type LocataireCreateInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocatairesInput;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireUncheckedCreateInput = {
     id?: string;
@@ -490,17 +566,27 @@ export type LocataireUncheckedCreateInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -517,18 +603,28 @@ export type LocataireUpdateInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocatairesNestedInput;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -546,17 +642,27 @@ export type LocataireUncheckedUpdateInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireCreateManyInput = {
     id?: string;
@@ -574,13 +680,17 @@ export type LocataireCreateManyInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -599,13 +709,17 @@ export type LocataireUpdateManyMutationInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -625,13 +739,17 @@ export type LocataireUncheckedUpdateManyInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -651,13 +769,17 @@ export type LocataireCountOrderByAggregateInput = {
     numPieceIdentite?: Prisma.SortOrder;
     typePiece?: Prisma.SortOrder;
     dateDelivrance?: Prisma.SortOrder;
-    dateExpiration?: Prisma.SortOrder;
+    dateExpirationPiece?: Prisma.SortOrder;
     autoriteDelivrance?: Prisma.SortOrder;
     situationProfessionnelle?: Prisma.SortOrder;
     activationToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -680,13 +802,17 @@ export type LocataireMaxOrderByAggregateInput = {
     numPieceIdentite?: Prisma.SortOrder;
     typePiece?: Prisma.SortOrder;
     dateDelivrance?: Prisma.SortOrder;
-    dateExpiration?: Prisma.SortOrder;
+    dateExpirationPiece?: Prisma.SortOrder;
     autoriteDelivrance?: Prisma.SortOrder;
     situationProfessionnelle?: Prisma.SortOrder;
     activationToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -706,13 +832,17 @@ export type LocataireMinOrderByAggregateInput = {
     numPieceIdentite?: Prisma.SortOrder;
     typePiece?: Prisma.SortOrder;
     dateDelivrance?: Prisma.SortOrder;
-    dateExpiration?: Prisma.SortOrder;
+    dateExpirationPiece?: Prisma.SortOrder;
     autoriteDelivrance?: Prisma.SortOrder;
     situationProfessionnelle?: Prisma.SortOrder;
     activationToken?: Prisma.SortOrder;
     tokenExpiresAt?: Prisma.SortOrder;
     statut?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
+    estSuspendu?: Prisma.SortOrder;
+    motifSuspension?: Prisma.SortOrder;
+    dateSuspension?: Prisma.SortOrder;
+    suspenduPar?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -731,11 +861,27 @@ export type LocataireListRelationFilter = {
 export type LocataireOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
 };
+export type LocataireNullableScalarRelationFilter = {
+    is?: Prisma.LocataireWhereInput | null;
+    isNot?: Prisma.LocataireWhereInput | null;
+};
 export type NullableEnumTypePieceIdentiteFieldUpdateOperationsInput = {
     set?: $Enums.TypePieceIdentite | null;
 };
 export type EnumStatutLocataireFieldUpdateOperationsInput = {
     set?: $Enums.StatutLocataire;
+};
+export type LocataireCreateNestedOneWithoutVerificationInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutVerificationInput, Prisma.LocataireUncheckedCreateWithoutVerificationInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutVerificationInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneRequiredWithoutVerificationNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutVerificationInput, Prisma.LocataireUncheckedCreateWithoutVerificationInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutVerificationInput;
+    upsert?: Prisma.LocataireUpsertWithoutVerificationInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutVerificationInput, Prisma.LocataireUpdateWithoutVerificationInput>, Prisma.LocataireUncheckedUpdateWithoutVerificationInput>;
 };
 export type LocataireCreateNestedOneWithoutBailsInput = {
     create?: Prisma.XOR<Prisma.LocataireCreateWithoutBailsInput, Prisma.LocataireUncheckedCreateWithoutBailsInput>;
@@ -760,6 +906,18 @@ export type LocataireUpdateOneRequiredWithoutRefreshTokensNestedInput = {
     upsert?: Prisma.LocataireUpsertWithoutRefreshTokensInput;
     connect?: Prisma.LocataireWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.LocataireUpdateWithoutRefreshTokensInput>, Prisma.LocataireUncheckedUpdateWithoutRefreshTokensInput>;
+};
+export type LocataireCreateNestedOneWithoutPasswordResetTokensInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedCreateWithoutPasswordResetTokensInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutPasswordResetTokensInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedCreateWithoutPasswordResetTokensInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutPasswordResetTokensInput;
+    upsert?: Prisma.LocataireUpsertWithoutPasswordResetTokensInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.LocataireUpdateWithoutPasswordResetTokensInput>, Prisma.LocataireUncheckedUpdateWithoutPasswordResetTokensInput>;
 };
 export type LocataireCreateNestedManyWithoutProprietaireInput = {
     create?: Prisma.XOR<Prisma.LocataireCreateWithoutProprietaireInput, Prisma.LocataireUncheckedCreateWithoutProprietaireInput> | Prisma.LocataireCreateWithoutProprietaireInput[] | Prisma.LocataireUncheckedCreateWithoutProprietaireInput[];
@@ -799,6 +957,217 @@ export type LocataireUncheckedUpdateManyWithoutProprietaireNestedInput = {
     updateMany?: Prisma.LocataireUpdateManyWithWhereWithoutProprietaireInput | Prisma.LocataireUpdateManyWithWhereWithoutProprietaireInput[];
     deleteMany?: Prisma.LocataireScalarWhereInput | Prisma.LocataireScalarWhereInput[];
 };
+export type LocataireCreateNestedOneWithoutMessagesInternesInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutMessagesInternesInput, Prisma.LocataireUncheckedCreateWithoutMessagesInternesInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutMessagesInternesInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneRequiredWithoutMessagesInternesNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutMessagesInternesInput, Prisma.LocataireUncheckedCreateWithoutMessagesInternesInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutMessagesInternesInput;
+    upsert?: Prisma.LocataireUpsertWithoutMessagesInternesInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutMessagesInternesInput, Prisma.LocataireUpdateWithoutMessagesInternesInput>, Prisma.LocataireUncheckedUpdateWithoutMessagesInternesInput>;
+};
+export type LocataireCreateNestedOneWithoutTransactionsInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutTransactionsInput, Prisma.LocataireUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutTransactionsInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneWithoutTransactionsNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutTransactionsInput, Prisma.LocataireUncheckedCreateWithoutTransactionsInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutTransactionsInput;
+    upsert?: Prisma.LocataireUpsertWithoutTransactionsInput;
+    disconnect?: Prisma.LocataireWhereInput | boolean;
+    delete?: Prisma.LocataireWhereInput | boolean;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutTransactionsInput, Prisma.LocataireUpdateWithoutTransactionsInput>, Prisma.LocataireUncheckedUpdateWithoutTransactionsInput>;
+};
+export type LocataireCreateNestedOneWithoutBailInvitationsInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutBailInvitationsInput, Prisma.LocataireUncheckedCreateWithoutBailInvitationsInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutBailInvitationsInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneRequiredWithoutBailInvitationsNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutBailInvitationsInput, Prisma.LocataireUncheckedCreateWithoutBailInvitationsInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutBailInvitationsInput;
+    upsert?: Prisma.LocataireUpsertWithoutBailInvitationsInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutBailInvitationsInput, Prisma.LocataireUpdateWithoutBailInvitationsInput>, Prisma.LocataireUncheckedUpdateWithoutBailInvitationsInput>;
+};
+export type LocataireCreateNestedOneWithoutEtatsDesLieuxInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutEtatsDesLieuxInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+};
+export type LocataireUpdateOneRequiredWithoutEtatsDesLieuxNestedInput = {
+    create?: Prisma.XOR<Prisma.LocataireCreateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    connectOrCreate?: Prisma.LocataireCreateOrConnectWithoutEtatsDesLieuxInput;
+    upsert?: Prisma.LocataireUpsertWithoutEtatsDesLieuxInput;
+    connect?: Prisma.LocataireWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.LocataireUpdateToOneWithWhereWithoutEtatsDesLieuxInput, Prisma.LocataireUpdateWithoutEtatsDesLieuxInput>, Prisma.LocataireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
+export type LocataireCreateWithoutVerificationInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutVerificationInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutVerificationInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutVerificationInput, Prisma.LocataireUncheckedCreateWithoutVerificationInput>;
+};
+export type LocataireUpsertWithoutVerificationInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutVerificationInput, Prisma.LocataireUncheckedUpdateWithoutVerificationInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutVerificationInput, Prisma.LocataireUncheckedCreateWithoutVerificationInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutVerificationInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutVerificationInput, Prisma.LocataireUncheckedUpdateWithoutVerificationInput>;
+};
+export type LocataireUpdateWithoutVerificationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutVerificationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
+};
 export type LocataireCreateWithoutBailsInput = {
     id?: string;
     nom: string;
@@ -814,17 +1183,27 @@ export type LocataireCreateWithoutBailsInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocatairesInput;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireUncheckedCreateWithoutBailsInput = {
     id?: string;
@@ -842,16 +1221,26 @@ export type LocataireUncheckedCreateWithoutBailsInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireCreateOrConnectWithoutBailsInput = {
     where: Prisma.LocataireWhereUniqueInput;
@@ -881,17 +1270,27 @@ export type LocataireUpdateWithoutBailsInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocatairesNestedInput;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireUncheckedUpdateWithoutBailsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -909,16 +1308,26 @@ export type LocataireUncheckedUpdateWithoutBailsInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -935,17 +1344,27 @@ export type LocataireCreateWithoutRefreshTokensInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocatairesInput;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -963,16 +1382,26 @@ export type LocataireUncheckedCreateWithoutRefreshTokensInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.LocataireWhereUniqueInput;
@@ -1002,17 +1431,27 @@ export type LocataireUpdateWithoutRefreshTokensInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocatairesNestedInput;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1030,16 +1469,187 @@ export type LocataireUncheckedUpdateWithoutRefreshTokensInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireCreateWithoutPasswordResetTokensInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutPasswordResetTokensInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutPasswordResetTokensInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedCreateWithoutPasswordResetTokensInput>;
+};
+export type LocataireUpsertWithoutPasswordResetTokensInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedUpdateWithoutPasswordResetTokensInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedCreateWithoutPasswordResetTokensInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutPasswordResetTokensInput, Prisma.LocataireUncheckedUpdateWithoutPasswordResetTokensInput>;
+};
+export type LocataireUpdateWithoutPasswordResetTokensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutPasswordResetTokensInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireCreateWithoutProprietaireInput = {
     id?: string;
@@ -1056,17 +1666,27 @@ export type LocataireCreateWithoutProprietaireInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireUncheckedCreateWithoutProprietaireInput = {
     id?: string;
@@ -1083,17 +1703,27 @@ export type LocataireUncheckedCreateWithoutProprietaireInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
     bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
 };
 export type LocataireCreateOrConnectWithoutProprietaireInput = {
     where: Prisma.LocataireWhereUniqueInput;
@@ -1135,15 +1765,663 @@ export type LocataireScalarWhereInput = {
     numPieceIdentite?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     typePiece?: Prisma.EnumTypePieceIdentiteNullableFilter<"Locataire"> | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
-    dateExpiration?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    dateExpirationPiece?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     autoriteDelivrance?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     situationProfessionnelle?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     activationToken?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     tokenExpiresAt?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFilter<"Locataire"> | $Enums.StatutLocataire;
     password?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    estSuspendu?: Prisma.BoolFilter<"Locataire"> | boolean;
+    motifSuspension?: Prisma.StringNullableFilter<"Locataire"> | string | null;
+    dateSuspension?: Prisma.DateTimeNullableFilter<"Locataire"> | Date | string | null;
+    suspenduPar?: Prisma.StringNullableFilter<"Locataire"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Locataire"> | Date | string;
+};
+export type LocataireCreateWithoutMessagesInternesInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutMessagesInternesInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutMessagesInternesInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutMessagesInternesInput, Prisma.LocataireUncheckedCreateWithoutMessagesInternesInput>;
+};
+export type LocataireUpsertWithoutMessagesInternesInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutMessagesInternesInput, Prisma.LocataireUncheckedUpdateWithoutMessagesInternesInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutMessagesInternesInput, Prisma.LocataireUncheckedCreateWithoutMessagesInternesInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutMessagesInternesInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutMessagesInternesInput, Prisma.LocataireUncheckedUpdateWithoutMessagesInternesInput>;
+};
+export type LocataireUpdateWithoutMessagesInternesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutMessagesInternesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireCreateWithoutTransactionsInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutTransactionsInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutTransactionsInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutTransactionsInput, Prisma.LocataireUncheckedCreateWithoutTransactionsInput>;
+};
+export type LocataireUpsertWithoutTransactionsInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutTransactionsInput, Prisma.LocataireUncheckedUpdateWithoutTransactionsInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutTransactionsInput, Prisma.LocataireUncheckedCreateWithoutTransactionsInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutTransactionsInput, Prisma.LocataireUncheckedUpdateWithoutTransactionsInput>;
+};
+export type LocataireUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutTransactionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireCreateWithoutBailInvitationsInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutBailInvitationsInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutBailInvitationsInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutBailInvitationsInput, Prisma.LocataireUncheckedCreateWithoutBailInvitationsInput>;
+};
+export type LocataireUpsertWithoutBailInvitationsInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutBailInvitationsInput, Prisma.LocataireUncheckedUpdateWithoutBailInvitationsInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutBailInvitationsInput, Prisma.LocataireUncheckedCreateWithoutBailInvitationsInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutBailInvitationsInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutBailInvitationsInput, Prisma.LocataireUncheckedUpdateWithoutBailInvitationsInput>;
+};
+export type LocataireUpdateWithoutBailInvitationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutBailInvitationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationCreateNestedOneWithoutLocataireInput;
+    proprietaire: Prisma.ProprietaireCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireUncheckedCreateWithoutEtatsDesLieuxInput = {
+    id?: string;
+    proprietaireId: string;
+    nom: string;
+    prenom: string;
+    telephone: string;
+    email?: string | null;
+    nbOccupants?: number;
+    presenceEnfants?: boolean;
+    dateNaissance?: Date | string | null;
+    lieuNaissance?: string | null;
+    nationalite?: string | null;
+    sexe?: string | null;
+    numPieceIdentite?: string | null;
+    typePiece?: $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
+    autoriteDelivrance?: string | null;
+    situationProfessionnelle?: string | null;
+    activationToken?: string | null;
+    tokenExpiresAt?: Date | string | null;
+    statut?: $Enums.StatutLocataire;
+    password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedCreateNestedOneWithoutLocataireInput;
+    bails?: Prisma.BailLocationUncheckedCreateNestedManyWithoutLocataireInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedCreateNestedManyWithoutLocataireInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLocataireInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedCreateNestedManyWithoutLocataireInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedCreateNestedManyWithoutLocataireInput;
+};
+export type LocataireCreateOrConnectWithoutEtatsDesLieuxInput = {
+    where: Prisma.LocataireWhereUniqueInput;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedCreateWithoutEtatsDesLieuxInput>;
+};
+export type LocataireUpsertWithoutEtatsDesLieuxInput = {
+    update: Prisma.XOR<Prisma.LocataireUpdateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+    create: Prisma.XOR<Prisma.LocataireCreateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedCreateWithoutEtatsDesLieuxInput>;
+    where?: Prisma.LocataireWhereInput;
+};
+export type LocataireUpdateToOneWithWhereWithoutEtatsDesLieuxInput = {
+    where?: Prisma.LocataireWhereInput;
+    data: Prisma.XOR<Prisma.LocataireUpdateWithoutEtatsDesLieuxInput, Prisma.LocataireUncheckedUpdateWithoutEtatsDesLieuxInput>;
+};
+export type LocataireUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
+    proprietaire?: Prisma.ProprietaireUpdateOneRequiredWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+};
+export type LocataireUncheckedUpdateWithoutEtatsDesLieuxInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    proprietaireId?: Prisma.StringFieldUpdateOperationsInput | string;
+    nom?: Prisma.StringFieldUpdateOperationsInput | string;
+    prenom?: Prisma.StringFieldUpdateOperationsInput | string;
+    telephone?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nbOccupants?: Prisma.IntFieldUpdateOperationsInput | number;
+    presenceEnfants?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    dateNaissance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    lieuNaissance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    nationalite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    sexe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
+    dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
+    bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
+    refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireCreateManyProprietaireInput = {
     id?: string;
@@ -1160,13 +2438,17 @@ export type LocataireCreateManyProprietaireInput = {
     numPieceIdentite?: string | null;
     typePiece?: $Enums.TypePieceIdentite | null;
     dateDelivrance?: Date | string | null;
-    dateExpiration?: Date | string | null;
+    dateExpirationPiece?: Date | string | null;
     autoriteDelivrance?: string | null;
     situationProfessionnelle?: string | null;
     activationToken?: string | null;
     tokenExpiresAt?: Date | string | null;
     statut?: $Enums.StatutLocataire;
     password?: string | null;
+    estSuspendu?: boolean;
+    motifSuspension?: string | null;
+    dateSuspension?: Date | string | null;
+    suspenduPar?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -1185,17 +2467,27 @@ export type LocataireUpdateWithoutProprietaireInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUpdateOneWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUpdateManyWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireUncheckedUpdateWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1212,17 +2504,27 @@ export type LocataireUncheckedUpdateWithoutProprietaireInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    verification?: Prisma.LocataireVerificationUncheckedUpdateOneWithoutLocataireNestedInput;
     bails?: Prisma.BailLocationUncheckedUpdateManyWithoutLocataireNestedInput;
     refreshTokens?: Prisma.LocataireRefreshTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    passwordResetTokens?: Prisma.LocatairePasswordResetTokenUncheckedUpdateManyWithoutLocataireNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLocataireNestedInput;
+    messagesInternes?: Prisma.MessageInterneLocataireUncheckedUpdateManyWithoutLocataireNestedInput;
+    bailInvitations?: Prisma.BailInvitationUncheckedUpdateManyWithoutLocataireNestedInput;
+    etatsDesLieux?: Prisma.EtatDesLieuxUncheckedUpdateManyWithoutLocataireNestedInput;
 };
 export type LocataireUncheckedUpdateManyWithoutProprietaireInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1239,13 +2541,17 @@ export type LocataireUncheckedUpdateManyWithoutProprietaireInput = {
     numPieceIdentite?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     typePiece?: Prisma.NullableEnumTypePieceIdentiteFieldUpdateOperationsInput | $Enums.TypePieceIdentite | null;
     dateDelivrance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    dateExpiration?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    dateExpirationPiece?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     autoriteDelivrance?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     situationProfessionnelle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     activationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     statut?: Prisma.EnumStatutLocataireFieldUpdateOperationsInput | $Enums.StatutLocataire;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    estSuspendu?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    motifSuspension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    dateSuspension?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    suspenduPar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -1255,10 +2561,20 @@ export type LocataireUncheckedUpdateManyWithoutProprietaireInput = {
 export type LocataireCountOutputType = {
     bails: number;
     refreshTokens: number;
+    passwordResetTokens: number;
+    transactions: number;
+    messagesInternes: number;
+    bailInvitations: number;
+    etatsDesLieux: number;
 };
 export type LocataireCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     bails?: boolean | LocataireCountOutputTypeCountBailsArgs;
     refreshTokens?: boolean | LocataireCountOutputTypeCountRefreshTokensArgs;
+    passwordResetTokens?: boolean | LocataireCountOutputTypeCountPasswordResetTokensArgs;
+    transactions?: boolean | LocataireCountOutputTypeCountTransactionsArgs;
+    messagesInternes?: boolean | LocataireCountOutputTypeCountMessagesInternesArgs;
+    bailInvitations?: boolean | LocataireCountOutputTypeCountBailInvitationsArgs;
+    etatsDesLieux?: boolean | LocataireCountOutputTypeCountEtatsDesLieuxArgs;
 };
 /**
  * LocataireCountOutputType without action
@@ -1281,6 +2597,36 @@ export type LocataireCountOutputTypeCountBailsArgs<ExtArgs extends runtime.Types
 export type LocataireCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.LocataireRefreshTokenWhereInput;
 };
+/**
+ * LocataireCountOutputType without action
+ */
+export type LocataireCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.LocatairePasswordResetTokenWhereInput;
+};
+/**
+ * LocataireCountOutputType without action
+ */
+export type LocataireCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TransactionWhereInput;
+};
+/**
+ * LocataireCountOutputType without action
+ */
+export type LocataireCountOutputTypeCountMessagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MessageInterneLocataireWhereInput;
+};
+/**
+ * LocataireCountOutputType without action
+ */
+export type LocataireCountOutputTypeCountBailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.BailInvitationWhereInput;
+};
+/**
+ * LocataireCountOutputType without action
+ */
+export type LocataireCountOutputTypeCountEtatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EtatDesLieuxWhereInput;
+};
 export type LocataireSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     proprietaireId?: boolean;
@@ -1297,18 +2643,28 @@ export type LocataireSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     numPieceIdentite?: boolean;
     typePiece?: boolean;
     dateDelivrance?: boolean;
-    dateExpiration?: boolean;
+    dateExpirationPiece?: boolean;
     autoriteDelivrance?: boolean;
     situationProfessionnelle?: boolean;
     activationToken?: boolean;
     tokenExpiresAt?: boolean;
     statut?: boolean;
     password?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    verification?: boolean | Prisma.Locataire$verificationArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     bails?: boolean | Prisma.Locataire$bailsArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.Locataire$refreshTokensArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Locataire$passwordResetTokensArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Locataire$transactionsArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Locataire$messagesInternesArgs<ExtArgs>;
+    bailInvitations?: boolean | Prisma.Locataire$bailInvitationsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.Locataire$etatsDesLieuxArgs<ExtArgs>;
     _count?: boolean | Prisma.LocataireCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["locataire"]>;
 export type LocataireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1327,13 +2683,17 @@ export type LocataireSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
     numPieceIdentite?: boolean;
     typePiece?: boolean;
     dateDelivrance?: boolean;
-    dateExpiration?: boolean;
+    dateExpirationPiece?: boolean;
     autoriteDelivrance?: boolean;
     situationProfessionnelle?: boolean;
     activationToken?: boolean;
     tokenExpiresAt?: boolean;
     statut?: boolean;
     password?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
@@ -1354,13 +2714,17 @@ export type LocataireSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
     numPieceIdentite?: boolean;
     typePiece?: boolean;
     dateDelivrance?: boolean;
-    dateExpiration?: boolean;
+    dateExpirationPiece?: boolean;
     autoriteDelivrance?: boolean;
     situationProfessionnelle?: boolean;
     activationToken?: boolean;
     tokenExpiresAt?: boolean;
     statut?: boolean;
     password?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
@@ -1381,21 +2745,31 @@ export type LocataireSelectScalar = {
     numPieceIdentite?: boolean;
     typePiece?: boolean;
     dateDelivrance?: boolean;
-    dateExpiration?: boolean;
+    dateExpirationPiece?: boolean;
     autoriteDelivrance?: boolean;
     situationProfessionnelle?: boolean;
     activationToken?: boolean;
     tokenExpiresAt?: boolean;
     statut?: boolean;
     password?: boolean;
+    estSuspendu?: boolean;
+    motifSuspension?: boolean;
+    dateSuspension?: boolean;
+    suspenduPar?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type LocataireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "proprietaireId" | "nom" | "prenom" | "telephone" | "email" | "nbOccupants" | "presenceEnfants" | "dateNaissance" | "lieuNaissance" | "nationalite" | "sexe" | "numPieceIdentite" | "typePiece" | "dateDelivrance" | "dateExpiration" | "autoriteDelivrance" | "situationProfessionnelle" | "activationToken" | "tokenExpiresAt" | "statut" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["locataire"]>;
+export type LocataireOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "proprietaireId" | "nom" | "prenom" | "telephone" | "email" | "nbOccupants" | "presenceEnfants" | "dateNaissance" | "lieuNaissance" | "nationalite" | "sexe" | "numPieceIdentite" | "typePiece" | "dateDelivrance" | "dateExpirationPiece" | "autoriteDelivrance" | "situationProfessionnelle" | "activationToken" | "tokenExpiresAt" | "statut" | "password" | "estSuspendu" | "motifSuspension" | "dateSuspension" | "suspenduPar" | "createdAt" | "updatedAt", ExtArgs["result"]["locataire"]>;
 export type LocataireInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    verification?: boolean | Prisma.Locataire$verificationArgs<ExtArgs>;
     proprietaire?: boolean | Prisma.ProprietaireDefaultArgs<ExtArgs>;
     bails?: boolean | Prisma.Locataire$bailsArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.Locataire$refreshTokensArgs<ExtArgs>;
+    passwordResetTokens?: boolean | Prisma.Locataire$passwordResetTokensArgs<ExtArgs>;
+    transactions?: boolean | Prisma.Locataire$transactionsArgs<ExtArgs>;
+    messagesInternes?: boolean | Prisma.Locataire$messagesInternesArgs<ExtArgs>;
+    bailInvitations?: boolean | Prisma.Locataire$bailInvitationsArgs<ExtArgs>;
+    etatsDesLieux?: boolean | Prisma.Locataire$etatsDesLieuxArgs<ExtArgs>;
     _count?: boolean | Prisma.LocataireCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type LocataireIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1407,9 +2781,15 @@ export type LocataireIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type $LocatairePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Locataire";
     objects: {
+        verification: Prisma.$LocataireVerificationPayload<ExtArgs> | null;
         proprietaire: Prisma.$ProprietairePayload<ExtArgs>;
         bails: Prisma.$BailLocationPayload<ExtArgs>[];
         refreshTokens: Prisma.$LocataireRefreshTokenPayload<ExtArgs>[];
+        passwordResetTokens: Prisma.$LocatairePasswordResetTokenPayload<ExtArgs>[];
+        transactions: Prisma.$TransactionPayload<ExtArgs>[];
+        messagesInternes: Prisma.$MessageInterneLocatairePayload<ExtArgs>[];
+        bailInvitations: Prisma.$BailInvitationPayload<ExtArgs>[];
+        etatsDesLieux: Prisma.$EtatDesLieuxPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1427,13 +2807,17 @@ export type $LocatairePayload<ExtArgs extends runtime.Types.Extensions.InternalA
         numPieceIdentite: string | null;
         typePiece: $Enums.TypePieceIdentite | null;
         dateDelivrance: Date | null;
-        dateExpiration: Date | null;
+        dateExpirationPiece: Date | null;
         autoriteDelivrance: string | null;
         situationProfessionnelle: string | null;
         activationToken: string | null;
         tokenExpiresAt: Date | null;
         statut: $Enums.StatutLocataire;
         password: string | null;
+        estSuspendu: boolean;
+        motifSuspension: string | null;
+        dateSuspension: Date | null;
+        suspenduPar: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["locataire"]>;
@@ -1765,9 +3149,15 @@ export interface LocataireDelegate<ExtArgs extends runtime.Types.Extensions.Inte
  */
 export interface Prisma__LocataireClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    verification<T extends Prisma.Locataire$verificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$verificationArgs<ExtArgs>>): Prisma.Prisma__LocataireVerificationClient<runtime.Types.Result.GetResult<Prisma.$LocataireVerificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     proprietaire<T extends Prisma.ProprietaireDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProprietaireDefaultArgs<ExtArgs>>): Prisma.Prisma__ProprietaireClient<runtime.Types.Result.GetResult<Prisma.$ProprietairePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     bails<T extends Prisma.Locataire$bailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$bailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     refreshTokens<T extends Prisma.Locataire$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocataireRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    passwordResetTokens<T extends Prisma.Locataire$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocatairePasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    transactions<T extends Prisma.Locataire$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    messagesInternes<T extends Prisma.Locataire$messagesInternesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$messagesInternesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessageInterneLocatairePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    bailInvitations<T extends Prisma.Locataire$bailInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$bailInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BailInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    etatsDesLieux<T extends Prisma.Locataire$etatsDesLieuxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Locataire$etatsDesLieuxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EtatDesLieuxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1808,13 +3198,17 @@ export interface LocataireFieldRefs {
     readonly numPieceIdentite: Prisma.FieldRef<"Locataire", 'String'>;
     readonly typePiece: Prisma.FieldRef<"Locataire", 'TypePieceIdentite'>;
     readonly dateDelivrance: Prisma.FieldRef<"Locataire", 'DateTime'>;
-    readonly dateExpiration: Prisma.FieldRef<"Locataire", 'DateTime'>;
+    readonly dateExpirationPiece: Prisma.FieldRef<"Locataire", 'DateTime'>;
     readonly autoriteDelivrance: Prisma.FieldRef<"Locataire", 'String'>;
     readonly situationProfessionnelle: Prisma.FieldRef<"Locataire", 'String'>;
     readonly activationToken: Prisma.FieldRef<"Locataire", 'String'>;
     readonly tokenExpiresAt: Prisma.FieldRef<"Locataire", 'DateTime'>;
     readonly statut: Prisma.FieldRef<"Locataire", 'StatutLocataire'>;
     readonly password: Prisma.FieldRef<"Locataire", 'String'>;
+    readonly estSuspendu: Prisma.FieldRef<"Locataire", 'Boolean'>;
+    readonly motifSuspension: Prisma.FieldRef<"Locataire", 'String'>;
+    readonly dateSuspension: Prisma.FieldRef<"Locataire", 'DateTime'>;
+    readonly suspenduPar: Prisma.FieldRef<"Locataire", 'String'>;
     readonly createdAt: Prisma.FieldRef<"Locataire", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Locataire", 'DateTime'>;
 }
@@ -2196,6 +3590,24 @@ export type LocataireDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
     limit?: number;
 };
 /**
+ * Locataire.verification
+ */
+export type Locataire$verificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LocataireVerification
+     */
+    select?: Prisma.LocataireVerificationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the LocataireVerification
+     */
+    omit?: Prisma.LocataireVerificationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.LocataireVerificationInclude<ExtArgs> | null;
+    where?: Prisma.LocataireVerificationWhereInput;
+};
+/**
  * Locataire.bails
  */
 export type Locataire$bailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2240,6 +3652,121 @@ export type Locataire$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions
     take?: number;
     skip?: number;
     distinct?: Prisma.LocataireRefreshTokenScalarFieldEnum | Prisma.LocataireRefreshTokenScalarFieldEnum[];
+};
+/**
+ * Locataire.passwordResetTokens
+ */
+export type Locataire$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LocatairePasswordResetToken
+     */
+    select?: Prisma.LocatairePasswordResetTokenSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the LocatairePasswordResetToken
+     */
+    omit?: Prisma.LocatairePasswordResetTokenOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.LocatairePasswordResetTokenInclude<ExtArgs> | null;
+    where?: Prisma.LocatairePasswordResetTokenWhereInput;
+    orderBy?: Prisma.LocatairePasswordResetTokenOrderByWithRelationInput | Prisma.LocatairePasswordResetTokenOrderByWithRelationInput[];
+    cursor?: Prisma.LocatairePasswordResetTokenWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.LocatairePasswordResetTokenScalarFieldEnum | Prisma.LocatairePasswordResetTokenScalarFieldEnum[];
+};
+/**
+ * Locataire.transactions
+ */
+export type Locataire$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: Prisma.TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: Prisma.TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.TransactionInclude<ExtArgs> | null;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[];
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
+};
+/**
+ * Locataire.messagesInternes
+ */
+export type Locataire$messagesInternesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MessageInterneLocataire
+     */
+    select?: Prisma.MessageInterneLocataireSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MessageInterneLocataire
+     */
+    omit?: Prisma.MessageInterneLocataireOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MessageInterneLocataireInclude<ExtArgs> | null;
+    where?: Prisma.MessageInterneLocataireWhereInput;
+    orderBy?: Prisma.MessageInterneLocataireOrderByWithRelationInput | Prisma.MessageInterneLocataireOrderByWithRelationInput[];
+    cursor?: Prisma.MessageInterneLocataireWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.MessageInterneLocataireScalarFieldEnum | Prisma.MessageInterneLocataireScalarFieldEnum[];
+};
+/**
+ * Locataire.bailInvitations
+ */
+export type Locataire$bailInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BailInvitation
+     */
+    select?: Prisma.BailInvitationSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the BailInvitation
+     */
+    omit?: Prisma.BailInvitationOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.BailInvitationInclude<ExtArgs> | null;
+    where?: Prisma.BailInvitationWhereInput;
+    orderBy?: Prisma.BailInvitationOrderByWithRelationInput | Prisma.BailInvitationOrderByWithRelationInput[];
+    cursor?: Prisma.BailInvitationWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.BailInvitationScalarFieldEnum | Prisma.BailInvitationScalarFieldEnum[];
+};
+/**
+ * Locataire.etatsDesLieux
+ */
+export type Locataire$etatsDesLieuxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EtatDesLieux
+     */
+    select?: Prisma.EtatDesLieuxSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EtatDesLieux
+     */
+    omit?: Prisma.EtatDesLieuxOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EtatDesLieuxInclude<ExtArgs> | null;
+    where?: Prisma.EtatDesLieuxWhereInput;
+    orderBy?: Prisma.EtatDesLieuxOrderByWithRelationInput | Prisma.EtatDesLieuxOrderByWithRelationInput[];
+    cursor?: Prisma.EtatDesLieuxWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EtatDesLieuxScalarFieldEnum | Prisma.EtatDesLieuxScalarFieldEnum[];
 };
 /**
  * Locataire without action

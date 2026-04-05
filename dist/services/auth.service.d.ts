@@ -25,8 +25,11 @@ export declare const updateProfile: (id: string, data: {
     email?: string;
     password?: string;
 }) => Promise<{
-    id: any;
-    email: any;
+    id: string;
+    email: string;
+}>;
+export declare const changePassword: (adminId: string, currentPassword: string, newPassword: string) => Promise<{
+    message: string;
 }>;
 export {};
 //# sourceMappingURL=auth.service.d.ts.map

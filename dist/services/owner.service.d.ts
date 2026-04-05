@@ -18,11 +18,14 @@ export declare const register: (data: {
     telephone: string;
     email?: string;
     password: string;
-}) => Promise<OwnerTokenPair & {
+}) => Promise<{
     proprietaire: {
         id: string;
         prenom: string;
         nom: string;
+        telephone: string;
+        email?: string;
+        telephoneVerifie: boolean;
     };
 }>;
 export declare const login: (data: {
@@ -35,17 +38,28 @@ export declare const login: (data: {
         nom: string;
         telephone: string;
         email?: string;
+        telephoneVerifie: boolean;
     };
 }>;
 export declare const refresh: (oldRefreshToken: string) => Promise<OwnerTokenPair>;
 export declare const logout: (refreshToken: string) => Promise<void>;
 export declare const me: (id: string) => Promise<{
-    id: string;
-    prenom: string;
-    nom: string;
-    telephone: string;
-    email: string | undefined;
-    sexe: string | undefined;
+    id: any;
+    prenom: any;
+    nom: any;
+    telephone: any;
+    email: any;
+    sexe: any;
+    telephoneVerifie: any;
+    statutVerification: any;
+    verifiedAt: any;
+    nbAvertissements: any;
+    estRestreint: any;
+    estSuspendu: any;
+    estBanni: any;
+    dateFinRestriction: any;
+    dateFinSuspension: any;
+    dateBannissement: any;
 }>;
 export declare const updateProfile: (id: string, data: {
     prenom?: string;
@@ -63,4 +77,23 @@ export declare const updateProfile: (id: string, data: {
     sexe: string | undefined;
 }>;
 export declare const deleteProfile: (id: string) => Promise<void>;
+export declare const requestPasswordReset: (identifiant: string) => Promise<{
+    token: string;
+    email: string | null;
+    telephone: string;
+    prenom: string;
+    proprietaireId: string;
+}>;
+export declare const resetPassword: (rawToken: string, newPassword: string) => Promise<void>;
+export declare const sendOtpTelephone: (proprietaireId: string) => Promise<string>;
+export declare const verifyOtpTelephone: (proprietaireId: string, otp: string) => Promise<OwnerTokenPair & {
+    proprietaire: {
+        id: string;
+        prenom: string;
+        nom: string;
+        telephone: string;
+        email?: string;
+        telephoneVerifie: boolean;
+    };
+}>;
 //# sourceMappingURL=owner.service.d.ts.map

@@ -4,6 +4,9 @@ import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import * as OwnerRepo from "../repositories/owner.repository.js";
+import { prisma } from "../config/database.js";
+import * as CloudinaryService from "./cloudinary.service.js";
+import { fetchAndEmitStatsGlobales } from "./socket.service.js";
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const getSecret = (key) => {
     const value = process.env[key];
@@ -68,19 +71,17 @@ export const register = async (data) => {
         email,
         password: hashedPassword,
     });
-    // Génération des tokens et persistance du refresh token
-    const tokens = generateTokenPair(proprietaire.id, proprietaire.prenom, proprietaire.nom);
-    await OwnerRepo.createRefreshToken({
-        proprietaireId: proprietaire.id,
-        tokenHash: hashToken(tokens.refreshToken),
-        expiresAt: tokens.refreshTokenExpiresAt,
-    });
+    // Stats admin temps réel
+    fetchAndEmitStatsGlobales().catch(() => null);
+    // Ne pas générer de tokens ici - le propriétaire doit d'abord vérifier son téléphone
     return {
-        ...tokens,
         proprietaire: {
             id: proprietaire.id,
             prenom: proprietaire.prenom,
             nom: proprietaire.nom,
+            telephone: proprietaire.telephone,
+            email: proprietaire.email ?? undefined,
+            telephoneVerifie: proprietaire.telephoneVerifie,
         },
     };
 };
@@ -138,6 +139,7 @@ export const login = async (data) => {
             nom: proprietaire.nom,
             telephone: proprietaire.telephone,
             email: proprietaire.email ?? undefined,
+            telephoneVerifie: proprietaire.telephoneVerifie,
         },
     };
 };
@@ -154,11 +156,11 @@ export const refresh = async (oldRefreshToken) => {
     const stored = await OwnerRepo.findRefreshToken(tokenHash);
     if (!stored) {
         await OwnerRepo.revokeAllRefreshTokens(payload.sub);
-        throw new AppError("Token révoqué ou inconnu — session terminée", StatusCodes.UNAUTHORIZED);
+        throw new AppError("Token révoqué ou inconnu - session terminée", StatusCodes.UNAUTHORIZED);
     }
     if (stored.revokedAt !== null) {
         await OwnerRepo.revokeAllRefreshTokens(payload.sub);
-        throw new AppError("Token déjà utilisé — compromission détectée", StatusCodes.UNAUTHORIZED);
+        throw new AppError("Token déjà utilisé - compromission détectée", StatusCodes.UNAUTHORIZED);
     }
     if (stored.expiresAt < new Date()) {
         throw new AppError("Refresh token expiré", StatusCodes.UNAUTHORIZED);
@@ -186,7 +188,16 @@ export const logout = async (refreshToken) => {
 };
 // ─── Me ───────────────────────────────────────────────────────────────────────
 export const me = async (id) => {
-    const p = await OwnerRepo.findById(id);
+    const p = await prisma.proprietaire.findUnique({
+        where: { id },
+        select: {
+            id: true, prenom: true, nom: true, telephone: true, email: true,
+            sexe: true, statutVerification: true, verifiedAt: true,
+            telephoneVerifie: true,
+            nbAvertissements: true, estRestreint: true, estSuspendu: true,
+            estBanni: true, dateFinRestriction: true, dateFinSuspension: true, dateBannissement: true,
+        },
+    });
     if (!p)
         throw new AppError("Compte introuvable", StatusCodes.UNAUTHORIZED);
     return {
@@ -196,6 +207,16 @@ export const me = async (id) => {
         telephone: p.telephone,
         email: p.email ?? undefined,
         sexe: p.sexe ?? undefined,
+        telephoneVerifie: p.telephoneVerifie,
+        statutVerification: p.statutVerification,
+        verifiedAt: p.verifiedAt,
+        nbAvertissements: p.nbAvertissements,
+        estRestreint: p.estRestreint,
+        estSuspendu: p.estSuspendu,
+        estBanni: p.estBanni,
+        dateFinRestriction: p.dateFinRestriction,
+        dateFinSuspension: p.dateFinSuspension,
+        dateBannissement: p.dateBannissement,
     };
 };
 // ─── Mise à jour du profil ───────────────────────────────────────────────────
@@ -256,8 +277,112 @@ export const deleteProfile = async (id) => {
     if (!existing) {
         throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
     }
-    // La suppression en cascade supprimera automatiquement les biens associés
-    // grâce à onDelete: Cascade dans le schéma Prisma
+    const [verifOwner, biens, docs, locataires] = await Promise.all([
+        prisma.verificationDocuments.findUnique({
+            where: { proprietaireId: id },
+            select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true },
+        }),
+        prisma.bien.findMany({ where: { proprietaireId: id }, select: { photos: true } }),
+        prisma.documentBien.findMany({ where: { proprietaireId: id }, select: { url: true } }),
+        prisma.locataire.findMany({
+            where: { proprietaireId: id },
+            select: { verification: { select: { pieceIdentiteRecto: true, pieceIdentiteVerso: true, selfie: true } } },
+        }),
+    ]);
+    const urls = [
+        verifOwner?.pieceIdentiteRecto,
+        verifOwner?.pieceIdentiteVerso,
+        verifOwner?.selfie,
+        ...biens.flatMap((b) => b.photos),
+        ...docs.map((d) => d.url),
+        ...locataires.flatMap((l) => l.verification
+            ? [l.verification.pieceIdentiteRecto, l.verification.pieceIdentiteVerso, l.verification.selfie]
+            : []),
+    ];
+    await CloudinaryService.deleteUrls(urls);
     await OwnerRepo.remove(id);
+};
+// ─── Mot de passe oublié ──────────────────────────────────────────────────────
+export const requestPasswordReset = async (identifiant) => {
+    const cryptoLib = await import("crypto");
+    const stripped = identifiant.trim().replace(/[\s\-()]/g, "");
+    let proprietaire = await OwnerRepo.findByTelephone(stripped);
+    if (!proprietaire && !stripped.startsWith("+")) {
+        proprietaire = await OwnerRepo.findByTelephone(`+221${stripped}`);
+    }
+    if (!proprietaire) {
+        proprietaire = await OwnerRepo.findByEmail(identifiant.trim());
+    }
+    if (!proprietaire) {
+        throw new AppError("Si ce compte existe, un lien de réinitialisation a été envoyé.", StatusCodes.OK);
+    }
+    await OwnerRepo.invalidatePasswordResetTokens(proprietaire.id);
+    const rawToken = cryptoLib.randomBytes(32).toString("hex");
+    const tokenHash = cryptoLib.createHash("sha256").update(rawToken).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    await OwnerRepo.createPasswordResetToken({ proprietaireId: proprietaire.id, tokenHash, expiresAt });
+    return { token: rawToken, email: proprietaire.email, telephone: proprietaire.telephone, prenom: proprietaire.prenom, proprietaireId: proprietaire.id };
+};
+export const resetPassword = async (rawToken, newPassword) => {
+    const cryptoLib = await import("crypto");
+    const tokenHash = cryptoLib.createHash("sha256").update(rawToken).digest("hex");
+    const stored = await OwnerRepo.findPasswordResetToken(tokenHash);
+    if (!stored)
+        throw new AppError("Token invalide ou expiré", StatusCodes.BAD_REQUEST);
+    if (stored.usedAt)
+        throw new AppError("Ce lien a déjà été utilisé", StatusCodes.BAD_REQUEST);
+    if (stored.expiresAt < new Date())
+        throw new AppError("Ce lien a expiré", StatusCodes.BAD_REQUEST);
+    const saltRounds = parseInt(process.env.BCRYPT_SALT ?? "12", 10);
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await OwnerRepo.update(stored.proprietaireId, { password: hashedPassword });
+    await OwnerRepo.markPasswordResetTokenUsed(tokenHash);
+};
+// ─── OTP vérification téléphone ───────────────────────────────────────────────
+function generateOtp() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+}
+export const sendOtpTelephone = async (proprietaireId) => {
+    const otp = generateOtp();
+    const otpExpiresAt = new Date(Date.now() + parseInt(process.env.OTP_EXPIRES_IN_MINUTES ?? "10", 10) * 60 * 1000);
+    await OwnerRepo.update(proprietaireId, {
+        telephoneOtp: otp,
+        telephoneOtpExpiresAt: otpExpiresAt,
+    });
+    return otp;
+};
+export const verifyOtpTelephone = async (proprietaireId, otp) => {
+    const proprietaire = await OwnerRepo.findById(proprietaireId);
+    if (!proprietaire)
+        throw new AppError("Compte introuvable", StatusCodes.NOT_FOUND);
+    const p = proprietaire;
+    if (!p.telephoneOtp || p.telephoneOtp !== otp)
+        throw new AppError("Code OTP invalide", StatusCodes.BAD_REQUEST);
+    if (!p.telephoneOtpExpiresAt || p.telephoneOtpExpiresAt < new Date())
+        throw new AppError("Code OTP expiré", StatusCodes.BAD_REQUEST);
+    // Marquer le téléphone comme vérifié
+    await OwnerRepo.update(proprietaireId, {
+        telephoneVerifie: true,
+        telephoneOtp: null,
+        telephoneOtpExpiresAt: null,
+    });
+    // Générer les tokens après vérification réussie
+    const tokens = generateTokenPair(proprietaire.id, proprietaire.prenom, proprietaire.nom);
+    await OwnerRepo.createRefreshToken({
+        proprietaireId: proprietaire.id,
+        tokenHash: hashToken(tokens.refreshToken),
+        expiresAt: tokens.refreshTokenExpiresAt,
+    });
+    return {
+        ...tokens,
+        proprietaire: {
+            id: proprietaire.id,
+            prenom: proprietaire.prenom,
+            nom: proprietaire.nom,
+            telephone: proprietaire.telephone,
+            email: proprietaire.email ?? undefined,
+            telephoneVerifie: true,
+        },
+    };
 };
 //# sourceMappingURL=owner.service.js.map

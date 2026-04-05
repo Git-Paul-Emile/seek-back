@@ -24,10 +24,16 @@ export type TypeNotif =
   | "INVITATION_BAIL"
   | "VERIFICATION_TELEPHONE"
   | "PAIEMENT_ESPECES_LOCATAIRE"
-  | "CONFIRMATION_ESPECES_PROPRIETAIRE";
+  | "CONFIRMATION_ESPECES_PROPRIETAIRE"
+  | "ETAT_DES_LIEUX_DISPONIBLE"
+  | "ETAT_DES_LIEUX_VALIDE"
+  | "ETAT_DES_LIEUX_MODIFIE"
+  | "ANNONCE_VALIDEE"
+  | "ANNONCE_REJETEE";
 
 export interface NotificationPayload {
   type: TypeNotif;
+  target?: "owner" | "locataire";
   /** Numéro de téléphone (obligatoire, prioritaire) */
   telephone: string;
   /** Email (optionnel, envoyé en complément si fourni) */
@@ -132,7 +138,7 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
   }
 
   // Push temps réel si le destinataire est un propriétaire connecté
-  if (payload.proprietaireId) {
+  if (payload.target === "owner" && payload.proprietaireId) {
     emitNotification({
       id: notification.id,
       proprietaireId: payload.proprietaireId,
@@ -144,6 +150,19 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
       createdAt: notification.createdAt.toISOString(),
     });
     emitBadgeUpdate(payload.proprietaireId).catch(() => null);
+  }
+
+  if (payload.target === "locataire" && payload.locataireId) {
+    emitNotification({
+      id: notification.id,
+      locataireId: payload.locataireId,
+      type: payload.type,
+      titre: payload.sujet ?? payload.type,
+      message: payload.contenu,
+      bailId: payload.bailId,
+      bienId: payload.bienId,
+      createdAt: notification.createdAt.toISOString(),
+    });
   }
 
   return notification;
@@ -172,6 +191,7 @@ export const envoyerRappelLoyer = async (params: {
 
   return envoyerNotification({
     type: "RAPPEL_LOYER",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Rappel de loyer",
@@ -209,10 +229,52 @@ export const envoyerConfirmationPaiement = async (params: {
 
   return envoyerNotification({
     type: "CONFIRMATION_PAIEMENT",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Confirmation de paiement",
     contenu,
+    echeanceId: params.echeanceId,
+    bailId: params.bailId,
+    bienId: params.bienId,
+    proprietaireId: params.proprietaireId,
+    locataireId: params.locataireId,
+  });
+};
+
+export const envoyerConfirmationPaiementProprietaire = async (params: {
+  locataireTelephone: string;
+  locataireEmail?: string | null;
+  proprietaireLabel?: string | null;
+  montant: number;
+  datePaiement: string;
+  modePaiement?: string | null;
+  bienTitre?: string | null;
+  echeanceId: string;
+  bailId: string;
+  bienId: string;
+  proprietaireId: string;
+  locataireId: string;
+}) => {
+  const proprietaireLabel = params.proprietaireLabel?.trim() || "Votre propriétaire";
+  const montantStr = params.montant.toLocaleString("fr-FR");
+  const dateStr = new Date(params.datePaiement).toLocaleDateString("fr-FR");
+  const mode = (params.modePaiement ?? "").trim().toLowerCase();
+  const isEspeces = mode === "espèces" || mode === "especes";
+
+  return envoyerNotification({
+    type: "CONFIRMATION_PAIEMENT",
+    target: "locataire",
+    telephone: params.locataireTelephone,
+    email: params.locataireEmail,
+    sujet: isEspeces
+      ? "Paiement en espèces confirmé par votre propriétaire"
+      : "Paiement confirmé par votre propriétaire",
+    contenu:
+      `${proprietaireLabel} a confirmé votre paiement ${isEspeces ? "en espèces " : ""}` +
+      `de ${montantStr} FCFA du ${dateStr}` +
+      (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+      `. Le paiement est maintenant validé. - SEEK Immobilier`,
     echeanceId: params.echeanceId,
     bailId: params.bailId,
     bienId: params.bienId,
@@ -245,6 +307,7 @@ export const envoyerAlerteRetard = async (params: {
 
   return envoyerNotification({
     type: "ALERTE_RETARD",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Loyer en retard",
@@ -281,6 +344,7 @@ export const envoyerInitiationPaiement = async (params: {
 
   return envoyerNotification({
     type: "INITIATION_PAIEMENT",
+    target: "owner",
     telephone: params.proprietaireTelephone,
     email: params.proprietaireEmail,
     sujet: "Initiation de paiement locataire",
@@ -325,6 +389,7 @@ export const envoyerPaiementLocataire = async (params: {
 
   return envoyerNotification({
     type: "PAIEMENT_LOCATAIRE",
+    target: "owner",
     telephone: params.proprietaireTelephone,
     email: params.proprietaireEmail,
     sujet: "Paiement de loyer enregistré par votre locataire",
@@ -346,6 +411,7 @@ export const envoyerPaiementEspecesLocataire = async (params: {
   montant: number;
   datePaiement: string;
   bienTitre?: string | null;
+  nombreMois?: number;
   echeanceId: string;
   bailId: string;
   bienId: string;
@@ -353,15 +419,17 @@ export const envoyerPaiementEspecesLocataire = async (params: {
   locataireId: string;
 }) => {
   const lienConfirmation = `${FRONTEND_URL}/locataire/paiements`;
+  const nbMois = params.nombreMois && params.nombreMois > 1 ? ` (${params.nombreMois} mois)` : "";
   const contenu =
-    `Bonjour ${params.locataireNom}, votre propriétaire a enregistré un paiement en espèces` +
-    ` de ${params.montant.toLocaleString("fr-FR")} FCFA` +
-    ` en date du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
-    (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
-    `. Confirmez ce paiement ici : ${lienConfirmation} - SEEK Immobilier`;
+     `Bonjour ${params.locataireNom}, votre propriétaire a enregistré un paiement en espèces` +
+     ` de ${params.montant.toLocaleString("fr-FR")} FCFA${nbMois}` +
+     ` en date du ${new Date(params.datePaiement).toLocaleDateString("fr-FR")}` +
+     (params.bienTitre ? ` pour ${params.bienTitre}` : "") +
+     `. Confirmez ce paiement ici : ${lienConfirmation} - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "PAIEMENT_ESPECES_LOCATAIRE",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Paiement en espèces à confirmer",
@@ -398,6 +466,7 @@ export const envoyerConfirmationEspecesProprietaire = async (params: {
 
   return envoyerNotification({
     type: "CONFIRMATION_ESPECES_PROPRIETAIRE",
+    target: "owner",
     telephone: params.proprietaireTelephone,
     email: params.proprietaireEmail,
     sujet: "Paiement en espèces confirmé par votre locataire",
@@ -431,6 +500,7 @@ export const envoyerPreavisLocataire = async (params: {
 
   return envoyerNotification({
     type: "PREAVIS",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Préavis de fin de bail",
@@ -463,6 +533,7 @@ export const envoyerPreavisProprietaire = async (params: {
 
   return envoyerNotification({
     type: "PREAVIS",
+    target: "owner",
     telephone: params.proprietaireTelephone,
     email: params.proprietaireEmail,
     sujet: "Préavis donné par votre locataire",
@@ -495,6 +566,7 @@ export const envoyerResiliationLocataire = async (params: {
 
   return envoyerNotification({
     type: "RESILIATION",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Résiliation de votre bail",
@@ -527,6 +599,7 @@ export const envoyerResiliationProprietaire = async (params: {
 
   return envoyerNotification({
     type: "RESILIATION",
+    target: "owner",
     telephone: params.proprietaireTelephone,
     email: params.proprietaireEmail,
     sujet: "Résiliation par votre locataire",
@@ -557,6 +630,7 @@ export const envoyerFinBailLocataire = async (params: {
 
   return envoyerNotification({
     type: "FIN_BAIL",
+    target: "locataire",
     telephone: params.locataireTelephone,
     email: params.locataireEmail,
     sujet: "Fin de votre bail",
@@ -574,19 +648,16 @@ export const envoyerLienActivationLocataire = async (params: {
   locataireTelephone: string;
   locataireNom: string;
   lien: string;
-  locataireId: string;
-  proprietaireId: string;
 }) => {
   const contenu =
-    `Bonjour ${params.locataireNom}, votre propriétaire vous invite à activer votre compte locataire SEEK. ` +
-    `Cliquez sur ce lien : ${params.lien} (valable 72h). - SEEK Immobilier`;
+     `Bonjour ${params.locataireNom}, votre propriétaire vous invite à activer votre compte locataire SEEK. ` +
+     `Cliquez sur ce lien : ${params.lien} (valable 72h). - SEEK Immobilier`;
 
   return envoyerNotification({
     type: "VERIFICATION_LOCATAIRE",
     telephone: params.locataireTelephone,
+    sujet: "Activation de votre compte locataire",
     contenu,
-    locataireId: params.locataireId,
-    proprietaireId: params.proprietaireId,
   });
 };
 

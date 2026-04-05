@@ -1,4 +1,5 @@
 import { prisma } from "../config/database.js";
+import { StatutBail } from "../generated/prisma/enums.js";
 // ─── Include helper ───────────────────────────────────────────────────────────
 const BAIL_INCLUDE = {
     locataire: {
@@ -41,8 +42,28 @@ export const findById = async (id) => {
 };
 export const findActifByBien = async (bienId) => {
     return prisma.bailLocation.findFirst({
-        where: { bienId, statut: "ACTIF" },
+        where: {
+            bienId,
+            statut: {
+                in: [
+                    StatutBail.ACTIF,
+                    StatutBail.EN_ATTENTE,
+                    StatutBail.EN_PREAVIS,
+                    StatutBail.EN_RENOUVELLEMENT,
+                ],
+            },
+        },
         include: BAIL_INCLUDE,
+    });
+};
+export const findAArchiverByBien = async (bienId) => {
+    return prisma.bailLocation.findFirst({
+        where: {
+            bienId,
+            statut: { in: [StatutBail.TERMINE, StatutBail.RESILIE] },
+        },
+        include: BAIL_INCLUDE,
+        orderBy: { updatedAt: "desc" },
     });
 };
 export const findByBien = async (bienId) => {
@@ -65,6 +86,9 @@ export const prolonger = async (id, dateFinBail) => {
         data: { dateFinBail },
         include: BAIL_INCLUDE,
     });
+};
+export const remove = async (id) => {
+    return prisma.bailLocation.delete({ where: { id } });
 };
 // ─── Statut bien helper ───────────────────────────────────────────────────────
 export const getStatutBienBySlug = async (slug) => {
