@@ -1,14 +1,12 @@
 import { StatusCodes } from "http-status-codes";
+import { getFrontendBaseUrl } from "../config/external.js";
 import { AppError } from "../utils/AppError.js";
 import * as EtatDesLieuxRepo from "../repositories/etat-des-lieux.repository.js";
 import { prisma } from "../config/database.js";
 import * as SmsService from "./sms.service.js";
 import { envoyerNotification } from "./notification.service.js";
 
-const FRONTEND_URL =
-  process.env.NODE_ENV === "production"
-    ? (process.env.FRONT_URL_PROD ?? "https://seek-front-plum.vercel.app")
-    : (process.env.FRONT_URL ?? "http://localhost:5173");
+const FRONTEND_URL = getFrontendBaseUrl();
 
 const SORTIE_EDL_BLOCK_MESSAGE =
   "Impossible de faire un état des lieux de sortie sans préavis, fin de bail ou résiliation.";

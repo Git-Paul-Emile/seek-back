@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { getFrontendBaseUrl } from "../config/external.js";
 import * as OwnerService from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { prisma } from "../config/database.js";
@@ -204,7 +205,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
     const { token, email, telephone, prenom, proprietaireId } =
       await OwnerService.requestPasswordReset(identifiant);
 
-    const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+    const frontUrl = getFrontendBaseUrl();
     const lien = `${frontUrl}/owner/reset-password?token=${token}`;
 
     // Envoi SMS + email (email si disponible) en arrière-plan

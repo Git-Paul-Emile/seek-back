@@ -8,6 +8,7 @@ import * as QuittanceService from "../services/quittance.service.js";
 import * as NotificationService from "../services/notification.service.js";
 import * as ComptePublicService from "../services/comptePublicAuth.service.js";
 import { prisma } from "../config/database.js";
+import { getFrontendBaseUrl } from "../config/external.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
 import { cookieOptions } from "../utils/cookieConfig.js";
@@ -736,7 +737,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   try {
     const { token, email, telephone, prenom } = await LocataireAuthService.requestPasswordReset(identifiant);
 
-    const frontUrl = process.env.FRONTEND_URL ?? "http://localhost:5173";
+    const frontUrl = getFrontendBaseUrl();
     const lien = `${frontUrl}/locataire/reset-password?token=${token}`;
     const contenu =
       `Bonjour ${prenom}, réinitialisez votre mot de passe SEEK locataire : ${lien} (valable 1h). ` +

@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { StatusCodes } from "http-status-codes";
+import { getFrontendBaseUrl } from "../config/external.js";
 import { AppError } from "../utils/AppError.js";
 import * as LocataireRepo from "../repositories/locataire.repository.js";
 import { prisma } from "../config/database.js";
@@ -7,7 +8,7 @@ import * as CloudinaryService from "./cloudinary.service.js";
 import { envoyerLienActivationLocataire } from "./notification.service.js";
 import { envoyerNotification } from "./notification.service.js";
 
-const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+const FRONTEND_URL = getFrontendBaseUrl();
 const TOKEN_EXPIRY_HOURS = 72;
 
 // ─── Liste ────────────────────────────────────────────────────────────────────

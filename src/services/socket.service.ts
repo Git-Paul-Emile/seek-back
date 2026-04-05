@@ -1,5 +1,6 @@
 import { Server as SocketIOServer } from "socket.io";
 import type { Server as HTTPServer } from "http";
+import { getAllowedFrontendOrigins } from "../config/external.js";
 
 let io: SocketIOServer | null = null;
 
@@ -101,11 +102,7 @@ export const initializeWebSocket = (httpServer: HTTPServer): SocketIOServer => {
   io = new SocketIOServer(httpServer, {
     cors: {
       origin: [
-        process.env.FRONT_URL || "http://localhost:8080",
-        process.env.FRONT_URL_PROD || "https://seek-front-plum.vercel.app",
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "https://seek-front-plum.vercel.app",
+        ...getAllowedFrontendOrigins(),
       ],
       methods: ["GET", "POST"],
       credentials: true,

@@ -56,10 +56,9 @@ router.post(
   controllerWrapper(OwnerController.renvoyerOtp)
 );
 
-/** POST /api/owner/auth/logout - protégé */
+/** POST /api/owner/auth/logout */
 router.post(
   "/logout",
-  authenticateOwner,
   controllerWrapper(OwnerController.logout)
 );
 

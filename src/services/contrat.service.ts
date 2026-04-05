@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+import { getFrontendBaseUrl } from "../config/external.js";
 import { AppError } from "../utils/AppError.js";
 import { prisma } from "../config/database.js";
 import * as ContratRepo from "../repositories/contrat.repository.js";
@@ -324,7 +325,7 @@ export const envoyerContrat = async (
         select: { nom: true, prenom: true },
       });
 
-      const dashboardLink = `${process.env.FRONTEND_URL ?? "http://localhost:5173"}/locataire/dashboard`;
+      const dashboardLink = `${getFrontendBaseUrl()}/locataire/dashboard`;
       await sendMail({
         to: bail.locataire.email,
         subject: `Votre contrat de bail - ${contrat.titre}`,
@@ -364,7 +365,7 @@ export const envoyerContrat = async (
 
   // Envoi SMS (best-effort — l'email riche est déjà envoyé par sendMail ci-dessus)
   try {
-    const dashboardLink = `${process.env.FRONTEND_URL ?? "http://localhost:5173"}/locataire/dashboard`;
+    const dashboardLink = `${getFrontendBaseUrl()}/locataire/dashboard`;
     const contenuSms =
       `Bonjour ${bail.locataire.prenom} ${bail.locataire.nom}, votre contrat de bail "${contrat.titre}" vous a été transmis par votre propriétaire. Consultez-le ici : ${dashboardLink} - SEEK Immobilier`;
     await envoyerNotification({

@@ -1,10 +1,11 @@
 import { prisma } from "../config/database.js";
+import { getFrontendBaseUrl } from "../config/external.js";
 import { sendMail } from "../utils/mailer.js";
 import { sendSms } from "./sms.service.js";
 import { enqueueNotif } from "./notifQueue.service.js";
 import { emitNotification, emitBadgeUpdate } from "./socket.service.js";
 
-const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+const FRONTEND_URL = getFrontendBaseUrl();
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

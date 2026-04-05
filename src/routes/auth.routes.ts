@@ -36,7 +36,6 @@ router.post(
  */
 router.post(
   "/logout",
-  authenticate,
   controllerWrapper(AuthController.logout)
 );
 

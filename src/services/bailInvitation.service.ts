@@ -2,12 +2,13 @@ import { randomUUID } from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import { prisma } from "../config/database.js";
+import { getFrontendBaseUrl } from "../config/external.js";
 import * as InvitationRepo from "../repositories/bailInvitation.repository.js";
 import * as BailRepo from "../repositories/bail.repository.js";
 import { envoyerNotification } from "./notification.service.js";
 import { StatutBailInvitation } from "../generated/prisma/enums.js";
 
-const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+const FRONTEND_URL = getFrontendBaseUrl();
 const INVITATION_EXPIRY_HOURS = 72;
 
 // ─── Créer une invitation ─────────────────────────────────────────────────────

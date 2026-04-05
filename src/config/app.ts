@@ -9,6 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import swaggerUi from "swagger-ui-express";
 import { AppError } from "../utils/AppError.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
+import { getAllowedFrontendOrigins, getFrontendBaseUrl } from "./external.js";
 import authRouter from "../routes/auth.routes.js";
 import ownerRouter from "../routes/owner.routes.js";
 import verificationRouter from "../routes/verification.routes.js";
@@ -68,21 +69,7 @@ const resolveTrustProxy = (): boolean | number | string => {
 
 app.set("trust proxy", resolveTrustProxy());
 
-const allowedOrigins = new Set(
-  [
-    process.env.FRONT_URL,
-    process.env.FRONT_URL_PROD,
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3001",
-    "https://seek-front-plum.vercel.app",
-  ].filter((origin): origin is string => Boolean(origin))
-);
+const allowedOrigins = new Set(getAllowedFrontendOrigins());
 
 const isAllowedDevOrigin = (origin: string) =>
   /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
@@ -146,7 +133,7 @@ app.use('/uploads', (_req, res, next) => {
 // ============= ROUTES =============
 
 app.get('/', (req, res) => {
-  res.redirect(process.env.FRONT_URL || 'http://localhost:8080');
+  res.redirect(getFrontendBaseUrl());
 });
 
 app.get('/api/health', (req, res) => {
