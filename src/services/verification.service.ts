@@ -1,6 +1,7 @@
 import { prisma } from "../config/database.js";
 import { AppError } from "../utils/AppError.js";
 import { emitVerificationSubmitted } from "./socket.service.js";
+import { envoyerNotification } from "./notification.service.js";
 
 export interface VerificationStatus {
   proprietaireId: string;
@@ -221,6 +222,17 @@ export const verificationService = {
         },
       }),
     ]);
+
+    // Notifier le propriétaire via notification in-app (sans SMS/email)
+    envoyerNotification({
+      type: "ALERTE",
+      telephone: proprietaire.telephone,
+      email: proprietaire.email ?? undefined,
+      sujet: "Compte vérifié – Badge confiance activé",
+      contenu: "Félicitations ! Votre identité a été vérifiée. Votre badge de confiance est maintenant actif sur vos annonces.",
+      proprietaireId,
+      noSmsEmail: true,
+    }).catch(() => null);
 
     return this.getStatus(proprietaireId);
   },
