@@ -50,6 +50,24 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+const resolveTrustProxy = (): boolean | number | string => {
+  const rawTrustProxy = process.env.TRUST_PROXY?.trim();
+
+  if (!rawTrustProxy) {
+    return process.env.NODE_ENV === "production" ? 1 : false;
+  }
+
+  if (rawTrustProxy === "true") return true;
+  if (rawTrustProxy === "false") return false;
+
+  const parsedNumber = Number(rawTrustProxy);
+  if (!Number.isNaN(parsedNumber)) return parsedNumber;
+
+  return rawTrustProxy;
+};
+
+app.set("trust proxy", resolveTrustProxy());
+
 const allowedOrigins = new Set(
   [
     process.env.FRONT_URL,

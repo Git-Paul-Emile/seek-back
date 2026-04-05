@@ -12,6 +12,11 @@ import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
 import { cookieOptions } from "../utils/cookieConfig.js";
 
+const ACCESS_COOKIE = "locataireAccessToken";
+const REFRESH_COOKIE = "locataireRefreshToken";
+const LOCATAIRE_REFRESH_PATH = "/api/locataire/auth/refresh";
+const PUBLIC_REFRESH_PATH = "/api/public/auth/refresh";
+
 // ─── Cookie helpers ───────────────────────────────────────────────────────────
 
 const setAuthCookies = (
@@ -21,20 +26,25 @@ const setAuthCookies = (
   refreshTokenExpiresAt: Date
 ) => {
   // Nettoyer d'anciens cookies potentiellement créés avec un path différent
-  res.clearCookie("locataireAccessToken");
-  res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
-  res.clearCookie("locataireRefreshToken");
-  res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
+  res.clearCookie(ACCESS_COOKIE);
+  res.clearCookie(ACCESS_COOKIE, { path: "/api/locataire/auth" });
+  res.clearCookie(REFRESH_COOKIE);
+  res.clearCookie(REFRESH_COOKIE, { path: "/api/locataire/auth" });
+  res.clearCookie(REFRESH_COOKIE, { path: LOCATAIRE_REFRESH_PATH });
 
-  res.cookie("locataireAccessToken", accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
-  res.cookie("locataireRefreshToken", refreshToken, cookieOptions({ expires: refreshTokenExpiresAt }));
+  res.cookie(ACCESS_COOKIE, accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+  res.cookie(
+    REFRESH_COOKIE,
+    refreshToken,
+    cookieOptions({ path: LOCATAIRE_REFRESH_PATH, expires: refreshTokenExpiresAt })
+  );
 };
 
 const clearAuthCookies = (res: Response) => {
   const cookieDomain = process.env.COOKIE_DOMAIN;
   const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
-  res.clearCookie("locataireAccessToken", base);
-  res.clearCookie("locataireRefreshToken", base);
+  res.clearCookie(ACCESS_COOKIE, base);
+  res.clearCookie(REFRESH_COOKIE, { ...base, path: LOCATAIRE_REFRESH_PATH });
 };
 
 const setComptePublicCookies = (
@@ -44,13 +54,14 @@ const setComptePublicCookies = (
   refreshTokenExpiresAt: Date
 ) => {
   res.cookie("comptePublicAccessToken", accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
-  res.cookie("comptePublicRefreshToken", refreshToken, cookieOptions({ path: "/api/public/auth/refresh", expires: refreshTokenExpiresAt }));
+  res.cookie("comptePublicRefreshToken", refreshToken, cookieOptions({ path: PUBLIC_REFRESH_PATH, expires: refreshTokenExpiresAt }));
 };
 
 const clearComptePublicCookies = (res: Response) => {
-  const base = cookieOptions();
+  const cookieDomain = process.env.COOKIE_DOMAIN;
+  const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
   res.clearCookie("comptePublicAccessToken", base);
-  res.clearCookie("comptePublicRefreshToken", { ...base, path: "/api/public/auth/refresh" });
+  res.clearCookie("comptePublicRefreshToken", { ...base, path: PUBLIC_REFRESH_PATH });
 };
 
 // ─── Activation ───────────────────────────────────────────────────────────────
@@ -149,10 +160,13 @@ export const refreshToken = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const token = req.cookies?.locataireRefreshToken as string | undefined;
+  const token = req.cookies?.[REFRESH_COOKIE] as string | undefined;
   if (!token) {
     clearAuthCookies(res);
-    throw new AppError("Refresh token manquant", StatusCodes.UNAUTHORIZED);
+    res.status(StatusCodes.UNAUTHORIZED).json(
+      jsonResponse({ status: "unauthorized", message: "Refresh token manquant", data: null })
+    );
+    return;
   }
 
   try {
@@ -179,7 +193,7 @@ export const refreshToken = async (
 // ─── Logout ───────────────────────────────────────────────────────────────────
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
-  const token = req.cookies?.locataireRefreshToken as string | undefined;
+  const token = req.cookies?.[REFRESH_COOKIE] as string | undefined;
   if (token) {
     const locataireId = await LocataireAuthService.logout(token);
     if (locataireId) {
