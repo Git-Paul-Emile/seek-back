@@ -1,19 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import { jsonResponse } from "../utils/responseApi.js";
 import * as AuthService from "../services/comptePublicAuth.service.js";
+import { cookieOptions } from "../utils/cookieConfig.js";
 const ACCESS_COOKIE = "comptePublicAccessToken";
 const REFRESH_COOKIE = "comptePublicRefreshToken";
-const cookieOpts = (maxAge) => {
-    const isProduction = process.env.NODE_ENV === "production";
-    const sameSite = isProduction ? "none" : "lax";
-    return {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite,
-        path: "/",
-        maxAge,
-    };
-};
+const cookieOpts = (maxAge) => cookieOptions({ maxAge });
 // POST /api/public/auth/register
 export const register = async (req, res) => {
     const { nom, prenom, telephone, email, password } = req.body;
@@ -55,18 +46,10 @@ export const logout = async (req, res) => {
     const rawToken = req.cookies?.[REFRESH_COOKIE];
     if (rawToken)
         await AuthService.logout(rawToken);
-    const isProduction = process.env.NODE_ENV === "production";
     const cookieDomain = process.env.COOKIE_DOMAIN;
-    const sameSite = isProduction ? "none" : "lax";
-    const baseOptions = {
-        path: "/",
-        httpOnly: true,
-        secure: isProduction,
-        sameSite,
-        ...(cookieDomain && { domain: cookieDomain }),
-    };
-    res.clearCookie(ACCESS_COOKIE, baseOptions);
-    res.clearCookie(REFRESH_COOKIE, baseOptions);
+    const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
+    res.clearCookie(ACCESS_COOKIE, base);
+    res.clearCookie(REFRESH_COOKIE, base);
     res.json(jsonResponse({ status: "success", message: "Déconnexion réussie", data: null }));
 };
 // GET /api/public/auth/me
@@ -106,11 +89,9 @@ export const deleteAccount = async (req, res) => {
         return;
     }
     await AuthService.deleteAccount(req.comptePublic.id, password);
-    const isProduction = process.env.NODE_ENV === "production";
-    const sameSite = isProduction ? "none" : "lax";
-    const baseOptions = { path: "/", httpOnly: true, secure: isProduction, sameSite };
-    res.clearCookie(ACCESS_COOKIE, baseOptions);
-    res.clearCookie(REFRESH_COOKIE, baseOptions);
+    const base = cookieOptions();
+    res.clearCookie(ACCESS_COOKIE, base);
+    res.clearCookie(REFRESH_COOKIE, base);
     res.json(jsonResponse({ status: "success", message: "Compte supprimé avec succès", data: null }));
 };
 //# sourceMappingURL=comptePublicAuth.controller.js.map

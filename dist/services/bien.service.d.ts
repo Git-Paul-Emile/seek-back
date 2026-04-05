@@ -411,8 +411,8 @@ export declare const getBienById: (id: string) => Promise<({
         actif: boolean;
         nom: string;
         slug: string;
-        ordre: number;
         image: string | null;
+        ordre: number;
     } | null;
     typeTransaction: {
         id: string;
@@ -1095,8 +1095,8 @@ export declare const getAnnoncePublieById: (id: string) => Promise<{
         actif: boolean;
         nom: string;
         slug: string;
-        ordre: number;
         image: string | null;
+        ordre: number;
     } | null;
     typeTransaction: {
         id: string;

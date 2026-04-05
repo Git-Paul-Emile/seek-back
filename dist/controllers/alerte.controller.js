@@ -1,6 +1,20 @@
 import { PrismaClient } from "../generated/prisma/client.js";
 const prisma = new PrismaClient();
 const QUOTA_MAX = 2;
+const ALERTE_SAFE_SELECT = {
+    id: true,
+    telephone: true,
+    ville: true,
+    quartier: true,
+    typeLogement: true,
+    typeTransaction: true,
+    prixMin: true,
+    prixMax: true,
+    canalPrefere: true,
+    statut: true,
+    createdAt: true,
+    updatedAt: true,
+};
 const getSingleParam = (param) => {
     if (typeof param === "string" && param.trim())
         return param;
@@ -40,11 +54,13 @@ export const creerAlerte = async (req, res) => {
         }
         const alerteExistante = await prisma.alerte.findFirst({
             where: { telephone: telephoneClean, statut: "ACTIVE" },
+            select: ALERTE_SAFE_SELECT,
         });
         let alerte;
         if (alerteExistante) {
             alerte = await prisma.alerte.update({
                 where: { id: alerteExistante.id },
+                select: ALERTE_SAFE_SELECT,
                 data: {
                     typeLogement,
                     typeTransaction,
@@ -58,6 +74,7 @@ export const creerAlerte = async (req, res) => {
         }
         else {
             alerte = await prisma.alerte.create({
+                select: ALERTE_SAFE_SELECT,
                 data: {
                     telephone: telephoneClean,
                     typeLogement,
@@ -93,6 +110,7 @@ export const getAlertes = async (_req, res) => {
         const alertes = await prisma.alerte.findMany({
             where: { statut: "ACTIVE" },
             orderBy: { createdAt: "desc" },
+            select: ALERTE_SAFE_SELECT,
         });
         return res.json({ success: true, data: alertes });
     }
@@ -141,6 +159,7 @@ export const getMesAlertes = async (req, res) => {
         const alertes = await prisma.alerte.findMany({
             where: { comptePublicId },
             orderBy: { createdAt: "desc" },
+            select: ALERTE_SAFE_SELECT,
         });
         return res.json({ success: true, data: alertes });
     }
@@ -153,6 +172,7 @@ export const getMesAlertes = async (req, res) => {
             const alertes = await prisma.alerte.findMany({
                 where: { telephone },
                 orderBy: { createdAt: "desc" },
+                select: ALERTE_SAFE_SELECT,
             });
             return res.json({ success: true, data: alertes });
         }
@@ -196,6 +216,7 @@ export const creerAlerteCompte = async (req, res) => {
                     OR: [{ comptePublicId }, { telephone }],
                 },
                 orderBy: { createdAt: "desc" },
+                select: ALERTE_SAFE_SELECT,
             });
             count = await prisma.alerte.count({ where: { comptePublicId } });
         }
@@ -206,6 +227,7 @@ export const creerAlerteCompte = async (req, res) => {
             alerteExistante = await prisma.alerte.findFirst({
                 where: { telephone },
                 orderBy: { createdAt: "desc" },
+                select: ALERTE_SAFE_SELECT,
             });
             count = await prisma.alerte.count({ where: { telephone } });
         }
@@ -214,6 +236,7 @@ export const creerAlerteCompte = async (req, res) => {
             try {
                 alerte = await prisma.alerte.update({
                     where: { id: alerteExistante.id },
+                    select: ALERTE_SAFE_SELECT,
                     data,
                 });
             }
@@ -224,6 +247,7 @@ export const creerAlerteCompte = async (req, res) => {
                 const { comptePublicId: _ignored, ...legacyData } = data;
                 alerte = await prisma.alerte.update({
                     where: { id: alerteExistante.id },
+                    select: ALERTE_SAFE_SELECT,
                     data: legacyData,
                 });
             }
@@ -236,14 +260,20 @@ export const creerAlerteCompte = async (req, res) => {
                 });
             }
             try {
-                alerte = await prisma.alerte.create({ data });
+                alerte = await prisma.alerte.create({
+                    data,
+                    select: ALERTE_SAFE_SELECT,
+                });
             }
             catch (error) {
                 if (!isMissingComptePublicIdColumn(error)) {
                     throw error;
                 }
                 const { comptePublicId: _ignored, ...legacyData } = data;
-                alerte = await prisma.alerte.create({ data: legacyData });
+                alerte = await prisma.alerte.create({
+                    data: legacyData,
+                    select: ALERTE_SAFE_SELECT,
+                });
             }
         }
         return res.status(201).json({
@@ -272,7 +302,10 @@ export const activerAlerteCompte = async (req, res) => {
         }
         let alerte;
         try {
-            alerte = await prisma.alerte.findFirst({ where: { id, comptePublicId } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, comptePublicId },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         catch (error) {
             if (!isMissingComptePublicIdColumn(error))
@@ -281,7 +314,10 @@ export const activerAlerteCompte = async (req, res) => {
             if (!telephone) {
                 return res.status(404).json({ success: false, message: "Compte public introuvable" });
             }
-            alerte = await prisma.alerte.findFirst({ where: { id, telephone } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, telephone },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         if (!alerte) {
             return res.status(404).json({ success: false, message: "Alerte introuvable" });
@@ -289,6 +325,7 @@ export const activerAlerteCompte = async (req, res) => {
         const updated = await prisma.alerte.update({
             where: { id },
             data: { statut: "ACTIVE" },
+            select: ALERTE_SAFE_SELECT,
         });
         return res.json({ success: true, message: "Alerte activée", data: updated });
     }
@@ -307,7 +344,10 @@ export const desactiverAlerteCompte = async (req, res) => {
         }
         let alerte;
         try {
-            alerte = await prisma.alerte.findFirst({ where: { id, comptePublicId } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, comptePublicId },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         catch (error) {
             if (!isMissingComptePublicIdColumn(error))
@@ -316,7 +356,10 @@ export const desactiverAlerteCompte = async (req, res) => {
             if (!telephone) {
                 return res.status(404).json({ success: false, message: "Compte public introuvable" });
             }
-            alerte = await prisma.alerte.findFirst({ where: { id, telephone } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, telephone },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         if (!alerte) {
             return res.status(404).json({ success: false, message: "Alerte introuvable" });
@@ -324,6 +367,7 @@ export const desactiverAlerteCompte = async (req, res) => {
         const updated = await prisma.alerte.update({
             where: { id },
             data: { statut: "DESACTIVE" },
+            select: ALERTE_SAFE_SELECT,
         });
         return res.json({ success: true, message: "Alerte désactivée", data: updated });
     }
@@ -342,7 +386,10 @@ export const supprimerAlerteCompte = async (req, res) => {
         }
         let alerte;
         try {
-            alerte = await prisma.alerte.findFirst({ where: { id, comptePublicId } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, comptePublicId },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         catch (error) {
             if (!isMissingComptePublicIdColumn(error))
@@ -351,7 +398,10 @@ export const supprimerAlerteCompte = async (req, res) => {
             if (!telephone) {
                 return res.status(404).json({ success: false, message: "Compte public introuvable" });
             }
-            alerte = await prisma.alerte.findFirst({ where: { id, telephone } });
+            alerte = await prisma.alerte.findFirst({
+                where: { id, telephone },
+                select: ALERTE_SAFE_SELECT,
+            });
         }
         if (!alerte) {
             return res.status(404).json({ success: false, message: "Alerte introuvable" });

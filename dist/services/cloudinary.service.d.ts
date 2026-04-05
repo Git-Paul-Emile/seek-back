@@ -9,7 +9,7 @@ export interface CloudinaryUploadResult {
  * @param folder  - Dossier Cloudinary cible (ex: "seek/biens")
  * @param options - Paramètres d'optimisation optionnels (maxDimension, quality)
  */
-export declare const uploadImage: (buffer: Buffer, folder: string, options?: OptimizeOptions) => Promise<CloudinaryUploadResult>;
+export declare const uploadImage: (buffer: Buffer, folder: string, options?: OptimizeOptions, watermarkLogoBuffer?: Buffer | null) => Promise<CloudinaryUploadResult>;
 /**
  * Upload un fichier quelconque (PDF, image) vers Cloudinary (resource_type: auto)
  */

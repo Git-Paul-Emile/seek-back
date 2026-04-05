@@ -15,6 +15,7 @@ export type ConfigSiteMinAggregateOutputType = {
     contactEmail: string | null;
     contactPhone: string | null;
     contactAddress: string | null;
+    logoFiligrane: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -23,6 +24,7 @@ export type ConfigSiteMaxAggregateOutputType = {
     contactEmail: string | null;
     contactPhone: string | null;
     contactAddress: string | null;
+    logoFiligrane: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -32,6 +34,7 @@ export type ConfigSiteCountAggregateOutputType = {
     contactPhone: number;
     contactAddress: number;
     serviceClientHours: number;
+    logoFiligrane: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -41,6 +44,7 @@ export type ConfigSiteMinAggregateInputType = {
     contactEmail?: true;
     contactPhone?: true;
     contactAddress?: true;
+    logoFiligrane?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -49,6 +53,7 @@ export type ConfigSiteMaxAggregateInputType = {
     contactEmail?: true;
     contactPhone?: true;
     contactAddress?: true;
+    logoFiligrane?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -58,6 +63,7 @@ export type ConfigSiteCountAggregateInputType = {
     contactPhone?: true;
     contactAddress?: true;
     serviceClientHours?: true;
+    logoFiligrane?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -130,6 +136,7 @@ export type ConfigSiteGroupByOutputType = {
     contactPhone: string;
     contactAddress: string;
     serviceClientHours: runtime.JsonValue;
+    logoFiligrane: string | null;
     createdAt: Date;
     updatedAt: Date;
     _count: ConfigSiteCountAggregateOutputType | null;
@@ -148,6 +155,7 @@ export type ConfigSiteWhereInput = {
     contactPhone?: Prisma.StringFilter<"ConfigSite"> | string;
     contactAddress?: Prisma.StringFilter<"ConfigSite"> | string;
     serviceClientHours?: Prisma.JsonFilter<"ConfigSite">;
+    logoFiligrane?: Prisma.StringNullableFilter<"ConfigSite"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"ConfigSite"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ConfigSite"> | Date | string;
 };
@@ -157,6 +165,7 @@ export type ConfigSiteOrderByWithRelationInput = {
     contactPhone?: Prisma.SortOrder;
     contactAddress?: Prisma.SortOrder;
     serviceClientHours?: Prisma.SortOrder;
+    logoFiligrane?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -169,6 +178,7 @@ export type ConfigSiteWhereUniqueInput = Prisma.AtLeast<{
     contactPhone?: Prisma.StringFilter<"ConfigSite"> | string;
     contactAddress?: Prisma.StringFilter<"ConfigSite"> | string;
     serviceClientHours?: Prisma.JsonFilter<"ConfigSite">;
+    logoFiligrane?: Prisma.StringNullableFilter<"ConfigSite"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"ConfigSite"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ConfigSite"> | Date | string;
 }, "id">;
@@ -178,6 +188,7 @@ export type ConfigSiteOrderByWithAggregationInput = {
     contactPhone?: Prisma.SortOrder;
     contactAddress?: Prisma.SortOrder;
     serviceClientHours?: Prisma.SortOrder;
+    logoFiligrane?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.ConfigSiteCountOrderByAggregateInput;
@@ -193,6 +204,7 @@ export type ConfigSiteScalarWhereWithAggregatesInput = {
     contactPhone?: Prisma.StringWithAggregatesFilter<"ConfigSite"> | string;
     contactAddress?: Prisma.StringWithAggregatesFilter<"ConfigSite"> | string;
     serviceClientHours?: Prisma.JsonWithAggregatesFilter<"ConfigSite">;
+    logoFiligrane?: Prisma.StringNullableWithAggregatesFilter<"ConfigSite"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"ConfigSite"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ConfigSite"> | Date | string;
 };
@@ -202,6 +214,7 @@ export type ConfigSiteCreateInput = {
     contactPhone?: string;
     contactAddress?: string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -211,6 +224,7 @@ export type ConfigSiteUncheckedCreateInput = {
     contactPhone?: string;
     contactAddress?: string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -220,6 +234,7 @@ export type ConfigSiteUpdateInput = {
     contactPhone?: Prisma.StringFieldUpdateOperationsInput | string;
     contactAddress?: Prisma.StringFieldUpdateOperationsInput | string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -229,6 +244,7 @@ export type ConfigSiteUncheckedUpdateInput = {
     contactPhone?: Prisma.StringFieldUpdateOperationsInput | string;
     contactAddress?: Prisma.StringFieldUpdateOperationsInput | string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -238,6 +254,7 @@ export type ConfigSiteCreateManyInput = {
     contactPhone?: string;
     contactAddress?: string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -247,6 +264,7 @@ export type ConfigSiteUpdateManyMutationInput = {
     contactPhone?: Prisma.StringFieldUpdateOperationsInput | string;
     contactAddress?: Prisma.StringFieldUpdateOperationsInput | string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -256,6 +274,7 @@ export type ConfigSiteUncheckedUpdateManyInput = {
     contactPhone?: Prisma.StringFieldUpdateOperationsInput | string;
     contactAddress?: Prisma.StringFieldUpdateOperationsInput | string;
     serviceClientHours?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    logoFiligrane?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -265,6 +284,7 @@ export type ConfigSiteCountOrderByAggregateInput = {
     contactPhone?: Prisma.SortOrder;
     contactAddress?: Prisma.SortOrder;
     serviceClientHours?: Prisma.SortOrder;
+    logoFiligrane?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -273,6 +293,7 @@ export type ConfigSiteMaxOrderByAggregateInput = {
     contactEmail?: Prisma.SortOrder;
     contactPhone?: Prisma.SortOrder;
     contactAddress?: Prisma.SortOrder;
+    logoFiligrane?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -281,6 +302,7 @@ export type ConfigSiteMinOrderByAggregateInput = {
     contactEmail?: Prisma.SortOrder;
     contactPhone?: Prisma.SortOrder;
     contactAddress?: Prisma.SortOrder;
+    logoFiligrane?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -290,6 +312,7 @@ export type ConfigSiteSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     contactPhone?: boolean;
     contactAddress?: boolean;
     serviceClientHours?: boolean;
+    logoFiligrane?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["configSite"]>;
@@ -299,6 +322,7 @@ export type ConfigSiteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
     contactPhone?: boolean;
     contactAddress?: boolean;
     serviceClientHours?: boolean;
+    logoFiligrane?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["configSite"]>;
@@ -308,6 +332,7 @@ export type ConfigSiteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
     contactPhone?: boolean;
     contactAddress?: boolean;
     serviceClientHours?: boolean;
+    logoFiligrane?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 }, ExtArgs["result"]["configSite"]>;
@@ -317,10 +342,11 @@ export type ConfigSiteSelectScalar = {
     contactPhone?: boolean;
     contactAddress?: boolean;
     serviceClientHours?: boolean;
+    logoFiligrane?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ConfigSiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contactEmail" | "contactPhone" | "contactAddress" | "serviceClientHours" | "createdAt" | "updatedAt", ExtArgs["result"]["configSite"]>;
+export type ConfigSiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contactEmail" | "contactPhone" | "contactAddress" | "serviceClientHours" | "logoFiligrane" | "createdAt" | "updatedAt", ExtArgs["result"]["configSite"]>;
 export type $ConfigSitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "ConfigSite";
     objects: {};
@@ -330,6 +356,7 @@ export type $ConfigSitePayload<ExtArgs extends runtime.Types.Extensions.Internal
         contactPhone: string;
         contactAddress: string;
         serviceClientHours: runtime.JsonValue;
+        logoFiligrane: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["configSite"]>;
@@ -691,6 +718,7 @@ export interface ConfigSiteFieldRefs {
     readonly contactPhone: Prisma.FieldRef<"ConfigSite", 'String'>;
     readonly contactAddress: Prisma.FieldRef<"ConfigSite", 'String'>;
     readonly serviceClientHours: Prisma.FieldRef<"ConfigSite", 'Json'>;
+    readonly logoFiligrane: Prisma.FieldRef<"ConfigSite", 'String'>;
     readonly createdAt: Prisma.FieldRef<"ConfigSite", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"ConfigSite", 'DateTime'>;
 }

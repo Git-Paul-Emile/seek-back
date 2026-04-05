@@ -722,6 +722,7 @@ export declare const ConfigSiteScalarFieldEnum: {
     readonly contactPhone: "contactPhone";
     readonly contactAddress: "contactAddress";
     readonly serviceClientHours: "serviceClientHours";
+    readonly logoFiligrane: "logoFiligrane";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };

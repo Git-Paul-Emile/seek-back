@@ -52,6 +52,7 @@ export interface PropertyAlertPayload {
     telephone: string;
     bienId: string;
     titre: string;
+    typeLogement: string;
     typeTransaction: string;
     prix: number;
     localisation: string;

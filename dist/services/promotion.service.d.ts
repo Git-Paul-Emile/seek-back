@@ -43,8 +43,8 @@ export declare const getAnnoncesMiseEnAvant: (limit?: number) => Promise<{
             actif: boolean;
             nom: string;
             slug: string;
-            ordre: number;
             image: string | null;
+            ordre: number;
         } | null;
         typeTransaction: {
             id: string;

@@ -6,6 +6,7 @@ import { prisma } from "../config/database.js";
 import { computeScoreForProprietaire } from "./trustScore.service.js";
 import { emitPropertyAlert, fetchAndEmitStatsGlobales } from "./socket.service.js";
 import { envoyerNotification } from "./notification.service.js";
+import { getLogoFiligraneBuffer } from "./configSite.service.js";
 const ETABLISSEMENT_QUERIES = [
     { type: "hopital", label: "Hôpital", query: '["amenity"="hospital"]' },
     { type: "pharmacie", label: "Pharmacie", query: '["amenity"="pharmacy"]' },
@@ -145,9 +146,10 @@ export const saveDraft = async (input, proprietaireId, files) => {
         if (bien.proprietaireId !== proprietaireId) {
             throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
         }
-        // Upload new photos in parallel
+        // Upload new photos in parallel (avec filigrane si logo configuré)
+        const logoBuffer = files.length > 0 ? await getLogoFiligraneBuffer() : null;
         const newPhotoUrls = files.length > 0
-            ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+            ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
             : [];
         const photos = [...(existingPhotos || []), ...newPhotoUrls];
         const data = {
@@ -168,9 +170,10 @@ export const saveDraft = async (input, proprietaireId, files) => {
     }
     // Sinon, utiliser le comportement existant (brouillon)
     const existing = await BienRepository.getDraftByProprietaire(proprietaireId);
-    // Upload new photos in parallel
+    // Upload new photos in parallel (avec filigrane si logo configuré)
+    const logoBuffer = files.length > 0 ? await getLogoFiligraneBuffer() : null;
     const newPhotoUrls = files.length > 0
-        ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens").then((r) => r.url)))
+        ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
         : [];
     const photos = [...existingPhotos, ...newPhotoUrls];
     const data = {
@@ -333,13 +336,14 @@ export const validerAnnonce = async (bienId, action, note) => {
     }
     const newStatut = action === "APPROUVER" ? "PUBLIE" : "REJETE";
     const result = await BienRepository.updateStatutAnnonce(bienId, newStatut, note);
+    const bienTitre = result.titre ?? "votre annonce";
     // Notification in-app au propriétaire
     const proprietaire = result.proprietaire;
     if (proprietaire) {
-        const bienTitre = result.titre ?? "votre annonce";
         if (action === "APPROUVER") {
             envoyerNotification({
                 type: "ANNONCE_VALIDEE",
+                target: "owner",
                 telephone: proprietaire.telephone,
                 email: proprietaire.email,
                 sujet: "Annonce validée",
@@ -352,6 +356,7 @@ export const validerAnnonce = async (bienId, action, note) => {
         else {
             envoyerNotification({
                 type: "ANNONCE_REJETEE",
+                target: "owner",
                 telephone: proprietaire.telephone,
                 email: proprietaire.email,
                 sujet: "Annonce rejetée",
@@ -364,6 +369,36 @@ export const validerAnnonce = async (bienId, action, note) => {
     }
     // Alertes temps réel aux utilisateurs qui ont sauvegardé des critères
     if (action === "APPROUVER") {
+        const alertesActives = await prisma.alerte.findMany({
+            where: { statut: "ACTIVE" },
+            include: {
+                comptePublic: {
+                    select: {
+                        email: true,
+                    },
+                },
+            },
+        });
+        const normalize = (value) => {
+            if (!value)
+                return null;
+            const normalized = value.trim().toLocaleLowerCase();
+            return normalized.length > 0 ? normalized : null;
+        };
+        const matches = alertesActives.filter((alerte) => ((!normalize(alerte.typeLogement) || normalize(alerte.typeLogement) === normalize(result.typeLogement?.nom)) &&
+            (!normalize(alerte.typeTransaction) || normalize(alerte.typeTransaction) === normalize(result.typeTransaction?.nom)) &&
+            (!normalize(alerte.ville) || normalize(alerte.ville) === normalize(result.region ?? result.ville)) &&
+            (!normalize(alerte.quartier) || normalize(alerte.quartier) === normalize(result.quartier)) &&
+            (!alerte.prixMin || (result.prix && result.prix >= alerte.prixMin)) &&
+            (!alerte.prixMax || (result.prix && result.prix <= alerte.prixMax))));
+        await Promise.allSettled(matches.map((alerte) => envoyerNotification({
+            type: "ALERTE",
+            telephone: alerte.telephone,
+            email: alerte.comptePublic?.email ?? undefined,
+            sujet: "Nouvelle annonce correspondant à vos critères",
+            contenu: `Une nouvelle annonce "${bienTitre}" correspondant à vos critères vient d'être ajoutée sur SEEK Immobilier.`,
+            bienId,
+        })));
         emitPropertyAlert(bienId).catch(() => null);
         // Re-fetch établissements si la 1ère tentative (soumission) avait échoué
         if (result.latitude && result.longitude && result.etablissements?.length === 0) {

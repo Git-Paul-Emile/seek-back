@@ -2,14 +2,18 @@ import cloudinary from "../config/cloudinary.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 import { optimizeImage } from "../utils/optimizeImage.js";
+import { applyWatermark } from "../utils/watermark.js";
 /**
  * Optimise (compression + resize + WebP) puis upload vers Cloudinary.
  * @param buffer  - Buffer brut fourni par Multer (memoryStorage)
  * @param folder  - Dossier Cloudinary cible (ex: "seek/biens")
  * @param options - Paramètres d'optimisation optionnels (maxDimension, quality)
  */
-export const uploadImage = async (buffer, folder, options) => {
-    const optimized = await optimizeImage(buffer, options);
+export const uploadImage = async (buffer, folder, options, watermarkLogoBuffer) => {
+    let optimized = await optimizeImage(buffer, options);
+    if (watermarkLogoBuffer) {
+        optimized = await applyWatermark(optimized, watermarkLogoBuffer);
+    }
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({ folder, resource_type: "image", format: "webp" }, (error, result) => {
             if (error || !result) {

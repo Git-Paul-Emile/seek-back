@@ -19,8 +19,8 @@ export declare const findAllAdmin: () => import("../generated/prisma/internal/pr
     actif: boolean;
     nom: string;
     slug: string;
-    ordre: number;
     image: string | null;
+    ordre: number;
 }[]>;
 export declare const findById: (id: string) => Promise<TypeLogementType | null>;
 export declare const findBySlug: (slug: string) => Promise<TypeLogementType | null>;

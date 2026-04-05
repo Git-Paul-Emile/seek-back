@@ -76,6 +76,10 @@ export const initializeWebSocket = (httpServer) => {
             socket.join(`alerts:${telephone}`);
             console.log(`🔔 Utilisateur ${telephone} a rejoint les alertes`);
         });
+        socket.on("leave:alerts", (telephone) => {
+            socket.leave(`alerts:${telephone}`);
+            console.log(`🔕 Utilisateur ${telephone} a quitté les alertes`);
+        });
         // Déconnexion
         socket.on("disconnect", () => {
             console.log(`❌ Client déconnecté: ${socket.id}`);
@@ -182,6 +186,12 @@ export const emitPropertyAlert = async (bienId) => {
     if (!io)
         return;
     const { prisma } = await import("../config/database.js");
+    const normalize = (value) => {
+        if (!value)
+            return null;
+        const normalized = value.trim().toLocaleLowerCase();
+        return normalized.length > 0 ? normalized : null;
+    };
     // Récupérer les alertes actives
     const alerts = await prisma.alerte.findMany({
         where: {
@@ -193,6 +203,9 @@ export const emitPropertyAlert = async (bienId) => {
         where: { id: bienId },
         select: {
             titre: true,
+            typeLogement: {
+                select: { nom: true }
+            },
             typeTransaction: {
                 select: { nom: true }
             },
@@ -206,8 +219,10 @@ export const emitPropertyAlert = async (bienId) => {
     // Envoyer à chaque utilisateur concerné
     for (const alert of alerts) {
         // Vérifier si le bien correspond aux critères de l'alerte
-        const correspond = ((!alert.ville || alert.ville === bien.ville) &&
-            (!alert.quartier || alert.quartier === bien.quartier) &&
+        const correspond = ((!normalize(alert.typeLogement) || normalize(alert.typeLogement) === normalize(bien.typeLogement?.nom)) &&
+            (!normalize(alert.typeTransaction) || normalize(alert.typeTransaction) === normalize(bien.typeTransaction?.nom)) &&
+            (!normalize(alert.ville) || normalize(alert.ville) === normalize(bien.ville)) &&
+            (!normalize(alert.quartier) || normalize(alert.quartier) === normalize(bien.quartier)) &&
             (!alert.prixMin || (bien.prix && bien.prix >= alert.prixMin)) &&
             (!alert.prixMax || (bien.prix && bien.prix <= alert.prixMax)));
         if (correspond) {
@@ -216,6 +231,7 @@ export const emitPropertyAlert = async (bienId) => {
                 telephone: alert.telephone,
                 bienId,
                 titre: bien.titre || "",
+                typeLogement: bien.typeLogement?.nom || "",
                 typeTransaction: bien.typeTransaction?.nom || "",
                 prix: bien.prix || 0,
                 localisation: `${bien.ville || ""}, ${bien.quartier || ""}`,

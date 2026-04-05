@@ -677,6 +677,7 @@ export const ConfigSiteScalarFieldEnum = {
     contactPhone: 'contactPhone',
     contactAddress: 'contactAddress',
     serviceClientHours: 'serviceClientHours',
+    logoFiligrane: 'logoFiligrane',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

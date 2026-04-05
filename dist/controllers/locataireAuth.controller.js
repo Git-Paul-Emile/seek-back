@@ -9,67 +9,37 @@ import * as ComptePublicService from "../services/comptePublicAuth.service.js";
 import { prisma } from "../config/database.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import { AppError } from "../utils/AppError.js";
+import { cookieOptions } from "../utils/cookieConfig.js";
+const ACCESS_COOKIE = "locataireAccessToken";
+const REFRESH_COOKIE = "locataireRefreshToken";
+const LOCATAIRE_REFRESH_PATH = "/api/locataire/auth/refresh";
+const PUBLIC_REFRESH_PATH = "/api/public/auth/refresh";
 // ─── Cookie helpers ───────────────────────────────────────────────────────────
-const IS_PROD = process.env.NODE_ENV === "production";
 const setAuthCookies = (res, accessToken, refreshToken, refreshTokenExpiresAt) => {
-    const IS_PROD = process.env.NODE_ENV === "production";
     // Nettoyer d'anciens cookies potentiellement créés avec un path différent
-    res.clearCookie("locataireAccessToken");
-    res.clearCookie("locataireAccessToken", { path: "/api/locataire/auth" });
-    res.clearCookie("locataireRefreshToken");
-    res.clearCookie("locataireRefreshToken", { path: "/api/locataire/auth" });
-    res.cookie("locataireAccessToken", accessToken, {
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "lax",
-        path: "/",
-        maxAge: 15 * 60 * 1000, // 15 min
-    });
-    res.cookie("locataireRefreshToken", refreshToken, {
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "lax",
-        path: "/",
-        expires: refreshTokenExpiresAt,
-    });
+    res.clearCookie(ACCESS_COOKIE);
+    res.clearCookie(ACCESS_COOKIE, { path: "/api/locataire/auth" });
+    res.clearCookie(REFRESH_COOKIE);
+    res.clearCookie(REFRESH_COOKIE, { path: "/api/locataire/auth" });
+    res.clearCookie(REFRESH_COOKIE, { path: LOCATAIRE_REFRESH_PATH });
+    res.cookie(ACCESS_COOKIE, accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+    res.cookie(REFRESH_COOKIE, refreshToken, cookieOptions({ path: LOCATAIRE_REFRESH_PATH, expires: refreshTokenExpiresAt }));
 };
 const clearAuthCookies = (res) => {
-    const IS_PROD = process.env.NODE_ENV === "production";
     const cookieDomain = process.env.COOKIE_DOMAIN;
-    const sameSite = IS_PROD ? "none" : "lax";
-    const baseOptions = {
-        path: "/",
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite,
-        ...(cookieDomain && { domain: cookieDomain }),
-    };
-    res.clearCookie("locataireAccessToken", baseOptions);
-    res.clearCookie("locataireRefreshToken", baseOptions);
+    const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
+    res.clearCookie(ACCESS_COOKIE, base);
+    res.clearCookie(REFRESH_COOKIE, { ...base, path: LOCATAIRE_REFRESH_PATH });
 };
 const setComptePublicCookies = (res, accessToken, refreshToken, refreshTokenExpiresAt) => {
-    const IS_PROD = process.env.NODE_ENV === "production";
-    res.cookie("comptePublicAccessToken", accessToken, {
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "lax",
-        path: "/",
-        maxAge: 15 * 60 * 1000,
-    });
-    res.cookie("comptePublicRefreshToken", refreshToken, {
-        httpOnly: true,
-        secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "lax",
-        path: "/api/public/auth/refresh",
-        expires: refreshTokenExpiresAt,
-    });
+    res.cookie("comptePublicAccessToken", accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+    res.cookie("comptePublicRefreshToken", refreshToken, cookieOptions({ path: PUBLIC_REFRESH_PATH, expires: refreshTokenExpiresAt }));
 };
 const clearComptePublicCookies = (res) => {
-    const IS_PROD = process.env.NODE_ENV === "production";
-    const sameSite = IS_PROD ? "none" : "lax";
-    const base = { path: "/", httpOnly: true, secure: IS_PROD, sameSite };
+    const cookieDomain = process.env.COOKIE_DOMAIN;
+    const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
     res.clearCookie("comptePublicAccessToken", base);
-    res.clearCookie("comptePublicRefreshToken", { ...base, path: "/api/public/auth/refresh" });
+    res.clearCookie("comptePublicRefreshToken", { ...base, path: PUBLIC_REFRESH_PATH });
 };
 // ─── Activation ───────────────────────────────────────────────────────────────
 const activerSchema = z.object({
@@ -145,10 +115,11 @@ export const login = async (req, res) => {
 };
 // ─── Refresh ──────────────────────────────────────────────────────────────────
 export const refreshToken = async (req, res) => {
-    const token = req.cookies?.locataireRefreshToken;
+    const token = req.cookies?.[REFRESH_COOKIE];
     if (!token) {
         clearAuthCookies(res);
-        throw new AppError("Refresh token manquant", StatusCodes.UNAUTHORIZED);
+        res.status(StatusCodes.UNAUTHORIZED).json(jsonResponse({ status: "unauthorized", message: "Refresh token manquant", data: null }));
+        return;
     }
     try {
         const tokens = await LocataireAuthService.refresh(token);
@@ -170,7 +141,7 @@ export const refreshToken = async (req, res) => {
 };
 // ─── Logout ───────────────────────────────────────────────────────────────────
 export const logout = async (req, res) => {
-    const token = req.cookies?.locataireRefreshToken;
+    const token = req.cookies?.[REFRESH_COOKIE];
     if (token) {
         const locataireId = await LocataireAuthService.logout(token);
         if (locataireId) {

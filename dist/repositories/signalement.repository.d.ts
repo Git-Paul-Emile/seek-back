@@ -50,8 +50,8 @@ export declare const findById: (id: string) => Promise<({
             actif: boolean;
             nom: string;
             slug: string;
-            ordre: number;
             image: string | null;
+            ordre: number;
         } | null;
         typeTransaction: {
             id: string;
