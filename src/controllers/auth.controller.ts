@@ -2,6 +2,7 @@ import type { Request, Response, CookieOptions } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as AuthService from "../services/auth.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
+import { cookieOptions } from "../utils/cookieConfig.js";
 
 // ─── Helpers cookies ──────────────────────────────────────────────────────────
 
@@ -14,42 +15,15 @@ const setTokenCookies = (
   refreshToken: string,
   refreshTokenExpiresAt: Date
 ) => {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  // Access token - HttpOnly, courte durée, toutes les routes
-  res.cookie(ACCESS_COOKIE, accessToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/",
-    maxAge: 15 * 60 * 1000, // 15 min
-  });
-
-  // Refresh token - HttpOnly, path restreint à /api/auth/refresh uniquement
-  res.cookie(REFRESH_COOKIE, refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/api/auth/refresh",
-    expires: refreshTokenExpiresAt,
-  });
+  res.cookie(ACCESS_COOKIE, accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+  res.cookie(REFRESH_COOKIE, refreshToken, cookieOptions({ path: "/api/auth/refresh", expires: refreshTokenExpiresAt }));
 };
 
 const clearTokenCookies = (res: Response) => {
-  const isProduction = process.env.NODE_ENV === "production";
   const cookieDomain = process.env.COOKIE_DOMAIN;
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  
-  const baseOptions: CookieOptions = {
-    path: "/",
-    httpOnly: true,
-    secure: isProduction,
-    sameSite,
-    ...(cookieDomain && { domain: cookieDomain }),
-  };
-  
-  res.clearCookie(ACCESS_COOKIE, baseOptions);
-  res.clearCookie(REFRESH_COOKIE, { ...baseOptions, path: "/api/auth/refresh" });
+  const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
+  res.clearCookie(ACCESS_COOKIE, base);
+  res.clearCookie(REFRESH_COOKIE, { ...base, path: "/api/auth/refresh" });
 };
 
 // ─── POST /api/auth/login ─────────────────────────────────────────────────────

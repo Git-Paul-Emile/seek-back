@@ -1,22 +1,13 @@
-import type { Request, Response, CookieOptions } from "express";
+import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { jsonResponse } from "../utils/responseApi.js";
 import * as AuthService from "../services/comptePublicAuth.service.js";
+import { cookieOptions } from "../utils/cookieConfig.js";
 
 const ACCESS_COOKIE = "comptePublicAccessToken";
 const REFRESH_COOKIE = "comptePublicRefreshToken";
 
-const cookieOpts = (maxAge: number): CookieOptions => {
-  const isProduction = process.env.NODE_ENV === "production";
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  return {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite,
-    path: "/",
-    maxAge,
-  };
-};
+const cookieOpts = (maxAge: number) => cookieOptions({ maxAge });
 
 // POST /api/public/auth/register
 export const register = async (req: Request, res: Response) => {
@@ -83,20 +74,10 @@ export const logout = async (req: Request, res: Response) => {
 
   if (rawToken) await AuthService.logout(rawToken);
 
-  const isProduction = process.env.NODE_ENV === "production";
   const cookieDomain = process.env.COOKIE_DOMAIN;
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  
-  const baseOptions: CookieOptions = {
-    path: "/",
-    httpOnly: true,
-    secure: isProduction,
-    sameSite,
-    ...(cookieDomain && { domain: cookieDomain }),
-  };
-
-  res.clearCookie(ACCESS_COOKIE, baseOptions);
-  res.clearCookie(REFRESH_COOKIE, baseOptions);
+  const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
+  res.clearCookie(ACCESS_COOKIE, base);
+  res.clearCookie(REFRESH_COOKIE, base);
 
   res.json(jsonResponse({ status: "success", message: "Déconnexion réussie", data: null }));
 };
@@ -157,12 +138,9 @@ export const deleteAccount = async (req: Request, res: Response) => {
 
   await AuthService.deleteAccount(req.comptePublic!.id, password);
 
-  const isProduction = process.env.NODE_ENV === "production";
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  const baseOptions: CookieOptions = { path: "/", httpOnly: true, secure: isProduction, sameSite };
-
-  res.clearCookie(ACCESS_COOKIE, baseOptions);
-  res.clearCookie(REFRESH_COOKIE, baseOptions);
+  const base = cookieOptions();
+  res.clearCookie(ACCESS_COOKIE, base);
+  res.clearCookie(REFRESH_COOKIE, base);
 
   res.json(jsonResponse({ status: "success", message: "Compte supprimé avec succès", data: null }));
 };

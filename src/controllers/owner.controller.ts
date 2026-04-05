@@ -1,4 +1,4 @@
-import type { Request, Response, CookieOptions } from "express";
+import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as OwnerService from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
@@ -8,6 +8,7 @@ import {
   envoyerOtpTelephone,
 } from "../services/notification.service.js";
 import * as ComptePublicService from "../services/comptePublicAuth.service.js";
+import { cookieOptions } from "../utils/cookieConfig.js";
 
 const REFRESH_COOKIE = "ownerRefreshToken";
 const ACCESS_COOKIE = "ownerAccessToken";
@@ -18,40 +19,15 @@ const setTokenCookies = (
   refreshToken: string,
   refreshTokenExpiresAt: Date
 ) => {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  res.cookie(ACCESS_COOKIE, accessToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/",
-    maxAge: 15 * 60 * 1000,
-  });
-
-  res.cookie(REFRESH_COOKIE, refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/api/owner/auth/refresh",
-    expires: refreshTokenExpiresAt,
-  });
+  res.cookie(ACCESS_COOKIE, accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+  res.cookie(REFRESH_COOKIE, refreshToken, cookieOptions({ path: "/api/owner/auth/refresh", expires: refreshTokenExpiresAt }));
 };
 
 const clearTokenCookies = (res: Response) => {
-  const isProduction = process.env.NODE_ENV === "production";
   const cookieDomain = process.env.COOKIE_DOMAIN;
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-
-  const baseOptions: CookieOptions = {
-    path: "/",
-    httpOnly: true,
-    secure: isProduction,
-    sameSite,
-    ...(cookieDomain && { domain: cookieDomain }),
-  };
-
-  res.clearCookie(ACCESS_COOKIE, baseOptions);
-  res.clearCookie(REFRESH_COOKIE, { ...baseOptions, path: "/api/owner/auth/refresh" });
+  const base = cookieOptions({ ...(cookieDomain && { domain: cookieDomain }) });
+  res.clearCookie(ACCESS_COOKIE, base);
+  res.clearCookie(REFRESH_COOKIE, { ...base, path: "/api/owner/auth/refresh" });
 };
 
 const setComptePublicCookies = (
@@ -60,27 +36,12 @@ const setComptePublicCookies = (
   refreshToken: string,
   refreshTokenExpiresAt: Date
 ) => {
-  const isProduction = process.env.NODE_ENV === "production";
-  res.cookie("comptePublicAccessToken", accessToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/",
-    maxAge: 15 * 60 * 1000,
-  });
-  res.cookie("comptePublicRefreshToken", refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    path: "/api/public/auth/refresh",
-    expires: refreshTokenExpiresAt,
-  });
+  res.cookie("comptePublicAccessToken", accessToken, cookieOptions({ maxAge: 15 * 60 * 1000 }));
+  res.cookie("comptePublicRefreshToken", refreshToken, cookieOptions({ path: "/api/public/auth/refresh", expires: refreshTokenExpiresAt }));
 };
 
 const clearComptePublicCookies = (res: Response) => {
-  const isProduction = process.env.NODE_ENV === "production";
-  const sameSite: CookieOptions["sameSite"] = isProduction ? "none" : "lax";
-  const base: CookieOptions = { path: "/", httpOnly: true, secure: isProduction, sameSite };
+  const base = cookieOptions();
   res.clearCookie("comptePublicAccessToken", base);
   res.clearCookie("comptePublicRefreshToken", { ...base, path: "/api/public/auth/refresh" });
 };
