@@ -83,16 +83,19 @@ jobs:
             ATTEMPT=$((ATTEMPT + 1))
             echo "Tentative $ATTEMPT/$MAX_ATTEMPTS..."
 
-            RESPONSE=$(curl -sf --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "UNREACHABLE")
+            HTTP_CODE=$(curl -s -o /tmp/hc_body.txt -w "%{http_code}" --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "000")
+            RESPONSE=$(cat /tmp/hc_body.txt 2>/dev/null || echo "")
 
-            if [ "$RESPONSE" = "UNREACHABLE" ]; then
+            echo "HTTP $HTTP_CODE — Body: $RESPONSE"
+
+            if [ "$HTTP_CODE" = "000" ] || [ -z "$RESPONSE" ]; then
               echo "Endpoint inaccessible — nouvelle tentative dans ${INTERVAL}s"
               sleep $INTERVAL
               continue
             fi
 
-            DB_STATUS=$(echo "$RESPONSE"  | jq -r '.db // empty')
-            API_STATUS=$(echo "$RESPONSE" | jq -r '.status // empty')
+            DB_STATUS=$(echo "$RESPONSE"  | jq -r '.db // empty' 2>/dev/null || echo "")
+            API_STATUS=$(echo "$RESPONSE" | jq -r '.status // empty' 2>/dev/null || echo "")
 
             if [ "$API_STATUS" = "OK" ] && [ "$DB_STATUS" = "connected" ]; then
               echo "Health check OK (API: $API_STATUS, DB: $DB_STATUS)"
