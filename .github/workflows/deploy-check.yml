@@ -83,7 +83,7 @@ jobs:
             ATTEMPT=$((ATTEMPT + 1))
             echo "Tentative $ATTEMPT/$MAX_ATTEMPTS..."
 
-            HTTP_CODE=$(curl -s -o /tmp/hc_body.txt -w "%{http_code}" --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "000")
+            HTTP_CODE=$(curl -sL -o /tmp/hc_body.txt -w "%{http_code}" --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "000")
             RESPONSE=$(cat /tmp/hc_body.txt 2>/dev/null || echo "")
 
             echo "HTTP $HTTP_CODE — Body: $RESPONSE"
@@ -143,8 +143,8 @@ jobs:
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
+          server_port: 587
+          secure: false
           username: ${{ secrets.GMAIL_USER }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "[SEEK BACK] Déploiement échoué — Rollback déclenché"
