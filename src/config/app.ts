@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import swaggerUi from "swagger-ui-express";
 import { AppError } from "../utils/AppError.js";
+import { prisma } from "./database.js";
 import { limiteurGlobal } from "../middlewares/rateLimiter.middleware.js";
 import { getAllowedFrontendOrigins, getFrontendBaseUrl } from "./external.js";
 import authRouter from "../routes/auth.routes.js";
@@ -136,8 +137,13 @@ app.get('/', (req, res) => {
   res.redirect(getFrontendBaseUrl());
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'API opérationnelle' });
+app.get('/api/health', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'OK', message: 'API opérationnelle', db: 'connected' });
+  } catch {
+    res.status(503).json({ status: 'ERROR', message: 'Base de données inaccessible', db: 'disconnected' });
+  }
 });
 
 // Auth admin
