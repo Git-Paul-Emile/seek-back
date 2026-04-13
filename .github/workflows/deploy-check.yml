@@ -74,24 +74,37 @@ jobs:
         id: health_check
         run: |
           echo "Vérification de /api/health..."
-          sleep 10
 
-          RESPONSE=$(curl -sf --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "UNREACHABLE")
+          MAX_ATTEMPTS=10
+          INTERVAL=10
+          ATTEMPT=0
 
-          if [ "$RESPONSE" = "UNREACHABLE" ]; then
-            echo "error=Endpoint /api/health inaccessible" >> "$GITHUB_OUTPUT"
-            exit 1
-          fi
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "Tentative $ATTEMPT/$MAX_ATTEMPTS..."
 
-          DB_STATUS=$(echo "$RESPONSE"  | jq -r '.db // empty')
-          API_STATUS=$(echo "$RESPONSE" | jq -r '.status // empty')
+            RESPONSE=$(curl -sf --max-time 15 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null || echo "UNREACHABLE")
 
-          if [ "$API_STATUS" != "OK" ] || [ "$DB_STATUS" != "connected" ]; then
-            echo "error=Health check dégradé — API: $API_STATUS, DB: $DB_STATUS" >> "$GITHUB_OUTPUT"
-            exit 1
-          fi
+            if [ "$RESPONSE" = "UNREACHABLE" ]; then
+              echo "Endpoint inaccessible — nouvelle tentative dans ${INTERVAL}s"
+              sleep $INTERVAL
+              continue
+            fi
 
-          echo "Health check OK (API: $API_STATUS, DB: $DB_STATUS)"
+            DB_STATUS=$(echo "$RESPONSE"  | jq -r '.db // empty')
+            API_STATUS=$(echo "$RESPONSE" | jq -r '.status // empty')
+
+            if [ "$API_STATUS" = "OK" ] && [ "$DB_STATUS" = "connected" ]; then
+              echo "Health check OK (API: $API_STATUS, DB: $DB_STATUS)"
+              exit 0
+            fi
+
+            echo "Health check dégradé — API: $API_STATUS, DB: $DB_STATUS — nouvelle tentative dans ${INTERVAL}s"
+            sleep $INTERVAL
+          done
+
+          echo "error=Health check échoué après $MAX_ATTEMPTS tentatives" >> "$GITHUB_OUTPUT"
+          exit 1
 
       - name: Rollback Railway (déploiement précédent)
         if: failure()
