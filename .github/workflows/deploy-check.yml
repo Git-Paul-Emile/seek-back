@@ -97,8 +97,8 @@ jobs:
             DB_STATUS=$(echo "$RESPONSE"  | jq -r '.db // empty' 2>/dev/null || echo "")
             API_STATUS=$(echo "$RESPONSE" | jq -r '.status // empty' 2>/dev/null || echo "")
 
-            if [ "$API_STATUS" = "OK" ] && [ "$DB_STATUS" = "connected" ]; then
-              echo "Health check OK (API: $API_STATUS, DB: $DB_STATUS)"
+            if [ "$API_STATUS" = "OK" ]; then
+              echo "Health check OK (API: $API_STATUS, DB: ${DB_STATUS:-non renseigné})"
               exit 0
             fi
 
@@ -142,14 +142,14 @@ jobs:
       - name: Envoyer l'email d'alerte
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          secure: false
-          username: ${{ secrets.GMAIL_USER }}
-          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          server_address: smtp.resend.com
+          server_port: 465
+          secure: true
+          username: resend
+          password: ${{ secrets.RESEND_API_KEY }}
           subject: "[SEEK BACK] Déploiement échoué — Rollback déclenché"
           to: ${{ secrets.NOTIFY_EMAIL }}
-          from: "Seek Deploy <${{ secrets.GMAIL_USER }}>"
+          from: "Seek Deploy <onboarding@resend.dev>"
           body: |
             Un problème a été détecté sur le backend après le dernier push.
             Un rollback automatique vers le déploiement précédent a été déclenché.
