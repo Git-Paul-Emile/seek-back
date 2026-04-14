@@ -551,6 +551,8 @@ export const searchAnnoncePubliques = async (params: {
   fumeurs?: boolean;
   animaux?: boolean;
   equipementIds?: string[];
+  misEnAvant?: boolean;
+  featuredFirst?: boolean;
   sortBy?: "prix" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;

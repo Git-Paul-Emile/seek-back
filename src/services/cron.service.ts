@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import { prisma } from "../config/database.js";
-import { envoyerRappelLoyer } from "./notification.service.js";
+import { envoyerRappelLoyer, envoyerNotification } from "./notification.service.js";
 import { emitBailUpdated } from "./socket.service.js";
 
 export const initCronJobs = () => {
@@ -160,6 +160,59 @@ export const initCronJobs = () => {
       console.log(`[CRON] Terminaison : ${bails.length} bail(s) terminé(s).`);
     } catch (err) {
       console.error("[CRON] Erreur terminaison bails :", err);
+    }
+  });
+
+  // Notification fin de mise en avant J-1 (09:30) — in-app + email uniquement
+  cron.schedule("30 9 * * *", async () => {
+    try {
+      console.log("[CRON] Vérification des mises en avant expirant demain...");
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const start = new Date(tomorrow);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(tomorrow);
+      end.setHours(23, 59, 59, 999);
+
+      const biens = await prisma.bien.findMany({
+        where: {
+          estMisEnAvant: true,
+          dateFinPromotion: { gte: start, lte: end },
+          statutAnnonce: "PUBLIE",
+          actif: true,
+        },
+        include: {
+          proprietaire: {
+            select: { id: true, prenom: true, telephone: true, email: true },
+          },
+        },
+      });
+
+      for (const bien of biens) {
+        const owner = bien.proprietaire;
+        if (!owner?.telephone) continue;
+
+        const titre = bien.titre ?? "votre annonce";
+        const contenu = `Bonjour ${owner.prenom},\n\nVotre mise en avant pour l'annonce "${titre}" expire demain. Rendez-vous sur votre espace pour la renouveler et continuer à booster votre visibilité.\n\n— SEEK Immobilier`;
+
+        await envoyerNotification({
+          type: "ALERTE",
+          target: "owner",
+          telephone: owner.telephone,
+          email: owner.email,
+          sujet: "Votre mise en avant expire demain",
+          contenu,
+          bienId: bien.id,
+          proprietaireId: owner.id,
+          emailOnly: true,
+        });
+
+        console.log(`[CRON] Notif fin mise en avant envoyée pour bien ${bien.id}`);
+      }
+
+      console.log(`[CRON] Fin mises en avant : ${biens.length} notif(s) envoyée(s).`);
+    } catch (err) {
+      console.error("[CRON] Erreur notif fin mise en avant :", err);
     }
   });
 

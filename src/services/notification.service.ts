@@ -49,6 +49,8 @@ export interface NotificationPayload {
   proprietaireId?: string;
   locataireId?: string;
   noSmsEmail?: boolean;
+  /** Envoyer uniquement par email (pas de SMS) */
+  emailOnly?: boolean;
 }
 
 // ─── Envoi réel SMS + email en arrière-plan ────────────────────────────────────
@@ -60,15 +62,20 @@ interface DispatchSmsEtEmailParams {
   contenu: string;
   sujet: string | undefined;
   htmlEmail: string | undefined;
+  skipSms?: boolean;
 }
 
 async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<void> {
-  const { notifId, telephone, email, contenu, sujet, htmlEmail } = params;
-  // ── 1. SMS (obligatoire et prioritaire) ──────────────────────────────────
-  const smsResult = await sendSms(telephone, contenu);
+  const { notifId, telephone, email, contenu, sujet, htmlEmail, skipSms } = params;
+
+  let smsResult = { success: true, messageRetour: "SMS_SKIPPED" };
+
+  // ── 1. SMS (sauf si skipSms) ─────────────────────────────────────────────
+  if (!skipSms) {
+    smsResult = await sendSms(telephone, contenu);
+  }
 
   // ── 2. Email (si fourni) ─────────────────────────────────────────────────
-  let emailSuccess = true;
   let emailRetour = "";
 
   if (email) {
@@ -81,16 +88,15 @@ async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<voi
       });
       emailRetour = "EMAIL_OK";
     } catch (err) {
-      emailSuccess = false;
       emailRetour = `EMAIL_ERR: ${err instanceof Error ? err.message : String(err)}`;
       console.error("[Notif] Erreur envoi email :", err);
     }
   }
 
   // ── 3. Mise à jour du statut en DB ───────────────────────────────────────
-  const success = smsResult.success;
+  const success = skipSms ? true : smsResult.success;
   const retours = [
-    `SMS: ${smsResult.messageRetour}`,
+    skipSms ? "SMS: SKIPPED" : `SMS: ${smsResult.messageRetour}`,
     ...(email ? [`Email: ${emailRetour}`] : []),
   ].join(" | ");
 
@@ -111,7 +117,7 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
   const notification = await prisma.notification.create({
     data: {
       type:          payload.type as any,
-      canal:         payload.email ? "SMS_EMAIL" : "SMS",
+      canal:         payload.emailOnly ? (payload.email ? "EMAIL" : "IN_APP") : (payload.email ? "SMS_EMAIL" : "SMS"),
       destinataire:  payload.telephone,
       sujet:         payload.sujet,
       contenu:       payload.contenu,
@@ -134,6 +140,7 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
         contenu: payload.contenu,
         sujet: payload.sujet,
         htmlEmail: payload.htmlEmail,
+        skipSms: payload.emailOnly,
       })
     );
   }

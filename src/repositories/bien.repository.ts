@@ -408,6 +408,8 @@ export const searchAnnoncePubliques = async (params: {
   fumeurs?: boolean;
   animaux?: boolean;
   equipementIds?: string[];
+  misEnAvant?: boolean;
+  featuredFirst?: boolean;
   sortBy?: "prix" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;
@@ -418,7 +420,7 @@ export const searchAnnoncePubliques = async (params: {
   radius?: number; // km - défaut 5
 }) => {
   const page  = Math.max(params.page  ?? 1,  1);
-  const limit = Math.min(params.limit ?? 10, 50); // Changé de 12 à 10
+  const limit = Math.min(params.limit ?? 10, 50);
   const skip  = (page - 1) * limit;
 
   // Créer une clé de cache basée sur les paramètres
@@ -480,6 +482,11 @@ export const searchAnnoncePubliques = async (params: {
   if (params.ascenseur === true) where.ascenseur = true;
   if (params.fumeurs   === true) where.fumeurs   = true;
   if (params.animaux   === true) where.animaux   = true;
+  if (params.misEnAvant === true) {
+    const now = new Date();
+    where.estMisEnAvant = true;
+    where.dateFinPromotion = { gte: now };
+  }
   if (params.equipementIds && params.equipementIds.length > 0) {
     where.AND = [
       ...(where.AND ?? []),
@@ -520,9 +527,13 @@ export const searchAnnoncePubliques = async (params: {
   // ── Mode normal : tri par champ ───────────────────────────────────────────────
   const sortField = params.sortBy ?? "createdAt";
   const sortDir   = params.sortOrder ?? "desc";
-  const orderBy   = sortField === "prix"
+  const baseOrder = sortField === "prix"
     ? [{ prix: { sort: sortDir, nulls: "last" as const } }]
     : [{ createdAt: sortDir as "asc" | "desc" }];
+  // Mis en avant en premier si demandé (true > false dans PostgreSQL ORDER BY DESC)
+  const orderBy = params.featuredFirst
+    ? [{ estMisEnAvant: "desc" as const }, ...baseOrder]
+    : baseOrder;
 
   const [items, total] = await prisma.$transaction([
     prisma.bien.findMany({ where, skip, take: limit, orderBy, include: INCLUDE_PUBLIC }),
