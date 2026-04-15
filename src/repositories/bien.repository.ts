@@ -727,6 +727,7 @@ export const getAnnoncesSimilairesWithScore = async (
         id: { notIn: foundIds },
         ville: referenceBien.ville,
         typeTransactionId: referenceBien.typeTransactionId,
+        typeLogementId: referenceBien.typeLogementId,
       },
       include: {
         typeLogement: { select: { id: true, nom: true, slug: true } },
@@ -771,7 +772,11 @@ export const getAnnoncesSimilairesWithScore = async (
   scored.sort((a, b) => b.score - a.score);
 
   return scored
-    .filter(s => s.score >= MIN_SIMILARITY_SCORE)
+    .filter(
+      (s) =>
+        s.bien.typeLogementId === referenceBien.typeLogementId &&
+        s.score >= MIN_SIMILARITY_SCORE
+    )
     .slice(0, limit)
     .map(s => s.bien);
 };
