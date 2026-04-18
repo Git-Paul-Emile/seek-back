@@ -443,8 +443,8 @@ export const searchAnnoncePubliques = async (params: {
       where.AND = [
         ...(where.AND ?? []),
         { OR: [
-          { ville:  { contains: v, mode: "insensitive" } },
-          { region: { contains: v, mode: "insensitive" } },
+          { ville:  { equals: v, mode: "insensitive" } },
+          { region: { equals: v, mode: "insensitive" } },
         ]},
       ];
     }
@@ -453,7 +453,7 @@ export const searchAnnoncePubliques = async (params: {
       where.AND = [
         ...(where.AND ?? []),
         { OR: [
-          { quartier: { contains: q, mode: "insensitive" } },
+          { quartier: { equals: q, mode: "insensitive" } },
           { adresse:  { contains: q, mode: "insensitive" } },
         ]},
       ];

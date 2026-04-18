@@ -60,14 +60,7 @@ export const create = async (
     tokenExpiresAt,
   });
 
-  // Envoi automatique du lien d'activation par SMS uniquement
-  const lien = `${FRONTEND_URL}/locataire/activer?token=${activationToken}`;
-  envoyerLienActivationLocataire({
-    locataireTelephone: telephone,
-    locataireNom:       `${data.prenom.trim()} ${data.nom.trim()}`,
-    lien,
-  }).catch((err) => console.error("[Locataire] Erreur envoi lien activation :", err));
-
+  // Le lien d'activation est envoyé uniquement lors de l'association du locataire à un bien (validation du contrat)
   return locataire;
 };
 
