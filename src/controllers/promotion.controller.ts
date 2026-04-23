@@ -134,6 +134,28 @@ export const extendPromotion = async (req: Request, res: Response): Promise<void
   );
 };
 
+// ─── Admin : arrêter manuellement une promotion ───────────────────────────────
+
+export const adminArreterPromotion = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const { motif } = req.body;
+
+  const result = await PromotionService.adminArreterPromotion(id, motif);
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: result.message, data: result })
+  );
+};
+
+// ─── Admin : traiter les promotions expirées ──────────────────────────────────
+
+export const adminTraiterExpires = async (_req: Request, res: Response): Promise<void> => {
+  const result = await PromotionService.traiterPromotionsExpirees();
+  res.status(StatusCodes.OK).json(
+    jsonResponse({ status: "success", message: `${result.traite} promotion(s) expirée(s) traitée(s)`, data: result })
+  );
+};
+
 // ─── Admin : historique de toutes les mises en avant ─────────────────────────
 
 export const getAdminHistoriquePromotions = async (req: Request, res: Response): Promise<void> => {

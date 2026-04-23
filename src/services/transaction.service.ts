@@ -174,7 +174,7 @@ export const getTransactionById = async (
 
 export const getAdminHistoriqueTransactions = async (
   options: PaginationOptions = {},
-  filters?: { type?: string; statut?: string; proprietaireId?: string; dateDebut?: Date; dateFin?: Date }
+  filters?: { type?: string; statut?: string; proprietaireId?: string; dateDebut?: Date; dateFin?: Date; search?: string }
 ): Promise<PaginatedResult<any>> => {
   const page = Math.max(1, options.page || 1);
   const limit = Math.min(100, Math.max(1, options.limit || 20));
@@ -188,6 +188,15 @@ export const getAdminHistoriqueTransactions = async (
     where.dateInitiation = {};
     if (filters?.dateDebut) where.dateInitiation.gte = filters.dateDebut;
     if (filters?.dateFin) where.dateInitiation.lte = filters.dateFin;
+  }
+  if (filters?.search) {
+    const s = filters.search.trim();
+    where.OR = [
+      { reference: { contains: s, mode: "insensitive" } },
+      { transactionId: { contains: s, mode: "insensitive" } },
+      { proprietaire: { telephone: { contains: s, mode: "insensitive" } } },
+      { locataire: { telephone: { contains: s, mode: "insensitive" } } },
+    ];
   }
 
   const [transactions, total] = await Promise.all([
@@ -216,7 +225,10 @@ export const getAdminStatsTransactions = async () => {
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
   const debutAnnee = new Date(now.getFullYear(), 0, 1);
 
-  const [totalConfirme, montantTotal, montantMois, montantAnnee, parType] = await Promise.all([
+  // 12 derniers mois pour la tendance
+  const douzeDebutMois = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+
+  const [totalConfirme, montantTotal, montantMois, montantAnnee, parType, transactions12Mois] = await Promise.all([
     prisma.transaction.count({ where: { statut: "CONFIRME" } }),
     prisma.transaction.aggregate({ where: { statut: "CONFIRME" }, _sum: { montant: true } }),
     prisma.transaction.aggregate({ where: { statut: "CONFIRME", dateConfirmation: { gte: debutMois } }, _sum: { montant: true } }),
@@ -227,7 +239,28 @@ export const getAdminStatsTransactions = async () => {
       _count: true,
       _sum: { montant: true },
     }),
+    prisma.transaction.findMany({
+      where: { statut: "CONFIRME", dateInitiation: { gte: douzeDebutMois } },
+      select: { dateInitiation: true, montant: true },
+    }),
   ]);
+
+  // Grouper par mois en TypeScript
+  const parMoisMap: Record<string, { count: number; montant: number }> = {};
+  for (const t of transactions12Mois) {
+    const d = new Date(t.dateInitiation);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    if (!parMoisMap[key]) parMoisMap[key] = { count: 0, montant: 0 };
+    parMoisMap[key].count++;
+    parMoisMap[key].montant += t.montant;
+  }
+
+  const par12Mois = Array.from({ length: 12 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const label = d.toLocaleDateString("fr-FR", { month: "short", year: "2-digit" });
+    return { mois: key, label, ...(parMoisMap[key] ?? { count: 0, montant: 0 }) };
+  });
 
   return {
     totalConfirme,
@@ -235,6 +268,7 @@ export const getAdminStatsTransactions = async () => {
     montantMois: montantMois._sum.montant ?? 0,
     montantAnnee: montantAnnee._sum.montant ?? 0,
     parType: parType.map((r) => ({ type: r.type, nombre: r._count, montant: r._sum.montant ?? 0 })),
+    par12Mois,
   };
 };
 

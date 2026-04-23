@@ -10,6 +10,8 @@ const router = Router();
 // Admin
 router.get("/admin/historique", authenticate, controllerWrapper(PromotionController.getAdminHistoriquePromotions));
 router.get("/admin/stats", authenticate, controllerWrapper(PromotionController.getAdminStatsPromotions));
+router.post("/admin/:id/arreter", authenticate, validateId, controllerWrapper(PromotionController.adminArreterPromotion));
+router.post("/admin/traiter-expires", authenticate, controllerWrapper(PromotionController.adminTraiterExpires));
 
 /**
  * GET /api/promotions/accueil - Récupérer les annonces mises en avant pour la page d'accueil (public)

@@ -141,6 +141,114 @@ export const deactivatePromotion = async (
 };
 
 /**
+ * Admin : arrête manuellement une promotion active et notifie le propriétaire
+ */
+export const adminArreterPromotion = async (promotionId: string, motif?: string) => {
+  const promotion = await prisma.promotionHistory.findUnique({
+    where: { id: promotionId },
+    include: {
+      bien: { select: { id: true, titre: true, dateDebutPromotion: true } },
+      proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true, email: true } },
+    },
+  });
+
+  if (!promotion) throw new AppError("Promotion introuvable", StatusCodes.NOT_FOUND);
+  if (promotion.statut !== "ACTIVE") throw new AppError("Seules les promotions actives peuvent être arrêtées", StatusCodes.BAD_REQUEST);
+
+  const now = new Date();
+  const motifFinal = motif ?? "Arrêtée par l'administrateur";
+
+  await prisma.promotionHistory.update({
+    where: { id: promotionId },
+    data: { statut: "ARRETEE", dateFinReelle: now, motifArret: motifFinal },
+  });
+
+  // Désactiver le boost sur le bien si c'est bien ce cycle actif
+  if (promotion.bien) {
+    const bien = await prisma.bien.findUnique({
+      where: { id: promotion.bien.id },
+      select: { estMisEnAvant: true, dateDebutPromotion: true },
+    });
+    const memeDebut =
+      bien?.dateDebutPromotion &&
+      Math.abs(new Date(bien.dateDebutPromotion).getTime() - new Date(promotion.dateDebut).getTime()) < 60_000;
+
+    if (bien?.estMisEnAvant && memeDebut) {
+      await prisma.bien.update({
+        where: { id: promotion.bien.id },
+        data: { estMisEnAvant: false, dateDebutPromotion: null, dateFinPromotion: null, positionRotation: 0, dernierAffichage: null },
+      });
+    }
+  }
+
+  // Notification propriétaire
+  if (promotion.proprietaire) {
+    try {
+      const { envoyerNotification } = await import("./notification.service.js");
+      await envoyerNotification({
+        type: "ALERTE",
+        telephone: promotion.proprietaire.telephone,
+        email: promotion.proprietaire.email,
+        sujet: "Mise en avant arrêtée par l'administrateur",
+        contenu: `Bonjour ${promotion.proprietaire.prenom},\n\nVotre mise en avant pour "${promotion.bien?.titre ?? "votre bien"}" a été arrêtée par l'administrateur.\nMotif : ${motifFinal}.\n\nPour toute question, contactez le support.`,
+        proprietaireId: promotion.proprietaireId,
+        bienId: promotion.bienId ?? undefined,
+      });
+    } catch {
+      // notification non bloquante
+    }
+  }
+
+  return { success: true, message: "Promotion arrêtée et propriétaire notifié" };
+};
+
+/**
+ * Détecte les promotions expirées, les marque EXPIREE et notifie les propriétaires
+ */
+export const traiterPromotionsExpirees = async () => {
+  const now = new Date();
+
+  const actives = await prisma.promotionHistory.findMany({
+    where: { statut: "ACTIVE", dateFin: { lt: now } },
+    include: {
+      bien: { select: { id: true, titre: true, estMisEnAvant: true, dateDebutPromotion: true } },
+      proprietaire: { select: { id: true, prenom: true, nom: true, telephone: true, email: true } },
+    },
+  });
+
+  for (const p of actives) {
+    await prisma.promotionHistory.update({
+      where: { id: p.id },
+      data: { statut: "EXPIREE", dateFinReelle: now },
+    });
+
+    if (p.bien?.estMisEnAvant) {
+      await prisma.bien.update({
+        where: { id: p.bien.id },
+        data: { estMisEnAvant: false, dateDebutPromotion: null, dateFinPromotion: null, positionRotation: 0, dernierAffichage: null },
+      });
+    }
+
+    if (p.proprietaire) {
+      try {
+        const { envoyerNotification } = await import("./notification.service.js");
+        await envoyerNotification({
+          type: "ALERTE",
+          telephone: p.proprietaire.telephone,
+          email: p.proprietaire.email,
+          sujet: "Votre mise en avant a expiré",
+          contenu: `Bonjour ${p.proprietaire.prenom},\n\nVotre mise en avant pour "${p.bien?.titre ?? "votre bien"}" a expiré. Pour continuer à booster votre annonce, activez une nouvelle promotion depuis votre tableau de bord.`,
+          proprietaireId: p.proprietaireId,
+          bienId: p.bienId ?? undefined,
+        });
+      } catch {}
+    }
+  }
+
+  return { traite: actives.length };
+};
+
+/**
  * Récupère les annonces actuellement mises en avant pour la page d'accueil
  * Utilise la rotation intelligente pour assurer une distribution équitable
  */

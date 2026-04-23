@@ -45,6 +45,7 @@ import ownerBailRouter from "../routes/ownerBail.routes.js";
 import signalementRouter from "../routes/signalement.routes.js";
 import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
 import configSiteRouter from "../routes/configSite.routes.js";
+import pageLegaleRouter from "../routes/pageLegale.routes.js";
 import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -246,6 +247,9 @@ app.use('/api/monetisation', monetisationRouter);
 
 // Configuration globale du site (Footer, Contact)
 app.use('/api/config-site', configSiteRouter);
+
+// Pages légales (Politique, CGU, Conformité)
+app.use('/api/pages-legales', pageLegaleRouter);
 
 // Notifications in-app
 app.use('/api/owner/notifications', ownerNotifRouter);

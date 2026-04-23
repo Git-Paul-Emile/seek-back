@@ -73,7 +73,7 @@ export const getTransactionDetail = async (req: Request, res: Response): Promise
 // ─── Admin ────────────────────────────────────────────────────────────────────
 
 export const getAdminHistorique = async (req: Request, res: Response): Promise<void> => {
-  const { page, limit, type, statut, proprietaireId, dateDebut, dateFin } = req.query;
+  const { page, limit, type, statut, proprietaireId, dateDebut, dateFin, search } = req.query;
   const result = await TransactionService.getAdminHistoriqueTransactions(
     { page: page ? parseInt(page as string) : undefined, limit: limit ? parseInt(limit as string) : undefined },
     {
@@ -82,6 +82,7 @@ export const getAdminHistorique = async (req: Request, res: Response): Promise<v
       proprietaireId: proprietaireId as string | undefined,
       dateDebut: dateDebut ? new Date(dateDebut as string) : undefined,
       dateFin: dateFin ? new Date(dateFin as string) : undefined,
+      search: search as string | undefined,
     }
   );
   res.status(StatusCodes.OK).json(

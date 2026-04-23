@@ -809,13 +809,27 @@ model Transaction {
 model Temoignage {
   id         String   @id @default(uuid())
   nom        String
+  profession String?
   temoignage String
-  actif      Boolean  @default(true)
+  actif      Boolean  @default(false)
   ordre      Int      @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   @@index([actif])
+}
+
+model PageLegale {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  titre     String
+  contenu   String   @db.Text
+  publie    Boolean  @default(true)
+  version   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
 }
 
 model PromotionHistory {
