@@ -142,14 +142,14 @@ jobs:
       - name: Envoyer l'email d'alerte
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.resend.com
+          server_address: smtp.gmail.com
           server_port: 465
           secure: true
-          username: resend
-          password: ${{ secrets.RESEND_API_KEY }}
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "[SEEK BACK] Déploiement échoué — Rollback déclenché"
-          to: ${{ secrets.NOTIFY_EMAIL }}
-          from: "Seek Deploy <onboarding@resend.dev>"
+          to: ${{ secrets.GMAIL_USERNAME }}
+          from: "Seek Deploy <${{ secrets.GMAIL_USERNAME }}>"
           body: |
             Un problème a été détecté sur le backend après le dernier push.
             Un rollback automatique vers le déploiement précédent a été déclenché.
