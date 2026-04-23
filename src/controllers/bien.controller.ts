@@ -15,7 +15,9 @@ export const saveDraft = async (req: Request, res: Response): Promise<void> => {
     throw new AppError("Authentification requise", StatusCodes.UNAUTHORIZED);
   }
 
-  const files = (req.files as Express.Multer.File[]) ?? [];
+  const fields = req.files as { photos?: Express.Multer.File[]; video?: Express.Multer.File[] } | undefined;
+  const photoFiles = fields?.photos ?? [];
+  const videoFile  = fields?.video?.[0];
 
   let body: Record<string, unknown> = {};
   try {
@@ -36,7 +38,7 @@ export const saveDraft = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const bien = await BienService.saveDraft(parsed.data, proprietaireId, files);
+  const bien = await BienService.saveDraft(parsed.data, proprietaireId, photoFiles, videoFile);
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: "Brouillon enregistré", data: bien })
   );

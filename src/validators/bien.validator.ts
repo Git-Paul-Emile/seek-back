@@ -52,6 +52,8 @@ export const saveDraftSchema = z.object({
 
   // URLs des photos déjà uploadées à conserver
   existingPhotos: z.array(z.string()).default([]),
+  // URL de la vidéo déjà uploadée à conserver
+  existingVideoUrl: z.string().optional().nullable(),
 });
 
 export type SaveDraftInput = z.infer<typeof saveDraftSchema>;
@@ -104,6 +106,7 @@ export const createBienSchema = z.object({
   ).default([]),
 
   existingPhotos: z.array(z.string()).default([]),
+  existingVideoUrl: z.string().optional().nullable(),
 });
 
 export type CreateBienInput = z.infer<typeof createBienSchema>;

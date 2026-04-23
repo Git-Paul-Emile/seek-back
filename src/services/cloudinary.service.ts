@@ -51,6 +51,27 @@ export const uploadImage = async (
 };
 
 /**
+ * Upload une vidéo vers Cloudinary (resource_type: video).
+ */
+export const uploadVideo = (
+  buffer: Buffer,
+  folder: string
+): Promise<CloudinaryUploadResult> => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: "video" },
+      (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+        if (error || !result) {
+          return reject(new AppError("Échec de l'upload vidéo vers Cloudinary", StatusCodes.INTERNAL_SERVER_ERROR));
+        }
+        resolve({ url: result.secure_url, publicId: result.public_id });
+      }
+    );
+    stream.end(buffer);
+  });
+};
+
+/**
  * Upload un fichier quelconque (PDF, image) vers Cloudinary (resource_type: auto)
  */
 export const uploadFile = (

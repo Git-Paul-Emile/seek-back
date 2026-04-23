@@ -2,7 +2,7 @@ import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as BienController from "../controllers/bien.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
-import { uploadPhotosMiddleware } from "../middlewares/uploadMultiple.middleware.js";
+import { uploadMediasMiddleware } from "../middlewares/uploadMultiple.middleware.js";
 import { validateId } from "../middlewares/validateId.js";
 
 const router = Router();
@@ -45,7 +45,7 @@ router.get(
 router.post(
   "/draft",
   authenticateOwner,
-  uploadPhotosMiddleware,
+  uploadMediasMiddleware,
   controllerWrapper(BienController.saveDraft)
 );
 

@@ -22,6 +22,7 @@ export interface BienData {
   quartier?: string | null;
   adresse?: string | null;
   pointRepere?: string | null;
+  videoUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   surface?: number | null;

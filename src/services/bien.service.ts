@@ -175,9 +175,16 @@ export const getDraftByProprietaire = async (proprietaireId: string) => {
 export const saveDraft = async (
   input: SaveDraftInput,
   proprietaireId: string,
-  files: Express.Multer.File[]
+  photoFiles: Express.Multer.File[],
+  videoFile?: Express.Multer.File
 ) => {
-  const { existingPhotos = [], disponibleLe, ...rest } = input;
+  const { existingPhotos = [], existingVideoUrl, disponibleLe, ...rest } = input;
+
+  // Upload vidéo si fournie
+  const uploadedVideoUrl = videoFile
+    ? (await CloudinaryService.uploadVideo(videoFile.buffer, "seek/biens/videos")).url
+    : undefined;
+  const videoUrl = uploadedVideoUrl ?? existingVideoUrl ?? undefined;
 
   // Si un ID est fourni, mettre à jour le bien existant
   if (input.id) {
@@ -190,10 +197,9 @@ export const saveDraft = async (
       throw new AppError("Non autorisé", StatusCodes.FORBIDDEN);
     }
 
-    // Upload new photos in parallel (avec filigrane si logo configuré)
-    const logoBuffer = files.length > 0 ? await getLogoFiligraneBuffer() : null;
-    const newPhotoUrls = files.length > 0
-      ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
+    const logoBuffer = photoFiles.length > 0 ? await getLogoFiligraneBuffer() : null;
+    const newPhotoUrls = photoFiles.length > 0
+      ? await Promise.all(photoFiles.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
       : [];
 
     const photos = [...(existingPhotos || []), ...newPhotoUrls];
@@ -201,10 +207,10 @@ export const saveDraft = async (
       ...rest,
       proprietaireId,
       photos,
+      videoUrl: videoUrl ?? null,
       disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
     };
 
-    // Gérer la logique de baisse de prix (bien déjà chargé plus haut)
     if (rest.prix !== undefined && bien.prix && rest.prix !== null && rest.prix < bien.prix) {
       const pourcentageBaisse = ((bien.prix - rest.prix) / bien.prix) * 100;
       if (pourcentageBaisse >= 5) {
@@ -219,10 +225,9 @@ export const saveDraft = async (
   // Sinon, utiliser le comportement existant (brouillon)
   const existing = await BienRepository.getDraftByProprietaire(proprietaireId);
 
-  // Upload new photos in parallel (avec filigrane si logo configuré)
-  const logoBuffer = files.length > 0 ? await getLogoFiligraneBuffer() : null;
-  const newPhotoUrls = files.length > 0
-    ? await Promise.all(files.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
+  const logoBuffer = photoFiles.length > 0 ? await getLogoFiligraneBuffer() : null;
+  const newPhotoUrls = photoFiles.length > 0
+    ? await Promise.all(photoFiles.map((file) => CloudinaryService.uploadImage(file.buffer, "seek/biens", undefined, logoBuffer).then((r) => r.url)))
     : [];
 
   const photos = [...existingPhotos, ...newPhotoUrls];
@@ -230,6 +235,7 @@ export const saveDraft = async (
     ...rest,
     proprietaireId,
     photos,
+    videoUrl: videoUrl ?? null,
     disponibleLe: disponibleLe ? new Date(disponibleLe) : null,
     statutAnnonce: "BROUILLON",
   };

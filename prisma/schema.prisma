@@ -199,6 +199,7 @@ model Bien {
   caution                      Int?
   disponibleLe                 DateTime?
   photos                       String[]
+  videoUrl                     String?
   nbVues                       Int                @default(0)
   nbFavoris                    Int                @default(0)
   actif                        Boolean            @default(true)
