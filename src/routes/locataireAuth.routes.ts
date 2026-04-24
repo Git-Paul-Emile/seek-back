@@ -5,6 +5,9 @@ import * as BailInvitationController from "../controllers/bailInvitation.control
 import { authenticateLocataire } from "../middlewares/locataireAuth.middleware.js";
 import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
 import { uploadImage } from "../services/cloudinary.service.js";
+import { diditService } from "../services/didit.service.js";
+import { getFrontendBaseUrl } from "../config/external.js";
+import { prisma } from "../config/database.js";
 
 const router = Router();
 
@@ -63,6 +66,47 @@ router.post(
 
     const result = await uploadImage(req.file.buffer, "seek/verifications/locataires");
     res.json({ status: "success", data: result });
+  })
+);
+
+// POST /api/locataire/auth/verification/didit/session — crée une session Didit pour le locataire
+router.post(
+  "/verification/didit/session",
+  authenticateLocataire,
+  controllerWrapper(async (req, res) => {
+    const locataireId = req.locataire!.id;
+
+    const verification = await prisma.locataireVerification.findUnique({
+      where: { locataireId },
+      select: { statut: true },
+    });
+
+    if (verification?.statut === "VERIFIED") {
+      return res.status(400).json({
+        status: "error",
+        message: "Votre identité est déjà vérifiée",
+      });
+    }
+
+    const locataire = await prisma.locataire.findUnique({
+      where: { id: locataireId },
+      select: { email: true },
+    });
+
+    const frontendUrl = getFrontendBaseUrl();
+    const session = await diditService.createSession({
+      vendorData: `locataire:${locataireId}`,
+      callback: `${frontendUrl}/locataire/verification?didit=complete`,
+      email: locataire?.email ?? undefined,
+    });
+
+    res.json({
+      status: "success",
+      data: {
+        sessionId: session.session_id,
+        verificationUrl: session.verification_url,
+      },
+    });
   })
 );
 

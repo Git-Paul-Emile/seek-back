@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { verificationService } from "../services/verification.service.js";
+import { diditService } from "../services/didit.service.js";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import { uploadImage } from "../services/cloudinary.service.js";
 import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
+import { getFrontendBaseUrl } from "../config/external.js";
 
 const router = Router();
 
@@ -125,6 +127,44 @@ router.delete(
       status: "success",
       message: "Demande de vérification annulée",
       data: status,
+    });
+  })
+);
+
+// POST /api/owner/verification/didit/session — crée une session Didit pour le propriétaire
+router.post(
+  "/didit/session",
+  authenticateOwner,
+  controllerWrapper(async (req, res) => {
+    const proprietaireId = req.owner!.id;
+
+    const proprietaire = await (await import("../config/database.js")).prisma.proprietaire.findUnique({
+      where: { id: proprietaireId },
+      select: { statutVerification: true, email: true },
+    });
+
+    if (proprietaire?.statutVerification === "VERIFIED") {
+      return res.status(400).json({
+        status: "error",
+        message: "Votre compte est déjà vérifié",
+      });
+    }
+
+    const ownerEmail = proprietaire?.email ?? undefined;
+
+    const frontendUrl = getFrontendBaseUrl();
+    const session = await diditService.createSession({
+      vendorData: `owner:${proprietaireId}`,
+      callback: `${frontendUrl}/owner/verification?didit=complete`,
+      email: ownerEmail,
+    });
+
+    res.json({
+      status: "success",
+      data: {
+        sessionId: session.session_id,
+        verificationUrl: session.verification_url,
+      },
     });
   })
 );

@@ -48,6 +48,7 @@ import configSiteRouter from "../routes/configSite.routes.js";
 import pageLegaleRouter from "../routes/pageLegale.routes.js";
 import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
 import feedbackRouter from "../routes/feedback.routes.js";
+import diditWebhookRouter from "../routes/didit.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,6 +77,10 @@ const allowedOrigins = new Set(getAllowedFrontendOrigins());
 
 const isAllowedDevOrigin = (origin: string) =>
   /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+
+// ============= WEBHOOKS (raw body — must be before express.json) =============
+
+app.use("/api/webhooks/didit", express.raw({ type: "application/json" }), diditWebhookRouter);
 
 // ============= COMPRESSION =============
 

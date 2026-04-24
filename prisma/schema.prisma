@@ -427,6 +427,8 @@ model LocataireVerification {
   motifRejet          String?
   traitePar           String?
   dateTraitement      DateTime?
+  diditSessionId      String?
+  diditStatus         String?
   createdAt           DateTime                    @default(now())
   updatedAt           DateTime                    @updatedAt
   locataire           Locataire                   @relation(fields: [locataireId], references: [id], onDelete: Cascade)
@@ -631,6 +633,8 @@ model VerificationDocuments {
   motifRejet          String?
   traitePar           String?
   dateTraitement      DateTime?
+  diditSessionId      String?
+  diditStatus         String?
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
   proprietaire        Proprietaire @relation(fields: [proprietaireId], references: [id], onDelete: Cascade)
