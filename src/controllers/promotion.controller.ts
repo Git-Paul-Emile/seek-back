@@ -137,10 +137,10 @@ export const extendPromotion = async (req: Request, res: Response): Promise<void
 // ─── Admin : arrêter manuellement une promotion ───────────────────────────────
 
 export const adminArreterPromotion = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  const { motif } = req.body;
+  const id = req.params["id"] as string;
+  const { motif } = req.body as { motif?: string };
 
-  const result = await PromotionService.adminArreterPromotion(id, motif);
+  const result = await PromotionService.adminArreterPromotion(id, motif as string);
 
   res.status(StatusCodes.OK).json(
     jsonResponse({ status: "success", message: result.message, data: result })

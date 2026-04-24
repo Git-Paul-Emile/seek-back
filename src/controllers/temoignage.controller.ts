@@ -46,7 +46,7 @@ export const getAll = async (_req: Request, res: Response) => {
 };
 
 export const update = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = req.params["id"] as string;
   const { nom, profession, temoignage, actif, ordre } = req.body;
 
   const updatedTemoignage = await prisma.temoignage.update({
@@ -64,7 +64,7 @@ export const update = async (req: Request, res: Response) => {
 };
 
 export const deleteOne = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = req.params["id"] as string;
 
   await prisma.temoignage.delete({
     where: { id },

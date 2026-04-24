@@ -207,7 +207,7 @@ const DEFAULTS: Record<string, { titre: string; version: string; contenu: string
 // ─── Controllers ──────────────────────────────────────────────────────────────
 
 export const getBySlug = async (req: Request, res: Response) => {
-  const { slug } = req.params;
+  const slug = req.params["slug"] as string;
 
   const page = await prisma.pageLegale.findUnique({ where: { slug } });
 
@@ -227,7 +227,7 @@ export const getAll = async (_req: Request, res: Response) => {
   const result = Object.keys(DEFAULTS).map((slug) => {
     const existing = pages.find((p) => p.slug === slug);
     if (existing) return existing;
-    const def = DEFAULTS[slug];
+    const def = DEFAULTS[slug]!;
     return { id: null, slug, titre: def.titre, contenu: def.contenu, publie: true, version: def.version, createdAt: null, updatedAt: null };
   });
 
@@ -235,8 +235,8 @@ export const getAll = async (_req: Request, res: Response) => {
 };
 
 export const upsert = async (req: Request, res: Response) => {
-  const { slug } = req.params;
-  const { titre, contenu, publie, version } = req.body;
+  const slug = req.params["slug"] as string;
+  const { titre, contenu, publie, version } = req.body as { titre: string; contenu: string; publie?: boolean; version?: string };
 
   if (!titre || !contenu) {
     return res.status(400).json({ message: "Titre et contenu sont requis" });
