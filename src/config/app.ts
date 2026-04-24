@@ -47,6 +47,7 @@ import etatDesLieuxRouter from "../routes/etat-des-lieux.routes.js";
 import configSiteRouter from "../routes/configSite.routes.js";
 import pageLegaleRouter from "../routes/pageLegale.routes.js";
 import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
+import feedbackRouter from "../routes/feedback.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -250,6 +251,9 @@ app.use('/api/config-site', configSiteRouter);
 
 // Pages légales (Politique, CGU, Conformité)
 app.use('/api/pages-legales', pageLegaleRouter);
+
+// Feedbacks utilisateurs (public + admin)
+app.use('/api/feedbacks', feedbackRouter);
 
 // Notifications in-app
 app.use('/api/owner/notifications', ownerNotifRouter);

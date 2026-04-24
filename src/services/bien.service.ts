@@ -546,6 +546,8 @@ export const searchAnnoncePubliques = async (params: {
   quartier?: string;
   typeLogementSlug?: string;
   typeTransactionSlug?: string;
+  statutBienSlug?: string;
+  proprietaireVerification?: string;
   prixMin?: number;
   prixMax?: number;
   nbChambresMin?: number;

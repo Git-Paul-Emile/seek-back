@@ -1,5 +1,6 @@
 import type { Response, Request } from "express";
 import { PrismaClient } from "../generated/prisma/client.js";
+import { emitTemoignageSubmitted } from "../services/socket.service.js";
 
 const prisma = new PrismaClient();
 
@@ -33,6 +34,8 @@ export const create = async (req: Request, res: Response) => {
       actif: false, // Par défaut inactif, à approuver par admin
     },
   });
+
+  emitTemoignageSubmitted();
 
   res.status(201).json({ data: newTemoignage });
 };

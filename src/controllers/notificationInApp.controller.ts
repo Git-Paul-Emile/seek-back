@@ -199,13 +199,15 @@ export const markLocataireOneNotificationRead = async (req: Request, res: Respon
 
 /** GET /api/admin/notifications - Aggregated system events */
 export const getAdminNotifications = async (_req: Request, res: Response): Promise<void> => {
-  const [pendingAnnonces, pendingVerifications, activeSignalements] = await Promise.all([
+  const [pendingAnnonces, pendingVerifications, activeSignalements, pendingTemoignages, newFeedbacks] = await Promise.all([
     prisma.bien.count({ where: { statutAnnonce: "EN_ATTENTE" as any } }),
     prisma.proprietaire.count({ where: { statutVerification: "PENDING" as any } }),
     prisma.signalement.count({ where: { statut: "EN_ATTENTE" as any } }),
+    prisma.temoignage.count({ where: { actif: false } }),
+    prisma.feedback.count({ where: { lu: false } }),
   ]);
 
-  const total = pendingAnnonces + pendingVerifications + activeSignalements;
+  const total = pendingAnnonces + pendingVerifications + activeSignalements + pendingTemoignages + newFeedbacks;
 
   const items = [
     ...(pendingAnnonces > 0
@@ -216,6 +218,12 @@ export const getAdminNotifications = async (_req: Request, res: Response): Promi
       : []),
     ...(activeSignalements > 0
       ? [{ id: "signalements", type: "SIGNALEMENT_ACTIF", titre: "Signalements actifs", message: `${activeSignalements} signalement${activeSignalements > 1 ? "s" : ""} à traiter`, lien: "/admin/signalements", count: activeSignalements, createdAt: new Date().toISOString() }]
+      : []),
+    ...(pendingTemoignages > 0
+      ? [{ id: "temoignages", type: "TEMOIGNAGE_EN_ATTENTE", titre: "Témoignages à valider", message: `${pendingTemoignages} témoignage${pendingTemoignages > 1 ? "s" : ""} en attente de publication`, lien: "/admin/temoignages", count: pendingTemoignages, createdAt: new Date().toISOString() }]
+      : []),
+    ...(newFeedbacks > 0
+      ? [{ id: "feedbacks", type: "FEEDBACK_NON_LU", titre: "Nouveaux feedbacks", message: `${newFeedbacks} feedback${newFeedbacks > 1 ? "s" : ""} non lu${newFeedbacks > 1 ? "s" : ""}`, lien: "/admin/feedbacks", count: newFeedbacks, createdAt: new Date().toISOString() }]
       : []),
   ];
 

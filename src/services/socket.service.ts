@@ -32,6 +32,10 @@ export enum WebSocketEvents {
   // Signalements
   SIGNALEMENT_NEW = "signalement:new",
   SIGNALEMENT_UPDATED = "signalement:updated",
+
+  // Retour client
+  FEEDBACK_SUBMITTED = "feedback:submitted",
+  TEMOIGNAGE_SUBMITTED = "temoignage:submitted",
 }
 
 // Types de données pour les événements
@@ -408,4 +412,20 @@ export const emitVerificationSubmitted = async (proprietaireId: string): Promise
   
   // Mettre à jour le compteur
   io.to("admin").emit(WebSocketEvents.VERIFICATION_COUNT_UPDATE, { count: pendingCount });
+};
+
+/**
+ * Émet une notification d'un nouveau feedback reçu aux administrateurs
+ */
+export const emitFeedbackSubmitted = (): void => {
+  if (!io) return;
+  io.to("admin").emit(WebSocketEvents.FEEDBACK_SUBMITTED, {});
+};
+
+/**
+ * Émet une notification d'un nouveau témoignage reçu aux administrateurs
+ */
+export const emitTemoignageSubmitted = (): void => {
+  if (!io) return;
+  io.to("admin").emit(WebSocketEvents.TEMOIGNAGE_SUBMITTED, {});
 };

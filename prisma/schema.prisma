@@ -8,6 +8,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Feedback {
+  id          String   @id @default(uuid())
+  experience  Int?
+  facilite    Int?
+  apprecie    String?
+  frustration String?
+  lu          Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
 model Pays {
   id        String   @id @default(uuid())
   nom       String   @unique

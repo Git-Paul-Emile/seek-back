@@ -398,6 +398,8 @@ export const searchAnnoncePubliques = async (params: {
   quartier?: string;
   typeLogementSlug?: string;
   typeTransactionSlug?: string;
+  statutBienSlug?: string;
+  proprietaireVerification?: string;
   prixMin?: number;
   prixMax?: number;
   nbChambresMin?: number;
@@ -463,6 +465,12 @@ export const searchAnnoncePubliques = async (params: {
 
   if (params.typeLogementSlug)    where.typeLogement    = { slug: params.typeLogementSlug };
   if (params.typeTransactionSlug) where.typeTransaction = { slug: params.typeTransactionSlug };
+  if (params.statutBienSlug)      where.statutBien     = { slug: params.statutBienSlug };
+  if (params.proprietaireVerification === "VERIFIED") {
+    where.proprietaire = { statutVerification: "VERIFIED" };
+  } else if (params.proprietaireVerification === "NON_VERIFIED") {
+    where.proprietaire = { statutVerification: { not: "VERIFIED" } };
+  }
 
   if (params.prixMin !== undefined || params.prixMax !== undefined) {
     where.prix = {};
