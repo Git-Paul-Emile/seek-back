@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as TypeLogementController from "../controllers/typeLogement.controller.js";
+import * as TypeLogementChampController from "../controllers/typeLogementChamp.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { uploadImageMiddleware } from "../middlewares/upload.middleware.js";
@@ -42,5 +43,13 @@ router.put(
 /** DELETE /api/types-logement/:id - admin */
 router.delete("/:id", authenticate, controllerWrapper(TypeLogementController.remove));
 
+/** GET /api/types-logement/:id/champs - public : champs associés avec ordre */
+router.get("/:id/champs", controllerWrapper(TypeLogementChampController.getChamps));
+
+/** GET /api/types-logement/:id/champs/admin - admin : tous les champs + état d'association */
+router.get("/:id/champs/admin", authenticate, controllerWrapper(TypeLogementChampController.getChampsAdmin));
+
+/** PUT /api/types-logement/:id/champs - admin : mise à jour de l'association */
+router.put("/:id/champs", authenticate, controllerWrapper(TypeLogementChampController.setChamps));
 
 export default router;

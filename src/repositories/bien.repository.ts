@@ -49,6 +49,7 @@ export interface BienData {
   statutAnnonce?: StatutAnnonce;
   equipementIds?: string[];
   meubles?: { meubleId: string; quantite: number }[];
+  champsValeurs?: { champId: string; valeur: string }[];
 }
 
 // Keep backward compat alias
@@ -75,6 +76,9 @@ const BIEN_INCLUDE = {
   meubles: {
     include: { meuble: { select: { id: true, nom: true } } },
   },
+  champsValeurs: {
+    include: { champ: { select: { id: true, nom: true, type: true, unite: true } } },
+  },
   proprietaire: {
     select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
   },
@@ -84,7 +88,7 @@ const BIEN_INCLUDE = {
 // ─── Fonctions CRUD ───────────────────────────────────────────────────────────
 
 export const createBien = async (data: BienData) => {
-  const { equipementIds = [], meubles = [], ...bienData } = data;
+  const { equipementIds = [], meubles = [], champsValeurs = [], ...bienData } = data;
 
   return prisma.bien.create({
     data: {
@@ -95,22 +99,28 @@ export const createBien = async (data: BienData) => {
       meubles: meubles.length > 0
         ? { createMany: { data: meubles, skipDuplicates: true } }
         : undefined,
+      champsValeurs: champsValeurs.length > 0
+        ? { createMany: { data: champsValeurs, skipDuplicates: true } }
+        : undefined,
     },
     include: BIEN_INCLUDE,
   });
 };
 
 export const updateBien = async (id: string, data: Partial<BienData>) => {
-  const { equipementIds, meubles, proprietaireId: _pid, ...bienData } = data;
+  const { equipementIds, meubles, champsValeurs, proprietaireId: _pid, ...bienData } = data;
 
-  // Delete and recreate equipements/meubles if provided
-  if (equipementIds !== undefined || meubles !== undefined) {
+  // Delete and recreate relations if provided
+  if (equipementIds !== undefined || meubles !== undefined || champsValeurs !== undefined) {
     await prisma.$transaction([
       ...(equipementIds !== undefined
         ? [prisma.bienEquipement.deleteMany({ where: { bienId: id } })]
         : []),
       ...(meubles !== undefined
         ? [prisma.bienMeuble.deleteMany({ where: { bienId: id } })]
+        : []),
+      ...(champsValeurs !== undefined
+        ? [prisma.bienChampValeur.deleteMany({ where: { bienId: id } })]
         : []),
     ]);
   }
@@ -124,6 +134,9 @@ export const updateBien = async (id: string, data: Partial<BienData>) => {
         : {}),
       ...(meubles !== undefined && meubles.length > 0
         ? { meubles: { createMany: { data: meubles, skipDuplicates: true } } }
+        : {}),
+      ...(champsValeurs !== undefined && champsValeurs.length > 0
+        ? { champsValeurs: { createMany: { data: champsValeurs, skipDuplicates: true } } }
         : {}),
     },
     include: BIEN_INCLUDE,

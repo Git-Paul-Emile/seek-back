@@ -49,6 +49,8 @@ import pageLegaleRouter from "../routes/pageLegale.routes.js";
 import { ownerNotifRouter, locataireNotifRouter, adminNotifRouter } from "../routes/notificationInApp.routes.js";
 import feedbackRouter from "../routes/feedback.routes.js";
 import diditWebhookRouter from "../routes/didit.routes.js";
+import categorieChampRouter from "../routes/categorieChamp.routes.js";
+import champRouter from "../routes/champ.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -259,6 +261,10 @@ app.use('/api/pages-legales', pageLegaleRouter);
 
 // Feedbacks utilisateurs (public + admin)
 app.use('/api/feedbacks', feedbackRouter);
+
+// Formulaire dynamique : catégories de champs + champs
+app.use('/api/admin/categories-champ', categorieChampRouter);
+app.use('/api/champs', champRouter);
 
 // Notifications in-app
 app.use('/api/owner/notifications', ownerNotifRouter);

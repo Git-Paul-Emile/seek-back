@@ -54,6 +54,14 @@ export const saveDraftSchema = z.object({
   existingPhotos: z.array(z.string()).default([]),
   // URL de la vidéo déjà uploadée à conserver
   existingVideoUrl: z.string().optional().nullable(),
+
+  // Champs dynamiques
+  champsValeurs: z.array(
+    z.object({
+      champId: z.string().uuid(),
+      valeur:  z.string(),
+    })
+  ).default([]),
 });
 
 export type SaveDraftInput = z.infer<typeof saveDraftSchema>;
