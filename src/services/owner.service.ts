@@ -341,8 +341,7 @@ export const me = async (id: string) => {
       id: true, prenom: true, nom: true, telephone: true, email: true,
       sexe: true, statutVerification: true, verifiedAt: true,
       telephoneVerifie: true,
-      nbAvertissements: true, estRestreint: true, estSuspendu: true,
-      estBanni: true, dateFinRestriction: true, dateFinSuspension: true, dateBannissement: true,
+      estSuspendu: true, dateFinSuspension: true,
     },
   });
   if (!p) throw new AppError("Compte introuvable", StatusCodes.UNAUTHORIZED);
@@ -356,13 +355,8 @@ export const me = async (id: string) => {
     telephoneVerifie: p.telephoneVerifie,
     statutVerification: p.statutVerification,
     verifiedAt: p.verifiedAt,
-    nbAvertissements: p.nbAvertissements,
-    estRestreint: p.estRestreint,
     estSuspendu: p.estSuspendu,
-    estBanni: p.estBanni,
-    dateFinRestriction: p.dateFinRestriction,
     dateFinSuspension: p.dateFinSuspension,
-    dateBannissement: p.dateBannissement,
   };
 };
 

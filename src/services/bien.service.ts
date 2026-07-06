@@ -264,21 +264,6 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
     throw new AppError("Cette annonce ne peut pas être soumise dans son état actuel", StatusCodes.BAD_REQUEST);
   }
 
-  // Vérifier si le compte est restreint (3 avertissements)
-  const proprietaire = await (prisma as any).proprietaire.findUnique({
-    where: { id: proprietaireId },
-    select: { estRestreint: true, dateFinRestriction: true },
-  });
-  if (proprietaire?.estRestreint) {
-    const dateFin = proprietaire.dateFinRestriction
-      ? new Date(proprietaire.dateFinRestriction).toLocaleDateString("fr-FR")
-      : "sous peu";
-    throw new AppError(
-      `Votre compte est restreint suite à des avertissements. Publication désactivée jusqu'au ${dateFin}.`,
-      StatusCodes.FORBIDDEN
-    );
-  }
-
   // Validate required fields
   const missing: string[] = [];
   if (!bien.titre?.trim()) missing.push("titre");

@@ -658,14 +658,9 @@ model Proprietaire {
   estSuspendu           Boolean                    @default(false)
   motifSuspension       String?
   dateSuspension        DateTime?
-  suspenduPar           String?
-  nbAvertissements      Int                        @default(0)
-  nbSignalementsValides Int                        @default(0)
-  estRestreint          Boolean                    @default(false)
-  dateFinRestriction    DateTime?
   dateFinSuspension     DateTime?
-  estBanni              Boolean                    @default(false)
-  dateBannissement      DateTime?
+  suspenduPar           String?
+  nbSignalementsValides Int                        @default(0)
   createdAt             DateTime                   @default(now())
   updatedAt             DateTime                   @updatedAt
   bailInvitations       BailInvitation[]

@@ -68,7 +68,7 @@ export const validerSignalement = async (id: string, adminId: string) => {
 
   // SMS Propriétaire
   const propPhone = bien.proprietaire.telephone;
-  const avertissementSms = `Bonjour ${bien.proprietaire.prenom}. Votre annonce a été supprimée suite à un signalement avéré de la communauté. Attention: au bout de 3 annonces signalées, votre compte sera suspendu. L'équipe Seek.`;
+  const avertissementSms = `Bonjour ${bien.proprietaire.prenom}. Votre annonce a été supprimée suite à un signalement avéré de la communauté. Attention: au bout de 3 signalements validés, votre compte sera suspendu ${SuspenionService.DUREE_SUSPENSION_AUTO_JOURS} jours. L'équipe Seek.`;
   await SmsService.sendSms(propPhone, avertissementSms);
 
   // SMS Signaleur
@@ -76,16 +76,23 @@ export const validerSignalement = async (id: string, adminId: string) => {
   const merciSms = `Bonjour ${signalement.nom}. Merci pour votre vigilance ! L'annonce signalée a bien été retirée grâce à vous. L'équipe Seek.`;
   await SmsService.sendSms(repPhone, merciSms);
 
-  // Règle Métier 3: Bannissement > 3
+  // Règle métier : suspension automatique du propriétaire après 3 signalements validés,
+  // pour une durée fixe (cf. SuspenionService.DUREE_SUSPENSION_AUTO_JOURS). La suspension
+  // se lève d'elle-même à l'échéance, ou plus tôt si un admin réactive le compte manuellement
+  // — dans les deux cas, nbSignalementsValides repart à 0 pour ne pas re-suspendre le compte
+  // au premier signalement suivant.
   if (result.proprietaire.nbSignalementsValides >= 3 && !result.proprietaire.estSuspendu) {
     try {
       await SuspenionService.suspendreProprietaire(
         result.proprietaire.id,
-        { motif: `Bannissement automatique : ${result.proprietaire.nbSignalementsValides} signalements validés` },
+        {
+          motif: `Suspension automatique : ${result.proprietaire.nbSignalementsValides} signalements validés`,
+          dureeJours: SuspenionService.DUREE_SUSPENSION_AUTO_JOURS,
+        },
         adminId,
         true // masquerAnnonces = true
       );
-      console.log(`[Suspension Auto] Propriétaire ${result.proprietaire.id} banni (>= 3 signalements).`);
+      console.log(`[Suspension Auto] Propriétaire ${result.proprietaire.id} suspendu (>= 3 signalements).`);
     } catch (e) {
       console.error("Erreur lors de la suspension automatique:", e);
     }

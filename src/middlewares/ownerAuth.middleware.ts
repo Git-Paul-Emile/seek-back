@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { verifyOwnerAccessToken } from "../services/owner.service.js";
 import { jsonResponse } from "../utils/responseApi.js";
 import * as OwnerRepo from "../repositories/owner.repository.js";
+import { proprietaireEstToujoursSuspendu } from "../services/suspension.service.js";
 
 declare global {
   namespace Express {
@@ -27,7 +28,7 @@ export const optionalAuthOwner = async (
     try {
       const payload = verifyOwnerAccessToken(token);
       const proprietaire = await OwnerRepo.findById(payload.sub);
-      if (proprietaire && !proprietaire.estSuspendu) {
+      if (proprietaire && !(await proprietaireEstToujoursSuspendu(proprietaire))) {
         req.owner = { id: payload.sub, prenom: payload.prenom, nom: payload.nom };
       }
     } catch { /* token invalide, on continue sans auth */ }
@@ -68,7 +69,7 @@ export const authenticateOwner = async (
       return;
     }
 
-    if (proprietaire.estSuspendu) {
+    if (await proprietaireEstToujoursSuspendu(proprietaire)) {
       res.status(StatusCodes.FORBIDDEN).json(
         jsonResponse({
           status: "error",
@@ -77,6 +78,7 @@ export const authenticateOwner = async (
             suspendu: true,
             motif: proprietaire.motifSuspension,
             dateSuspension: proprietaire.dateSuspension,
+            dateFinSuspension: proprietaire.dateFinSuspension,
           },
         })
       );

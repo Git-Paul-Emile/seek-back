@@ -9,6 +9,8 @@ import * as LocataireRepo from "../repositories/locataire.repository.js";
 export interface SuspensionData {
   motif: string;
   masquerAnnonces?: boolean;
+  /** Durée de la suspension en jours. Absent = suspension indéfinie (jusqu'à réactivation par un admin). */
+  dureeJours?: number;
 }
 
 export interface ResultatSuspension {
@@ -17,9 +19,13 @@ export interface ResultatSuspension {
   estSuspendu: boolean;
   motifSuspension: string | null;
   dateSuspension: Date | null;
+  dateFinSuspension?: Date | null;
   suspenduPar: string | null;
   annoncesMasquees?: number;
 }
+
+// Durée de la suspension automatique déclenchée par 3 signalements validés.
+export const DUREE_SUSPENSION_AUTO_JOURS = 30;
 
 // ─── Types pour les listings ───────────────────────────────────────────────
 
@@ -32,6 +38,7 @@ export interface ProprietaireListItem {
   estSuspendu: boolean;
   motifSuspension: string | null;
   dateSuspension: Date | null;
+  dateFinSuspension: Date | null;
   suspenduPar: string | null;
   createdAt: Date;
 }
@@ -167,6 +174,7 @@ export interface ProprietaireWithBiens {
   estSuspendu: boolean;
   motifSuspension: string | null;
   dateSuspension: Date | null;
+  dateFinSuspension: Date | null;
   suspenduPar: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -365,7 +373,10 @@ export const suspendreProprietaire = async (
   }
 
   // Suspendre le propriétaire
-  await SuspensionRepo.suspendreProprietaire(proprietaireId, data.motif, adminId);
+  const dateFinSuspension = data.dureeJours
+    ? new Date(Date.now() + data.dureeJours * 24 * 60 * 60 * 1000)
+    : null;
+  await SuspensionRepo.suspendreProprietaire(proprietaireId, data.motif, adminId, dateFinSuspension);
 
   // Masquer les annonces si demandé
   let annoncesMasquees = 0;
@@ -380,6 +391,7 @@ export const suspendreProprietaire = async (
     estSuspendu: true,
     motifSuspension: data.motif,
     dateSuspension: new Date(),
+    dateFinSuspension,
     suspenduPar: adminId,
     annoncesMasquees,
   };
@@ -433,8 +445,30 @@ export const getStatutSuspensionProprietaire = async (
     estSuspendu: suspension.estSuspendu,
     motifSuspension: suspension.motifSuspension,
     dateSuspension: suspension.dateSuspension,
+    dateFinSuspension: suspension.dateFinSuspension,
     suspenduPar: suspension.suspenduPar,
   };
+};
+
+// ─── Expiration automatique ────────────────────────────────────────────────
+// Une suspension à durée déterminée (ex: suspension auto après 3 signalements)
+// se lève elle-même dès que dateFinSuspension est dépassée. Vérifié à chaque
+// authentification, pour rester cohérent avec le fait que estSuspendu est déjà
+// revérifié à chaque requête (pas de tâche planifiée nécessaire).
+
+export const proprietaireEstToujoursSuspendu = async (proprietaire: {
+  id: string;
+  estSuspendu: boolean;
+  dateFinSuspension: Date | null;
+}): Promise<boolean> => {
+  if (!proprietaire.estSuspendu) return false;
+
+  if (proprietaire.dateFinSuspension && proprietaire.dateFinSuspension <= new Date()) {
+    await reactiverProprietaire(proprietaire.id, true);
+    return false;
+  }
+
+  return true;
 };
 
 // ─── Suspension Locataire ───────────────────────────────────────────────────

@@ -34,6 +34,7 @@ export const getProprietaires = async (filter?: GetProprietairesFilter) => {
       estSuspendu: true,
       motifSuspension: true,
       dateSuspension: true,
+      dateFinSuspension: true,
       suspenduPar: true,
       createdAt: true,
     },
@@ -53,6 +54,7 @@ export const getProprietaireById = async (id: string) => {
       estSuspendu: true,
       motifSuspension: true,
       dateSuspension: true,
+      dateFinSuspension: true,
       suspenduPar: true,
       createdAt: true,
       updatedAt: true,
@@ -160,6 +162,7 @@ export const getProprietaireWithBiens = async (id: string) => {
       estSuspendu: true,
       motifSuspension: true,
       dateSuspension: true,
+      dateFinSuspension: true,
       suspenduPar: true,
       createdAt: true,
       updatedAt: true,
@@ -354,7 +357,8 @@ export const getLocataireAvecDocuments = async (id: string) => {
 export const suspendreProprietaire = async (
   id: string,
   motif: string,
-  suspenduPar: string
+  suspenduPar: string,
+  dateFinSuspension: Date | null = null
 ) => {
   return prisma.proprietaire.update({
     where: { id },
@@ -362,6 +366,7 @@ export const suspendreProprietaire = async (
       estSuspendu: true,
       motifSuspension: motif,
       dateSuspension: new Date(),
+      dateFinSuspension,
       suspenduPar,
     },
   });
@@ -374,7 +379,12 @@ export const reactiverProprietaire = async (id: string) => {
       estSuspendu: false,
       motifSuspension: null,
       dateSuspension: null,
+      dateFinSuspension: null,
       suspenduPar: null,
+      // Repart d'un compteur à zéro : une réactivation efface l'historique de signalements
+      // qui a mené à la suspension, sinon un seul nouveau signalement validé re-suspendrait
+      // immédiatement le compte malgré la décision de l'admin de redonner sa chance au propriétaire.
+      nbSignalementsValides: 0,
     },
   });
 };
@@ -387,6 +397,7 @@ export const getProprietaireSuspendu = async (id: string) => {
       estSuspendu: true,
       motifSuspension: true,
       dateSuspension: true,
+      dateFinSuspension: true,
       suspenduPar: true,
     },
   });
