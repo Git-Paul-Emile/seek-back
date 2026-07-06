@@ -206,6 +206,7 @@ export const getBienById = async (id: string) => {
         include: { meuble: { include: { categorie: true } } },
       },
       etablissements: true,
+      champsValeurs: { select: { champId: true, valeur: true } },
       proprietaire: {
         select: { id: true, prenom: true, nom: true, telephone: true, email: true, statutVerification: true },
       },

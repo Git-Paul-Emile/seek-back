@@ -16,6 +16,19 @@ import { QuartierSeeder } from './seeders/quartier.seeder.js';
 import { TemoignageSeeder } from './seeders/temoignage.seeder.js';
 import { FormulePremiumSeeder } from './seeders/formulePremium.seeder.js';
 import { ConfigSiteSeeder } from './seeders/configSite.seeder.js';
+import { ConfigMonetisationSeeder } from './seeders/configMonetisation.seeder.js';
+import { PageLegaleSeeder } from './seeders/pageLegale.seeder.js';
+import { ChampSeeder } from './seeders/champ.seeder.js';
+import { ProprietaireSeeder } from './seeders/proprietaire.seeder.js';
+import { BienSeeder } from './seeders/bien.seeder.js';
+import { LocataireSeeder } from './seeders/locataire.seeder.js';
+import { ComptePublicSeeder } from './seeders/comptePublic.seeder.js';
+import { EngagementSeeder } from './seeders/engagement.seeder.js';
+import { BailInvitationSeeder } from './seeders/bailInvitation.seeder.js';
+import { BailLocationSeeder } from './seeders/bailLocation.seeder.js';
+import { PromotionHistorySeeder } from './seeders/promotionHistory.seeder.js';
+import { MessagingSeeder } from './seeders/messaging.seeder.js';
+import { SessionArtifactsSeeder } from './seeders/sessionArtifacts.seeder.js';
 
 dotenv.config();
 
@@ -35,6 +48,19 @@ dotenv.config();
  * 11.  ModeleContrat    (indépendant)
  * 12.  Temoignage       (upsert)
  * 13.  FormulePremium   (upsert)
+ * 14.  ConfigMonetisation (indépendant)
+ * 15.  PageLegale       (indépendant)
+ * 16.  Champ            (dépend de TypeLogement)
+ * 17.  Proprietaire     (indépendant)
+ * 18.  Bien             (dépend de Proprietaire, Quartier, TypeLogement, TypeTransaction, StatutBien, Meuble, Equipement, Champ)
+ * 19.  Locataire        (dépend de Proprietaire)
+ * 20.  ComptePublic     (dépend de Locataire, Proprietaire)
+ * 21.  Engagement       (Favori, VueBien, Signalement, Alerte — dépend de ComptePublic, Bien)
+ * 22.  BailInvitation   (dépend de Proprietaire, Bien, Locataire)
+ * 23.  BailLocation     (bail + contrat + échéancier + caution + état des lieux — dépend de Proprietaire, Bien, Locataire, ModeleContrat)
+ * 24.  PromotionHistory (dépend de Bien premium, FormulePremium)
+ * 25.  Messaging        (Notification, MessageInterne, MessageInterneLocataire)
+ * 26.  SessionArtifacts (jetons factices — dépend de Admin, Proprietaire, Locataire, ComptePublic)
  *
  * Pour ajouter un seeder : créer son fichier dans ./seeders/ et l'ajouter ici.
  */
@@ -53,6 +79,19 @@ const SEEDERS: readonly Seeder[] = [
   new ModeleContratSeeder(),
   new TemoignageSeeder(),
   new FormulePremiumSeeder(),
+  new ConfigMonetisationSeeder(),
+  new PageLegaleSeeder(),
+  new ChampSeeder(),
+  new ProprietaireSeeder(),
+  new BienSeeder(),
+  new LocataireSeeder(),
+  new ComptePublicSeeder(),
+  new EngagementSeeder(),
+  new BailInvitationSeeder(),
+  new BailLocationSeeder(),
+  new PromotionHistorySeeder(),
+  new MessagingSeeder(),
+  new SessionArtifactsSeeder(),
 ];
 
 async function main(): Promise<void> {
@@ -69,6 +108,9 @@ async function main(): Promise<void> {
     console.log('\n🎉 Seeding terminé avec succès !');
     console.log('\n📋 Comptes de test créés :');
     console.log('  Admin        → admin@seek.sn            / Admin@2024!');
+    console.log('  Propriétaire → (email généré aléatoirement) / Proprio@2024!');
+    console.log('  Locataire    → (email généré aléatoirement) / Locataire@2024!');
+    console.log('  Compte public→ (email généré aléatoirement) / Public@2024!');
   } finally {
     await prisma.$disconnect();
   }

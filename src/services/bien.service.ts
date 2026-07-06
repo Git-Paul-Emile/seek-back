@@ -1,5 +1,6 @@
 import * as BienRepository from "../repositories/bien.repository.js";
 import type { BienWithRelations } from "../repositories/bien.repository.js";
+import * as TypeLogementChampRepository from "../repositories/typeLogementChamp.repository.js";
 import * as CloudinaryService from "./cloudinary.service.js";
 import type { SaveDraftInput } from "../validators/bien.validator.js";
 import { AppError } from "../utils/AppError.js";
@@ -273,6 +274,16 @@ export const soumettreAnnonce = async (bienId: string, proprietaireId: string) =
   if (!bien.region?.trim()) missing.push("région");
   if (bien.prix === null || bien.prix === undefined) missing.push("prix");
   if (!bien.photos || bien.photos.length < 3) missing.push("au moins 3 photos");
+
+  if (bien.typeLogementId) {
+    const champsConfig = await TypeLogementChampRepository.findByTypeLogement(bien.typeLogementId);
+    const valeursParChamp = new Map(bien.champsValeurs?.map((cv) => [cv.champId, cv.valeur]) ?? []);
+    for (const cfg of champsConfig) {
+      if (!cfg.obligatoire) continue;
+      const valeur = valeursParChamp.get(cfg.champId)?.trim();
+      if (!valeur) missing.push(cfg.champ.nom);
+    }
+  }
 
   if (missing.length > 0) {
     throw new AppError(
