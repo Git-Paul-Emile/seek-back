@@ -2,8 +2,10 @@ import { prisma } from "../config/database.js";
 import { getFrontendBaseUrl } from "../config/external.js";
 import { sendMail } from "../utils/mailer.js";
 import { sendSms } from "./sms.service.js";
+import { sendWhatsapp } from "./whatsapp.service.js";
 import { enqueueNotif } from "./notifQueue.service.js";
 import { emitNotification, emitBadgeUpdate } from "./socket.service.js";
+import type { CanalNotification } from "../types/notificationChannels.types.js";
 
 const FRONTEND_URL = getFrontendBaseUrl();
 
@@ -53,32 +55,45 @@ export interface NotificationPayload {
   emailOnly?: boolean;
 }
 
-// ─── Envoi réel SMS + email en arrière-plan ────────────────────────────────────
+// ─── Résolution des canaux préférés d'un propriétaire ─────────────────────────
 
-interface DispatchSmsEtEmailParams {
+const resolveCanauxProprietaire = async (
+  proprietaireId: string | undefined
+): Promise<CanalNotification[]> => {
+  if (!proprietaireId) return ["SMS"];
+  const proprietaire = await prisma.proprietaire.findUnique({
+    where: { id: proprietaireId },
+    select: { canauxNotification: true },
+  });
+  const canaux = proprietaire?.canauxNotification as CanalNotification[] | undefined;
+  return canaux && canaux.length > 0 ? canaux : ["SMS"];
+};
+
+// ─── Envoi réel via les canaux choisis, en arrière-plan ────────────────────────
+
+interface DispatchViaCanauxParams {
   notifId: string;
+  canaux: CanalNotification[];
   telephone: string;
   email: string | null | undefined;
   contenu: string;
   sujet: string | undefined;
   htmlEmail: string | undefined;
-  skipSms?: boolean;
 }
 
-async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<void> {
-  const { notifId, telephone, email, contenu, sujet, htmlEmail, skipSms } = params;
+async function dispatchViaCanaux(params: DispatchViaCanauxParams): Promise<void> {
+  const { notifId, canaux, telephone, email, contenu, sujet, htmlEmail } = params;
 
-  let smsResult = { success: true, messageRetour: "SMS_SKIPPED" };
+  const retours: string[] = [];
+  let success = false;
 
-  // ── 1. SMS (sauf si skipSms) ─────────────────────────────────────────────
-  if (!skipSms) {
-    smsResult = await sendSms(telephone, contenu);
+  if (canaux.includes("SMS")) {
+    const smsResult = await sendSms(telephone, contenu);
+    retours.push(`SMS: ${smsResult.messageRetour}`);
+    success = success || smsResult.success;
   }
 
-  // ── 2. Email (si fourni) ─────────────────────────────────────────────────
-  let emailRetour = "";
-
-  if (email) {
+  if (canaux.includes("EMAIL") && email) {
     try {
       await sendMail({
         to: email,
@@ -86,25 +101,25 @@ async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<voi
         html: htmlEmail ?? `<p>${contenu.replace(/\n/g, "<br>")}</p>`,
         text: contenu,
       });
-      emailRetour = "EMAIL_OK";
+      retours.push("Email: EMAIL_OK");
+      success = true;
     } catch (err) {
-      emailRetour = `EMAIL_ERR: ${err instanceof Error ? err.message : String(err)}`;
+      retours.push(`Email: EMAIL_ERR: ${err instanceof Error ? err.message : String(err)}`);
       console.error("[Notif] Erreur envoi email :", err);
     }
   }
 
-  // ── 3. Mise à jour du statut en DB ───────────────────────────────────────
-  const success = skipSms ? true : smsResult.success;
-  const retours = [
-    skipSms ? "SMS: SKIPPED" : `SMS: ${smsResult.messageRetour}`,
-    ...(email ? [`Email: ${emailRetour}`] : []),
-  ].join(" | ");
+  if (canaux.includes("WHATSAPP")) {
+    const waResult = await sendWhatsapp(telephone, contenu);
+    retours.push(`WhatsApp: ${waResult.messageRetour}`);
+    success = success || waResult.success;
+  }
 
   await prisma.notification.update({
     where: { id: notifId },
     data: {
       statut:       success ? "ENVOYE" : "ECHEC",
-      messageRetour: retours,
+      messageRetour: retours.join(" | "),
       envoyeAt:      success ? new Date() : null,
     },
   });
@@ -113,11 +128,21 @@ async function dispatchSmsEtEmail(params: DispatchSmsEtEmailParams): Promise<voi
 // ─── Créer + envoyer une notification ─────────────────────────────────────────
 
 export const envoyerNotification = async (payload: NotificationPayload) => {
+  // Déterminer les canaux effectifs : email forcé, préférences du propriétaire, ou défaut historique
+  let canaux: CanalNotification[];
+  if (payload.emailOnly) {
+    canaux = ["EMAIL"];
+  } else if (payload.target === "owner" && payload.proprietaireId) {
+    canaux = await resolveCanauxProprietaire(payload.proprietaireId);
+  } else {
+    canaux = payload.email ? ["SMS", "EMAIL"] : ["SMS"];
+  }
+
   // Enregistrer en base (statut EN_ATTENTE)
   const notification = await prisma.notification.create({
     data: {
       type:          payload.type as any,
-      canal:         payload.emailOnly ? (payload.email ? "EMAIL" : "IN_APP") : (payload.email ? "SMS_EMAIL" : "SMS"),
+      canal:         canaux.join("_"),
       destinataire:  payload.telephone,
       sujet:         payload.sujet,
       contenu:       payload.contenu,
@@ -133,14 +158,14 @@ export const envoyerNotification = async (payload: NotificationPayload) => {
   // Envoi en arrière-plan (non-bloquant)
   if (!payload.noSmsEmail) {
     enqueueNotif(() =>
-      dispatchSmsEtEmail({
+      dispatchViaCanaux({
         notifId: notification.id,
+        canaux,
         telephone: payload.telephone,
         email: payload.email,
         contenu: payload.contenu,
         sujet: payload.sujet,
         htmlEmail: payload.htmlEmail,
-        skipSms: payload.emailOnly,
       })
     );
   }

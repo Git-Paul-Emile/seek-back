@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { controllerWrapper } from "../utils/ControllerWrapper.js";
 import * as NotifController from "../controllers/notificationInApp.controller.js";
+import * as NotificationPreferencesController from "../controllers/notificationPreferences.controller.js";
 import { authenticateOwner } from "../middlewares/ownerAuth.middleware.js";
 import { authenticateLocataire } from "../middlewares/locataireAuth.middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
@@ -11,6 +12,10 @@ export const ownerNotifRouter = Router();
 ownerNotifRouter.get("/", authenticateOwner, controllerWrapper(NotifController.getOwnerNotifications));
 ownerNotifRouter.patch("/mark-all-read", authenticateOwner, controllerWrapper(NotifController.markOwnerNotificationsRead));
 ownerNotifRouter.patch("/:id/read", authenticateOwner, controllerWrapper(NotifController.markOwnerOneNotificationRead));
+
+// ─── Préférences de canaux de notification (SMS / Email / WhatsApp) ──────────
+ownerNotifRouter.get("/canaux", authenticateOwner, controllerWrapper(NotificationPreferencesController.getCanaux));
+ownerNotifRouter.put("/canaux", authenticateOwner, controllerWrapper(NotificationPreferencesController.updateCanaux));
 
 // ─── Locataire notifications ──────────────────────────────────────────────────
 export const locataireNotifRouter = Router();

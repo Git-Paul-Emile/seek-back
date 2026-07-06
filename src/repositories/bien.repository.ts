@@ -452,28 +452,28 @@ export const searchAnnoncePubliques = async (params: {
 
   const where: any = { statutAnnonce: "PUBLIE", actif: true };
 
-  // Filtres géographiques (ignorés si mode proximité actif)
-  if (!params.lat) {
-    if (params.ville?.trim()) {
-      const v = params.ville.trim();
-      where.AND = [
-        ...(where.AND ?? []),
-        { OR: [
-          { ville:  { equals: v, mode: "insensitive" } },
-          { region: { equals: v, mode: "insensitive" } },
-        ]},
-      ];
-    }
-    if (params.quartier?.trim()) {
-      const q = params.quartier.trim();
-      where.AND = [
-        ...(where.AND ?? []),
-        { OR: [
-          { quartier: { equals: q, mode: "insensitive" } },
-          { adresse:  { contains: q, mode: "insensitive" } },
-        ]},
-      ];
-    }
+  // Filtre ville (ignoré si mode proximité actif : le point précis prime sur la ville)
+  if (!params.lat && params.ville?.trim()) {
+    const v = params.ville.trim();
+    where.AND = [
+      ...(where.AND ?? []),
+      { OR: [
+        { ville:  { equals: v, mode: "insensitive" } },
+        { region: { equals: v, mode: "insensitive" } },
+      ]},
+    ];
+  }
+  // Filtre quartier : appliqué même en mode proximité, pour permettre de restreindre
+  // une recherche par point précis à un quartier donné (tri par distance conservé)
+  if (params.quartier?.trim()) {
+    const q = params.quartier.trim();
+    where.AND = [
+      ...(where.AND ?? []),
+      { OR: [
+        { quartier: { equals: q, mode: "insensitive" } },
+        { adresse:  { contains: q, mode: "insensitive" } },
+      ]},
+    ];
   }
 
   if (params.typeLogementSlug)    where.typeLogement    = { slug: params.typeLogementSlug };

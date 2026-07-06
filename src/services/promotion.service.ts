@@ -2,12 +2,77 @@ import { prisma } from "../config/database.js";
 import { AppError } from "../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
 
-// Configuration de la rotation intelligente
-const CONFIG = {
-  // Nombre d'annonces boostées affichées en page d'accueil
-  NB_ANNOACES_AFFICHAGES: 4,
-  // Intervalle de rotation en minutes (après ce délai, les annonces sont remplacées)
-  INTERVALLE_ROTATION_MINUTES: 30,
+// Nombre maximum d'annonces pouvant être mises en avant simultanément
+export const MAX_PLACES_MISE_EN_AVANT = 5;
+
+/**
+ * Récupère l'état des places de mise en avant disponibles.
+ * Si toutes les places sont occupées, indique la date de la prochaine libération
+ * (fin de la mise en avant qui se termine le plus tôt).
+ */
+export const getPlacesDisponibles = async (excludeBienId?: string) => {
+  const now = new Date();
+
+  const actives = await prisma.bien.findMany({
+    where: {
+      estMisEnAvant: true,
+      dateFinPromotion: { gte: now },
+      ...(excludeBienId ? { id: { not: excludeBienId } } : {}),
+    },
+    select: { dateFinPromotion: true },
+    orderBy: { dateFinPromotion: "asc" },
+  });
+
+  const placesUtilisees = actives.length;
+  const placesDisponibles = Math.max(0, MAX_PLACES_MISE_EN_AVANT - placesUtilisees);
+  const prochaineLiberation = placesDisponibles === 0 ? actives[0]?.dateFinPromotion ?? null : null;
+
+  return {
+    placesMax: MAX_PLACES_MISE_EN_AVANT,
+    placesUtilisees,
+    placesDisponibles,
+    prochaineLiberation,
+  };
+};
+
+/**
+ * Vérifie qu'une place de mise en avant est disponible pour ce bien, sinon lève une
+ * erreur explicite (avec la date de la prochaine libération) et notifie le propriétaire.
+ * `bienId` est exclu du décompte s'il est déjà activement mis en avant (renouvellement).
+ */
+export const assertPlaceDisponible = async (bienId: string, proprietaireId: string) => {
+  const { placesDisponibles, prochaineLiberation } = await getPlacesDisponibles(bienId);
+
+  if (placesDisponibles > 0) return;
+
+  const dateLisible = prochaineLiberation
+    ? new Date(prochaineLiberation).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+    : "prochainement";
+
+  const message = `Toutes les places de mise en avant sont occupées (${MAX_PLACES_MISE_EN_AVANT}/${MAX_PLACES_MISE_EN_AVANT}). Prochaine place disponible le ${dateLisible}.`;
+
+  try {
+    const { envoyerNotification } = await import("./notification.service.js");
+    const proprietaire = await prisma.proprietaire.findUnique({
+      where: { id: proprietaireId },
+      select: { telephone: true, email: true },
+    });
+    if (proprietaire) {
+      await envoyerNotification({
+        type: "ALERTE",
+        target: "owner",
+        telephone: proprietaire.telephone,
+        email: proprietaire.email,
+        sujet: "Mise en avant indisponible",
+        contenu: message,
+        proprietaireId,
+      });
+    }
+  } catch {
+    // notification non bloquante
+  }
+
+  throw new AppError(message, StatusCodes.CONFLICT);
 };
 
 /**
@@ -38,22 +103,11 @@ export const activatePromotion = async (
     );
   }
 
+  await assertPlaceDisponible(bienId, proprietaireId);
+
   const now = new Date();
   const dateFin = new Date(now);
   dateFin.setDate(dateFin.getDate() + dureeJours);
-
-  // Calculer la position dans la rotation
-  // On place la nouvelle annonce à la fin du groupe actuellement actif
-  const lastPromoted = await prisma.bien.findFirst({
-    where: {
-      estMisEnAvant: true,
-      dateFinPromotion: { gte: now },
-    },
-    orderBy: { positionRotation: "desc" },
-    select: { positionRotation: true },
-  });
-
-  const newPosition = (lastPromoted?.positionRotation ?? 0) + 1;
 
   // Mettre à jour le bien avec les informations de promotion
   const updated = await prisma.bien.update({
@@ -62,7 +116,7 @@ export const activatePromotion = async (
       estMisEnAvant: true,
       dateDebutPromotion: now,
       dateFinPromotion: dateFin,
-      positionRotation: newPosition,
+      positionRotation: 0,
       dernierAffichage: null,
     },
   });
@@ -234,21 +288,22 @@ export const traiterPromotionsExpirees = async () => {
 };
 
 /**
- * Récupère les annonces actuellement mises en avant pour la page d'accueil
- * Utilise la rotation intelligente pour assurer une distribution équitable
+ * Récupère les annonces actuellement mises en avant pour la page d'accueil.
+ * Le nombre de places étant plafonné (MAX_PLACES_MISE_EN_AVANT), toutes les
+ * annonces actives sont affichées simultanément, sans rotation.
  */
-export const getAnnoncesMiseEnAvant = async (limit: number = CONFIG.NB_ANNOACES_AFFICHAGES) => {
+export const getAnnoncesMiseEnAvant = async (limit: number = MAX_PLACES_MISE_EN_AVANT) => {
   const now = new Date();
 
-  // Récupérer toutes les annonces boostées actives
-  const promotedAnnonces = await prisma.bien.findMany({
+  const annonces = await prisma.bien.findMany({
     where: {
       estMisEnAvant: true,
       dateFinPromotion: { gte: now },
       statutAnnonce: "PUBLIE",
       actif: true,
     },
-    orderBy: { positionRotation: "asc" },
+    orderBy: { dateDebutPromotion: "asc" },
+    take: limit,
     include: {
       typeLogement: true,
       typeTransaction: true,
@@ -265,104 +320,13 @@ export const getAnnoncesMiseEnAvant = async (limit: number = CONFIG.NB_ANNOACES_
     },
   });
 
-  if (promotedAnnonces.length === 0) {
-    return {
-      annonces: [],
-      total: 0,
-      message: "Aucune annonce mise en avant actuellement",
-    };
-  }
-
-  // Vérifier si une rotation est nécessaire basée sur le temps
-  const shouldRotate = promotedAnnonces.some((annonce) => {
-    if (!annonce.dernierAffichage) return true;
-    const diffMinutes =
-      (now.getTime() - new Date(annonce.dernierAffichage).getTime()) / (1000 * 60);
-    return diffMinutes >= CONFIG.INTERVALLE_ROTATION_MINUTES;
-  });
-
-  let rotatedAnnonces = promotedAnnonces;
-
-  // Effectuer la rotation si nécessaire
-  if (shouldRotate && promotedAnnonces.length > limit) {
-    // Trier par dernier affichage (les plus anciennes en premier)
-    const sortedByDisplay = [...promotedAnnonces].sort((a, b) => {
-      if (!a.dernierAffichage) return -1;
-      if (!b.dernierAffichage) return 1;
-      return (
-        new Date(a.dernierAffichage).getTime() - new Date(b.dernierAffichage).getTime()
-      );
-    });
-
-    // Prendre les premières pour l'affichage
-    rotatedAnnonces = sortedByDisplay.slice(0, limit);
-
-    // Mettre à jour le dernier affichage pour les annonces sélectionnées
-    await Promise.all(
-      rotatedAnnonces.map((annonce) =>
-        prisma.bien.update({
-          where: { id: annonce.id },
-          data: { dernierAffichage: now },
-        })
-      )
-    );
-  } else if (promotedAnnonces.length <= limit) {
-    // Si moins d'annonces que le nombre à afficher, toutes s'affichent
-    // Mettre à jour le dernier affichage
-    await Promise.all(
-      rotatedAnnonces.map((annonce) =>
-        prisma.bien.update({
-          where: { id: annonce.id },
-          data: { dernierAffichage: now },
-        })
-      )
-    );
-  } else {
-    // Rotation standard : afficher les annonces dans l'ordre de rotation
-    // et faire avancer la position de rotation
-    rotatedAnnonces = promotedAnnonces.slice(0, limit);
-
-    // Marquer ces annonces comme affichées
-    await Promise.all(
-      rotatedAnnonces.map((annonce) =>
-        prisma.bien.update({
-          where: { id: annonce.id },
-          data: { dernierAffichage: now },
-        })
-      )
-    );
-
-    // Faire avancer la rotation (déplacer les premières à la fin)
-    const newRotation = promotedAnnonces.map((annonce, index) => {
-      if (index < limit) {
-        return {
-          id: annonce.id,
-          newPosition: annonce.positionRotation + limit,
-        };
-      }
-      return null;
-    }).filter(Boolean);
-
-    await Promise.all(
-      newRotation.map((rotation) =>
-        rotation
-          ? prisma.bien.update({
-              where: { id: rotation.id },
-              data: { positionRotation: rotation.newPosition },
-            })
-          : Promise.resolve()
-      )
-    );
-  }
-
   return {
-    annonces: rotatedAnnonces,
-    total: promotedAnnonces.length,
-    rotation: {
-      intervalleMinutes: CONFIG.INTERVALLE_ROTATION_MINUTES,
-      prochaineRotationPossible: shouldRotate,
-    },
-    message: `Affichage de ${rotatedAnnonces.length} annonces mises en avant sur ${promotedAnnonces.length} disponibles`,
+    annonces,
+    total: annonces.length,
+    placesDisponibles: Math.max(0, MAX_PLACES_MISE_EN_AVANT - annonces.length),
+    message: annonces.length > 0
+      ? `Affichage de ${annonces.length} annonce(s) mise(s) en avant`
+      : "Aucune annonce mise en avant actuellement",
   };
 };
 
@@ -438,8 +402,7 @@ export const getPromotionStats = async (proprietaireId: string) => {
     annoncesActuellementMiseEnAvant: annoncesActives,
     historiquePromotions,
     configuration: {
-      nbAnnoncesParPage: CONFIG.NB_ANNOACES_AFFICHAGES,
-      intervalleRotationMinutes: CONFIG.INTERVALLE_ROTATION_MINUTES,
+      placesMax: MAX_PLACES_MISE_EN_AVANT,
     },
   };
 };

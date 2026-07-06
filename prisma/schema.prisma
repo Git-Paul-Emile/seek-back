@@ -661,6 +661,8 @@ model Proprietaire {
   dateFinSuspension     DateTime?
   suspenduPar           String?
   nbSignalementsValides Int                        @default(0)
+  canauxNotification    String[]                   @default(["SMS"])
+  canauxNotificationPayes Boolean                  @default(false)
   createdAt             DateTime                   @default(now())
   updatedAt             DateTime                   @updatedAt
   bailInvitations       BailInvitation[]
@@ -1112,6 +1114,7 @@ enum TypePaiement {
   RESTITUTION_CAUTION
   COMMISSION_LOYER
   MISE_EN_AVANT
+  PAIEMENT_CANAUX_NOTIFICATION
 }
 
 enum StatutTransaction {

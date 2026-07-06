@@ -224,7 +224,7 @@ export const getAdminStatsPromotions = async (_req: Request, res: Response): Pro
 // ─── Récupérer les annonces mises en avant (public - pour page d'accueil) ────
 
 export const getAnnoncesMiseEnAvant = async (req: Request, res: Response): Promise<void> => {
-  const limit = parseInt(req.query.limit as string) || 4;
+  const limit = parseInt(req.query.limit as string) || 5;
 
   const result = await PromotionService.getAnnoncesMiseEnAvant(limit);
 
@@ -235,8 +235,22 @@ export const getAnnoncesMiseEnAvant = async (req: Request, res: Response): Promi
       data: {
         annonces: result.annonces,
         total: result.total,
-        rotation: result.rotation,
+        placesDisponibles: result.placesDisponibles,
       },
+    })
+  );
+};
+
+// ─── Récupérer l'état des places de mise en avant (public) ──────────────────
+
+export const getPlacesDisponibles = async (_req: Request, res: Response): Promise<void> => {
+  const result = await PromotionService.getPlacesDisponibles();
+
+  res.status(StatusCodes.OK).json(
+    jsonResponse({
+      status: "success",
+      message: "État des places de mise en avant récupéré",
+      data: result,
     })
   );
 };

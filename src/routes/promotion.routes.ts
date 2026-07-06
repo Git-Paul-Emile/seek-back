@@ -23,6 +23,14 @@ router.get(
 );
 
 /**
+ * GET /api/promotions/places - État des places de mise en avant disponibles (public)
+ */
+router.get(
+  "/places",
+  controllerWrapper(PromotionController.getPlacesDisponibles)
+);
+
+/**
  * Routes protégées pour les propriétaires
  */
 

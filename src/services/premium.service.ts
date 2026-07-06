@@ -8,7 +8,7 @@ import {
   type PaiementSimuleResult,
   type ActivationPromotionResult,
 } from "../types/premium.types.js";
-import { activatePromotion } from "./promotion.service.js";
+import { assertPlaceDisponible } from "./promotion.service.js";
 import { emitTransactionStatus, fetchAndEmitStatsGlobales } from "./socket.service.js";
 
 /**
@@ -77,6 +77,9 @@ export const simulerPaiementEtActiverPromotion = async (
     throw new AppError("Formule premium introuvable", StatusCodes.NOT_FOUND);
   }
 
+  // 3b. Vérifier qu'une place de mise en avant est disponible AVANT de débiter le propriétaire
+  await assertPlaceDisponible(bienId, proprietaireId);
+
   // 4. SIMULATION DU PAIEMENT
   // En production, ici on appellera l'API de paiement (Orange Money, Wave, etc.)
   const paiementResult: PaiementSimuleResult = {
@@ -127,18 +130,6 @@ export const simulerPaiementEtActiverPromotion = async (
   const dateFin = new Date(now);
   dateFin.setDate(dateFin.getDate() + formule.dureeJours);
 
-  // Calculer la position dans la rotation
-  const lastPromoted = await prisma.bien.findFirst({
-    where: {
-      estMisEnAvant: true,
-      dateFinPromotion: { gte: now },
-    },
-    orderBy: { positionRotation: "desc" },
-    select: { positionRotation: true },
-  });
-
-  const newPosition = (lastPromoted?.positionRotation ?? 0) + 1;
-
   // Mettre à jour le bien avec les informations de promotion
   const updated = await prisma.bien.update({
     where: { id: bienId },
@@ -146,7 +137,7 @@ export const simulerPaiementEtActiverPromotion = async (
       estMisEnAvant: true,
       dateDebutPromotion: now,
       dateFinPromotion: dateFin,
-      positionRotation: newPosition,
+      positionRotation: 0,
       dernierAffichage: null,
     },
   });
